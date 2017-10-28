@@ -1,8 +1,0 @@
-{
-  "short_name": "ts-ast-viewer",
-  "name": "TypeScript AST Viewer",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#222222"
-}
