@@ -15,7 +15,7 @@ export interface CodeEditorProps {
 export class CodeEditor extends React.Component<CodeEditorProps> {
     render() {
         return (
-            <div className="code-editor">
+            <div className="codeEditor">
                 <AceEditorExtended
                     mode="typescript"
                     theme="monokai"

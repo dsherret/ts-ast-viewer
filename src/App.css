@@ -31,15 +31,25 @@ h2 {
 
 /* Code Editor */
 
-.code-editor {
+.codeEditor {
     width: 100%;
     height: 100%;
 }
 
-.code-editor textarea {
-    width: 100%;
+/* Tree Viewer */
+
+.treeViewer {
+    overflow: auto;
     height: 100%;
-    padding: 10px;
+}
+
+.treeViewer .node {
+    padding-left: 15px;
+}
+
+.treeViewer .name {
+    margin-left: -15px;
+    cursor: pointer;
 }
 
 /* Properties Viewer */

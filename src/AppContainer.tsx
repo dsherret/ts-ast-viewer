@@ -13,7 +13,8 @@ export function mapStateToProps(state: StoreState) {
 export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
     return {
         onSourceFileChange: (sourceFile: ts.SourceFile) => dispatch(actions.setSourceFile(sourceFile)),
-        onPosChange: (pos: number) => dispatch(actions.setPos(pos))
+        onPosChange: (pos: number) => dispatch(actions.setPos(pos)),
+        onNodeChange: (node: ts.Node) => dispatch(actions.setSelectedNode(node))
     }
 }
 

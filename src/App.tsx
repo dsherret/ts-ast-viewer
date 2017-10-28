@@ -9,6 +9,7 @@ import "./App.css";
 export interface Props extends StoreState {
     onSourceFileChange: (sourceFile: ts.SourceFile) => void;
     onPosChange: (pos: number) => void;
+    onNodeChange: (node: ts.Node) => void;
 }
 
 export default function App(props: Props) {
@@ -18,13 +19,16 @@ export default function App(props: Props) {
                 <div className="App-header">
                     <h2>TypeScript AST Viewer</h2>
                 </div>
-                <SplitPane split="vertical" minSize={50} defaultSize="40%">
+                <SplitPane split="vertical" minSize={50} defaultSize="33%">
                     <components.CodeEditor
                         onChange={code => onCodeChange(code)}
                         onClick={pos => props.onPosChange(pos)}
                         text={props.sourceFile.text} />
-                    <SplitPane split="vertical" minSize={50} defaultSize="60%">
-                        <div></div>
+                    <SplitPane split="vertical" minSize={50} defaultSize="50%">
+                        <components.TreeViewer
+                            selectedNode={props.selectedNode}
+                            sourceFile={props.sourceFile}
+                            onSelectNode={node => props.onNodeChange(node)}/>
                         <components.PropertiesViewer
                             selectedNode={props.selectedNode}
                             sourceFile={props.sourceFile} />
