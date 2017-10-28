@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/dsherret/ts-ast-viewer/issues"
   },
-  "homepage": "https://github.com/dsherret/ts-ast-viewer#readme",
+  "homepage": "https://dsherret.github.com/ts-ast-viewer/",
   "dependencies": {
     "@types/circular-json": "^0.4.0",
     "@types/react-redux": "^5.0.11",
