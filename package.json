@@ -24,6 +24,7 @@
     "@types/react-treeview": "^0.4.0",
     "circular-json": "^0.4.0",
     "react": "^16.0.0",
+    "react-ace": "^5.4.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.8.0",

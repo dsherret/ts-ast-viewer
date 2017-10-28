@@ -5,23 +5,31 @@
 }
 
 .App {
-  text-align: left;
+    text-align: left;
+}
+
+.SplitPane {
+    background-color: #272822;
+    color: #fff;
 }
 
 .App-header {
-  background-color: #222;
-  color: white;
-  padding: 10px;
+    background-color: #222;
+    color: white;
+    padding: 10px;
+    width: 100%;
 }
 
 .App-intro {
-  font-size: large;
+    font-size: large;
 }
 
 h2 {
     margin: 0;
     padding: 0;
 }
+
+/* Code Editor */
 
 .code-editor {
     width: 100%;
@@ -32,4 +40,24 @@ h2 {
     width: 100%;
     height: 100%;
     padding: 10px;
+}
+
+/* Properties Viewer */
+
+.propertiesViewer {
+    overflow: auto;
+    height: 100%;
+}
+
+.propertiesViewer .text .key {
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.propertiesViewer .text .value {
+    display: inline-block;
+}
+
+.propertiesViewer .object .value, .propertiesViewer .array .value {
+    padding-left: 5px;
 }

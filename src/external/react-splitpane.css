@@ -1,5 +1,5 @@
 ﻿.Resizer {
-    background: #000;
+    background: #fff;
     opacity: .2;
     z-index: 1;
     -moz-box-sizing: border-box;
@@ -38,14 +38,23 @@
     }
 
         .Resizer.vertical:hover {
-            border-left: 5px solid rgba(0, 0, 0, 0.5);
-            border-right: 5px solid rgba(0, 0, 0, 0.5);
+            border-left: 5px solid rgba(255, 255, 255, 0.5);
+            border-right: 5px solid rgba(255, 255, 255, 0.5);
         }
 
     .Resizer.disabled {
-        cursor: not-allowed;
+        height: 0px;
+        cursor: default;
+        margin: 0;
     }
+        .Resizer.disabled.horizontal {
+            border-top-width: 0px;
+            border-bottom-width: 0px;
+        }
+            .Resizer.disabled.horizontal:hover {
+                border-top-width: 0px;
+                border-bottom-width: 0px;
+            }
 
         .Resizer.disabled:hover {
-            border-color: transparent;
         }

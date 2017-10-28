@@ -8,19 +8,24 @@ export interface PropertiesViewerProps {
     selectedNode: ts.Node;
 }
 
-export function PropertiesViewer({selectedNode, sourceFile}: PropertiesViewerProps) {
-    const keyValues = Object.keys(selectedNode).map(key => ({ key, value: selectedNode[key] }));
-    return (
-        <div>
-            <h2>Properties</h2>
-            {getTreeView(selectedNode)}
-            <h3>Full Text</h3>
-            <pre>{selectedNode.getFullText(sourceFile)}</pre>
-            <h3>Text</h3>
-            {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
-            <pre>{sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd())}</pre>
-        </div>
-    );
+export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
+    render() {
+        const {selectedNode, sourceFile} = this.props;
+        const keyValues = Object.keys(selectedNode).map(key => ({ key, value: selectedNode[key] }));
+        return (
+            <div className="propertiesViewer">
+                <div className="container">
+                    <h2>Properties</h2>
+                    {getTreeView(selectedNode)}
+                    <h3>Full Text</h3>
+                    <pre>{selectedNode.getFullText(sourceFile)}</pre>
+                    <h3>Text</h3>
+                    {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
+                    <pre>{sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd())}</pre>
+                </div>
+            </div>
+        );
+    }
 }
 
 function getTreeView(parentNode: ts.Node) {
@@ -37,32 +42,56 @@ function getTreeView(parentNode: ts.Node) {
             handledNodes.push(node);
         }
 
-        const keyValues = Object.keys(value).filter(key => isNode && key !== "parent").map(key => ({ key, value: value[key] }));
+        const disallowedKeys = ["parent", "_children"];
+        const keyValues = Object.keys(value).filter(key => isNode && disallowedKeys.indexOf(key) === -1).map(key => ({ key, value: value[key] }));
         const label = typeof (value as ts.Node).kind === "number" ? ts.SyntaxKind[(value as ts.Node).kind] : "value";
         return (
             <TreeView nodeLabel={label}>
-                {keyValues.map(kv => (
-                    <div>
-                        <div>{kv.key}</div>
-                        <div>{getNodeValue(kv.value)}</div>
-                    </div>
-                ))}
+                {keyValues.map(kv => (getNodeValue(kv.key, kv.value)))}
             </TreeView>
         );
     }
 
-    function getNodeValue(value: any) {
-        if (value == null)
-            return value;
-        else if (value instanceof Array)
+    function getNodeValue(key: string, value: any) {
+        if (value === null)
             return (
-                <div>
-                [{value.map(v => getTreeNode(v))}]
-                </div>
-            )
+                <div className="text">
+                    <div className="key">{key}:</div>
+                    <div className="value">null</div>
+                </div>);
+        else if (value === undefined)
+            return (
+                <div className="text">
+                    <div className="key">{key}:</div>
+                    <div className="value">undefined</div>
+                </div>);
+        else if (value instanceof Array) {
+            if (value.length === 0)
+                return (
+                    <div className="text">
+                        <div className="key">{key}:</div>
+                        <div className="value">[]</div>
+                    </div>);
+            else
+                return (
+                    <div className="array">
+                        <div className="key">{key}: [</div>
+                        <div className="value">{value.map(v => getTreeNode(v))}</div>
+                        <div className="suffix">]</div>
+                    </div>);
+        }
         else if (typeof (value as ts.Node).kind === "number")
-            return getTreeNode(value as ts.Node);
+            return (
+                <div className="object">
+                    <div className="key">{key}: {"{"}</div>
+                    <div className="value">{getTreeNode(value as ts.Node)}</div>
+                    <div className="suffix">{"}"}</div>
+                </div>);
         else
-            return CircularJson.stringify(value);
+            return (
+                <div className="text">
+                    <div className="key">{key}:</div>
+                    <div className="value">{CircularJson.stringify(value)}</div>
+                </div>);
     }
 }

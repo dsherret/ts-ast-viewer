@@ -14,14 +14,21 @@ export interface Props extends StoreState {
 export default function App(props: Props) {
     return (
         <div className="App">
-            <div className="App-header">
-                <h2>TypeScript AST Viewer</h2>
-            </div>
-            <SplitPane split="vertical" minSize={50} defaultSize="40%">
-                {components.CodeEditor({ onChange: code => onCodeChange(code), onClick: pos => props.onPosChange(pos) })}
-                <SplitPane split="horizontal" minSize={50} defaultSize="60%">
-                    <div></div>
-                    {components.PropertiesViewer({ selectedNode: props.selectedNode, sourceFile: props.sourceFile })}
+            <SplitPane split="horizontal" defaultSize={50} allowResize={false}>
+                <div className="App-header">
+                    <h2>TypeScript AST Viewer</h2>
+                </div>
+                <SplitPane split="vertical" minSize={50} defaultSize="40%">
+                    <components.CodeEditor
+                        onChange={code => onCodeChange(code)}
+                        onClick={pos => props.onPosChange(pos)}
+                        text={props.sourceFile.text} />
+                    <SplitPane split="vertical" minSize={50} defaultSize="60%">
+                        <div></div>
+                        <components.PropertiesViewer
+                            selectedNode={props.selectedNode}
+                            sourceFile={props.sourceFile} />
+                    </SplitPane>
                 </SplitPane>
             </SplitPane>
         </div>

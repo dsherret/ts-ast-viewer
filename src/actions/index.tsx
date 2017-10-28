@@ -26,7 +26,7 @@ export function setSelectedNode(node: ts.Node): SetSelectedNode {
 }
 
 export interface SetPos {
-    type: constants.SET_POS,
+    type: constants.SET_POS;
     pos: number;
 }
 
