@@ -19,13 +19,19 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
         );
 
         function renderNode(node: ts.Node): JSX.Element {
-            const className = node === selectedNode ? "name selected" : "name";
-            return (
-                <div className="node" key={i++}>
-                    <div className={className} onClick={() => onSelectNode(node)}>{ts.SyntaxKind[node.kind]}</div>
-                    {node.getChildren(sourceFile).map(n => renderNode(n))}
-                </div>
-            );
+            const children = node.getChildren(sourceFile);
+            const className = node === selectedNode ? "selected nodeText" : "nodeText";
+            const label = (<div onClick={() => onSelectNode(node)} className={className}>{ts.SyntaxKind[node.kind]}</div>);
+            if (children.length === 0)
+                return (
+                    <div key={i++} className="endNode">{label}</div>
+                );
+            else
+                return (
+                    <TreeView nodeLabel={label} key={i++}>
+                        {node.getChildren(sourceFile).map(n => renderNode(n))}
+                    </TreeView>
+                );
         }
     }
 }

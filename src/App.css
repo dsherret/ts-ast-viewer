@@ -44,16 +44,20 @@ h2 {
 }
 
 .treeViewer .node {
-    padding-left: 15px;
 }
 
-.treeViewer .name {
-    margin-left: -15px;
+.treeViewer .nodeText {
     cursor: pointer;
+    display: inline-block;
 }
 
-.treeViewer .name.selected {
+.treeViewer .nodeText.selected {
     color: #A6E22E;
+}
+
+.treeViewer .endNode {
+    padding-top: 4px;
+    padding-left: 3px;
 }
 
 /* Properties Viewer */

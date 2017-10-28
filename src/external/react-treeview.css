@@ -9,7 +9,7 @@
 
 /* style for the children nodes container */
 .tree-view_children {
-    margin-left: 16px;
+    margin-left: 20px;
 }
 
 .tree-view_children-collapsed {
@@ -18,7 +18,7 @@
 
 .tree-view_arrow {
     cursor: pointer;
-    margin-right: 6px;
+    margin-right: 1px;
     display: inline-block;
     -webkit-user-select: none;
     -moz-user-select: none;

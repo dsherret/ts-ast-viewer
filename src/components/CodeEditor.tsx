@@ -29,8 +29,4 @@ export class CodeEditor extends React.Component<CodeEditorProps> {
             </div>
         );
     }
-
-    componentDidMount() {
-        console.log(this.refs.aceEditor);
-    }
 }

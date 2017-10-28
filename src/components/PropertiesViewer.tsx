@@ -30,6 +30,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
 
 function getTreeView(parentNode: ts.Node) {
     const handledNodes: ts.Node[] = [];
+    let pastFirst = false;
 
     return getTreeNode(parentNode);
 
@@ -45,8 +46,10 @@ function getTreeView(parentNode: ts.Node) {
         const disallowedKeys = ["parent", "_children"];
         const keyValues = Object.keys(value).filter(key => isNode && disallowedKeys.indexOf(key) === -1).map(key => ({ key, value: value[key] }));
         const label = typeof (value as ts.Node).kind === "number" ? ts.SyntaxKind[(value as ts.Node).kind] : "value";
+        const isCollapsed = pastFirst;
+        pastFirst = true;
         return (
-            <TreeView nodeLabel={label}>
+            <TreeView nodeLabel={label} collapsed={isCollapsed}>
                 {keyValues.map(kv => (getNodeValue(kv.key, kv.value)))}
             </TreeView>
         );
@@ -55,26 +58,26 @@ function getTreeView(parentNode: ts.Node) {
     function getNodeValue(key: string, value: any) {
         if (value === null)
             return (
-                <div className="text">
+                <div className="text" key={key}>
                     <div className="key">{key}:</div>
                     <div className="value">null</div>
                 </div>);
         else if (value === undefined)
             return (
-                <div className="text">
+                <div className="text" key={key}>
                     <div className="key">{key}:</div>
                     <div className="value">undefined</div>
                 </div>);
         else if (value instanceof Array) {
             if (value.length === 0)
                 return (
-                    <div className="text">
+                    <div className="text" key={key}>
                         <div className="key">{key}:</div>
                         <div className="value">[]</div>
                     </div>);
             else
                 return (
-                    <div className="array">
+                    <div className="array" key={key}>
                         <div className="key">{key}: [</div>
                         <div className="value">{value.map(v => getTreeNode(v))}</div>
                         <div className="suffix">]</div>
@@ -82,14 +85,14 @@ function getTreeView(parentNode: ts.Node) {
         }
         else if (typeof (value as ts.Node).kind === "number")
             return (
-                <div className="object">
+                <div className="object" key={key}>
                     <div className="key">{key}: {"{"}</div>
                     <div className="value">{getTreeNode(value as ts.Node)}</div>
                     <div className="suffix">{"}"}</div>
                 </div>);
         else
             return (
-                <div className="text">
+                <div className="text" key={key}>
                     <div className="key">{key}:</div>
                     <div className="value">{CircularJson.stringify(value)}</div>
                 </div>);
