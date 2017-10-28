@@ -1,8 +1,8 @@
 ﻿import {connect, Dispatch} from 'react-redux';
 import * as ts from "typescript";
-import App from './App';
-import * as actions from './actions/';
-import {StoreState} from './types/index';
+import App from "./App";
+import * as actions from "./actions/";
+import {StoreState} from "./types/index";
 
 export function mapStateToProps(state: StoreState) {
     return {
@@ -15,7 +15,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
         onSourceFileChange: (sourceFile: ts.SourceFile) => dispatch(actions.setSourceFile(sourceFile)),
         onPosChange: (pos: number) => dispatch(actions.setPos(pos)),
         onNodeChange: (node: ts.Node) => dispatch(actions.setSelectedNode(node))
-    }
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
