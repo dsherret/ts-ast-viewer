@@ -52,6 +52,10 @@ h2 {
     cursor: pointer;
 }
 
+.treeViewer .name.selected {
+    color: #A6E22E;
+}
+
 /* Properties Viewer */
 
 .propertiesViewer {

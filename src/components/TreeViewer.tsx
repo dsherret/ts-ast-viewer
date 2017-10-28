@@ -11,7 +11,7 @@ export interface TreeViewerProps {
 
 export class TreeViewer extends React.Component<TreeViewerProps> {
     render() {
-        const {sourceFile, onSelectNode} = this.props;
+        const {sourceFile, selectedNode, onSelectNode} = this.props;
         let i = 0;
 
         return (
@@ -19,9 +19,10 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
         );
 
         function renderNode(node: ts.Node): JSX.Element {
+            const className = node === selectedNode ? "name selected" : "name";
             return (
                 <div className="node" key={i++}>
-                    <div className="name" onClick={() => onSelectNode(node)}>{ts.SyntaxKind[node.kind]}</div>
+                    <div className={className} onClick={() => onSelectNode(node)}>{ts.SyntaxKind[node.kind]}</div>
                     {node.getChildren(sourceFile).map(n => renderNode(n))}
                 </div>
             );
