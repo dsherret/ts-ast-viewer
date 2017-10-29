@@ -31,6 +31,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
 function getTreeView(parentNode: ts.Node) {
     const handledNodes: ts.Node[] = [];
     let pastFirst = false;
+    let i = 0;
 
     return getTreeNode(parentNode);
 
@@ -49,7 +50,7 @@ function getTreeView(parentNode: ts.Node) {
         const isCollapsed = pastFirst;
         pastFirst = true;
         return (
-            <TreeView nodeLabel={label} collapsed={isCollapsed}>
+            <TreeView nodeLabel={label} key={i++} defaultCollapsed={isCollapsed}>
                 {keyValues.map(kv => (getNodeValue(kv.key, kv.value)))}
             </TreeView>
         );
