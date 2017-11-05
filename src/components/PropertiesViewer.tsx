@@ -16,7 +16,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
             <div className="propertiesViewer">
                 <div className="container">
                     <h2>Properties</h2>
-                    {getTreeView(selectedNode)}
+                    {getTreeView(selectedNode, sourceFile)}
                     <h3>Full Text</h3>
                     <pre>{selectedNode.getFullText(sourceFile)}</pre>
                     <h3>Text</h3>
@@ -28,7 +28,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
     }
 }
 
-function getTreeView(parentNode: ts.Node) {
+function getTreeView(parentNode: ts.Node, sourceFile: ts.SourceFile) {
     const handledNodes: ts.Node[] = [];
     let pastFirst = false;
     let i = 0;
@@ -49,6 +49,13 @@ function getTreeView(parentNode: ts.Node) {
         const label = typeof (value as ts.Node).kind === "number" ? ts.SyntaxKind[(value as ts.Node).kind] : "value";
         const isCollapsed = pastFirst;
         pastFirst = true;
+
+        if (isNode) {
+            const node = value as ts.Node;
+            // insert right after pos
+            keyValues.splice(1, 0, { key: "start", value: node.getStart(sourceFile) });
+        }
+
         return (
             <TreeView nodeLabel={label} key={i++} defaultCollapsed={isCollapsed}>
                 {keyValues.map(kv => (getNodeValue(kv.key, kv.value)))}
