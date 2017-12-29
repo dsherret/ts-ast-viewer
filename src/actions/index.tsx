@@ -1,4 +1,5 @@
-﻿import * as ts from "typescript";
+﻿/* barrel:ignore */
+import * as ts from "typescript";
 import * as constants from "./../constants";
 
 export interface SetSourceFile {

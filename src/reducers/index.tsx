@@ -1,4 +1,5 @@
-﻿import * as ts from "typescript";
+﻿/* barrel:ignore */
+import * as ts from "typescript";
 import {AllActions} from "./../actions";
 import {StoreState} from "./../types";
 import {SET_SELECTED_NODE, SET_SOURCEFILE, SET_POS} from "./../constants";

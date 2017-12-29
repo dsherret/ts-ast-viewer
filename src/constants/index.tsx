@@ -1,4 +1,5 @@
-﻿export const SET_SOURCEFILE = "SET_SOURCEFILE";
+﻿/* barrel:ignore */
+export const SET_SOURCEFILE = "SET_SOURCEFILE";
 export type SET_SOURCEFILE = typeof SET_SOURCEFILE;
 
 export const SET_SELECTED_NODE = "SET_SELECTED_NODE";

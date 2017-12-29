@@ -1,4 +1,5 @@
-﻿import * as ts from "typescript";
+﻿/* barrel:ignore */
+import * as ts from "typescript";
 
 export interface StoreState {
     sourceFile: ts.SourceFile;
