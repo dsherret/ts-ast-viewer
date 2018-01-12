@@ -1,7 +1,7 @@
 ﻿import {connect, Dispatch} from 'react-redux';
 import ts from "typescript";
 import App from "./App";
-import actions from "./actions";
+import * as actions from "./actions";
 import {StoreState} from "./types";
 
 export function mapStateToProps(state: StoreState) {
