@@ -39,7 +39,7 @@ export default function App(props: Props) {
     );
 
     function onCodeChange(code: string) {
-        const sourceFile = ts.createSourceFile("ts-ast-viewer.tsx", code, ts.ScriptTarget.Latest, false, ts.ScriptKind.TSX);
+        const sourceFile = createSourceFile(code);
         props.onSourceFileChange(sourceFile);
     }
 }
