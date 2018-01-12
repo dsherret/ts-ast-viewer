@@ -1,6 +1,6 @@
 import React from "react";
 import SplitPane from "react-split-pane";
-import * as components from "./components";
+import components from "./components";
 import ts from "typescript";
 import {StoreState} from "./types";
 import {createSourceFile} from "./helpers";

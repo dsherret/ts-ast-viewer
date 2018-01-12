@@ -1,6 +1,6 @@
 ﻿/* barrel:ignore */
-import * as ts from "typescript";
-import * as constants from "./../constants";
+import ts from "typescript";
+import constants from "./../constants";
 
 export interface SetSourceFile {
     type: constants.SET_SOURCEFILE;

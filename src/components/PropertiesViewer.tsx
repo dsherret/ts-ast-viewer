@@ -1,7 +1,7 @@
-﻿import * as React from "react";
-import * as ts from "typescript";
-import * as TreeView from "react-treeview";
-import * as CircularJson from "circular-json";
+﻿import React from "react";
+import ts from "typescript";
+import TreeView from "react-treeview";
+import CircularJson from "circular-json";
 
 export interface PropertiesViewerProps {
     sourceFile: ts.SourceFile;

@@ -1,8 +1,8 @@
 ﻿import {connect, Dispatch} from 'react-redux';
-import * as ts from "typescript";
+import ts from "typescript";
 import App from "./App";
-import * as actions from "./actions/";
-import {StoreState} from "./types/index";
+import actions from "./actions";
+import {StoreState} from "./types";
 
 export function mapStateToProps(state: StoreState) {
     return {
