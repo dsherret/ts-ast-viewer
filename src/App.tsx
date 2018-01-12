@@ -1,7 +1,7 @@
-import * as React from "react";
-import * as SplitPane from "react-split-pane";
+import React from "react";
+import SplitPane from "react-split-pane";
 import * as components from "./components";
-import * as ts from "typescript";
+import ts from "typescript";
 import {StoreState} from "./types";
 import {createSourceFile} from "./helpers";
 import "./App.css";
@@ -39,7 +39,7 @@ export default function App(props: Props) {
     );
 
     function onCodeChange(code: string) {
-        const sourceFile = ts.createSourceFile("ts-ast-viewer.ts", code, ts.ScriptTarget.Latest, false, ts.ScriptKind.Unknown);
+        const sourceFile = ts.createSourceFile("ts-ast-viewer.tsx", code, ts.ScriptTarget.Latest, false, ts.ScriptKind.TSX);
         props.onSourceFileChange(sourceFile);
     }
 }
