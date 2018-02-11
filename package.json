@@ -17,6 +17,14 @@
     "url": "https://github.com/dsherret/ts-ast-viewer/issues"
   },
   "homepage": "https://dsherret.github.io/ts-ast-viewer/",
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
   "dependencies": {
     "@types/circular-json": "^0.4.0",
     "@types/react-redux": "^5.0.11",
@@ -32,14 +40,6 @@
     "react-treeview": "^0.4.7",
     "redux": "^3.7.2",
     "typescript": "^2.7.1"
-  },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@types/jest": "^21.1.5",
