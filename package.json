@@ -31,7 +31,7 @@
     "react-split-pane": "^0.1.68",
     "react-treeview": "^0.4.7",
     "redux": "^3.7.2",
-    "typescript": "^2.5.3"
+    "typescript": "^2.7.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
