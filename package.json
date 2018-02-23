@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/dsherret/ts-ast-viewer/issues"
   },
-  "homepage": "https://dsherret.github.io/ts-ast-viewer/",
+  "homepage": "http://ts-ast-viewer.com",
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
