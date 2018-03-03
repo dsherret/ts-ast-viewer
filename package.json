@@ -30,6 +30,7 @@
     "@types/react-redux": "^5.0.11",
     "@types/react-split-pane": "^0.1.10",
     "@types/react-treeview": "^0.4.0",
+    "@types/inline-style-prefixer": "^3.0.1",
     "circular-json": "^0.4.0",
     "react": "^16.0.0",
     "react-ace": "^5.4.0",
