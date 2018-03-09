@@ -28,6 +28,13 @@ h2 {
     margin: 0;
     padding: 0;
 }
+h2:not(:first-child) {
+    margin-top: 10px;
+}
+h3 {
+    margin: 15px 0px 0px 0px;
+    padding: 0;
+}
 
 /* Code Editor */
 
@@ -65,6 +72,7 @@ h2 {
 .propertiesViewer {
     overflow: auto;
     height: 100%;
+    margin-left: 4px;
 }
 
 .propertiesViewer .text .key {
@@ -78,4 +86,12 @@ h2 {
 
 .propertiesViewer .object .value, .propertiesViewer .array .value {
     padding-left: 5px;
+}
+
+.propertiesViewer .methods {
+    margin: 5px 0;
+}
+
+.propertiesViewer .methods .method:after {
+    content: ": ";
 }

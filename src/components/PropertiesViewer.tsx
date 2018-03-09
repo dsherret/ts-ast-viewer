@@ -16,10 +16,29 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
             <div className="propertiesViewer">
                 <div className="container">
                     <h2>Properties</h2>
-                    {getTreeView(selectedNode, sourceFile)}
-                    <h3>Full Text</h3>
+                    {getTreeView(selectedNode)}
+                    <h2>Methods</h2>
+                    <ul className="methods">
+                        <li>
+                            <span className="method">getFullStart()</span>
+                            <span className="result">{selectedNode.getFullStart()}</span>
+                        </li>
+                        <li>
+                            <span className="method">getStart()</span>
+                            <span className="result">{selectedNode.getStart(sourceFile)}</span>
+                        </li>
+                        <li>
+                            <span className="method">getWidth()</span>
+                            <span className="result">{selectedNode.getWidth(sourceFile)}</span>
+                        </li>
+                        <li>
+                            <span className="method">getFullWidth()</span>
+                            <span className="result">{selectedNode.getFullWidth()}</span>
+                        </li>
+                    </ul>
+                    <h3>getFullText()</h3>
                     <pre>{selectedNode.getFullText(sourceFile)}</pre>
-                    <h3>Text</h3>
+                    <h3>getText()</h3>
                     {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
                     <pre>{sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd())}</pre>
                 </div>
@@ -28,42 +47,35 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
     }
 }
 
-function getTreeView(parentNode: ts.Node, sourceFile: ts.SourceFile) {
+function getTreeView(rootItem: any) {
     const handledNodes: ts.Node[] = [];
     let pastFirst = false;
     let i = 0;
 
-    return getTreeNode(parentNode);
+    return getTreeNode(rootItem, undefined);
 
-    function getTreeNode(value: any): JSX.Element {
-        const isNode = typeof (value as ts.Node).kind === "number";
-        if (isNode) {
-            const node = value as ts.Node;
-            if (handledNodes.indexOf(node) >= 0 || parentNode.kind !== ts.SyntaxKind.SourceFile && node.kind === ts.SyntaxKind.SourceFile)
+    function getTreeNode(value: any, parent: any): JSX.Element {
+        if (isTsNode(value)) {
+            if (handledNodes.indexOf(value) >= 0 || isTsNode(rootItem) && rootItem.kind !== ts.SyntaxKind.SourceFile && value.kind === ts.SyntaxKind.SourceFile)
                 return (<div>[Circular]</div>);
-            handledNodes.push(node);
+            handledNodes.push(value);
         }
 
+        const isNode = isTsNode(value);
         const disallowedKeys = ["parent", "_children"];
         const keyValues = Object.keys(value).filter(key => isNode && disallowedKeys.indexOf(key) === -1).map(key => ({ key, value: value[key] }));
         const label = typeof (value as ts.Node).kind === "number" ? ts.SyntaxKind[(value as ts.Node).kind] : "value";
         const isCollapsed = pastFirst;
         pastFirst = true;
 
-        if (isNode) {
-            const node = value as ts.Node;
-            // insert right after pos
-            keyValues.splice(1, 0, { key: "start", value: node.getStart(sourceFile) });
-        }
-
         return (
             <TreeView nodeLabel={label} key={i++} defaultCollapsed={isCollapsed}>
-                {keyValues.map(kv => (getNodeValue(kv.key, kv.value)))}
+                {keyValues.map(kv => (getNodeValue(kv.key, kv.value, value)))}
             </TreeView>
         );
     }
 
-    function getNodeValue(key: string, value: any) {
+    function getNodeValue(key: string, value: any, parent: any) {
         if (value === null)
             return (
                 <div className="text" key={key}>
@@ -87,22 +99,32 @@ function getTreeView(parentNode: ts.Node, sourceFile: ts.SourceFile) {
                 return (
                     <div className="array" key={key}>
                         <div className="key">{key}: [</div>
-                        <div className="value">{value.map(v => getTreeNode(v))}</div>
+                        <div className="value">{value.map(v => getTreeNode(v, value))}</div>
                         <div className="suffix">]</div>
                     </div>);
         }
-        else if (typeof (value as ts.Node).kind === "number")
+        else if (isTsNode(value))
             return (
                 <div className="object" key={key}>
                     <div className="key">{key}: {"{"}</div>
-                    <div className="value">{getTreeNode(value as ts.Node)}</div>
+                    <div className="value">{getTreeNode(value, parent)}</div>
                     <div className="suffix">{"}"}</div>
                 </div>);
         else
             return (
                 <div className="text" key={key}>
                     <div className="key">{key}:</div>
-                    <div className="value">{CircularJson.stringify(value)}</div>
+                    <div className="value">{getCustomValue()}</div>
                 </div>);
+
+        function getCustomValue() {
+            if (isTsNode(parent) && key === "kind")
+                return `${value} (SyntaxKind.${ts.SyntaxKind[value]})`;
+            return CircularJson.stringify(value);
+        }
     }
+}
+
+function isTsNode(value: any): value is ts.Node {
+    return typeof (value as ts.Node).kind === "number";
 }
