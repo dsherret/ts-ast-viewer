@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.3"></a>
+## [0.5.3](https://github.com/dsherret/ts-ast-viewer/compare/v0.5.2...v0.5.3) (2018-03-19)
+
+
+### Bug Fixes
+
+* Update syntax kind name in properties viewer. ([51e6471](https://github.com/dsherret/ts-ast-viewer/commit/51e6471))
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/dsherret/ts-ast-viewer/compare/v0.5.1...v0.5.2) (2018-03-19)
 
