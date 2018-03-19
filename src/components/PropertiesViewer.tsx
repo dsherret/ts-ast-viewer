@@ -120,7 +120,7 @@ function getTreeView(rootItem: any) {
 
         function getCustomValue() {
             if (isTsNode(parent) && key === "kind")
-                return `${value} (SyntaxKind.${ts.SyntaxKind[value]})`;
+                return `${value} (SyntaxKind.${getSyntaxKindName(value)})`;
             return CircularJson.stringify(value);
         }
     }
