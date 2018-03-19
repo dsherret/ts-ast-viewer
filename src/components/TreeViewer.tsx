@@ -2,6 +2,7 @@
 import ts from "typescript";
 import TreeView from "react-treeview";
 import CircularJson from "circular-json";
+import {getSyntaxKindName} from "../utils";
 
 export interface TreeViewerProps {
     sourceFile: ts.SourceFile;
@@ -21,7 +22,7 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
         function renderNode(node: ts.Node): JSX.Element {
             const children = node.getChildren(sourceFile);
             const className = node === selectedNode ? "selected nodeText" : "nodeText";
-            const label = (<div onClick={() => onSelectNode(node)} className={className}>{ts.SyntaxKind[node.kind]}</div>);
+            const label = (<div onClick={() => onSelectNode(node)} className={className}>{getSyntaxKindName(node.kind)}</div>);
             if (children.length === 0)
                 return (
                     <div key={i++} className="endNode">{label}</div>
