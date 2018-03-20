@@ -36,6 +36,67 @@ h3 {
     padding: 0;
 }
 
+#title {
+    float: left;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Options */
+
+.options {
+    float: right;
+}
+
+.options .optionsButton {
+    line-height: 28px;
+    width: 80px;
+    text-align: center;
+    color: #fff;
+    background-color: #202020;
+    border: 1px solid #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.options .menu {
+    position: absolute;
+    width: 350px;
+    margin-left: -270px;
+    margin-top: -1px;
+    background: #202020;
+    border: 1px solid #fff;
+    z-index: 100;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.options .menu .optionName {
+    display: inline-block;
+    margin-right: 6px;
+}
+.options .menu .optionValue {
+    display: inline-block;
+}
+
+.options .menu .optionValue select {
+    width: 240px;
+}
+
+.options .menuLine {
+    position: absolute;
+    background: #202020;
+    height: 1px;
+    width: 78px;
+    margin-top: -1px;
+    z-index: 101;
+    margin-left: 1px;
+}
+
 /* Code Editor */
 
 .codeEditor {

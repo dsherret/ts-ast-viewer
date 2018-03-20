@@ -7,14 +7,17 @@ import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
 import "./external/react-treeview.css";
 import "./external/react-splitpane.css";
-import {StoreState} from "./types";
+import {StoreState, TreeMode} from "./types";
 import {appReducer} from "./reducers";
 import {createSourceFile} from "./helpers";
 
 const initialSourceFile = createSourceFile("");
 const store = createStore<StoreState>(appReducer, {
     sourceFile: initialSourceFile,
-    selectedNode: initialSourceFile
+    selectedNode: initialSourceFile,
+    options: {
+        treeMode: TreeMode.getChildren
+    }
 });
 
 ReactDOM.render(

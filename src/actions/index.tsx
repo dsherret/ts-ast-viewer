@@ -1,6 +1,7 @@
 ﻿/* barrel:ignore */
 import ts from "typescript";
-import * as constants from "./../constants";
+import * as constants from "../constants";
+import {OptionsState} from "../types";
 
 export interface SetSourceFile {
     type: constants.SET_SOURCEFILE;
@@ -38,4 +39,16 @@ export function setPos(pos: number): SetPos {
     };
 }
 
-export type AllActions = SetSourceFile | SetSelectedNode | SetPos;
+export interface SetOptions {
+    type: constants.SET_OPTIONS;
+    options: OptionsState;
+}
+
+export function setOptions(options: OptionsState): SetOptions {
+    return {
+        type: constants.SET_OPTIONS,
+        options
+    };
+}
+
+export type AllActions = SetSourceFile | SetSelectedNode | SetPos | SetOptions;

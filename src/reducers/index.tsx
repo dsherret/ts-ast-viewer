@@ -1,8 +1,8 @@
 ﻿/* barrel:ignore */
 import ts from "typescript";
-import {AllActions} from "./../actions";
-import {StoreState} from "./../types";
-import {SET_SELECTED_NODE, SET_SOURCEFILE, SET_POS} from "./../constants";
+import {AllActions} from "../actions";
+import {StoreState} from "../types";
+import {SET_SELECTED_NODE, SET_SOURCEFILE, SET_POS, SET_OPTIONS} from "./../constants";
 
 export function appReducer(state: StoreState, action: AllActions): StoreState {
     switch (action.type) {
@@ -30,6 +30,8 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
 
             //const node = state.sourceFile.
             return {...state, selectedNode };
+        case SET_OPTIONS:
+            return {...state, options: action.options};
   }
   return state;
 }
