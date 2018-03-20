@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.6.0...v0.7.0) (2018-03-20)
+
+
+### Features
+
+* Add ScriptKind and ScriptTarget options. ([6f9cb75](https://github.com/dsherret/ts-ast-viewer/commit/6f9cb75))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.5.3...v0.6.0) (2018-03-20)
 
