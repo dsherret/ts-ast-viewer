@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.5.3...v0.6.0) (2018-03-20)
+
+
+### Features
+
+* Add ability to say if tree is shown using node.getChildren() or ts.forEachChild(node, ...) ([5b3a809](https://github.com/dsherret/ts-ast-viewer/commit/5b3a809))
+
+
+
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/dsherret/ts-ast-viewer/compare/v0.5.2...v0.5.3) (2018-03-19)
 
