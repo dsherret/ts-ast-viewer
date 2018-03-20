@@ -9,6 +9,8 @@ export interface StoreState {
 
 export interface OptionsState {
     treeMode: TreeMode;
+    scriptTarget: ts.ScriptTarget;
+    scriptKind: ts.ScriptKind;
 }
 
 export enum TreeMode {

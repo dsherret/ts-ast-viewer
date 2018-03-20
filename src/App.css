@@ -75,16 +75,21 @@ h3 {
     font-size: 16px;
 }
 
+.options .menu .option:not(:first-child) {
+    margin-top: 10px;
+}
+
 .options .menu .optionName {
     display: inline-block;
     margin-right: 6px;
+    width: 95px;
+    text-align: right;
 }
 .options .menu .optionValue {
     display: inline-block;
 }
-
 .options .menu .optionValue select {
-    width: 240px;
+    width: 220px;
 }
 
 .options .menuLine {

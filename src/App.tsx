@@ -44,7 +44,7 @@ export default function App(props: Props) {
     );
 
     function onCodeChange(code: string) {
-        const sourceFile = createSourceFile(code);
+        const sourceFile = createSourceFile(code, props.options.scriptTarget, props.options.scriptKind);
         props.onSourceFileChange(sourceFile);
     }
 }

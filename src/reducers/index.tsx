@@ -2,6 +2,7 @@
 import ts from "typescript";
 import {AllActions} from "../actions";
 import {StoreState} from "../types";
+import {createSourceFile} from "../helpers";
 import {SET_SELECTED_NODE, SET_SOURCEFILE, SET_POS, SET_OPTIONS} from "./../constants";
 
 export function appReducer(state: StoreState, action: AllActions): StoreState {
@@ -14,6 +15,7 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
             const pos = action.pos;
             let selectedNode: ts.Node = state.sourceFile;
             while (true) {
+                // todo: should use correct function here (ex. ts.forEachChild based on the options)
                 const children = selectedNode.getChildren(state.sourceFile);
                 let found = false;
                 for (const child of children) {
@@ -30,8 +32,19 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
 
             //const node = state.sourceFile.
             return {...state, selectedNode };
-        case SET_OPTIONS:
-            return {...state, options: action.options};
+        case SET_OPTIONS: {
+            const newState = {...state, options: action.options};
+            const fileNeedsChanging = action.options.scriptKind !== state.options.scriptKind
+                || action.options.scriptTarget !== state.options.scriptTarget;
+
+            if (fileNeedsChanging) {
+                newState.sourceFile = createSourceFile(newState.sourceFile.getFullText(), action.options.scriptTarget, action.options.scriptKind);
+                // todo: get the source file based on the previous position (do this when refactoring SET_POS)
+                newState.selectedNode = newState.sourceFile;
+            }
+
+            return newState;
+        }
   }
   return state;
 }
