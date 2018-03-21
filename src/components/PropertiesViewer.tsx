@@ -64,7 +64,7 @@ function getTreeView(rootItem: any) {
 
         const isNode = isTsNode(value);
         const disallowedKeys = ["parent", "_children"];
-        const keyValues = Object.keys(value).filter(key => isNode && disallowedKeys.indexOf(key) === -1).map(key => ({ key, value: value[key] }));
+        const keyValues = Object.keys(value).filter(key => !isNode || disallowedKeys.indexOf(key) === -1).map(key => ({ key, value: value[key] }));
         const label = typeof (value as ts.Node).kind === "number" ? getSyntaxKindName((value as ts.Node).kind) : "value";
         const isCollapsed = pastFirst;
         pastFirst = true;
