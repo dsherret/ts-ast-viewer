@@ -7,7 +7,7 @@ import {createSourceFile} from "./helpers";
 import "./App.css";
 
 export interface Props extends StoreState {
-    onSourceFileChange: (sourceFile: ts.SourceFile) => void;
+    onCodeChange: (code: string) => void;
     onPosChange: (pos: number) => void;
     onNodeChange: (node: ts.Node) => void;
     onOptionsChange: (options: OptionsState) => void;
@@ -25,9 +25,9 @@ export default function App(props: Props) {
                 </div>
                 <SplitPane split="vertical" minSize={50} defaultSize="33%">
                     <components.CodeEditor
-                        onChange={code => onCodeChange(code)}
+                        onChange={code => props.onCodeChange(code)}
                         onClick={pos => props.onPosChange(pos)}
-                        text={props.sourceFile.text} />
+                        text={props.code} />
                     <SplitPane split="vertical" minSize={50} defaultSize="50%">
                         <components.TreeViewer
                             selectedNode={props.selectedNode}
@@ -36,15 +36,11 @@ export default function App(props: Props) {
                             mode={props.options.treeMode} />
                         <components.PropertiesViewer
                             selectedNode={props.selectedNode}
-                            sourceFile={props.sourceFile} />
+                            sourceFile={props.sourceFile}
+                            typeChecker={props.typeChecker} />
                     </SplitPane>
                 </SplitPane>
             </SplitPane>
         </div>
     );
-
-    function onCodeChange(code: string) {
-        const sourceFile = createSourceFile(code, props.options.scriptTarget, props.options.scriptKind);
-        props.onSourceFileChange(sourceFile);
-    }
 }

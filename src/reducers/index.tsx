@@ -1,17 +1,25 @@
 ﻿/* barrel:ignore */
 import ts from "typescript";
 import {AllActions} from "../actions";
-import {StoreState} from "../types";
+import {StoreState, OptionsState} from "../types";
 import {createSourceFile} from "../helpers";
-import {SET_SELECTED_NODE, SET_SOURCEFILE, SET_POS, SET_OPTIONS} from "./../constants";
+import {SET_SELECTED_NODE, SET_CODE, SET_POS, SET_OPTIONS, REFRESH_SOURCEFILE} from "./../constants";
 
 export function appReducer(state: StoreState, action: AllActions): StoreState {
     switch (action.type) {
-        case SET_SELECTED_NODE:
+        case SET_SELECTED_NODE: {
             return {...state, selectedNode: action.node};
-        case SET_SOURCEFILE:
-            return {...state, sourceFile: action.sourceFile, selectedNode: action.sourceFile};
-        case SET_POS:
+        }
+        case REFRESH_SOURCEFILE: {
+            const newState = {...state};
+            fillNewSourceFileState(newState, state.code, state.options);
+            newState.selectedNode = newState.sourceFile;
+            return newState;
+        }
+        case SET_CODE: {
+            return { ...state, code: action.code };
+        }
+        case SET_POS: {
             const pos = action.pos;
             let selectedNode: ts.Node = state.sourceFile;
             while (true) {
@@ -32,13 +40,14 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
 
             //const node = state.sourceFile.
             return {...state, selectedNode };
+        }
         case SET_OPTIONS: {
             const newState = {...state, options: action.options};
             const fileNeedsChanging = action.options.scriptKind !== state.options.scriptKind
                 || action.options.scriptTarget !== state.options.scriptTarget;
 
             if (fileNeedsChanging) {
-                newState.sourceFile = createSourceFile(newState.sourceFile.getFullText(), action.options.scriptTarget, action.options.scriptKind);
+                fillNewSourceFileState(newState, newState.sourceFile.getFullText(), action.options);
                 // todo: get the source file based on the previous position (do this when refactoring SET_POS)
                 newState.selectedNode = newState.sourceFile;
             }
@@ -47,4 +56,11 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
         }
   }
   return state;
+}
+
+function fillNewSourceFileState(state: StoreState, code: string, options: OptionsState) {
+    const {sourceFile, program, typeChecker} = createSourceFile(code, options.scriptTarget, options.scriptKind);
+    state.sourceFile = sourceFile;
+    state.program = program;
+    state.typeChecker = typeChecker;
 }

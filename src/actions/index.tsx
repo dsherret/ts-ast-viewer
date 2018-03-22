@@ -3,15 +3,25 @@ import ts from "typescript";
 import * as constants from "../constants";
 import {OptionsState} from "../types";
 
-export interface SetSourceFile {
-    type: constants.SET_SOURCEFILE;
-    sourceFile: ts.SourceFile;
+export interface SetCode {
+    type: constants.SET_CODE;
+    code: string;
 }
 
-export function setSourceFile(sourceFile: ts.SourceFile): SetSourceFile {
+export function setCode(code: string): SetCode {
     return {
-        type: constants.SET_SOURCEFILE,
-        sourceFile
+        type: constants.SET_CODE,
+        code
+    };
+}
+
+export interface RefreshSourceFile {
+    type: constants.REFRESH_SOURCEFILE;
+}
+
+export function refreshSourceFile(): RefreshSourceFile {
+    return {
+        type: constants.REFRESH_SOURCEFILE,
     };
 }
 
@@ -51,4 +61,4 @@ export function setOptions(options: OptionsState): SetOptions {
     };
 }
 
-export type AllActions = SetSourceFile | SetSelectedNode | SetPos | SetOptions;
+export type AllActions = SetCode | RefreshSourceFile | SetSelectedNode | SetPos | SetOptions;

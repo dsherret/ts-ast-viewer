@@ -18,7 +18,7 @@
   },
   "homepage": "http://ts-ast-viewer.com",
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "node scripts/copyLibFiles.js && react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
@@ -47,6 +47,7 @@
     "@types/node": "^8.0.47",
     "@types/react": "^16.0.18",
     "@types/react-dom": "^16.0.2",
-    "gh-pages": "^1.0.0"
+    "gh-pages": "^1.0.0",
+    "glob": "^7.1.2"
   }
 }

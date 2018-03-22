@@ -14,10 +14,14 @@ import {createSourceFile} from "./helpers";
 
 const initialScriptTarget = ts.ScriptTarget.Latest;
 const initialScriptKind = ts.ScriptKind.TSX;
-const initialSourceFile = createSourceFile("", initialScriptTarget, initialScriptKind);
+const initialCode = "";
+const {sourceFile: initialSourceFile, program, typeChecker} = createSourceFile(initialCode, initialScriptTarget, initialScriptKind);
 const store = createStore<StoreState>(appReducer, {
+    code: initialCode,
     sourceFile: initialSourceFile,
     selectedNode: initialSourceFile,
+    program,
+    typeChecker,
     options: {
         treeMode: TreeMode.getChildren,
         scriptTarget: initialScriptTarget,

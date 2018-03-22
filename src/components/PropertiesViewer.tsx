@@ -2,81 +2,136 @@
 import ts from "typescript";
 import TreeView from "react-treeview";
 import CircularJson from "circular-json";
-import {getSyntaxKindName} from "../utils";
+import {getSyntaxKindName, createHashSet} from "../utils";
 
 export interface PropertiesViewerProps {
     sourceFile: ts.SourceFile;
+    typeChecker: ts.TypeChecker;
     selectedNode: ts.Node;
 }
 
 export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
     render() {
-        const {selectedNode, sourceFile} = this.props;
+        const {selectedNode, sourceFile, typeChecker} = this.props;
         const keyValues = Object.keys(selectedNode).map(key => ({ key, value: selectedNode[key] }));
         return (
             <div className="propertiesViewer">
                 <div className="container">
                     <h2>Properties</h2>
-                    {getTreeView(selectedNode)}
+                    <div className="properties">
+                        {getTreeView(selectedNode, getSyntaxKindName(selectedNode.kind))}
+                    </div>
                     <h2>Methods</h2>
-                    <ul className="methods">
-                        <li>
-                            <span className="method">getFullStart()</span>
-                            <span className="result">{selectedNode.getFullStart()}</span>
-                        </li>
-                        <li>
-                            <span className="method">getStart()</span>
-                            <span className="result">{selectedNode.getStart(sourceFile)}</span>
-                        </li>
-                        <li>
-                            <span className="method">getWidth()</span>
-                            <span className="result">{selectedNode.getWidth(sourceFile)}</span>
-                        </li>
-                        <li>
-                            <span className="method">getFullWidth()</span>
-                            <span className="result">{selectedNode.getFullWidth()}</span>
-                        </li>
-                    </ul>
-                    <h3>getFullText()</h3>
-                    <pre>{selectedNode.getFullText(sourceFile)}</pre>
-                    <h3>getText()</h3>
-                    {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
-                    <pre>{sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd())}</pre>
+                    <div className="methods">
+                        {getMethodElement("getFullStart", selectedNode.getFullStart())}
+                        {getMethodElement("getStart", selectedNode.getStart(sourceFile))}
+                        {getMethodElement("getWidth", selectedNode.getWidth(sourceFile))}
+                        {getMethodElement("getFullWidth", selectedNode.getFullWidth())}
+                        {getMethodElement("getFullText", selectedNode.getFullText(sourceFile))}
+                        {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
+                        {getMethodElement("getText", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
+                    </div>
+                    <h2>Type</h2>
+                    <div className="type">
+                        {getForType(selectedNode, typeChecker)}
+                    </div>
+                    <h2>Symbol</h2>
+                    <div className="symbol">
+                        {getForSymbol(selectedNode, typeChecker)}
+                    </div>
+                    <h2>Signature</h2>
+                    <div className="signature">
+                        {getForSignature(selectedNode, typeChecker)}
+                    </div>
                 </div>
             </div>
         );
+
+        function getMethodElement(name: string, result: string | number) {
+            return (
+                <div className="method" key={name}>
+                    <span className="methodName">{name}():</span>
+                    <span className="methodResult">{typeof result === "string" ? JSON.stringify(result) : result}</span>
+                </div>
+            );
+        }
     }
 }
 
-function getTreeView(rootItem: any) {
-    const handledNodes: ts.Node[] = [];
-    let pastFirst = false;
-    let i = 0;
+function getForType(node: ts.Node, typeChecker: ts.TypeChecker) {
+    const type = getOrReturnError(() => typeChecker.getTypeAtLocation(node));
+    if (node.kind === ts.SyntaxKind.SourceFile)
+        return (<div>[None]</div>);
+    if (typeof type === "string")
+        return (<div>[Error getting type: {type}]</div>);
 
-    return getTreeNode(rootItem, undefined);
+    return getTreeView(type, "Type");
+}
+
+function getForSymbol(node: ts.Node, typeChecker: ts.TypeChecker) {
+    const symbol = getOrReturnError(() => node["symbol"] || typeChecker.getSymbolAtLocation(node));
+    if (symbol == null)
+        return (<div>[None]</div>);
+    if (typeof symbol === "string")
+        return (<div>[Error getting symbol: {symbol}]</div>);
+
+    return getTreeView(symbol, "Symbol");
+}
+
+function getForSignature(node: ts.Node, typeChecker: ts.TypeChecker) {
+    const signature = getOrReturnError(() => typeChecker.getSignatureFromDeclaration(node as any));
+    if (signature == null || typeof signature === "string")
+        return (<div>[None]</div>);
+
+    return getTreeView(signature, "Signature");
+}
+
+function getOrReturnError<T>(getFunc: () => T): T | string {
+    try {
+        return getFunc();
+    } catch (err) {
+        return JSON.stringify(err);
+    }
+}
+
+function getTreeView(rootItem: any, rootLabel: string) {
+    const shownObjects = createHashSet<any>();
+    let i = 0;
+    return (<TreeView nodeLabel={rootLabel} defaultCollapsed={false}>
+        {getNodeKeyValuesForObject(rootItem)}
+    </TreeView>);
 
     function getTreeNode(value: any, parent: any): JSX.Element {
         if (isTsNode(value)) {
-            if (handledNodes.indexOf(value) >= 0 || isTsNode(rootItem) && rootItem.kind !== ts.SyntaxKind.SourceFile && value.kind === ts.SyntaxKind.SourceFile)
+            if (isTsNode(rootItem) && rootItem.kind !== ts.SyntaxKind.SourceFile && value.kind === ts.SyntaxKind.SourceFile)
                 return (<div>[Circular]</div>);
-            handledNodes.push(value);
         }
 
-        const isNode = isTsNode(value);
-        const disallowedKeys = ["parent", "_children"];
-        const keyValues = Object.keys(value).filter(key => !isNode || disallowedKeys.indexOf(key) === -1).map(key => ({ key, value: value[key] }));
         const label = typeof (value as ts.Node).kind === "number" ? getSyntaxKindName((value as ts.Node).kind) : "value";
-        const isCollapsed = pastFirst;
-        pastFirst = true;
 
         return (
-            <TreeView nodeLabel={label} key={i++} defaultCollapsed={isCollapsed}>
-                {keyValues.map(kv => (getNodeValue(kv.key, kv.value, value)))}
+            <TreeView nodeLabel={label} key={i++} defaultCollapsed={true}>
+                {getNodeKeyValuesForObject(value)}
             </TreeView>
         );
     }
 
-    function getNodeValue(key: string, value: any, parent: any) {
+    function getNodeKeyValuesForObject(obj: any) {
+        if (shownObjects.has(obj))
+            return (<div>[Circular]</div>);
+        shownObjects.add(obj);
+        const keyValues = Object.keys(obj).filter(key => isAllowedKey(obj, key)).map(key => ({ key, value: obj[key] }));
+
+        const values = (
+            <div>
+                {keyValues.map(kv => (getNodeValue(kv.key, kv.value, obj)))}
+            </div>
+        );
+        shownObjects.delete(obj);
+        return values;
+    }
+
+    function getNodeValue(key: string, value: any, parent: any): JSX.Element {
         if (value === null)
             return (
                 <div className="text" key={key}>
@@ -111,6 +166,13 @@ function getTreeView(rootItem: any) {
                     <div className="value">{getTreeNode(value, parent)}</div>
                     <div className="suffix">{"}"}</div>
                 </div>);
+        else if (typeof value === "object")
+            return (
+                <div className="object" key={key}>
+                    <div className="key">{key}: {"{"}</div>
+                    <div className="value">{getNodeKeyValuesForObject(value)}</div>
+                    <div className="suffix">{"}"}</div>
+                </div>);
         else
             return (
                 <div className="text" key={key}>
@@ -126,6 +188,20 @@ function getTreeView(rootItem: any) {
     }
 }
 
+const nodeDisallowedKeys = ["parent", "_children", "symbol"];
+const typeDisallowedKeys = ["checker", "symbol"];
+function isAllowedKey(obj: any, key: string) {
+    if (isTsNode(obj))
+        return nodeDisallowedKeys.indexOf(key) === -1;
+    if (isTsType(obj))
+        return typeDisallowedKeys.indexOf(key) === -1;
+    return true;
+}
+
 function isTsNode(value: any): value is ts.Node {
     return typeof (value as ts.Node).kind === "number";
+}
+
+function isTsType(value: any): value is ts.Type {
+    return typeof (value as ts.Type).getBaseTypes != null;
 }

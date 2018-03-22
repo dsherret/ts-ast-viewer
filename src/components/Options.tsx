@@ -62,7 +62,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
         return (<Option name={name} value={selection} />)
 
         function getOption(value: any) {
-            return (<option value={value}>{prefix}.{e[value]}</option>);
+            return (<option value={value} key={value}>{prefix}.{e[value]}</option>);
         }
     }
 }
