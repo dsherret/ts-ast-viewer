@@ -139,11 +139,7 @@ h3 {
     padding-bottom: 5px;
 }
 
-.propertiesViewer .methods {
-    padding-left: 8px;
-}
-
-.propertiesViewer .methods .method {
+.propertiesViewer .node .method {
     padding-left: 9px ;
     text-indent: -9px ;
 }

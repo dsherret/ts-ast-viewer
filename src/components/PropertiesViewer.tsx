@@ -17,19 +17,18 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
         return (
             <div className="propertiesViewer">
                 <div className="container">
-                    <h2>Properties</h2>
-                    <div className="properties">
-                        {getTreeView(selectedNode, getSyntaxKindName(selectedNode.kind))}
-                    </div>
-                    <h2>Methods</h2>
-                    <div className="methods">
-                        {getMethodElement("getFullStart", selectedNode.getFullStart())}
-                        {getMethodElement("getStart", selectedNode.getStart(sourceFile))}
-                        {getMethodElement("getWidth", selectedNode.getWidth(sourceFile))}
-                        {getMethodElement("getFullWidth", selectedNode.getFullWidth())}
-                        {getMethodElement("getFullText", selectedNode.getFullText(sourceFile))}
-                        {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
-                        {getMethodElement("getText", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
+                    <h2>Node</h2>
+                    <div className="node">
+                        <TreeView nodeLabel={getSyntaxKindName(selectedNode.kind)} defaultCollapsed={false}>
+                            {getProperties(selectedNode)}
+                            {getMethodElement("getFullStart", selectedNode.getFullStart())}
+                            {getMethodElement("getStart", selectedNode.getStart(sourceFile))}
+                            {getMethodElement("getWidth", selectedNode.getWidth(sourceFile))}
+                            {getMethodElement("getFullWidth", selectedNode.getFullWidth())}
+                            {getMethodElement("getFullText", selectedNode.getFullText(sourceFile))}
+                            {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
+                            {getMethodElement("getText", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
+                        </TreeView>
                     </div>
                     <h2>Type</h2>
                     <div className="type">
@@ -65,17 +64,17 @@ function getForType(node: ts.Node, typeChecker: ts.TypeChecker) {
     if (typeof type === "string")
         return (<div>[Error getting type: {type}]</div>);
 
-    return getTreeView(type, "Type");
+    return getTreeView(type, typeChecker.typeToString(type, node) || "Type");
 }
 
 function getForSymbol(node: ts.Node, typeChecker: ts.TypeChecker) {
-    const symbol = getOrReturnError(() => node["symbol"] || typeChecker.getSymbolAtLocation(node));
+    const symbol = getOrReturnError(() => (node["symbol"] as ts.Symbol | undefined) || typeChecker.getSymbolAtLocation(node));
     if (symbol == null)
         return (<div>[None]</div>);
     if (typeof symbol === "string")
         return (<div>[Error getting symbol: {symbol}]</div>);
 
-    return getTreeView(symbol, "Symbol");
+    return getTreeView(symbol, symbol.getName() || "Symbol");
 }
 
 function getForSignature(node: ts.Node, typeChecker: ts.TypeChecker) {
@@ -95,11 +94,15 @@ function getOrReturnError<T>(getFunc: () => T): T | string {
 }
 
 function getTreeView(rootItem: any, rootLabel: string) {
+    return (<TreeView nodeLabel={rootLabel} defaultCollapsed={false}>
+        {getProperties(rootItem)}
+    </TreeView>);
+}
+
+function getProperties(rootItem: any) {
     const shownObjects = createHashSet<any>();
     let i = 0;
-    return (<TreeView nodeLabel={rootLabel} defaultCollapsed={false}>
-        {getNodeKeyValuesForObject(rootItem)}
-    </TreeView>);
+    return getNodeKeyValuesForObject(rootItem);
 
     function getTreeNode(value: any, parent: any): JSX.Element {
         if (isTsNode(value)) {
