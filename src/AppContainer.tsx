@@ -12,7 +12,7 @@ export function mapStateToProps(state: StoreState) {
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
-    const debouncedSourceFileRefresh = debounce(() => dispatch(actions.refreshSourceFile()), 100);
+    const debouncedSourceFileRefresh = debounce(() => dispatch(actions.refreshSourceFile()), 150);
     return {
         onCodeChange: (code: string) => {
             dispatch(actions.setCode(code))
