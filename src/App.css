@@ -139,6 +139,11 @@ h3 {
     padding-bottom: 5px;
 }
 
+.propertiesViewer > .container > div > :first-child:not(.tree-view) {
+    margin-top: 6px;
+    margin-left: 6px;
+}
+
 .propertiesViewer .node .method {
     padding-left: 9px ;
     text-indent: -9px ;

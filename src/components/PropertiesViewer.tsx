@@ -64,7 +64,15 @@ function getForType(node: ts.Node, typeChecker: ts.TypeChecker) {
     if (typeof type === "string")
         return (<div>[Error getting type: {type}]</div>);
 
-    return getTreeView(type, typeChecker.typeToString(type, node) || "Type");
+    return getTreeView(type, getTypeToString() || "Type");
+
+    function getTypeToString() {
+        try {
+            return typeChecker.typeToString(type as ts.Type, node);
+        } catch (err) {
+            return `[Problem getting type text: ${err}]`;
+        }
+    }
 }
 
 function getForSymbol(node: ts.Node, typeChecker: ts.TypeChecker) {
@@ -74,7 +82,15 @@ function getForSymbol(node: ts.Node, typeChecker: ts.TypeChecker) {
     if (typeof symbol === "string")
         return (<div>[Error getting symbol: {symbol}]</div>);
 
-    return getTreeView(symbol, symbol.getName() || "Symbol");
+    return getTreeView(symbol, getSymbolName() || "Symbol");
+
+    function getSymbolName() {
+        try {
+            return (symbol as ts.Symbol).getName();
+        } catch (err) {
+            return `[Problem getting symbol name: ${err}]`;
+        }
+    }
 }
 
 function getForSignature(node: ts.Node, typeChecker: ts.TypeChecker) {
