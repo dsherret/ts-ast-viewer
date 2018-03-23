@@ -126,7 +126,7 @@ function getProperties(rootItem: any) {
                 return (<div>[Circular]</div>);
         }
 
-        const label = typeof (value as ts.Node).kind === "number" ? getSyntaxKindName((value as ts.Node).kind) : "value";
+        const label = typeof (value as ts.Node).kind === "number" ? getSyntaxKindName((value as ts.Node).kind) : "Object";
 
         return (
             <TreeView nodeLabel={label} key={i++} defaultCollapsed={true}>
