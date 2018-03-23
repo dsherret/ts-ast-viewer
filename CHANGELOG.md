@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.7.0...v0.8.0) (2018-03-23)
+
+
+### Bug Fixes
+
+* Fix bug where all properties weren't shown. ([6327abe](https://github.com/dsherret/ts-ast-viewer/commit/6327abe))
+* Sometimes typeToString will throw an error, so fail silently when that happens. ([6609ea9](https://github.com/dsherret/ts-ast-viewer/commit/6609ea9))
+
+
+### Features
+
+* Add Type, Symbol and Signature of selected node. ([7ca04f3](https://github.com/dsherret/ts-ast-viewer/commit/7ca04f3))
+
+
+
 <a name="0.7.1"></a>
 ## [0.7.1](https://github.com/dsherret/ts-ast-viewer/compare/v0.7.0...v0.7.1) (2018-03-21)
 
