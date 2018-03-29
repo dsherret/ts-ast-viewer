@@ -27,10 +27,10 @@
   },
   "dependencies": {
     "@types/circular-json": "^0.4.0",
+    "@types/inline-style-prefixer": "^3.0.1",
     "@types/react-redux": "^5.0.11",
     "@types/react-split-pane": "^0.1.10",
     "@types/react-treeview": "^0.4.0",
-    "@types/inline-style-prefixer": "^3.0.1",
     "circular-json": "^0.4.0",
     "react": "^16.0.0",
     "react-ace": "^5.4.0",
@@ -40,7 +40,7 @@
     "react-split-pane": "^0.1.68",
     "react-treeview": "^0.4.7",
     "redux": "^3.7.2",
-    "typescript": "^2.7.1"
+    "typescript": "^2.8.1"
   },
   "devDependencies": {
     "@types/jest": "^21.1.5",
@@ -48,6 +48,7 @@
     "@types/react": "^16.0.18",
     "@types/react-dom": "^16.0.2",
     "gh-pages": "^1.0.0",
-    "glob": "^7.1.2"
+    "glob": "^7.1.2",
+    "tslint-react": "^3.5.1"
   }
 }
