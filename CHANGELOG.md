@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.8.2...v0.9.0) (2018-03-30)
+
+
+### Features
+
+* Add more methods to Node. ([e043784](https://github.com/dsherret/ts-ast-viewer/commit/e043784))
+
+
+
 <a name="0.8.2"></a>
 ## [0.8.2](https://github.com/dsherret/ts-ast-viewer/compare/v0.8.1...v0.8.2) (2018-03-29)
 
