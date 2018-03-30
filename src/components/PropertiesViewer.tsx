@@ -21,13 +21,16 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
                     <div className="node">
                         <TreeView nodeLabel={getSyntaxKindName(selectedNode.kind)} defaultCollapsed={false}>
                             {getProperties(selectedNode)}
-                            {getMethodElement("getFullStart", selectedNode.getFullStart())}
-                            {getMethodElement("getStart", selectedNode.getStart(sourceFile))}
-                            {getMethodElement("getWidth", selectedNode.getWidth(sourceFile))}
-                            {getMethodElement("getFullWidth", selectedNode.getFullWidth())}
-                            {getMethodElement("getFullText", selectedNode.getFullText(sourceFile))}
+                            {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
+                            {getMethodElement("getFullStart()", selectedNode.getFullStart())}
+                            {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
+                            {getMethodElement("getStart(sourceFile, true)", selectedNode.getStart(sourceFile, true))}
+                            {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
+                            {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
+                            {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
+                            {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
                             {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
-                            {getMethodElement("getText", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
+                            {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
                         </TreeView>
                     </div>
                     <h2>Type</h2>
@@ -49,7 +52,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
         function getMethodElement(name: string, result: string | number) {
             return (
                 <div className="method" key={name}>
-                    <span className="methodName">{name}():</span>
+                    <span className="methodName">{name}:</span>
                     <span className="methodResult">{typeof result === "string" ? JSON.stringify(result) : result}</span>
                 </div>
             );

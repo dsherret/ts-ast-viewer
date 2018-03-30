@@ -149,6 +149,10 @@ h3 {
     text-indent: -9px ;
 }
 
+.propertiesViewer .node .method > .methodName {
+    margin-right: 2px;
+}
+
 .propertiesViewer .text .key {
     display: inline-block;
     margin-right: 2px;
