@@ -13,15 +13,11 @@
     color: #fff;
 }
 
-.App-header {
+.AppHeader {
     background-color: #222;
     color: white;
     padding: 10px;
     width: 100%;
-}
-
-.App-intro {
-    font-size: large;
 }
 
 h2 {
@@ -44,6 +40,26 @@ h3 {
     content: "";
     clear: both;
     display: table;
+}
+
+.verticallyCenter {
+    display: flex;
+    align-items: center;
+}
+
+.horizontallyCenter > div {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.fillHeight {
+    height: 100%;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 1.5em;
 }
 
 /* Options */

@@ -1,10 +1,11 @@
 import React from "react";
-import * as ts from "typescript";
-import {OptionsState, TreeMode} from "../types";
+import { CompilerApi, ScriptKind, ScriptTarget, compilerVersionCollection, compilerPackageNames } from "../compiler";
+import { OptionsState, TreeMode } from "../types";
 
 export interface OptionsProps {
+    api: CompilerApi | undefined;
     options: OptionsState;
-    onChange: (options: OptionsState) => void;
+    onChange: (options: Partial<OptionsState>) => void;
 }
 
 export class Options extends React.Component<OptionsProps, { showOptionsMenu: boolean; }> {
@@ -22,6 +23,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                 </div>
                 <div className="menuLine" hidden={!this.state.showOptionsMenu}></div>
                 <div className="menu" hidden={!this.state.showOptionsMenu}>
+                    {this.getCompilerVersions()}
                     {this.getTreeMode()}
                     {this.getScriptKind()}
                     {this.getScriptTarget()}
@@ -30,10 +32,19 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
         );
     }
 
+    private getCompilerVersions() {
+        const selection = (
+            <select value={this.props.options.compilerPackageName}
+                onChange={event => this.onChange({ compilerPackageName: event.target.value as compilerPackageNames })}>
+                {compilerVersionCollection.map(v => (<option value={v.packageName} key={v.packageName}>{v.version}</option>))}
+            </select>
+        );
+        return (<Option name="Compiler" value={selection} />)
+    }
+
     private getTreeMode() {
         const selection = (
-            <select value={this.props.options.treeMode} onChange={(event) =>
-                this.props.onChange({ ...this.props.options, treeMode: parseInt(event.target.value, 10) as TreeMode })}>
+            <select value={this.props.options.treeMode} onChange={event => this.onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}>
                 <option value={TreeMode.getChildren}>node.getChildren()</option>
                 <option value={TreeMode.forEachChild}>ts.forEachKind(node, child => ...)</option>
             </select>
@@ -42,13 +53,19 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
     }
 
     private getScriptKind() {
-        return this.getEnumOption("Script kind", "ts.ScriptKind", ts.ScriptKind, this.props.options.scriptKind,
-            value => this.props.onChange({ ...this.props.options, scriptKind: value as ts.ScriptKind }));
+        const { api } = this.props;
+        if (api == null)
+            return undefined;
+        return this.getEnumOption("Script kind", "ts.ScriptKind", api.ScriptKind, this.props.options.scriptKind,
+            value => this.onChange({ scriptKind: value as ScriptKind }));
     }
 
     private getScriptTarget() {
-        return this.getEnumOption("Script target", "ts.ScriptTarget", ts.ScriptTarget, this.props.options.scriptTarget,
-            value => this.props.onChange({ ...this.props.options, scriptTarget: value as ts.ScriptTarget }));
+        const { api } = this.props;
+        if (api == null)
+            return undefined;
+        return this.getEnumOption("Script target", "ts.ScriptTarget", api.ScriptTarget, this.props.options.scriptTarget,
+            value => this.onChange({ scriptTarget: value as ScriptTarget }));
     }
 
     private getEnumOption(name: string, prefix: string, e: any, currentValue: number, onChange: (value: number) => void) {
@@ -64,6 +81,10 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
         function getOption(value: any) {
             return (<option value={value} key={value}>{prefix}.{e[value]}</option>);
         }
+    }
+
+    private onChange(options: Partial<OptionsState>) {
+        this.props.onChange({ ...options });
     }
 }
 

@@ -18,12 +18,15 @@
   },
   "homepage": "http://ts-ast-viewer.com",
   "scripts": {
-    "start": "node scripts/copyLibFiles.js && react-scripts-ts start",
+    "start": "yarn run copyLibFiles && yarn run createCompilerVersions && react-scripts-ts start",
     "build": "react-scripts-ts build",
+    "lint": "tslint src/**/*.ts",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "predeploy": "npm run build",
-    "deploy": "npm run build && gh-pages -d build"
+    "deploy": "npm run build && gh-pages -d build",
+    "copyLibFiles": "ts-node --project tsconfig.scripts.json scripts/copyLibFiles.ts ",
+    "createCompilerVersions": "ts-node --project tsconfig.scripts.json scripts/createCompilerVersions.ts"
   },
   "dependencies": {
     "@types/circular-json": "^0.4.0",
@@ -37,10 +40,15 @@
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.8.0",
+    "react-spinners": "^0.3.2",
     "react-split-pane": "^0.1.68",
     "react-treeview": "^0.4.7",
     "redux": "^3.7.2",
-    "typescript": "^2.8.1"
+    "typescript": "^2.8.1",
+    "typescript-2.4.2": "npm:typescript@2.4.2",
+    "typescript-2.5.3": "npm:typescript@2.5.3",
+    "typescript-2.6.2": "npm:typescript@2.6.2",
+    "typescript-2.7.2": "npm:typescript@2.7.2"
   },
   "devDependencies": {
     "@types/jest": "^21.1.5",
@@ -49,6 +57,9 @@
     "@types/react-dom": "^16.0.2",
     "gh-pages": "^1.0.0",
     "glob": "^7.1.2",
+    "ts-jest": "^22.4.2",
+    "ts-node": "^5.0.1",
+    "ts-simple-ast": "^10.3.0",
     "tslint-react": "^3.5.1"
   }
 }

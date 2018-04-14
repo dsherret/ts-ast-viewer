@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "outDir": "build/scripts-dist",
+        "module": "commonjs",
+        "target": "es5",
+        "lib": [ "es6", "dom" ],
+        "sourceMap": true,
+        "allowJs": true,
+        "moduleResolution": "node",
+        "rootDir": "scripts",
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "exclude": [
+        "node_modules",
+        "build",
+        "acceptance-tests",
+        "webpack",
+        "jest"
+    ]
+}

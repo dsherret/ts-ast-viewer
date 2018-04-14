@@ -1,21 +1,24 @@
-import * as ts from "typescript";
+import { CompilerApi, SyntaxKind } from "../compiler";
 
-export function getSyntaxKindName(kind: ts.SyntaxKind) {
-    return getKindCache()[kind];
+export function getSyntaxKindName(api: CompilerApi, kind: SyntaxKind) {
+    return getKindCacheForApi(api)[kind];
 }
 
-let kindCache: { [kind: number]: string; } | undefined = undefined;
+const kindCache: { [packageName: string]: { [kind: number]: string; } } = {};
 
-function getKindCache() {
-    if (kindCache != null)
-        return kindCache;
-    kindCache = {};
+function getKindCacheForApi(api: CompilerApi) {
+    if (kindCache[api.tsAstViewer.packageName] == null)
+        kindCache[api.tsAstViewer.packageName] = getKindNamesForApi(api);
+    return kindCache[api.tsAstViewer.packageName];
+}
 
+function getKindNamesForApi(api: CompilerApi) {
     // some SyntaxKinds are repeated, so only use the first one
-    for (const name of Object.keys(ts.SyntaxKind).filter(k => isNaN(parseInt(k, 10)))) {
-        const value = (ts.SyntaxKind as any)[name] as number;
-        if (kindCache[value] == null)
-            kindCache[value] = name;
+    const kindNames: { [kind: number]: string; } = {};
+    for (const name of Object.keys(api.SyntaxKind).filter(k => isNaN(parseInt(k, 10)))) {
+        const value = (api.SyntaxKind as any)[name] as number;
+        if (kindNames[value] == null)
+            kindNames[value] = name;
     }
-    return kindCache;
+    return kindNames;
 }

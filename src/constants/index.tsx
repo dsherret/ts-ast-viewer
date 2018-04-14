@@ -2,6 +2,9 @@
 export const SET_CODE = "SET_CODE";
 export type SET_CODE = typeof SET_CODE;
 
+export const SET_API_LOADING_STATE = "SET_API_LOADING_STATE";
+export type SET_API_LOADING_STATE = typeof SET_API_LOADING_STATE;
+
 export const REFRESH_SOURCEFILE = "REFRESH_SOURCEFILE";
 export type REFRESH_SOURCEFILE = typeof REFRESH_SOURCEFILE;
 

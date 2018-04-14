@@ -1,22 +1,35 @@
 ﻿/* barrel:ignore */
-import ts from "typescript";
+import { CompilerApi, Program, TypeChecker, SourceFile, Node, ScriptTarget, ScriptKind, compilerPackageNames } from "../compiler";
 
 export interface StoreState {
     code: string;
-    program: ts.Program;
-    typeChecker: ts.TypeChecker;
-    sourceFile: ts.SourceFile;
-    selectedNode: ts.Node;
     options: OptionsState;
+    apiLoadingState: ApiLoadingState;
+    compiler: CompilerState | undefined;
+}
+
+export interface CompilerState {
+    api: CompilerApi;
+    program: Program;
+    typeChecker: TypeChecker;
+    sourceFile: SourceFile;
+    selectedNode: Node;
 }
 
 export interface OptionsState {
+    compilerPackageName: compilerPackageNames;
     treeMode: TreeMode;
-    scriptTarget: ts.ScriptTarget;
-    scriptKind: ts.ScriptKind;
+    scriptTarget: ScriptTarget;
+    scriptKind: ScriptKind;
 }
 
 export enum TreeMode {
     getChildren,
     forEachChild
+}
+
+export enum ApiLoadingState {
+    Loading,
+    Loaded,
+    Error
 }

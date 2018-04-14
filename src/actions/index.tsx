@@ -1,7 +1,7 @@
 ﻿/* barrel:ignore */
-import ts from "typescript";
+import { Node, CompilerApi } from "../compiler";
 import * as constants from "../constants";
-import {OptionsState} from "../types";
+import { OptionsState, ApiLoadingState } from "../types";
 
 export interface SetCode {
     type: constants.SET_CODE;
@@ -15,22 +15,36 @@ export function setCode(code: string): SetCode {
     };
 }
 
-export interface RefreshSourceFile {
-    type: constants.REFRESH_SOURCEFILE;
+export interface SetApiLoadingState {
+    type: constants.SET_API_LOADING_STATE;
+    loadingState: ApiLoadingState;
 }
 
-export function refreshSourceFile(): RefreshSourceFile {
+export function setApiLoadingState(loadingState: ApiLoadingState): SetApiLoadingState {
+    return {
+        type: constants.SET_API_LOADING_STATE,
+        loadingState
+    };
+}
+
+export interface RefreshSourceFile {
+    type: constants.REFRESH_SOURCEFILE;
+    api: CompilerApi;
+}
+
+export function refreshSourceFile(api: CompilerApi): RefreshSourceFile {
     return {
         type: constants.REFRESH_SOURCEFILE,
+        api
     };
 }
 
 export interface SetSelectedNode {
     type: constants.SET_SELECTED_NODE;
-    node: ts.Node;
+    node: Node;
 }
 
-export function setSelectedNode(node: ts.Node): SetSelectedNode {
+export function setSelectedNode(node: Node): SetSelectedNode {
     return {
         type: constants.SET_SELECTED_NODE,
         node
@@ -51,14 +65,14 @@ export function setPos(pos: number): SetPos {
 
 export interface SetOptions {
     type: constants.SET_OPTIONS;
-    options: OptionsState;
+    options: Partial<OptionsState>;
 }
 
-export function setOptions(options: OptionsState): SetOptions {
+export function setOptions(options: Partial<OptionsState>): SetOptions {
     return {
         type: constants.SET_OPTIONS,
         options
     };
 }
 
-export type AllActions = SetCode | RefreshSourceFile | SetSelectedNode | SetPos | SetOptions;
+export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetPos | SetOptions;
