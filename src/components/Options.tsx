@@ -39,7 +39,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                 {compilerVersionCollection.map(v => (<option value={v.packageName} key={v.packageName}>{v.version}</option>))}
             </select>
         );
-        return (<Option name="Compiler" value={selection} />)
+        return (<Option name="Version" value={selection} />)
     }
 
     private getTreeMode() {
