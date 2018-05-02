@@ -1,4 +1,4 @@
 ﻿TypeScript AST Viewer
 =====================
 
-Source code for http://ts-ast-viewer.com
+Source code for https://ts-ast-viewer.com
