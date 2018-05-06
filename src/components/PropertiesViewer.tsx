@@ -1,8 +1,8 @@
 ﻿import React from "react";
 import { TypeChecker, Node, SourceFile, Symbol, Type, CompilerApi } from "../compiler";
-import TreeView from "react-treeview";
 import CircularJson from "circular-json";
 import { getSyntaxKindName, createHashSet } from "../utils";
+import { LazyTreeView } from "./LazyTreeView";
 
 export interface PropertiesViewerProps {
     api: CompilerApi;
@@ -20,19 +20,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
                 <div className="container">
                     <h2>Node</h2>
                     <div className="node">
-                        <TreeView nodeLabel={getSyntaxKindName(api, selectedNode.kind)} defaultCollapsed={false}>
-                            {getProperties(api, selectedNode)}
-                            {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
-                            {getMethodElement("getFullStart()", selectedNode.getFullStart())}
-                            {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
-                            {getMethodElement("getStart(sourceFile, true)", selectedNode.getStart(sourceFile, true))}
-                            {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
-                            {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
-                            {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
-                            {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
-                            {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
-                            {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
-                        </TreeView>
+                        {getForNode(api, selectedNode, sourceFile)}
                     </div>
                     <h2>Type</h2>
                     <div className="type">
@@ -49,15 +37,35 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
                 </div>
             </div>
         );
+    }
+}
 
-        function getMethodElement(name: string, result: string | number) {
-            return (
-                <div className="method" key={name}>
-                    <span className="methodName">{name}:</span>
-                    <span className="methodResult">{typeof result === "string" ? JSON.stringify(result) : result}</span>
-                </div>
-            );
-        }
+function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile) {
+    return (<LazyTreeView nodeLabel={getSyntaxKindName(api, selectedNode.kind)} defaultCollapsed={false} getChildren={getChildren} />);
+
+    function getChildren() {
+        return (<>
+            {getProperties(api, selectedNode)}
+            {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
+            {getMethodElement("getFullStart()", selectedNode.getFullStart())}
+            {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
+            {getMethodElement("getStart(sourceFile, true)", selectedNode.getStart(sourceFile, true))}
+            {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
+            {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
+            {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
+            {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
+            {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
+            {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
+        </>);
+    }
+
+    function getMethodElement(name: string, result: string | number) {
+        return (
+            <div className="method" key={name}>
+                <span className="methodName">{name}:</span>
+                <span className="methodResult">{typeof result === "string" ? JSON.stringify(result) : result}</span>
+            </div>
+        );
     }
 }
 
@@ -114,35 +122,22 @@ function getOrReturnError<T>(getFunc: () => T): T | string {
 }
 
 function getTreeView(api: CompilerApi, rootItem: any, rootLabel: string) {
-    return (<TreeView nodeLabel={rootLabel} defaultCollapsed={false}>
-        {getProperties(api, rootItem)}
-    </TreeView>);
+    return (<LazyTreeView nodeLabel={rootLabel} defaultCollapsed={false} getChildren={() => getProperties(api, rootItem)} />);
 }
 
 function getProperties(api: CompilerApi, rootItem: any) {
-    const shownObjects = createHashSet<any>();
     let i = 0;
     return getNodeKeyValuesForObject(rootItem);
 
     function getTreeNode(value: any, parent: any): JSX.Element {
-        if (isTsNode(value)) {
-            if (isTsNode(rootItem) && rootItem.kind !== api.SyntaxKind.SourceFile && value.kind === api.SyntaxKind.SourceFile)
-                return (<div>[Circular]</div>);
-        }
-
         const label = isTsNode(value) ? getSyntaxKindName(api, value.kind) : "Object";
 
         return (
-            <TreeView nodeLabel={label} key={i++} defaultCollapsed={true}>
-                {getNodeKeyValuesForObject(value)}
-            </TreeView>
+            <LazyTreeView nodeLabel={label} key={i++} defaultCollapsed={true} getChildren={() => getNodeKeyValuesForObject(value)} />
         );
     }
 
     function getNodeKeyValuesForObject(obj: any) {
-        if (shownObjects.has(obj))
-            return (<div>[Circular]</div>);
-        shownObjects.add(obj);
         const keyValues = Object.keys(obj).filter(key => isAllowedKey(obj, key)).map(key => ({ key, value: obj[key] }));
 
         const values = (
@@ -150,7 +145,6 @@ function getProperties(api: CompilerApi, rootItem: any) {
                 {keyValues.map(kv => (getNodeValue(kv.key, kv.value, obj)))}
             </div>
         );
-        shownObjects.delete(obj);
         return values;
     }
 
