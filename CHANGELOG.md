@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.10.0...v0.11.0) (2018-05-06)
+
+
+### Bug Fixes
+
+* [#19](https://github.com/dsherret/ts-ast-viewer/issues/19) - Fix the app freezing when loading a large symbol. ([76d5384](https://github.com/dsherret/ts-ast-viewer/commit/76d5384))
+
+
+### Features
+
+* Update to https now that github supports it on custom domains. ([8272da3](https://github.com/dsherret/ts-ast-viewer/commit/8272da3))
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.9.0...v0.10.0) (2018-04-14)
 
