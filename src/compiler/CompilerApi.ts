@@ -18,6 +18,7 @@ export interface CompilerApi {
 
 export type Node = ts.Node;
 export type Type = ts.Type;
+export type Signature = ts.Signature;
 export type SourceFile = ts.SourceFile;
 export type Symbol = ts.Symbol;
 export type Program = ts.Program;

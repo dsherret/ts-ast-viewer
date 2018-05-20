@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import { TypeChecker, Node, SourceFile, Symbol, Type, CompilerApi } from "../compiler";
+import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, CompilerApi } from "../compiler";
 import CircularJson from "circular-json";
 import { getSyntaxKindName, createHashSet } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
@@ -129,16 +129,14 @@ function getProperties(api: CompilerApi, rootItem: any) {
     let i = 0;
     return getNodeKeyValuesForObject(rootItem);
 
-    function getTreeNode(value: any, parent: any): JSX.Element {
-        const label = isTsNode(value) ? getSyntaxKindName(api, value.kind) : "Object";
-
+    function getTreeNode(value: any): JSX.Element {
         return (
-            <LazyTreeView nodeLabel={label} key={i++} defaultCollapsed={true} getChildren={() => getNodeKeyValuesForObject(value)} />
+            <LazyTreeView nodeLabel={getLabelName(value)} key={i++} defaultCollapsed={true} getChildren={() => getNodeKeyValuesForObject(value)} />
         );
     }
 
     function getNodeKeyValuesForObject(obj: any) {
-        const keyValues = Object.keys(obj).filter(key => isAllowedKey(obj, key)).map(key => ({ key, value: obj[key] }));
+        const keyValues = getObjectKeys(obj).map(key => ({ key, value: obj[key] }));
 
         const values = (
             <div>
@@ -172,7 +170,7 @@ function getProperties(api: CompilerApi, rootItem: any) {
                 return (
                     <div className="array" key={key}>
                         <div className="key">{key}: [</div>
-                        <div className="value">{value.map(v => getTreeNode(v, value))}</div>
+                        <div className="value">{value.map(v => getTreeNode(v))}</div>
                         <div className="suffix">]</div>
                     </div>);
         }
@@ -180,16 +178,24 @@ function getProperties(api: CompilerApi, rootItem: any) {
             return (
                 <div className="object" key={key}>
                     <div className="key">{key}: {"{"}</div>
-                    <div className="value">{getTreeNode(value, parent)}</div>
+                    <div className="value">{getTreeNode(value)}</div>
                     <div className="suffix">{"}"}</div>
                 </div>);
-        else if (typeof value === "object")
-            return (
-                <div className="object" key={key}>
-                    <div className="key">{key}: {"{"}</div>
-                    <div className="value">{getNodeKeyValuesForObject(value)}</div>
-                    <div className="suffix">{"}"}</div>
-                </div>);
+        else if (typeof value === "object") {
+            if (getObjectKeys(value).length === 0)
+                return (
+                    <div className="text" key={key}>
+                        <div className="key">{key}:</div>
+                        <div className="value">{"{}"}</div>
+                    </div>);
+            else
+                return (
+                    <div className="object" key={key}>
+                        <div className="key">{key}: {"{"}</div>
+                        <div className="value">{getTreeNode(value)}</div>
+                        <div className="suffix">{"}"}</div>
+                    </div>);
+        }
         else
             return (
                 <div className="text" key={key}>
@@ -201,6 +207,30 @@ function getProperties(api: CompilerApi, rootItem: any) {
             if (isTsNode(parent) && key === "kind")
                 return `${value} (SyntaxKind.${getSyntaxKindName(api, value)})`;
             return CircularJson.stringify(value);
+        }
+    }
+
+    function getObjectKeys(obj: any) {
+        return Object.keys(obj).filter(key => isAllowedKey(obj, key));
+    }
+
+    function getLabelName(obj: any) {
+        if (isTsNode(obj))
+            return getSyntaxKindName(api, obj.kind);
+        if (typeof obj.getName === "function" && getName() === "string")
+            return getName();
+        if (isTsSignature(obj))
+            return "Signature";
+        if (isTsType(obj))
+            return "Type";
+        return "Object";
+
+        function getName() {
+            try {
+                return obj.getName();
+            } catch {
+                return undefined;
+            }
         }
     }
 }
@@ -221,4 +251,10 @@ function isTsNode(value: any): value is Node {
 
 function isTsType(value: any): value is Type {
     return typeof (value as Type).getBaseTypes != null;
+}
+
+function isTsSignature(value: any): value is Signature {
+    if (value.declaration == null)
+        return false;
+    return isTsNode(value.declaration);
 }
