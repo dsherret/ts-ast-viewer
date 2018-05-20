@@ -217,17 +217,22 @@ function getProperties(api: CompilerApi, rootItem: any) {
     function getLabelName(obj: any) {
         if (isTsNode(obj))
             return getSyntaxKindName(api, obj.kind);
-        if (typeof obj.getName === "function" && getName() === "string")
-            return getName();
         if (isTsSignature(obj))
-            return "Signature";
+            return appendName("Signature");
         if (isTsType(obj))
-            return "Type";
-        return "Object";
+            return appendName("Type");
+        return appendName("Object");
+
+        function appendName(title: string) {
+            const name = getName();
+            return name == null ? title : title + ` (${name})`;
+        }
 
         function getName() {
             try {
-                return obj.getName();
+                if (typeof obj.getName === "function")
+                    return obj.getName();
+                return undefined;
             } catch {
                 return undefined;
             }
