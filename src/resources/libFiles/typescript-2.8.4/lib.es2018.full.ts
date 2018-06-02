@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.esnext.full.d.ts`,
+    fileName: `/lib.es2018.full.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,10 +21,9 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference path="lib.es2018.d.ts" />
-/// <reference path="lib.esnext.asynciterable.d.ts" />
-/// <reference path="lib.esnext.array.d.ts" />
-
+/// <reference path="lib.es2017.d.ts" />
+/// <reference path="lib.es2018.promise.d.ts" />
+/// <reference path="lib.es2018.regexp.d.ts" />
 
 /////////////////////////////
 /// DOM APIs
@@ -16306,11 +16305,6 @@ declare var WScript: {
      */
     Sleep(intTime: number): void;
 };
-
-/**
- * WSH is an alias for WScript under Windows Script Host
- */
-declare var WSH: typeof WScript;
 
 /**
  * Represents an Automation SAFEARRAY

@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.es2017.intl.d.ts`,
+    fileName: `/lib.es2017.typedarrays.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,17 +21,40 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-declare namespace Intl {
-    type DateTimeFormatPartTypes = "day" | "dayPeriod" | "era" | "hour" | "literal" | "minute" | "month" | "second" | "timeZoneName" | "weekday" | "year";
+interface Int8ArrayConstructor {
+    new (): Int8Array;
+}
 
-    interface DateTimeFormatPart {
-        type: DateTimeFormatPartTypes;
-        value: string;
-    }
+interface Uint8ArrayConstructor {
+    new (): Uint8Array;
+}
 
-    interface DateTimeFormat {
-        formatToParts(date?: Date | number): DateTimeFormatPart[];
-    }
+interface Uint8ClampedArrayConstructor {
+    new (): Uint8ClampedArray;
+}
+
+interface Int16ArrayConstructor {
+    new (): Int16Array;
+}
+
+interface Uint16ArrayConstructor {
+    new (): Uint16Array;
+}
+
+interface Int32ArrayConstructor {
+    new (): Int32Array;
+}
+
+interface Uint32ArrayConstructor {
+    new (): Uint32Array;
+}
+
+interface Float32ArrayConstructor {
+    new (): Float32Array;
+}
+
+interface Float64ArrayConstructor {
+    new (): Float64Array;
 }
 `
 };

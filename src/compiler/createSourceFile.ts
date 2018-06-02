@@ -44,6 +44,7 @@ function getExtension(api: CompilerApi, scriptKind: ScriptKind) {
         case api.ScriptKind.JSON:
             return ".json";
         case api.ScriptKind.External:
+        case api.ScriptKind.Deferred:
         case api.ScriptKind.Unknown:
             return "";
         default:
