@@ -1,10 +1,5 @@
 ﻿import React from "react";
-import brace from "brace";
-import AceEditor from "react-ace";
-import "brace/mode/typescript";
-import "brace/theme/monokai";
-
-const AceEditorExtended: any = AceEditor;
+import MonacoEditor from "react-monaco-editor";
 
 export interface CodeEditorProps {
     onChange: (text: string) => void;
@@ -16,16 +11,14 @@ export class CodeEditor extends React.Component<CodeEditorProps> {
     render() {
         return (
             <div className="codeEditor">
-                <AceEditorExtended
-                    mode="typescript"
-                    theme="monokai"
-                    setOptions={{ tabSize: 4, useSoftTabs: true }}
-                    onChange={(text: string) => this.props.onChange(text)}
+                <MonacoEditor
                     width="100%"
                     height="100%"
                     value={this.props.text}
-                    showPrintMargin={false} />
-                {/*<textarea onChange={event => onChange(event.target.value)} onClick={event => onClick(event.currentTarget.selectionStart)}></textarea>*/}
+                    theme="vs-dark"
+                    language="typescript"
+                    onChange={(text) => this.props.onChange(text)}
+                    options={{ automaticLayout: true, renderWhitespace: "all" }} />
             </div>
         );
     }

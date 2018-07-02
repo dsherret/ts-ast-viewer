@@ -31,8 +31,8 @@
   "dependencies": {
     "circular-json": "^0.4.0",
     "react": "^16.0.0",
-    "react-ace": "^5.4.0",
     "react-dom": "^16.0.0",
+    "react-monaco-editor": "^0.17.2",
     "react-redux": "^5.0.7",
     "react-scripts-ts": "2.8.0",
     "react-spinners": "^0.3.2",
