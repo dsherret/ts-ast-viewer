@@ -1,9 +1,9 @@
 /* Automatically maintained from package.json. Do not edit! */
-export type compilerVersions = "2.9.1" | "2.8.4" | "2.7.2" | "2.6.2" | "2.5.3" | "2.4.2";
+export type compilerVersions = "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2" | "2.5.3" | "2.4.2";
 export type compilerPackageNames = "typescript" | "typescript-2.8.4" | "typescript-2.7.2" | "typescript-2.6.2" | "typescript-2.5.3" | "typescript-2.4.2";
 
 export const compilerVersionCollection: { version: compilerVersions; packageName: compilerPackageNames; }[] = [
-    { version: "2.9.1", packageName: "typescript" },
+    { version: "2.9.2", packageName: "typescript" },
     { version: "2.8.4", packageName: "typescript-2.8.4" },
     { version: "2.7.2", packageName: "typescript-2.7.2" },
     { version: "2.6.2", packageName: "typescript-2.6.2" },
