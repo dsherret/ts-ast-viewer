@@ -133,6 +133,18 @@ a,a:visited {
 .codeEditor {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.codeEditor .editorContainer {
+    flex: 1;
+}
+
+.codeEditor .editorInfo {
+    background-color: #007acc;
+    padding: 2px 4px;
+    width: 100%;
 }
 
 /* Tree Viewer */
