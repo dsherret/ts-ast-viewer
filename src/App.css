@@ -32,6 +32,10 @@ h3 {
     padding: 0;
 }
 
+a,a:visited {
+    color: #fff;
+}
+
 #title {
     float: left;
 }
@@ -116,6 +120,12 @@ h3 {
     margin-top: -1px;
     z-index: 101;
     margin-left: 1px;
+}
+
+.options .githubLink {
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 8px;
 }
 
 /* Code Editor */

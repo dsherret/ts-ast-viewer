@@ -27,6 +27,9 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     {this.getTreeMode()}
                     {this.getScriptKind()}
                     {this.getScriptTarget()}
+                    <div className="githubLink">
+                        <a href="https://github.com/dsherret/ts-ast-viewer" target="_blank">View on GitHub</a>
+                    </div>
                 </div>
             </div>
         );
