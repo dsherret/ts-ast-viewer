@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.12.0...v0.13.0) (2018-07-02)
+
+
+### Bug Fixes
+
+* Fix spacing of nodes after an endNode in the tree view. ([89fd22d](https://github.com/dsherret/ts-ast-viewer/commit/89fd22d))
+
+
+### Features
+
+* [#1](https://github.com/dsherret/ts-ast-viewer/issues/1) - Add position of cursor. ([438d43e](https://github.com/dsherret/ts-ast-viewer/commit/438d43e))
+* [#16](https://github.com/dsherret/ts-ast-viewer/issues/16) - Add a link to the github page. ([64b4e42](https://github.com/dsherret/ts-ast-viewer/commit/64b4e42))
+* Use monaco-editor for better typescript support. ([68ad2c7](https://github.com/dsherret/ts-ast-viewer/commit/68ad2c7))
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.11.1...v0.12.0) (2018-06-02)
 

@@ -1,6 +1,6 @@
 {
   "name": "ts-ast-viewer",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -23,8 +23,8 @@
     "lint": "tslint src/**/*.ts",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "predeploy": "yarn run build",
-    "deploy": "yarn run build && gh-pages -d build",
+    "predeploy": "yarn run build --max-old-space-size=4096",
+    "deploy": "yarn run predeploy && gh-pages -d build",
     "copyLibFiles": "ts-node --project tsconfig.scripts.json scripts/copyLibFiles.ts ",
     "createCompilerVersions": "ts-node --project tsconfig.scripts.json scripts/createCompilerVersions.ts"
   },
