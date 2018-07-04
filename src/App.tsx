@@ -1,6 +1,5 @@
 import React from "react";
 import SplitPane from "react-split-pane";
-import { BeatLoader } from "react-spinners";
 import * as components from "./components";
 import { Node, compilerPackageNames } from "./compiler";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
@@ -39,7 +38,7 @@ export default function App(props: Props) {
 
     function getCompilerDependentPanes() {
         if (compiler == null || props.apiLoadingState === ApiLoadingState.Loading)
-            return <div className={"verticallyCenter horizontallyCenter fillHeight"}><BeatLoader color={'#fff'} loading={true} size={25} /></div>;
+            return <components.Spinner />
         else if (props.apiLoadingState === ApiLoadingState.Error)
             return <div className={"errorMessage"}>Error loading compiler API. Please refresh the page to try again.</div>;
 

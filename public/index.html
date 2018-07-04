@@ -14,20 +14,19 @@
         gtag('js', new Date());
         gtag('config', 'UA-55630862-2');
     </script>
-    <!-- monaco editor setup (https://medium.com/@haugboelle/short-guide-to-using-monaco-with-create-react-app-26a1acad8ebe) -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.13.1/min/vs/loader.js"></script>
+    <!-- monaco editor setup -->
+    <script src="%PUBLIC_URL%/vs/loader.js"></script>
     <script>
-        require.config({
-            paths: {
-                "vs": "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.13.1/min/vs"
-            }
-        });
-        window.MonacoEnvironment = {
-            getWorkerUrl: function (workerId, label) {
-                return "/monaco-editor-worker-loader-proxy.js";
-            }
-        };
-        require(["vs/editor/editor.main"], function () {});
+      require.config({
+        paths: {
+          "vs": "vs"
+        }
+      });
+      window.MonacoEnvironment = {
+        getWorkerUrl: function (workerId, label) {
+          return "vs/base/worker/workerMain.js";
+        }
+      };
     </script>
     <!-- end monaco editor setup -->
 
