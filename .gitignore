@@ -32,3 +32,4 @@ yarn-error.log*
 /.vs
 /dist
 /.rnd
+/e2e/node_modules

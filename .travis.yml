@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - 9
+cache:
+  directories:
+    - ~/.npm
+    - ~/e2e/.npm
+    - ~/.cache
+    - ~/e2e/.cache
+install:
+  - yarn install
+  - yarn install --cwd e2e
+script:
+  - yarn run cypress:ci

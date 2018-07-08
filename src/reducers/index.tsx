@@ -2,11 +2,11 @@
 import { AllActions } from "../actions";
 import { StoreState, OptionsState } from "../types";
 import { Node, createSourceFile, CompilerApi, convertOptions } from "../compiler";
-import { SET_SELECTED_NODE, SET_CODE, SET_API_LOADING_STATE, SET_POS, SET_OPTIONS, REFRESH_SOURCEFILE } from "./../constants";
+import { actions as actionNames } from "./../constants";
 
 export function appReducer(state: StoreState, action: AllActions): StoreState {
     switch (action.type) {
-        case SET_SELECTED_NODE: {
+        case actionNames.SET_SELECTED_NODE: {
             if (state.compiler == null)
                 return state;
 
@@ -18,13 +18,13 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
                 }
             };
         }
-        case SET_API_LOADING_STATE: {
+        case actionNames.SET_API_LOADING_STATE: {
             return {
                 ...state,
                 apiLoadingState: action.loadingState
             };
         }
-        case REFRESH_SOURCEFILE: {
+        case actionNames.REFRESH_SOURCEFILE: {
             const newState = {
                 ...state,
                 options: convertOptions(state.compiler == null ? undefined : state.compiler.api, action.api, state.options)
@@ -32,10 +32,10 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
             fillNewSourceFileState(action.api, newState, state.code, state.options);
             return newState;
         }
-        case SET_CODE: {
+        case actionNames.SET_CODE: {
             return { ...state, code: action.code };
         }
-        case SET_POS: {
+        case actionNames.SET_POS: {
             if (state.compiler == null)
                 return state;
 
@@ -67,7 +67,7 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
                 }
             };
         }
-        case SET_OPTIONS: {
+        case actionNames.SET_OPTIONS: {
             return {
                 ...state,
                 options: {

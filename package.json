@@ -26,7 +26,10 @@
     "predeploy": "yarn run build --max-old-space-size=4096",
     "deploy": "yarn run predeploy && gh-pages -d build",
     "copyLibFiles": "ts-node --project tsconfig.scripts.json scripts/copyLibFiles.ts ",
-    "createCompilerVersions": "ts-node --project tsconfig.scripts.json scripts/createCompilerVersions.ts"
+    "createCompilerVersions": "ts-node --project tsconfig.scripts.json scripts/createCompilerVersions.ts",
+    "cypress:start": "npm run --prefix e2e cypress:wait-run",
+    "cypress": "start npm run start && start npm run cypress:start",
+    "cypress:ci": "npm run start & npm run cypress:start"
   },
   "dependencies": {
     "circular-json": "^0.4.0",

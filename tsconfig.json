@@ -23,6 +23,7 @@
     "scripts",
     "acceptance-tests",
     "webpack",
-    "jest"
+    "jest",
+    "e2e"
   ]
 }

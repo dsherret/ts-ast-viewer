@@ -68,11 +68,11 @@ a,a:visited {
 
 /* Options */
 
-.options {
+#options {
     float: right;
 }
 
-.options .optionsButton {
+#options #optionsButton {
     line-height: 28px;
     width: 80px;
     text-align: center;
@@ -83,7 +83,7 @@ a,a:visited {
     cursor: pointer;
 }
 
-.options .menu {
+#options .menu {
     position: absolute;
     width: 350px;
     margin-left: -270px;
@@ -95,24 +95,24 @@ a,a:visited {
     font-size: 16px;
 }
 
-.options .menu .option:not(:first-child) {
+#options .menu .option:not(:first-child) {
     margin-top: 10px;
 }
 
-.options .menu .optionName {
+#options .menu .optionName {
     display: inline-block;
     margin-right: 6px;
     width: 95px;
     text-align: right;
 }
-.options .menu .optionValue {
+#options .menu .optionValue {
     display: inline-block;
 }
-.options .menu .optionValue select {
+#options .menu .optionValue select {
     width: 220px;
 }
 
-.options .menuLine {
+#options .menuLine {
     position: absolute;
     background: #202020;
     height: 1px;
@@ -122,7 +122,7 @@ a,a:visited {
     margin-left: 1px;
 }
 
-.options .githubLink {
+#options .githubLink {
     text-align: right;
     margin-top: 5px;
     margin-right: 8px;
@@ -130,18 +130,18 @@ a,a:visited {
 
 /* Code Editor */
 
-.codeEditor {
+#codeEditor {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.codeEditor .editorContainer {
+#codeEditor #editorContainer {
     flex: 1;
 }
 
-.codeEditor .editorInfo {
+#codeEditor #editorInfo {
     background-color: #007acc;
     padding: 2px 4px;
     width: 100%;
@@ -149,21 +149,21 @@ a,a:visited {
 
 /* Tree Viewer */
 
-.treeViewer {
+#treeViewer {
     overflow: auto;
     height: 100%;
 }
 
-.treeViewer .nodeText {
+#treeViewer .nodeText {
     cursor: pointer;
     display: inline-block;
 }
 
-.treeViewer .nodeText.selected {
+#treeViewer .nodeText.selected {
     color: #A6E22E;
 }
 
-.treeViewer .endNode {
+#treeViewer .endNode {
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 3px;
@@ -183,12 +183,12 @@ a,a:visited {
     margin-left: 6px;
 }
 
-.propertiesViewer .node .method {
+.propertiesViewer #node .method {
     padding-left: 9px ;
     text-indent: -9px ;
 }
 
-.propertiesViewer .node .method > .methodName {
+.propertiesViewer #node .method > .methodName {
     margin-right: 2px;
 }
 

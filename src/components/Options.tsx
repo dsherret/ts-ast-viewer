@@ -1,6 +1,7 @@
 import React from "react";
 import { CompilerApi, ScriptKind, ScriptTarget, compilerVersionCollection, compilerPackageNames } from "../compiler";
 import { OptionsState, TreeMode } from "../types";
+import { css as cssConstants } from "../constants";
 
 export interface OptionsProps {
     api: CompilerApi | undefined;
@@ -17,8 +18,8 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
 
     render() {
         return (
-            <div className="options">
-                <div className="optionsButton" onClick={() => this.setState({ showOptionsMenu: !this.state.showOptionsMenu })}>
+            <div id={cssConstants.options.id}>
+                <div id={cssConstants.options.buttonId} onClick={() => this.setState({ showOptionsMenu: !this.state.showOptionsMenu })}>
                     Options
                 </div>
                 <div className="menuLine" hidden={!this.state.showOptionsMenu}></div>
@@ -37,7 +38,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
 
     private getCompilerVersions() {
         const selection = (
-            <select value={this.props.options.compilerPackageName}
+            <select id={cssConstants.options.compilerVersionSelectionId} value={this.props.options.compilerPackageName}
                 onChange={event => this.onChange({ compilerPackageName: event.target.value as compilerPackageNames })}>
                 {compilerVersionCollection.map(v => (<option value={v.packageName} key={v.packageName}>{v.version}</option>))}
             </select>
@@ -47,7 +48,8 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
 
     private getTreeMode() {
         const selection = (
-            <select value={this.props.options.treeMode} onChange={event => this.onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}>
+            <select id={cssConstants.options.treeModeId} value={this.props.options.treeMode}
+                onChange={event => this.onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}>
                 <option value={TreeMode.getChildren}>node.getChildren()</option>
                 <option value={TreeMode.forEachChild}>ts.forEachKind(node, child => ...)</option>
             </select>

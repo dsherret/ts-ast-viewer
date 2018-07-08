@@ -1,6 +1,6 @@
 ﻿/* barrel:ignore */
 import { Node, CompilerApi } from "../compiler";
-import * as constants from "../constants";
+import { actions as constants } from "../constants";
 import { OptionsState, ApiLoadingState } from "../types";
 
 export interface SetCode {

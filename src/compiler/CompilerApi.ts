@@ -10,6 +10,7 @@ export interface CompilerApi {
     ScriptKind: typeof ts.ScriptKind;
     SyntaxKind: typeof ts.SyntaxKind;
     ModuleKind: typeof ts.ModuleKind;
+    TypeFlags: typeof ts.TypeFlags;
     tsAstViewer: {
         packageName: compilerPackageNames;
         cachedSourceFiles: { [name: string]: SourceFile | undefined; };

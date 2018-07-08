@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, CompilerApi } from "../compiler";
 import CircularJson from "circular-json";
+import { css as cssConstants } from "../constants";
 import { getSyntaxKindName, createHashSet } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 
@@ -19,19 +20,19 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
             <div className="propertiesViewer">
                 <div className="container">
                     <h2>Node</h2>
-                    <div className="node">
+                    <div id={cssConstants.properties.node.id}>
                         {getForNode(api, selectedNode, sourceFile)}
                     </div>
                     <h2>Type</h2>
-                    <div className="type">
+                    <div id={cssConstants.properties.type.id}>
                         {getForType(api, selectedNode, typeChecker)}
                     </div>
                     <h2>Symbol</h2>
-                    <div className="symbol">
+                    <div id={cssConstants.properties.symbol.id}>
                         {getForSymbol(api, selectedNode, typeChecker)}
                     </div>
                     <h2>Signature</h2>
-                    <div className="signature">
+                    <div id={cssConstants.properties.signature.id}>
                         {getForSignature(api, selectedNode, typeChecker)}
                     </div>
                 </div>
@@ -61,7 +62,7 @@ function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile
 
     function getMethodElement(name: string, result: string | number) {
         return (
-            <div className="method" key={name}>
+            <div className="method" key={name} data-name={name}>
                 <span className="methodName">{name}:</span>
                 <span className="methodResult">{typeof result === "string" ? JSON.stringify(result) : result}</span>
             </div>
@@ -72,9 +73,9 @@ function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile
 function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
     const type = getOrReturnError(() => typeChecker.getTypeAtLocation(node));
     if (node.kind === api.SyntaxKind.SourceFile)
-        return (<div>[None]</div>);
+        return (<>[None]</>);
     if (typeof type === "string")
-        return (<div>[Error getting type: {type}]</div>);
+        return (<>[Error getting type: {type}]</>);
 
     return getTreeView(api, type, getTypeToString() || "Type");
 
@@ -90,9 +91,9 @@ function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
 function getForSymbol(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
     const symbol = getOrReturnError(() => (node["symbol"] as Symbol | undefined) || typeChecker.getSymbolAtLocation(node));
     if (symbol == null)
-        return (<div>[None]</div>);
+        return (<>[None]</>);
     if (typeof symbol === "string")
-        return (<div>[Error getting symbol: {symbol}]</div>);
+        return (<>[Error getting symbol: {symbol}]</>);
 
     return getTreeView(api, symbol, getSymbolName() || "Symbol");
 
@@ -108,7 +109,7 @@ function getForSymbol(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
 function getForSignature(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
     const signature = getOrReturnError(() => typeChecker.getSignatureFromDeclaration(node as any));
     if (signature == null || typeof signature === "string")
-        return (<div>[None]</div>);
+        return (<>[None]</>);
 
     return getTreeView(api, signature, "Signature");
 }
@@ -139,9 +140,9 @@ function getProperties(api: CompilerApi, rootItem: any) {
         const keyValues = getObjectKeys(obj).map(key => ({ key, value: obj[key] }));
 
         const values = (
-            <div>
+            <>
                 {keyValues.map(kv => (getNodeValue(kv.key, kv.value, obj)))}
-            </div>
+            </>
         );
         return values;
     }
@@ -149,26 +150,26 @@ function getProperties(api: CompilerApi, rootItem: any) {
     function getNodeValue(key: string, value: any, parent: any): JSX.Element {
         if (value === null)
             return (
-                <div className="text" key={key}>
+                <div className="text" key={key} data-name={key}>
                     <div className="key">{key}:</div>
                     <div className="value">null</div>
                 </div>);
         else if (value === undefined)
             return (
-                <div className="text" key={key}>
+                <div className="text" key={key} data-name={key}>
                     <div className="key">{key}:</div>
                     <div className="value">undefined</div>
                 </div>);
         else if (value instanceof Array) {
             if (value.length === 0)
                 return (
-                    <div className="text" key={key}>
+                    <div className="text" key={key} data-name={key}>
                         <div className="key">{key}:</div>
                         <div className="value">[]</div>
                     </div>);
             else
                 return (
-                    <div className="array" key={key}>
+                    <div className="array" key={key} data-name={key}>
                         <div className="key">{key}: [</div>
                         <div className="value">{value.map(v => getTreeNode(v))}</div>
                         <div className="suffix">]</div>
@@ -176,7 +177,7 @@ function getProperties(api: CompilerApi, rootItem: any) {
         }
         else if (isTsNode(value))
             return (
-                <div className="object" key={key}>
+                <div className="object" key={key} data-name={key}>
                     <div className="key">{key}: {"{"}</div>
                     <div className="value">{getTreeNode(value)}</div>
                     <div className="suffix">{"}"}</div>
@@ -184,13 +185,13 @@ function getProperties(api: CompilerApi, rootItem: any) {
         else if (typeof value === "object") {
             if (getObjectKeys(value).length === 0)
                 return (
-                    <div className="text" key={key}>
+                    <div className="text" key={key} data-name={key}>
                         <div className="key">{key}:</div>
                         <div className="value">{"{}"}</div>
                     </div>);
             else
                 return (
-                    <div className="object" key={key}>
+                    <div className="object" key={key} data-name={key}>
                         <div className="key">{key}: {"{"}</div>
                         <div className="value">{getTreeNode(value)}</div>
                         <div className="suffix">{"}"}</div>
@@ -198,7 +199,7 @@ function getProperties(api: CompilerApi, rootItem: any) {
         }
         else
             return (
-                <div className="text" key={key}>
+                <div className="text" key={key} data-name={key}>
                     <div className="key">{key}:</div>
                     <div className="value">{getCustomValue()}</div>
                 </div>);

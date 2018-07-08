@@ -3,6 +3,7 @@ import { Node, CompilerApi, getCompilerApi, hasLoadedCompilerApi, compilerPackag
 import App from "./App";
 import * as actions from "./actions";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
+import { general as generalConstants } from "./constants";
 import { debounce } from "./utils";
 
 export function mapStateToProps(state: StoreState) {
@@ -12,7 +13,8 @@ export function mapStateToProps(state: StoreState) {
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
-    const debouncedSourceFileRefresh = debounce<compilerPackageNames>(compilerPackageName => updateSourceFile(compilerPackageName), 150);
+    const debouncedSourceFileRefresh = debounce<compilerPackageNames>(compilerPackageName => updateSourceFile(compilerPackageName),
+        generalConstants.sourceFileRefreshDelay);
 
     updateSourceFile("typescript");
 

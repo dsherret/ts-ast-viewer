@@ -1,0 +1,23 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:wait-run": "wait-on http://localhost:3000/ && npm run cypress:run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cypress/webpack-preprocessor": "^2.0.1",
+    "cypress": "^3.0.2",
+    "ts-loader": "^4.4.2",
+    "typescript": "^2.9.2",
+    "wait-on": "^2.1.0",
+    "webpack": "^4.15.1"
+  }
+}

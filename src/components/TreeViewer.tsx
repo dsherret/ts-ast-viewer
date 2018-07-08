@@ -4,6 +4,7 @@ import TreeView from "react-treeview";
 import CircularJson from "circular-json";
 import { getSyntaxKindName } from "../utils";
 import { TreeMode } from "../types";
+import { css as cssConstants } from "../constants";
 
 export interface TreeViewerProps {
     api: CompilerApi;
@@ -19,22 +20,25 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
         let i = 0;
 
         return (
-            <div className="treeViewer">{renderNode(this.props.sourceFile, getChildrenFunc())}</div>
+            <div id={cssConstants.treeViewer.id}>{renderNode(this.props.sourceFile, getChildrenFunc())}</div>
         );
 
         function renderNode(node: Node, getChildren: (node: Node) => (Node[])): JSX.Element {
             const children = node.getChildren(sourceFile);
-            const className = node === selectedNode ? "selected nodeText" : "nodeText";
-            const label = (<div onClick={() => onSelectNode(node)} className={className}>{getSyntaxKindName(api, node.kind)}</div>);
+            const className = "nodeText" + (node === selectedNode ? " " + cssConstants.treeViewer.selectedNodeClass : "");
+            const kindName = getSyntaxKindName(api, node.kind);
+            const label = (<div onClick={() => onSelectNode(node)} className={className}>{kindName}</div>);
             if (children.length === 0)
                 return (
-                    <div key={i++} className="endNode">{label}</div>
+                    <div key={i++} className="endNode" data-name={kindName}>{label}</div>
                 );
             else
                 return (
-                    <TreeView nodeLabel={label} key={i++}>
-                        {getChildren(node).map(n => renderNode(n, getChildren))}
-                    </TreeView>
+                    <div data-name={kindName} key={i++}>
+                        <TreeView nodeLabel={label}>
+                            {getChildren(node).map(n => renderNode(n, getChildren))}
+                        </TreeView>
+                    </div>
                 );
         }
 

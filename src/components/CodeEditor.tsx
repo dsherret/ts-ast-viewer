@@ -1,7 +1,8 @@
 ﻿import React from "react";
 import ReactMonacoEditorForTypes from "react-monaco-editor";
-import * as monacoEditor from "monaco-editor";
+import * as monacoEditorForTypes from "monaco-editor";
 import { Spinner } from "./Spinner";
+import { css as cssConstants } from "../constants";
 
 export interface CodeEditorProps {
     onChange: (text: string) => void;
@@ -36,11 +37,11 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
 
     render() {
         return (
-            <div className="codeEditor">
-                <div className="editorContainer">
+            <div id={cssConstants.codeEditor.id}>
+                <div id={cssConstants.codeEditor.containerId}>
                     {this.getEditor()}
                 </div>
-                <div className="editorInfo">Pos {this.state.position}, Ln {this.state.lineNumber}, Col {this.state.column}</div>
+                <div id={cssConstants.codeEditor.infoId}>Pos {this.state.position}, Ln {this.state.lineNumber}, Col {this.state.column}</div>
             </div>
         );
     }
@@ -65,7 +66,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             }} />);
     }
 
-    private editorDidMount(editor: monacoEditor.editor.IStandaloneCodeEditor) {
+    private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {
         editor.onDidChangeCursorPosition(e => {
             this.setState({
                 position: editor.getModel().getOffsetAt(e.position),
@@ -73,5 +74,16 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 column: e.position.column
             });
         });
+        editor.focus();
+
+        // global method for cypress
+        (window as any).setMonacoEditorText = (text: string) => {
+            const selection = editor.getSelection();
+            
+            editor.executeEdits("my-source", [{
+                range: editor.getModel().getFullModelRange(),
+                text
+            }]);
+        };
     }
 }
