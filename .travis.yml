@@ -13,3 +13,10 @@ install:
   - yarn add typescript-next@npm:typescript@next
 script:
   - npm run cypress:ci
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  on:
+    branch: master
