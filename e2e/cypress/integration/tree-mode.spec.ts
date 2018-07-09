@@ -10,6 +10,11 @@ forAllCompilerVersions(packageName => {
             setEditorText("class Test {}");
         });
 
+        after(() => {
+            // revert for next tests
+            setTreeMode(TreeMode.getChildren);
+        });
+
         checkState({
             treeView: {
                 name: "SourceFile",

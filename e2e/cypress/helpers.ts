@@ -2,8 +2,13 @@ import constants from "./constants";
 import { compilerPackageNames, compilerVersionCollection } from "../../src/compiler";
 import { TreeMode } from "../../src/types";
 
+let visited = false;
 export function visitSite() {
+    // this is a quick fix to speed up the tests
+    if (visited)
+        return;
     cy.visit(constants.siteUrl);
+    visited = true;
 }
 
 export async function setEditorText(text: string) {
