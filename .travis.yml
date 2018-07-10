@@ -13,9 +13,12 @@ install:
   - yarn add typescript-next@npm:typescript@next
 script:
   - npm run cypress:ci
+before_deploy:
+  - npm run predeploy
 deploy:
   provider: pages
   skip-cleanup: true
+  local-dir: build
   github-token: $GITHUB_TOKEN
   keep-history: true
   on:
