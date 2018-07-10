@@ -4,7 +4,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { ScriptTarget, ScriptKind } from "./compiler";
 import AppContainer from "./AppContainer";
-import registerServiceWorker from "./registerServiceWorker";
+import { unregisterServiceWorker } from "./registerServiceWorker";
 import "./index.css";
 import "./external/react-treeview.css";
 import "./external/react-splitpane.css";
@@ -33,4 +33,6 @@ ReactDOM.render(
     </Provider>,
     document.getElementById("root") as HTMLElement
 );
-registerServiceWorker();
+
+// doing this for now because service workers were not playing nicely with the website being updated every day for @next support
+unregisterServiceWorker();
