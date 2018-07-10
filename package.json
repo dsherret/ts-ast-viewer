@@ -23,7 +23,7 @@
     "lint": "tslint src/**/*.ts",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "predeploy": "cross-env NODE_OPTIONS=--max_old_space_size=8000 && npm run build",
+    "predeploy": "cross-env NODE_OPTIONS=--max_old_space_size=4096 && npm run build",
     "deploy": "npm run predeploy && gh-pages -d build",
     "copyLibFiles": "ts-node --project tsconfig.scripts.json scripts/copyLibFiles.ts ",
     "createCompilerVersions": "ts-node --project tsconfig.scripts.json scripts/createCompilerVersions.ts",
