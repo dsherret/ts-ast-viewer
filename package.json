@@ -20,10 +20,10 @@
   "scripts": {
     "start": "npm run copyLibFiles && npm run createCompilerVersions && react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint --project tsconfig.json",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "predeploy": "cross-env NODE_OPTIONS=--max_old_space_size=4096 && npm run build",
+    "predeploy": "CI=false && cross-env NODE_OPTIONS=--max_old_space_size=4096 && npm run build",
     "deploy": "npm run predeploy && gh-pages -d build",
     "copyLibFiles": "ts-node --project tsconfig.scripts.json scripts/copyLibFiles.ts ",
     "createCompilerVersions": "ts-node --project tsconfig.scripts.json scripts/createCompilerVersions.ts",

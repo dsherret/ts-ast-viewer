@@ -38,7 +38,7 @@ export default function App(props: Props) {
 
     function getCompilerDependentPanes() {
         if (compiler == null || props.apiLoadingState === ApiLoadingState.Loading)
-            return <components.Spinner />
+            return <components.Spinner />;
         else if (props.apiLoadingState === ApiLoadingState.Error)
             return <div className={"errorMessage"}>Error loading compiler API. Please refresh the page to try again.</div>;
 

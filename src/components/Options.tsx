@@ -43,7 +43,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                 {compilerVersionCollection.map(v => (<option value={v.packageName} key={v.packageName}>{v.version}</option>))}
             </select>
         );
-        return (<Option name="Version" value={selection} />)
+        return (<Option name="Version" value={selection} />);
     }
 
     private getTreeMode() {
@@ -54,7 +54,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                 <option value={TreeMode.forEachChild}>ts.forEachKind(node, child => ...)</option>
             </select>
         );
-        return (<Option name="Tree mode" value={selection} />)
+        return (<Option name="Tree mode" value={selection} />);
     }
 
     private getScriptKind() {
@@ -81,7 +81,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     .map(kind => getOption(parseInt(kind, 10)))}
             </select>
         );
-        return (<Option name={name} value={selection} />)
+        return (<Option name={name} value={selection} />);
 
         function getOption(value: any) {
             return (<option value={value} key={value}>{prefix}.{e[value]}</option>);

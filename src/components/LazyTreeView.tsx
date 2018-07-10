@@ -28,6 +28,6 @@ export class LazyTreeView extends Component<LazyTreeViewProps, LazyTreeViewState
     }
 
     toggleState() {
-        this.setState({ collapsed: !this.state.collapsed })
+        this.setState({ collapsed: !this.state.collapsed });
     }
 }

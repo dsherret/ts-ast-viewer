@@ -29,9 +29,9 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         this.editorDidMount = this.editorDidMount.bind(this);
 
         import("react-monaco-editor").then(editor => {
-            this.setState({ editorComponent: editor.default })
+            this.setState({ editorComponent: editor.default });
         }).catch(err => {
-            this.setState({ editorComponent: false })
+            this.setState({ editorComponent: false });
         });
     }
 
@@ -49,7 +49,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     private getEditor() {
         if (this.state.editorComponent == null)
             return <Spinner backgroundColor="#1e1e1e" />;
-        if (this.state.editorComponent == false)
+        if (this.state.editorComponent === false)
             return <div className={"errorMessage"}>Error loading code editor. Please refresh the page to try again.</div>;
 
         return (<this.state.editorComponent

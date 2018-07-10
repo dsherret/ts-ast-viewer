@@ -1,4 +1,4 @@
-﻿import { connect, Dispatch } from 'react-redux';
+﻿import { connect, Dispatch } from "react-redux";
 import { Node, CompilerApi, getCompilerApi, hasLoadedCompilerApi, compilerPackageNames } from "./compiler";
 import App from "./App";
 import * as actions from "./actions";
@@ -20,7 +20,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
 
     return {
         onCodeChange: (compilerPackageName: compilerPackageNames, code: string) => {
-            dispatch(actions.setCode(code))
+            dispatch(actions.setCode(code));
             debouncedSourceFileRefresh(compilerPackageName);
         },
         onPosChange: (pos: number) => dispatch(actions.setPos(pos)),
@@ -42,8 +42,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
             dispatch(actions.refreshSourceFile(api));
             if (changeLoadingState)
                 dispatch(actions.setApiLoadingState(ApiLoadingState.Loaded));
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
             if (changeLoadingState)
                 dispatch(actions.setApiLoadingState(ApiLoadingState.Error));
