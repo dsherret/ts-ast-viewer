@@ -10,6 +10,8 @@ export interface CompilerApi {
     ScriptKind: typeof ts.ScriptKind;
     SyntaxKind: typeof ts.SyntaxKind;
     ModuleKind: typeof ts.ModuleKind;
+    NodeFlags: typeof ts.NodeFlags;
+    SymbolFlags: typeof ts.SymbolFlags;
     TypeFlags: typeof ts.TypeFlags;
     tsAstViewer: {
         packageName: compilerPackageNames;
@@ -28,5 +30,8 @@ export type TypeChecker = ts.TypeChecker;
 export type CompilerOptions = ts.CompilerOptions;
 export type ScriptTarget = ts.ScriptTarget;
 export type ScriptKind = ts.ScriptKind;
+export type NodeFlags = ts.NodeFlags;
+export type SymbolFlags = ts.SymbolFlags;
+export type TypeFlags = ts.TypeFlags;
 export type SyntaxKind = ts.SyntaxKind;
 export type CompilerHost = ts.CompilerHost;

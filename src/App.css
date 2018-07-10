@@ -66,6 +66,36 @@ a,a:visited {
     font-size: 1.5em;
 }
 
+.tree-view {
+    /* override hidden to allow the tooltip to show */
+    overflow-y: visible !important;
+}
+
+/* Tooltiped Text */
+.tooltipedText {
+    position: relative;
+}
+
+.tooltipedText .titleText {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.tooltipedText .tooltipText {
+    position: absolute;
+    top: 18px;
+    border: 1px solid white;
+    background: #202020;
+    padding: 10px;
+    font-family: Consolas, "Courier New", monospace;
+}
+
+.tooltipedText .tooltipText ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 1.5em;
+}
+
 /* Options */
 
 #options {

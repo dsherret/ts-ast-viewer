@@ -2,8 +2,9 @@
 import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, CompilerApi } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
-import { getSyntaxKindName, createHashSet } from "../utils";
+import { getSyntaxKindName, getEnumFlagNames } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
+import { TooltipedText } from "./TooltipedText";
 
 export interface PropertiesViewerProps {
     api: CompilerApi;
@@ -71,9 +72,10 @@ function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile
 }
 
 function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
-    const type = getOrReturnError(() => typeChecker.getTypeAtLocation(node));
     if (node.kind === api.SyntaxKind.SourceFile)
         return (<>[None]</>);
+
+    const type = getOrReturnError(() => typeChecker.getTypeAtLocation(node));
     if (typeof type === "string")
         return (<>[Error getting type: {type}]</>);
 
@@ -205,8 +207,18 @@ function getProperties(api: CompilerApi, rootItem: any) {
                 </div>);
 
         function getCustomValue() {
-            if (isTsNode(parent) && key === "kind")
-                return `${value} (SyntaxKind.${getSyntaxKindName(api, value)})`;
+            if (isTsNode(parent)) {
+                switch (key) {
+                    case "kind":
+                        return `${value} (SyntaxKind.${getSyntaxKindName(api, value)})`;
+                    case "flags":
+                        return getEnumFlagElement(api.NodeFlags, value);
+                }
+            }
+            if (isTsType(parent) && key === "flags")
+                return getEnumFlagElement(api.TypeFlags, value);
+            if (isTsSymbol(parent) && key === "flags")
+                return getEnumFlagElement(api.SymbolFlags, value);
             return CircularJson.stringify(value);
         }
     }
@@ -256,11 +268,29 @@ function isTsNode(value: any): value is Node {
 }
 
 function isTsType(value: any): value is Type {
-    return typeof (value as Type).getBaseTypes != null;
+    return (value as Type).getBaseTypes != null;
+}
+
+function isTsSymbol(value: any): value is Symbol {
+    return (value as Symbol).getDeclarations != null;
 }
 
 function isTsSignature(value: any): value is Signature {
     if (value.declaration == null)
         return false;
     return isTsNode(value.declaration);
+}
+
+function getEnumFlagElement(enumObj: any, value: number) {
+    const names = getEnumFlagNames(enumObj, value);
+    if (names.length === 0)
+        return <>{value}</>;
+
+    return <TooltipedText text={value.toString()}>{getNames()}</TooltipedText>;
+
+    function getNames() {
+        return <ul>
+                {names.map((name, i) => (<li key={i}>{name}</li>))}
+            </ul>;
+    }
 }
