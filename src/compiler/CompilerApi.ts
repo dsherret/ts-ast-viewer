@@ -15,6 +15,7 @@ export interface CompilerApi {
         packageName: compilerPackageNames;
         cachedSourceFiles: { [name: string]: SourceFile | undefined; };
     };
+    version: number;
 }
 
 export type Node = ts.Node;

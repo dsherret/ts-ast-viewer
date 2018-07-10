@@ -21,14 +21,19 @@ async function loadCompilerApi(packageName: compilerPackageNames) {
     const libFilesPromise = immportLibFiles(packageName);
     const compilerApiPromise = importCompilerApi(packageName);
     const api = await compilerApiPromise as any as CompilerApi;
+
     api.tsAstViewer = {
         packageName,
         cachedSourceFiles: {}
     };
     const libFiles = await libFilesPromise;
+
     for (const sourceFile of getLibSourceFiles())
         api.tsAstViewer.cachedSourceFiles[sourceFile.fileName] = sourceFile;
+
     compilerTypesLoaded[packageName] = true;
+    console.log(`Loaded TypeScript ${api.version}`);
+
     return api;
 
     function getLibSourceFiles() {
