@@ -1,11 +1,16 @@
-import Project, {VariableDeclarationKind, SyntaxKind} from "ts-simple-ast";
-import {getCompilerVersions} from "./getCompilerVersions";
+import Project, { VariableDeclarationKind, SyntaxKind, NewLineKind } from "ts-simple-ast";
+import { getCompilerVersions } from "./getCompilerVersions";
+import * as os from "os";
 
 // get versions
 const versions = getCompilerVersions();
 
 // setup
-const project = new Project();
+const project = new Project({
+    manipulationSettings: {
+        newLineKind: os.EOL === "\n" ? NewLineKind.LineFeed : NewLineKind.CarriageReturnLineFeed
+    }
+});
 
 // update compiler types file
 const compilerVersionsFile = project.addExistingSourceFile("./src/compiler/compilerVersions.ts");
@@ -72,6 +77,6 @@ compilerVersionsFile.addFunctions([{
         });
     }
 }]);
-compilerVersionsFile.insertText(0, "/* Automatically maintained from package.json. Do not edit! */\n");
+compilerVersionsFile.insertText(0, "/* Automatically maintained from package.json. Do not edit! */" + os.EOL);
 
 compilerVersionsFile.save();

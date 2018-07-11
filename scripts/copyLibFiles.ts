@@ -2,7 +2,8 @@
 import * as glob from "glob";
 import * as fs from "fs";
 import * as path from "path";
-import {getCompilerVersions} from "./getCompilerVersions";
+import * as os from "os";
+import { getCompilerVersions } from "./getCompilerVersions";
 
 const versions = getCompilerVersions();
 
@@ -20,14 +21,17 @@ glob("./src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
             for (const filePath of filePaths) {
                 const newFilePath = libVersionDir + path.basename(filePath, ".d.ts") + ".ts";
                 const fileText = fs.readFileSync(filePath).toString().replace(/\`/g, "\\`");
-                fs.writeFileSync(newFilePath, "/* tslint:disable */\n" +
-                    "export default {\n    fileName: `/" + path.basename(filePath) + "`,\n    text: `" + fileText + "`\n};");
+                fs.writeFileSync(newFilePath, `/* tslint:disable */${os.EOL}` +
+                    `export default {${os.EOL}` +
+                    `    fileName: \`/${path.basename(filePath)}\`,${os.EOL}` +
+                    `    text: \`${fileText.replace(/\r?\n/g, os.EOL)}\`${os.EOL}` +
+                    `};`);
             }
 
             fs.writeFileSync(libVersionDir + "index.ts",
                 filePaths
                     .map(p => path.basename(p, ".d.ts"))
-                    .map((p, i) => "export { default as export" + i + " } from \"./" + p + "\";").join("\n") + "\n");
+                    .map((p, i) => "export { default as export" + i + " } from \"./" + p + "\";").join(os.EOL) + os.EOL);
         });
     }
 });
