@@ -76,6 +76,8 @@ function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
         return (<>[None]</>);
 
     const type = getOrReturnError(() => typeChecker.getTypeAtLocation(node));
+    if (type == null)
+        return (<>[None]</>);
     if (typeof type === "string")
         return (<>[Error getting type: {type}]</>);
 
@@ -224,6 +226,8 @@ function getProperties(api: CompilerApi, rootItem: any) {
     }
 
     function getObjectKeys(obj: any) {
+        if (obj == null)
+            return [];
         return Object.keys(obj).filter(key => isAllowedKey(obj, key));
     }
 
