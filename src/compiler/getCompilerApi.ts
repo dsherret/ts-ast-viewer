@@ -32,7 +32,6 @@ async function loadCompilerApi(packageName: compilerPackageNames) {
         api.tsAstViewer.cachedSourceFiles[sourceFile.fileName] = sourceFile;
 
     compilerTypesLoaded[packageName] = true;
-    console.log(`Loaded TypeScript ${api.version}`);
 
     return api;
 

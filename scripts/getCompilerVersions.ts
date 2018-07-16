@@ -9,7 +9,8 @@ export function getCompilerVersions() {
 
     for (const key of Object.keys(dependencies)) {
         if (key === "typescript-next") {
-            versions.push({ version: "@next", name: key });
+            const tsNextInfo = JSON.parse(fs.readFileSync("./node_modules/typescript-next/package.json", "utf-8"));
+            versions.push({ version: `@next (${tsNextInfo.version})`, name: key });
             continue;
         }
 
@@ -20,9 +21,9 @@ export function getCompilerVersions() {
     }
 
     return versions.sort((a, b) => {
-        if (a.version === "@next")
+        if (a.version.startsWith("@next"))
             return 1;
-        if (b.version === "@next")
+        if (b.version.startsWith("@next"))
             return -1;
         return a.version > b.version ? -1 : 1
     });
