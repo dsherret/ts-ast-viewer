@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.13.0...v0.14.0) (2018-07-16)
+
+
+### Bug Fixes
+
+* [#22](https://github.com/dsherret/ts-ast-viewer/issues/22) - "Code editor sometimes doesn't load properly." ([5dd3fde](https://github.com/dsherret/ts-ast-viewer/commit/5dd3fde))
+* [#24](https://github.com/dsherret/ts-ast-viewer/issues/24) - Should not error when clicking on node whose type does not exist. ([1b1fc27](https://github.com/dsherret/ts-ast-viewer/commit/1b1fc27))
+
+
+### Features
+
+* [#13](https://github.com/dsherret/ts-ast-viewer/issues/13) - TypeFlags, NodeFlags, and SymbolFlags list the matched flags. ([ab6ba75](https://github.com/dsherret/ts-ast-viewer/commit/ab6ba75))
+* Add [@next](https://github.com/next) version in menu. ([2fa15ac](https://github.com/dsherret/ts-ast-viewer/commit/2fa15ac))
+
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.12.0...v0.13.0) (2018-07-02)
 
