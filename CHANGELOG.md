@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.14.0...v0.15.0) (2018-08-01)
+
+
+### Features
+
+* Add ts 3.0.1. ([bf8ce32](https://github.com/dsherret/ts-ast-viewer/commit/bf8ce32))
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.13.0...v0.14.0) (2018-07-16)
 
