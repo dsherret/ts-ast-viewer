@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.15.1"></a>
+## [0.15.1](https://github.com/dsherret/ts-ast-viewer/compare/v0.15.0...v0.15.1) (2018-08-09)
+
+
+### Bug Fixes
+
+* [#26](https://github.com/dsherret/ts-ast-viewer/issues/26) - "Flags are popping over a popover" ([4799d5b](https://github.com/dsherret/ts-ast-viewer/commit/4799d5b))
+
+
+
 <a name="0.15.0"></a>
 # [0.15.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.14.0...v0.15.0) (2018-08-01)
 
