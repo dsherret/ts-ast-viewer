@@ -1,9 +1,10 @@
 /* Automatically maintained from package.json. Do not edit! */
-export type compilerVersions = "3.0.1" | "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2" | "2.5.3" | "2.4.2";
-export type compilerPackageNames = "typescript" | "typescript-2.9.2" | "typescript-2.8.4" | "typescript-2.7.2" | "typescript-2.6.2" | "typescript-2.5.3" | "typescript-2.4.2";
+export type compilerVersions = "3.1.1" | "3.0.3" | "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2" | "2.5.3" | "2.4.2";
+export type compilerPackageNames = "typescript" | "typescript-3.0.3" | "typescript-2.9.2" | "typescript-2.8.4" | "typescript-2.7.2" | "typescript-2.6.2" | "typescript-2.5.3" | "typescript-2.4.2";
 
 export const compilerVersionCollection: { version: compilerVersions; packageName: compilerPackageNames; }[] = [
-    { version: "3.0.1", packageName: "typescript" },
+    { version: "3.1.1", packageName: "typescript" },
+    { version: "3.0.3", packageName: "typescript-3.0.3" },
     { version: "2.9.2", packageName: "typescript-2.9.2" },
     { version: "2.8.4", packageName: "typescript-2.8.4" },
     { version: "2.7.2", packageName: "typescript-2.7.2" },
@@ -17,6 +18,8 @@ export async function importCompilerApi(packageName: compilerPackageNames) {
     switch (packageName) {
         case "typescript":
             return await import("typescript");
+        case "typescript-3.0.3":
+            return await import("typescript-3.0.3");
         case "typescript-2.9.2":
             return await import("typescript-2.9.2");
         case "typescript-2.8.4":
@@ -40,6 +43,8 @@ export async function immportLibFiles(packageName: compilerPackageNames) {
     switch (packageName) {
         case "typescript":
             return await import("../resources/libFiles/typescript/index");
+        case "typescript-3.0.3":
+            return await import("../resources/libFiles/typescript-3.0.3/index");
         case "typescript-2.9.2":
             return await import("../resources/libFiles/typescript-2.9.2/index");
         case "typescript-2.8.4":

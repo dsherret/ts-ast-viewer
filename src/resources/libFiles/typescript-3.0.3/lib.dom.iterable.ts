@@ -54,13 +54,10 @@ interface DOMStringList {
 
 interface DOMTokenList {
     [Symbol.iterator](): IterableIterator<string>;
-    entries(): IterableIterator<[number, string]>;
-    keys(): IterableIterator<number>;
-    values(): IterableIterator<string>;
 }
 
 interface DataTransferItemList {
-    [Symbol.iterator](): IterableIterator<DataTransferItem>;
+    [Symbol.iterator](): IterableIterator<File>;
 }
 
 interface FileList {
@@ -93,10 +90,9 @@ interface HTMLCollectionBase {
 
 interface HTMLCollectionOf<T extends Element> {
     [Symbol.iterator](): IterableIterator<T>;
-}
-
-interface HTMLFormElement {
-    [Symbol.iterator](): IterableIterator<Element>;
+    entries(): IterableIterator<[number, T]>;
+    keys(): IterableIterator<number>;
+    values(): IterableIterator<T>;
 }
 
 interface HTMLSelectElement {
@@ -174,32 +170,8 @@ interface PluginArray {
 interface RTCStatsReport extends ReadonlyMap<string, any> {
 }
 
-interface SVGLengthList {
-    [Symbol.iterator](): IterableIterator<SVGLength>;
-}
-
-interface SVGNumberList {
-    [Symbol.iterator](): IterableIterator<SVGNumber>;
-}
-
-interface SVGStringList {
-    [Symbol.iterator](): IterableIterator<string>;
-}
-
 interface SourceBufferList {
     [Symbol.iterator](): IterableIterator<SourceBuffer>;
-}
-
-interface SpeechGrammarList {
-    [Symbol.iterator](): IterableIterator<SpeechGrammar>;
-}
-
-interface SpeechRecognitionResult {
-    [Symbol.iterator](): IterableIterator<SpeechRecognitionAlternative>;
-}
-
-interface SpeechRecognitionResultList {
-    [Symbol.iterator](): IterableIterator<SpeechRecognitionResult>;
 }
 
 interface StyleSheetList {
