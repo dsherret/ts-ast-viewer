@@ -1,4 +1,4 @@
 {
     "video": false,
-    "pageLoadTimeout": 20000
+    "pageLoadTimeout": 120000
 }
