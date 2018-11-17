@@ -1,8 +1,8 @@
 ﻿import React from "react";
-import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, CompilerApi } from "../compiler";
+import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
-import { getSyntaxKindName, getEnumFlagNames } from "../utils";
+import { ArrayUtils, getSyntaxKindName, getEnumFlagNames } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 import { TooltipedText } from "./TooltipedText";
 
@@ -16,7 +16,6 @@ export interface PropertiesViewerProps {
 export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
     render() {
         const {selectedNode, sourceFile, typeChecker, api} = this.props;
-        const keyValues = Object.keys(selectedNode).map(key => ({ key, value: selectedNode[key] }));
         return (
             <div className="propertiesViewer">
                 <div className="container">
@@ -134,10 +133,27 @@ function getProperties(api: CompilerApi, rootItem: any) {
     let i = 0;
     return getNodeKeyValuesForObject(rootItem);
 
-    function getTreeNode(value: any): JSX.Element {
+    function getTreeNode(value: any, key?: string): JSX.Element {
+        const labelName = getLabelName(value);
+        key = getKey();
+
+        if (typeof value === "string")
+            return getTextDiv(key, `"${value}"`);
+        if (typeof value === "number")
+            return getTextDiv(key, value.toString());
+        if (typeof value === "boolean")
+            return getTextDiv(key, value.toString());
         return (
-            <LazyTreeView nodeLabel={getLabelName(value)} key={i++} defaultCollapsed={true} getChildren={() => getNodeKeyValuesForObject(value)} />
+            <LazyTreeView nodeLabel={key} key={i++} defaultCollapsed={true} getChildren={() => getNodeKeyValuesForObject(value)} />
         );
+
+        function getKey() {
+            if (key == null)
+                return labelName;
+            else if (labelName != null)
+                return `${key}: ${getLabelName(value)}`;
+            return key;
+        }
     }
 
     function getNodeKeyValuesForObject(obj: any) {
@@ -145,32 +161,20 @@ function getProperties(api: CompilerApi, rootItem: any) {
 
         const values = (
             <>
-                {keyValues.map(kv => (getNodeValue(kv.key, kv.value, obj)))}
+                {keyValues.map(kv => (getNodeKeyValue(kv.key, kv.value, obj)))}
             </>
         );
         return values;
     }
 
-    function getNodeValue(key: string, value: any, parent: any): JSX.Element {
+    function getNodeKeyValue(key: string, value: any, parent: any): JSX.Element {
         if (value === null)
-            return (
-                <div className="text" key={key} data-name={key}>
-                    <div className="key">{key}:</div>
-                    <div className="value">null</div>
-                </div>);
+            return getTextDiv(key, "null");
         else if (value === undefined)
-            return (
-                <div className="text" key={key} data-name={key}>
-                    <div className="key">{key}:</div>
-                    <div className="value">undefined</div>
-                </div>);
+            return getTextDiv(key, "undefined");
         else if (value instanceof Array) {
             if (value.length === 0)
-                return (
-                    <div className="text" key={key} data-name={key}>
-                        <div className="key">{key}:</div>
-                        <div className="value">[]</div>
-                    </div>);
+                return getTextDiv(key, "[]");
             else
                 return (
                     <div className="array" key={key} data-name={key}>
@@ -182,23 +186,29 @@ function getProperties(api: CompilerApi, rootItem: any) {
         else if (isTsNode(value))
             return (
                 <div className="object" key={key} data-name={key}>
-                    <div className="key">{key}: {"{"}</div>
+                    <div className="key">{key}:</div>
                     <div className="value">{getTreeNode(value)}</div>
-                    <div className="suffix">{"}"}</div>
                 </div>);
+        else if (isMap(value)) {
+            const entries = ArrayUtils.from(value.entries());
+            if (entries.length === 0)
+                return getTextDiv(key, "{}");
+            else
+                return (
+                    <div className="array" key={key} data-name={key}>
+                        <div className="key">{key}: {"{"}</div>
+                        <div className="value">{entries.map(v => getTreeNode(v[1], v[0]))}</div>
+                        <div className="suffix">{"}"}</div>
+                    </div>);
+        }
         else if (typeof value === "object") {
             if (getObjectKeys(value).length === 0)
-                return (
-                    <div className="text" key={key} data-name={key}>
-                        <div className="key">{key}:</div>
-                        <div className="value">{"{}"}</div>
-                    </div>);
+                return getTextDiv(key, "{}");
             else
                 return (
                     <div className="object" key={key} data-name={key}>
-                        <div className="key">{key}: {"{"}</div>
+                        <div className="key">{key}:</div>
                         <div className="value">{getTreeNode(value)}</div>
-                        <div className="suffix">{"}"}</div>
                     </div>);
         }
         else
@@ -233,27 +243,44 @@ function getProperties(api: CompilerApi, rootItem: any) {
 
     function getLabelName(obj: any) {
         if (isTsNode(obj))
-            return getSyntaxKindName(api, obj.kind);
+            return appendName(getSyntaxKindName(api, obj.kind));
         if (isTsSignature(obj))
             return appendName("Signature");
         if (isTsType(obj))
             return appendName("Type");
+        if (isTsSymbol(obj))
+            return appendName("Symbol");
+        const objType = typeof obj;
+        if (objType === "string" || objType === "number" || objType === "boolean")
+            return undefined;
         return appendName("Object");
 
         function appendName(title: string) {
             const name = getName();
-            return name == null ? title : title + ` (${name})`;
+            return name == null ? title : `${title} (${name})`;
         }
 
         function getName() {
             try {
                 if (typeof obj.getName === "function")
                     return obj.getName();
+                if (isTsNode(obj) && (obj as any).name != null) {
+                    const name = (obj as any).name as Node;
+                    return name.getText();
+                }
                 return undefined;
             } catch {
                 return undefined;
             }
         }
+    }
+
+    function getTextDiv(key: string | undefined, value: string) {
+        return (
+            <div className="text" key={key} data-name={key}>
+                { key == null ? undefined : <div className="key" >{key}:</div> }
+                <div className="value">{value}</div>
+            </div>);
     }
 }
 
@@ -265,6 +292,11 @@ function isAllowedKey(obj: any, key: string) {
     if (isTsType(obj))
         return typeDisallowedKeys.indexOf(key) === -1;
     return true;
+}
+
+function isMap(value: any): value is ReadonlyMap<unknown> {
+    return typeof value.keys === "function"
+        && typeof value.values === "function";
 }
 
 function isTsNode(value: any): value is Node {

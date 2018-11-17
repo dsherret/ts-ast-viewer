@@ -44,17 +44,17 @@ export default function App(props: Props) {
 
         return <components.ErrorBoundary>
             <SplitPane split="vertical" minSize={50} defaultSize="50%">
-            <components.TreeViewer
-                api={compiler.api}
-                selectedNode={compiler.selectedNode}
-                sourceFile={compiler.sourceFile}
-                onSelectNode={node => props.onNodeChange(node)}
-                mode={props.options.treeMode} />
-            <components.PropertiesViewer
-                api={compiler.api}
-                selectedNode={compiler.selectedNode}
-                sourceFile={compiler.sourceFile}
-                typeChecker={compiler.typeChecker} />
+                <components.TreeViewer
+                    api={compiler.api}
+                    selectedNode={compiler.selectedNode}
+                    sourceFile={compiler.sourceFile}
+                    onSelectNode={node => props.onNodeChange(node)}
+                    mode={props.options.treeMode} />
+                <components.PropertiesViewer
+                    api={compiler.api}
+                    selectedNode={compiler.selectedNode}
+                    sourceFile={compiler.sourceFile}
+                    typeChecker={compiler.typeChecker} />
             </SplitPane>
         </components.ErrorBoundary>;
     }

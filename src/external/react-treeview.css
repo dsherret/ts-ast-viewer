@@ -1,6 +1,7 @@
 ﻿/* the tree node's style */
 .tree-view {
-    overflow-y: hidden;
+    /* allow the tooltip to show */
+    overflow-y: visible !important;
 }
 
 .tree-view_item {
@@ -26,14 +27,10 @@
     user-select: none;
 }
 
-    .tree-view_arrow:after {
+    .tree-view_arrow:not(.tree-view_arrow-collapsed):after {
         content: '▾';
     }
 
-/* rotate the triangle to close it */
-.tree-view_arrow-collapsed {
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-}
+    .tree-view_arrow.tree-view_arrow-collapsed:after {
+        content: '▸';
+    }
