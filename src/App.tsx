@@ -23,13 +23,15 @@ export default function App(props: Props) {
                     <components.Options
                         api={compiler == null ? undefined : compiler.api}
                         options={props.options}
-                        onChange={options => props.onOptionsChange(options.compilerPackageName || props.options.compilerPackageName, options)}/>
+                        onChange={options => props.onOptionsChange(options.compilerPackageName || props.options.compilerPackageName, options)}
+                    />
                 </div>
                 <SplitPane split="vertical" minSize={50} defaultSize="33%">
                     <components.CodeEditor
                         onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
                         onClick={pos => props.onPosChange(pos)}
-                        text={props.code} />
+                        text={props.code}
+                    />
                     {getCompilerDependentPanes()}
                 </SplitPane>
             </SplitPane>
@@ -42,20 +44,23 @@ export default function App(props: Props) {
         else if (props.apiLoadingState === ApiLoadingState.Error)
             return <div className={"errorMessage"}>Error loading compiler API. Please refresh the page to try again.</div>;
 
-        return <components.ErrorBoundary>
-            <SplitPane split="vertical" minSize={50} defaultSize="50%">
-                <components.TreeViewer
-                    api={compiler.api}
-                    selectedNode={compiler.selectedNode}
-                    sourceFile={compiler.sourceFile}
-                    onSelectNode={node => props.onNodeChange(node)}
-                    mode={props.options.treeMode} />
-                <components.PropertiesViewer
-                    api={compiler.api}
-                    selectedNode={compiler.selectedNode}
-                    sourceFile={compiler.sourceFile}
-                    typeChecker={compiler.typeChecker} />
-            </SplitPane>
-        </components.ErrorBoundary>;
+        return (
+            <components.ErrorBoundary>
+                <SplitPane split="vertical" minSize={50} defaultSize="50%">
+                    <components.TreeViewer
+                        api={compiler.api}
+                        selectedNode={compiler.selectedNode}
+                        sourceFile={compiler.sourceFile}
+                        onSelectNode={node => props.onNodeChange(node)}
+                        mode={props.options.treeMode}
+                    />
+                    <components.PropertiesViewer
+                        api={compiler.api}
+                        selectedNode={compiler.selectedNode}
+                        sourceFile={compiler.sourceFile}
+                        typeChecker={compiler.typeChecker}
+                    />
+                </SplitPane>
+            </components.ErrorBoundary>);
     }
 }

@@ -1,4 +1,6 @@
+/* tslint:disable */
 /* Automatically maintained from package.json. Do not edit! */
+
 export type compilerVersions = "3.1.6" | "3.0.3" | "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2" | "2.5.3" | "2.4.2";
 export type compilerPackageNames = "typescript" | "typescript-3.0.3" | "typescript-2.9.2" | "typescript-2.8.4" | "typescript-2.7.2" | "typescript-2.6.2" | "typescript-2.5.3" | "typescript-2.4.2";
 

@@ -77,6 +77,8 @@ compilerVersionsFile.addFunctions([{
         });
     }
 }]);
-compilerVersionsFile.insertText(0, "/* Automatically maintained from package.json. Do not edit! */" + os.EOL);
+compilerVersionsFile.insertText(0, writer => {
+    writer.writeLine("/* tslint:disable */").writeLine("/* Automatically maintained from package.json. Do not edit! */").newLine();
+});
 
 compilerVersionsFile.save();

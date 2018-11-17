@@ -18,6 +18,6 @@ describe("getEnumFlagNames", () => {
             "ModuleMember",
             "ExportHasLocal",
             "Classifiable"
-        ])
+        ]);
     });
 });

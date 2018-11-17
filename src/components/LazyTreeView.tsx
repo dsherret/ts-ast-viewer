@@ -22,7 +22,7 @@ export class LazyTreeView extends Component<LazyTreeViewProps, LazyTreeViewState
 
     render() {
         if (this.state.collapsed)
-            return (<TreeView nodeLabel={this.props.nodeLabel} collapsed={true} onClick={this.toggleState}></TreeView>);
+            return (<TreeView nodeLabel={this.props.nodeLabel} collapsed={true} onClick={this.toggleState} />);
         else
             return (<TreeView nodeLabel={this.props.nodeLabel} collapsed={false} onClick={this.toggleState}>{this.props.getChildren()}</TreeView>);
     }

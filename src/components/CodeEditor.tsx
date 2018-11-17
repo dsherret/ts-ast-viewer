@@ -52,18 +52,17 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         if (this.state.editorComponent === false)
             return <div className={"errorMessage"}>Error loading code editor. Please refresh the page to try again.</div>;
 
-        return (<this.state.editorComponent
-            width="100%"
-            height="100%"
-            value={this.props.text}
-            theme="vs-dark"
-            language="typescript"
-            onChange={text => this.props.onChange(text)}
-            editorDidMount={this.editorDidMount}
-            options={{
-                automaticLayout: true,
-                renderWhitespace: "all"
-            }} />);
+        return (
+            <this.state.editorComponent
+                width="100%"
+                height="100%"
+                value={this.props.text}
+                theme="vs-dark"
+                language="typescript"
+                onChange={text => this.props.onChange(text)}
+                editorDidMount={this.editorDidMount}
+                options={{ automaticLayout: true, renderWhitespace: "all" }}
+            />);
     }
 
     private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {
@@ -79,7 +78,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         // global method for cypress
         (window as any).setMonacoEditorText = (text: string) => {
             const selection = editor.getSelection();
-            
+
             editor.executeEdits("my-source", [{
                 range: editor.getModel().getFullModelRange(),
                 text

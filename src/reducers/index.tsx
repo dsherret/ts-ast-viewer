@@ -58,7 +58,6 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
                     break;
             }
 
-            //const node = state.sourceFile.
             return {
                 ...state,
                 compiler: {

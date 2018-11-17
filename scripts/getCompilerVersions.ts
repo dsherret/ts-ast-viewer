@@ -16,7 +16,7 @@ export function getCompilerVersions() {
 
         if (!keyRegEx.test(key))
             continue;
-        const matches = versionRegEx.exec(dependencies[key]);
+        const matches = versionRegEx.exec(dependencies[key])!;
         versions.push({ version: matches[0], name: key });
     }
 

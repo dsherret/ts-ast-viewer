@@ -1,9 +1,6 @@
-import { Iterator } from "../compiler"
+import { Iterator } from "../compiler";
 
 export class ArrayUtils {
-    private constructor() {
-    }
-
     static from<T>(iterator: Iterator<T>) {
         const array: T[] = [];
         while (true) {
@@ -12,5 +9,8 @@ export class ArrayUtils {
                 return array;
             array.push(next.value);
         }
+    }
+
+    private constructor() {
     }
 }

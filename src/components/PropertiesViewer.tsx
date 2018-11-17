@@ -45,19 +45,21 @@ function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile
     return (<LazyTreeView nodeLabel={getSyntaxKindName(api, selectedNode.kind)} defaultCollapsed={false} getChildren={getChildren} />);
 
     function getChildren() {
-        return (<>
-            {getProperties(api, selectedNode)}
-            {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
-            {getMethodElement("getFullStart()", selectedNode.getFullStart())}
-            {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
-            {getMethodElement("getStart(sourceFile, true)", selectedNode.getStart(sourceFile, true))}
-            {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
-            {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
-            {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
-            {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
-            {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
-            {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
-        </>);
+        return (
+            <>
+                {getProperties(api, selectedNode)}
+                {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
+                {getMethodElement("getFullStart()", selectedNode.getFullStart())}
+                {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
+                {getMethodElement("getStart(sourceFile, true)", selectedNode.getStart(sourceFile, true))}
+                {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
+                {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
+                {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
+                {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
+                {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
+                {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
+            </>
+        );
     }
 
     function getMethodElement(name: string, result: string | number) {
@@ -92,7 +94,7 @@ function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
 }
 
 function getForSymbol(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
-    const symbol = getOrReturnError(() => (node["symbol"] as Symbol | undefined) || typeChecker.getSymbolAtLocation(node));
+    const symbol = getOrReturnError(() => ((node as any).symbol as Symbol | undefined) || typeChecker.getSymbolAtLocation(node));
     if (symbol == null)
         return (<>[None]</>);
     if (typeof symbol === "string")
@@ -278,7 +280,7 @@ function getProperties(api: CompilerApi, rootItem: any) {
     function getTextDiv(key: string | undefined, value: string) {
         return (
             <div className="text" key={key} data-name={key}>
-                { key == null ? undefined : <div className="key" >{key}:</div> }
+                {key == null ? undefined : <div className="key" >{key}:</div>}
                 <div className="value">{value}</div>
             </div>);
     }
@@ -325,8 +327,6 @@ function getEnumFlagElement(enumObj: any, value: number) {
     return <TooltipedText text={value.toString()}>{getNames()}</TooltipedText>;
 
     function getNames() {
-        return <ul>
-                {names.map((name, i) => (<li key={i}>{name}</li>))}
-            </ul>;
+        return <ul>{names.map((name, i) => (<li key={i}>{name}</li>))}</ul>;
     }
 }

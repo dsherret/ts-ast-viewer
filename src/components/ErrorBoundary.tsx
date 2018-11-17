@@ -25,14 +25,15 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
     render() {
         if (this.state.hasError) {
-            // You can render any custom fallback UI
-            return <div>
-                <h2>Something went wrong</h2>
-                <div style={{ whiteSpace: "pre-wrap" }}>
-                    <div>{this.state.error && this.state.error.toString()}</div>
-                    <div>{this.state.errorInfo.componentStack}</div>
+            return (
+                <div>
+                    <h2>Something went wrong</h2>
+                    <div style={{ whiteSpace: "pre-wrap" }}>
+                        <div>{this.state.error && this.state.error.toString()}</div>
+                        <div>{this.state.errorInfo.componentStack}</div>
+                    </div>
                 </div>
-            </div>;
+            );
         }
         return this.props.children;
     }

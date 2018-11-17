@@ -25,8 +25,6 @@ export class TooltipedText extends React.Component<TooltipedTextProps, { isHover
     }
 
     private getToolTip() {
-        return <div className="tooltipText">
-                {this.props.children}
-            </div>;
+        return <div className="tooltipText">{this.props.children}</div>;
     }
 }
