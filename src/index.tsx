@@ -8,7 +8,6 @@ import { unregisterServiceWorker } from "./registerServiceWorker";
 import "./index.css";
 import "./external/react-treeview.css";
 import "./external/react-splitpane.css";
-import * as actions from "./actions";
 import { StoreState, TreeMode, ApiLoadingState } from "./types";
 import { appReducer } from "./reducers";
 
@@ -36,3 +35,28 @@ ReactDOM.render(
 
 // doing this for now because service workers were not playing nicely with the website being updated every day for @next support
 unregisterServiceWorker();
+
+// set global variables
+console.log("[ts-ast-viewer]: Inspect the selectedNode, sourceFile, symbol, type, program, and typeChecker global variables here in the console.");
+store.subscribe(() => {
+    const state = store.getState();
+    if (state.compiler == null || state.compiler.selectedNode == null)
+        return;
+
+    const windowAny = window as any;
+    const selectedNode = state.compiler.selectedNode;
+    windowAny.selectedNode = selectedNode;
+    windowAny.sourceFile = state.compiler.sourceFile;
+    windowAny.typeChecker = state.compiler.typeChecker;
+    windowAny.program = state.compiler.program;
+    windowAny.type = tryGet(() => state.compiler!.typeChecker.getTypeAtLocation(selectedNode));
+    windowAny.symbol = tryGet(() => (selectedNode as any).symbol || state.compiler!.typeChecker.getSymbolAtLocation(selectedNode));
+
+    function tryGet<T>(getValue: () => T) {
+        try {
+            return getValue();
+        } catch {
+            return undefined;
+        }
+    }
+});
