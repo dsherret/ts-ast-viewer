@@ -37,7 +37,7 @@ ReactDOM.render(
 unregisterServiceWorker();
 
 // set global variables
-console.log("[ts-ast-viewer]: Inspect the selectedNode, sourceFile, symbol, type, program, and typeChecker global variables here in the console.");
+console.log("[ts-ast-viewer]: Inspect the ts, selectedNode, sourceFile, symbol, type, program, and typeChecker global variables here in the console.");
 store.subscribe(() => {
     const state = store.getState();
     if (state.compiler == null || state.compiler.selectedNode == null)
@@ -45,6 +45,7 @@ store.subscribe(() => {
 
     const windowAny = window as any;
     const selectedNode = state.compiler.selectedNode;
+    windowAny.ts = state.compiler.api;
     windowAny.selectedNode = selectedNode;
     windowAny.sourceFile = state.compiler.sourceFile;
     windowAny.typeChecker = state.compiler.typeChecker;
