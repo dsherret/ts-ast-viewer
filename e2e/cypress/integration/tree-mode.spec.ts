@@ -2,7 +2,7 @@ import { forAllCompilerVersions, visitSite, setVersion, setEditorText, setTreeMo
 import { TreeMode } from "../../../src/types";
 
 forAllCompilerVersions(packageName => {
-    describe(`forEachKind tree mode (${packageName})`, () => {
+    describe(`forEachChild tree mode (${packageName})`, () => {
         before(() => {
             visitSite();
             setVersion(packageName);

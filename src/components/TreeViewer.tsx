@@ -60,7 +60,7 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
 
         function forEachChild(node: Node) {
             const nodes: Node[] = [];
-            api.forEachChild(node, child => {
+            node.forEachChild(child => {
                 nodes.push(child);
                 return undefined;
             });

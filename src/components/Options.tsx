@@ -57,7 +57,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                 onChange={event => this.onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}
             >
                 <option value={TreeMode.getChildren}>node.getChildren()</option>
-                <option value={TreeMode.forEachChild}>ts.forEachKind(node, child => ...)</option>
+                <option value={TreeMode.forEachChild}>node.forEachChild(child => ...)</option>
             </select>
         );
         return (<Option name="Tree mode" value={selection} />);
