@@ -244,6 +244,8 @@ function getProperties(api: CompilerApi, rootItem: any) {
     }
 
     function getLabelName(obj: any) {
+        if (obj == null)
+            return undefined;
         if (isTsNode(obj))
             return appendName(getSyntaxKindName(api, obj.kind));
         if (isTsSignature(obj))
