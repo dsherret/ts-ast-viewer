@@ -86,7 +86,7 @@ interface SymbolConstructor {
 }
 
 interface Symbol {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "Symbol";
 }
 
 interface Array<T> {
@@ -130,23 +130,23 @@ interface Date {
 }
 
 interface Map<K, V> {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "Map";
 }
 
 interface WeakMap<K extends object, V> {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "WeakMap";
 }
 
 interface Set<T> {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "Set";
 }
 
 interface WeakSet<T extends object> {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "WeakSet";
 }
 
 interface JSON {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "JSON";
 }
 
 interface Function {
@@ -161,15 +161,15 @@ interface Function {
 }
 
 interface GeneratorFunction {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "GeneratorFunction";
 }
 
 interface Math {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "Math";
 }
 
 interface Promise<T> {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "Promise";
 }
 
 interface PromiseConstructor {
@@ -264,11 +264,11 @@ interface String {
 }
 
 interface ArrayBuffer {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "ArrayBuffer";
 }
 
 interface DataView {
-    readonly [Symbol.toStringTag]: string;
+    readonly [Symbol.toStringTag]: "DataView";
 }
 
 interface Int8Array {

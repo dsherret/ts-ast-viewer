@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.esnext.d.ts`,
+    fileName: `/lib.es6.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,11 +21,10 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2018" />
-/// <reference lib="esnext.asynciterable" />
-/// <reference lib="esnext.array" />
-/// <reference lib="esnext.bigint" />
-/// <reference lib="esnext.symbol" />
-/// <reference lib="esnext.intl" />
+/// <reference lib="es2015" />
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+/// <reference lib="webworker.importscripts" />
+/// <reference lib="scripthost" />
 `
 };

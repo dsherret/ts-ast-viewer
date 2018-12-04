@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.esnext.d.ts`,
+    fileName: `/lib.es2018.regexp.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,11 +21,23 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2018" />
-/// <reference lib="esnext.asynciterable" />
-/// <reference lib="esnext.array" />
-/// <reference lib="esnext.bigint" />
-/// <reference lib="esnext.symbol" />
-/// <reference lib="esnext.intl" />
-`
+interface RegExpMatchArray {
+    groups?: {
+        [key: string]: string
+    }
+}
+
+interface RegExpExecArray {
+    groups?: {
+        [key: string]: string
+    }
+}
+
+interface RegExp {
+    /**
+     * Returns a Boolean value indicating the state of the dotAll flag (s) used with a regular expression.
+     * Default is false. Read-only.
+     */
+    readonly dotAll: boolean;
+}`
 };

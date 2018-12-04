@@ -6427,7 +6427,7 @@ react-redux@^5.0.7:
     loose-envify "^1.1.0"
     prop-types "^15.6.0"
 
-react-scripts-ts@3.1.0:
+react-scripts-ts@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-scripts-ts/-/react-scripts-ts-3.1.0.tgz#3f285c54b242ff6ecbfb91785060db10660ee7b0"
   dependencies:
@@ -7946,9 +7946,13 @@ typedarray@^0.0.6:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.0.3.tgz#4853b3e275ecdaa27f78fda46dc273a7eb7fc1c8"
 
-typescript@3.1.6, typescript@^3.0.1:
+"typescript-3.1.6@npm:typescript@3.1.6", typescript@^3.0.1:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
+
+typescript@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.1.tgz#0b7a04b8cf3868188de914d9568bd030f0c56192"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"

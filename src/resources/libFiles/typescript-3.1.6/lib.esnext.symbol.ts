@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.esnext.d.ts`,
+    fileName: `/lib.esnext.symbol.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,11 +21,11 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2018" />
-/// <reference lib="esnext.asynciterable" />
-/// <reference lib="esnext.array" />
-/// <reference lib="esnext.bigint" />
-/// <reference lib="esnext.symbol" />
-/// <reference lib="esnext.intl" />
+interface Symbol {
+    /**
+     * expose the [[Description]] internal slot of a symbol directly
+     */
+    readonly description: string;
+}
 `
 };

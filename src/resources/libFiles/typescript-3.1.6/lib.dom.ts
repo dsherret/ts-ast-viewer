@@ -165,7 +165,6 @@ interface BiquadFilterOptions extends AudioNodeOptions {
 }
 
 interface BlobPropertyBag {
-    endings?: EndingType;
     type?: string;
 }
 
@@ -224,12 +223,11 @@ interface ComputedEffectTiming extends EffectTiming {
     progress?: number | null;
 }
 
-interface ComputedKeyframe {
-    composite: CompositeOperationOrAuto;
-    computedOffset: number;
-    easing: string;
-    offset: number | null;
-    [property: string]: string | number | null | undefined;
+interface ComputedKeyframe extends Record<keyof CSSStyleDeclaration, string> {
+    composite?: CompositeOperation | null;
+    computedOffset?: number;
+    easing?: string;
+    offset?: number | null;
 }
 
 interface ConfirmSiteSpecificExceptionsInformation extends ExceptionInformation {
@@ -591,11 +589,10 @@ interface KeyboardEventInit extends EventModifierInit {
     repeat?: boolean;
 }
 
-interface Keyframe {
-    composite?: CompositeOperationOrAuto;
+interface Keyframe extends Record<keyof CSSStyleDeclaration, string> {
+    composite?: CompositeOperation | null;
     easing?: string;
     offset?: number | null;
-    [property: string]: string | number | null | undefined;
 }
 
 interface KeyframeAnimationOptions extends KeyframeEffectOptions {
@@ -913,12 +910,6 @@ interface PeriodicWaveOptions extends PeriodicWaveConstraints {
     real?: number[] | Float32Array;
 }
 
-interface PipeOptions {
-    preventAbort?: boolean;
-    preventCancel?: boolean;
-    preventClose?: boolean;
-}
-
 interface PointerEventInit extends MouseEventInit {
     height?: number;
     isPrimary?: boolean;
@@ -953,11 +944,10 @@ interface PromiseRejectionEventInit extends EventInit {
     reason?: any;
 }
 
-interface PropertyIndexedKeyframes {
-    composite?: CompositeOperationOrAuto | CompositeOperationOrAuto[];
+interface PropertyIndexedKeyframes extends Record<keyof CSSStyleDeclaration, string | string[]> {
+    composite?: CompositeOperation | (CompositeOperation | null)[];
     easing?: string | string[];
     offset?: number | (number | null)[];
-    [property: string]: string | string[] | number | null | (number | null)[] | undefined;
 }
 
 interface PushSubscriptionJSON {
@@ -971,9 +961,9 @@ interface PushSubscriptionOptionsInit {
     userVisibleOnly?: boolean;
 }
 
-interface QueuingStrategy<T = any> {
+interface QueuingStrategy {
     highWaterMark?: number;
-    size?: QueuingStrategySizeCallback<T>;
+    size?: WritableStreamChunkCallback;
 }
 
 interface RTCAnswerOptions extends RTCOfferAnswerOptions {
@@ -1529,14 +1519,6 @@ interface TrackEventInit extends EventInit {
     track?: VideoTrack | AudioTrack | TextTrack | null;
 }
 
-interface Transformer<I = any, O = any> {
-    flush?: TransformStreamDefaultControllerCallback<O>;
-    readableType?: undefined;
-    start?: TransformStreamDefaultControllerCallback<O>;
-    transform?: TransformStreamDefaultControllerTransformCallback<I, O>;
-    writableType?: undefined;
-}
-
 interface TransitionEventInit extends EventInit {
     elapsedTime?: number;
     propertyName?: string;
@@ -1548,27 +1530,11 @@ interface UIEventInit extends EventInit {
     view?: Window | null;
 }
 
-interface UnderlyingByteSource {
-    autoAllocateChunkSize?: number;
-    cancel?: ReadableStreamErrorCallback;
-    pull?: ReadableByteStreamControllerCallback;
-    start?: ReadableByteStreamControllerCallback;
-    type: "bytes";
-}
-
-interface UnderlyingSink<W = any> {
+interface UnderlyingSink {
     abort?: WritableStreamErrorCallback;
-    close?: WritableStreamDefaultControllerCloseCallback;
-    start?: WritableStreamDefaultControllerStartCallback;
-    type?: undefined;
-    write?: WritableStreamDefaultControllerWriteCallback<W>;
-}
-
-interface UnderlyingSource<R = any> {
-    cancel?: ReadableStreamErrorCallback;
-    pull?: ReadableStreamDefaultControllerCallback<R>;
-    start?: ReadableStreamDefaultControllerCallback<R>;
-    type?: undefined;
+    close?: WritableStreamDefaultControllerCallback;
+    start: WritableStreamDefaultControllerCallback;
+    write?: WritableStreamChunkCallback;
 }
 
 interface VRDisplayEventInit extends EventInit {
@@ -1618,12 +1584,6 @@ interface WheelEventInit extends MouseEventInit {
     deltaZ?: number;
 }
 
-interface WorkerOptions {
-    credentials?: RequestCredentials;
-    name?: string;
-    type?: WorkerType;
-}
-
 interface WorkletOptions {
     credentials?: RequestCredentials;
 }
@@ -1633,11 +1593,17 @@ interface EventListener {
 }
 
 interface ANGLE_instanced_arrays {
-    drawArraysInstancedANGLE(mode: GLenum, first: GLint, count: GLsizei, primcount: GLsizei): void;
-    drawElementsInstancedANGLE(mode: GLenum, count: GLsizei, type: GLenum, offset: GLintptr, primcount: GLsizei): void;
-    vertexAttribDivisorANGLE(index: GLuint, divisor: GLuint): void;
-    readonly VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE: GLenum;
+    drawArraysInstancedANGLE(mode: number, first: number, count: number, primcount: number): void;
+    drawElementsInstancedANGLE(mode: number, count: number, type: number, offset: number, primcount: number): void;
+    vertexAttribDivisorANGLE(index: number, divisor: number): void;
+    readonly VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE: number;
 }
+
+declare var ANGLE_instanced_arrays: {
+    prototype: ANGLE_instanced_arrays;
+    new(): ANGLE_instanced_arrays;
+    readonly VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE: number;
+};
 
 interface AbortController {
     /**
@@ -2225,7 +2191,7 @@ declare var Blob: {
 };
 
 interface Body {
-    readonly body: ReadableStream<Uint8Array> | null;
+    readonly body: ReadableStream | null;
     readonly bodyUsed: boolean;
     arrayBuffer(): Promise<ArrayBuffer>;
     blob(): Promise<Blob>;
@@ -2270,14 +2236,14 @@ interface BroadcastChannelEventMap {
     messageerror: MessageEvent;
 }
 
-interface ByteLengthQueuingStrategy extends QueuingStrategy<ArrayBufferView> {
+interface ByteLengthQueuingStrategy {
     highWaterMark: number;
-    size(chunk: ArrayBufferView): number;
+    size(chunk?: any): number;
 }
 
 declare var ByteLengthQueuingStrategy: {
     prototype: ByteLengthQueuingStrategy;
-    new(options: { highWaterMark: number }): ByteLengthQueuingStrategy;
+    new(strategy: QueuingStrategy): ByteLengthQueuingStrategy;
 };
 
 interface CDATASection extends Text {
@@ -2440,15 +2406,15 @@ interface CSSStyleDeclaration {
     alignItems: string | null;
     alignSelf: string | null;
     alignmentBaseline: string | null;
-    animation: string;
-    animationDelay: string;
-    animationDirection: string;
-    animationDuration: string;
-    animationFillMode: string;
-    animationIterationCount: string;
-    animationName: string;
-    animationPlayState: string;
-    animationTimingFunction: string;
+    animation: string | null;
+    animationDelay: string | null;
+    animationDirection: string | null;
+    animationDuration: string | null;
+    animationFillMode: string | null;
+    animationIterationCount: string | null;
+    animationName: string | null;
+    animationPlayState: string | null;
+    animationTimingFunction: string | null;
     backfaceVisibility: string | null;
     background: string | null;
     backgroundAttachment: string | null;
@@ -2691,7 +2657,6 @@ interface CSSStyleDeclaration {
     rubyOverhang: string | null;
     rubyPosition: string | null;
     scale: string | null;
-    scrollBehavior: string;
     stopColor: string | null;
     stopOpacity: string | null;
     stroke: string | null;
@@ -2717,79 +2682,50 @@ interface CSSStyleDeclaration {
     textTransform: string | null;
     textUnderlinePosition: string | null;
     top: string | null;
-    touchAction: string;
+    touchAction: string | null;
     transform: string | null;
     transformOrigin: string | null;
     transformStyle: string | null;
-    transition: string;
-    transitionDelay: string;
-    transitionDuration: string;
-    transitionProperty: string;
-    transitionTimingFunction: string;
+    transition: string | null;
+    transitionDelay: string | null;
+    transitionDuration: string | null;
+    transitionProperty: string | null;
+    transitionTimingFunction: string | null;
     translate: string | null;
     unicodeBidi: string | null;
     userSelect: string | null;
     verticalAlign: string | null;
     visibility: string | null;
-    /** @deprecated */
-    webkitAlignContent: string;
-    /** @deprecated */
-    webkitAlignItems: string;
-    /** @deprecated */
-    webkitAlignSelf: string;
-    /** @deprecated */
-    webkitAnimation: string;
-    /** @deprecated */
-    webkitAnimationDelay: string;
-    /** @deprecated */
-    webkitAnimationDirection: string;
-    /** @deprecated */
-    webkitAnimationDuration: string;
-    /** @deprecated */
-    webkitAnimationFillMode: string;
-    /** @deprecated */
-    webkitAnimationIterationCount: string;
-    /** @deprecated */
-    webkitAnimationName: string;
-    /** @deprecated */
-    webkitAnimationPlayState: string;
-    /** @deprecated */
-    webkitAnimationTimingFunction: string;
-    /** @deprecated */
-    webkitAppearance: string;
-    /** @deprecated */
-    webkitBackfaceVisibility: string;
-    /** @deprecated */
-    webkitBackgroundClip: string;
-    /** @deprecated */
-    webkitBackgroundOrigin: string;
-    /** @deprecated */
-    webkitBackgroundSize: string;
-    /** @deprecated */
-    webkitBorderBottomLeftRadius: string;
-    /** @deprecated */
-    webkitBorderBottomRightRadius: string;
+    webkitAlignContent: string | null;
+    webkitAlignItems: string | null;
+    webkitAlignSelf: string | null;
+    webkitAnimation: string | null;
+    webkitAnimationDelay: string | null;
+    webkitAnimationDirection: string | null;
+    webkitAnimationDuration: string | null;
+    webkitAnimationFillMode: string | null;
+    webkitAnimationIterationCount: string | null;
+    webkitAnimationName: string | null;
+    webkitAnimationPlayState: string | null;
+    webkitAnimationTimingFunction: string | null;
+    webkitAppearance: string | null;
+    webkitBackfaceVisibility: string | null;
+    webkitBackgroundClip: string | null;
+    webkitBackgroundOrigin: string | null;
+    webkitBackgroundSize: string | null;
+    webkitBorderBottomLeftRadius: string | null;
+    webkitBorderBottomRightRadius: string | null;
     webkitBorderImage: string | null;
-    /** @deprecated */
-    webkitBorderRadius: string;
-    /** @deprecated */
-    webkitBorderTopLeftRadius: string;
-    /** @deprecated */
-    webkitBorderTopRightRadius: string;
-    /** @deprecated */
-    webkitBoxAlign: string;
+    webkitBorderRadius: string | null;
+    webkitBorderTopLeftRadius: string | null;
+    webkitBorderTopRightRadius: string | null;
+    webkitBoxAlign: string | null;
     webkitBoxDirection: string | null;
-    /** @deprecated */
-    webkitBoxFlex: string;
-    /** @deprecated */
-    webkitBoxOrdinalGroup: string;
+    webkitBoxFlex: string | null;
+    webkitBoxOrdinalGroup: string | null;
     webkitBoxOrient: string | null;
-    /** @deprecated */
-    webkitBoxPack: string;
-    /** @deprecated */
-    webkitBoxShadow: string;
-    /** @deprecated */
-    webkitBoxSizing: string;
+    webkitBoxPack: string | null;
+    webkitBoxSizing: string | null;
     webkitColumnBreakAfter: string | null;
     webkitColumnBreakBefore: string | null;
     webkitColumnBreakInside: string | null;
@@ -2802,85 +2738,32 @@ interface CSSStyleDeclaration {
     webkitColumnSpan: string | null;
     webkitColumnWidth: any;
     webkitColumns: string | null;
-    /** @deprecated */
-    webkitFilter: string;
-    /** @deprecated */
-    webkitFlex: string;
-    /** @deprecated */
-    webkitFlexBasis: string;
-    /** @deprecated */
-    webkitFlexDirection: string;
-    /** @deprecated */
-    webkitFlexFlow: string;
-    /** @deprecated */
-    webkitFlexGrow: string;
-    /** @deprecated */
-    webkitFlexShrink: string;
-    /** @deprecated */
-    webkitFlexWrap: string;
-    /** @deprecated */
-    webkitJustifyContent: string;
-    /** @deprecated */
-    webkitMask: string;
-    /** @deprecated */
-    webkitMaskBoxImage: string;
-    /** @deprecated */
-    webkitMaskBoxImageOutset: string;
-    /** @deprecated */
-    webkitMaskBoxImageRepeat: string;
-    /** @deprecated */
-    webkitMaskBoxImageSlice: string;
-    /** @deprecated */
-    webkitMaskBoxImageSource: string;
-    /** @deprecated */
-    webkitMaskBoxImageWidth: string;
-    /** @deprecated */
-    webkitMaskClip: string;
-    /** @deprecated */
-    webkitMaskComposite: string;
-    /** @deprecated */
-    webkitMaskImage: string;
-    /** @deprecated */
-    webkitMaskOrigin: string;
-    /** @deprecated */
-    webkitMaskPosition: string;
-    /** @deprecated */
-    webkitMaskRepeat: string;
-    /** @deprecated */
-    webkitMaskSize: string;
-    /** @deprecated */
-    webkitOrder: string;
-    /** @deprecated */
-    webkitPerspective: string;
-    /** @deprecated */
-    webkitPerspectiveOrigin: string;
+    webkitFilter: string | null;
+    webkitFlex: string | null;
+    webkitFlexBasis: string | null;
+    webkitFlexDirection: string | null;
+    webkitFlexFlow: string | null;
+    webkitFlexGrow: string | null;
+    webkitFlexShrink: string | null;
+    webkitFlexWrap: string | null;
+    webkitJustifyContent: string | null;
+    webkitOrder: string | null;
+    webkitPerspective: string | null;
+    webkitPerspectiveOrigin: string | null;
     webkitTapHighlightColor: string | null;
-    /** @deprecated */
-    webkitTextFillColor: string;
-    /** @deprecated */
-    webkitTextSizeAdjust: string;
-    /** @deprecated */
-    webkitTextStroke: string;
-    /** @deprecated */
-    webkitTextStrokeColor: string;
-    /** @deprecated */
-    webkitTextStrokeWidth: string;
-    /** @deprecated */
-    webkitTransform: string;
-    /** @deprecated */
-    webkitTransformOrigin: string;
-    /** @deprecated */
-    webkitTransformStyle: string;
-    /** @deprecated */
-    webkitTransition: string;
-    /** @deprecated */
-    webkitTransitionDelay: string;
-    /** @deprecated */
-    webkitTransitionDuration: string;
-    /** @deprecated */
-    webkitTransitionProperty: string;
-    /** @deprecated */
-    webkitTransitionTimingFunction: string;
+    webkitTextFillColor: string | null;
+    webkitTextSizeAdjust: any;
+    webkitTextStroke: string | null;
+    webkitTextStrokeColor: string | null;
+    webkitTextStrokeWidth: string | null;
+    webkitTransform: string | null;
+    webkitTransformOrigin: string | null;
+    webkitTransformStyle: string | null;
+    webkitTransition: string | null;
+    webkitTransitionDelay: string | null;
+    webkitTransitionDuration: string | null;
+    webkitTransitionProperty: string | null;
+    webkitTransitionTimingFunction: string | null;
     webkitUserModify: string | null;
     webkitUserSelect: string | null;
     webkitWritingMode: string | null;
@@ -3361,14 +3244,14 @@ interface Coordinates {
     readonly speed: number | null;
 }
 
-interface CountQueuingStrategy extends QueuingStrategy {
+interface CountQueuingStrategy {
     highWaterMark: number;
-    size(chunk: any): 1;
+    size(): number;
 }
 
 declare var CountQueuingStrategy: {
     prototype: CountQueuingStrategy;
-    new(options: { highWaterMark: number }): CountQueuingStrategy;
+    new(strategy: QueuingStrategy): CountQueuingStrategy;
 };
 
 interface Crypto {
@@ -4124,7 +4007,7 @@ interface Document extends Node, NonElementParentNode, DocumentOrShadowRoot, Par
     /**
      * Gets a reference to the root node of the document.
      */
-    readonly documentElement: HTMLElement;
+    readonly documentElement: HTMLElement | null;
     /**
      * Returns document's URL.
      */
@@ -4156,7 +4039,7 @@ interface Document extends Node, NonElementParentNode, DocumentOrShadowRoot, Par
     /**
      * Returns the head element.
      */
-    readonly head: HTMLHeadElement;
+    readonly head: HTMLHeadElement | null;
     readonly hidden: boolean;
     /**
      * Retrieves a collection, in source order, of img objects in the document.
@@ -4186,7 +4069,7 @@ interface Document extends Node, NonElementParentNode, DocumentOrShadowRoot, Par
     /**
      * Contains information about the current URL.
      */
-    location: Location;
+    location: Location | null;
     onfullscreenchange: ((this: Document, ev: Event) => any) | null;
     onfullscreenerror: ((this: Document, ev: Event) => any) | null;
     /**
@@ -4236,7 +4119,6 @@ interface Document extends Node, NonElementParentNode, DocumentOrShadowRoot, Par
     /** @deprecated */
     captureEvents(): void;
     caretPositionFromPoint(x: number, y: number): CaretPosition | null;
-    /** @deprecated */
     caretRangeFromPoint(x: number, y: number): Range;
     /** @deprecated */
     clear(): void;
@@ -4290,7 +4172,6 @@ interface Document extends Node, NonElementParentNode, DocumentOrShadowRoot, Par
     createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "circle"): SVGCircleElement;
     createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "clipPath"): SVGClipPathElement;
     createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "componentTransferFunction"): SVGComponentTransferFunctionElement;
-    createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "cursor"): SVGCursorElement;
     createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "defs"): SVGDefsElement;
     createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "desc"): SVGDescElement;
     createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "ellipse"): SVGEllipseElement;
@@ -4463,9 +4344,7 @@ interface Document extends Node, NonElementParentNode, DocumentOrShadowRoot, Par
      * @param filter A custom NodeFilter function to use.
      * @param entityReferenceExpansion A flag that specifies whether entity reference nodes are expanded.
      */
-    createTreeWalker(root: Node, whatToShow?: number, filter?: NodeFilter | null): TreeWalker;
-    /** @deprecated */
-    createTreeWalker(root: Node, whatToShow: number, filter: NodeFilter | null, entityReferenceExpansion?: boolean): TreeWalker;
+    createTreeWalker(root: Node, whatToShow?: number, filter?: NodeFilter | null, entityReferenceExpansion?: boolean): TreeWalker;
     /**
      * Returns the element for the specified x coordinate and the specified y coordinate.
      * @param x The x-offset
@@ -4473,7 +4352,7 @@ interface Document extends Node, NonElementParentNode, DocumentOrShadowRoot, Par
      */
     elementFromPoint(x: number, y: number): Element | null;
     elementsFromPoint(x: number, y: number): Element[];
-    evaluate(expression: string, contextNode: Node, resolver: XPathNSResolver | ((prefix: string) => string | null) | null, type: number, result: XPathResult | null): XPathResult;
+    evaluate(expression: string, contextNode: Node, resolver: XPathNSResolver | null, type: number, result: XPathResult | null): XPathResult;
     /**
      * Executes a command on the current document, current selection, or the given range.
      * @param commandId String that specifies the command to execute. This command can be any of the command identifiers that can be executed in script.
@@ -4694,9 +4573,6 @@ interface DocumentOrShadowRoot {
      * Retrieves a collection of styleSheet objects representing the style sheets that correspond to each instance of a link or style object in the document.
      */
     readonly styleSheets: StyleSheetList;
-    caretPositionFromPoint(x: number, y: number): CaretPosition | null;
-    /** @deprecated */
-    caretRangeFromPoint(x: number, y: number): Range;
     elementFromPoint(x: number, y: number): Element | null;
     elementsFromPoint(x: number, y: number): Element[];
     getSelection(): Selection | null;
@@ -4748,27 +4624,34 @@ declare var DynamicsCompressorNode: {
 };
 
 interface EXT_blend_minmax {
-    readonly MAX_EXT: GLenum;
-    readonly MIN_EXT: GLenum;
+    readonly MAX_EXT: number;
+    readonly MIN_EXT: number;
 }
 
 interface EXT_frag_depth {
 }
 
 interface EXT_sRGB {
-    readonly FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT: GLenum;
-    readonly SRGB8_ALPHA8_EXT: GLenum;
-    readonly SRGB_ALPHA_EXT: GLenum;
-    readonly SRGB_EXT: GLenum;
+    readonly FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT: number;
+    readonly SRGB8_ALPHA8_EXT: number;
+    readonly SRGB_ALPHA_EXT: number;
+    readonly SRGB_EXT: number;
 }
 
 interface EXT_shader_texture_lod {
 }
 
 interface EXT_texture_filter_anisotropic {
-    readonly MAX_TEXTURE_MAX_ANISOTROPY_EXT: GLenum;
-    readonly TEXTURE_MAX_ANISOTROPY_EXT: GLenum;
+    readonly MAX_TEXTURE_MAX_ANISOTROPY_EXT: number;
+    readonly TEXTURE_MAX_ANISOTROPY_EXT: number;
 }
+
+declare var EXT_texture_filter_anisotropic: {
+    prototype: EXT_texture_filter_anisotropic;
+    new(): EXT_texture_filter_anisotropic;
+    readonly MAX_TEXTURE_MAX_ANISOTROPY_EXT: number;
+    readonly TEXTURE_MAX_ANISOTROPY_EXT: number;
+};
 
 interface ElementEventMap {
     "fullscreenchange": Event;
@@ -4987,7 +4870,6 @@ interface Event {
      */
     readonly isTrusted: boolean;
     returnValue: boolean;
-    /** @deprecated */
     readonly srcElement: Element | null;
     /**
      * Returns the object to which event is dispatched (its target).
@@ -5154,7 +5036,7 @@ interface FileReader extends EventTarget {
     readAsArrayBuffer(blob: Blob): void;
     readAsBinaryString(blob: Blob): void;
     readAsDataURL(blob: Blob): void;
-    readAsText(blob: Blob, encoding?: string): void;
+    readAsText(blob: Blob, label?: string): void;
     readonly DONE: number;
     readonly EMPTY: number;
     readonly LOADING: number;
@@ -6641,7 +6523,6 @@ interface HTMLIFrameElement extends HTMLElement, GetSVGDocument {
      * Sets or retrieves the frame name.
      */
     name: string;
-    readonly referrerPolicy: ReferrerPolicy;
     readonly sandbox: DOMTokenList;
     /**
      * Sets or retrieves whether the frame can be scrolled.
@@ -7277,7 +7158,7 @@ interface HTMLMediaElement extends HTMLElement {
      */
     readonly seekable: TimeRanges;
     /**
-     * Gets a flag that indicates whether the client is currently moving to a new playback position in the media resource.
+     * Gets a flag that indicates whether the the client is currently moving to a new playback position in the media resource.
      */
     readonly seeking: boolean;
     /**
@@ -9426,9 +9307,7 @@ interface Location {
     /**
      * Reloads the current page.
      */
-    reload(): void;
-    /** @deprecated */
-    reload(forcedReload: boolean): void;
+    reload(forcedReload?: boolean): void;
     /**
      * Removes the current page from the session history and navigates to the given URL.
      */
@@ -9849,7 +9728,7 @@ interface MediaQueryList extends EventTarget {
     /** @deprecated */
     addListener(listener: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null): void;
     /** @deprecated */
-    removeListener(listener: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null): void;
+    removeListener(listener: EventListenerOrEventListenerObject | null): void;
     addEventListener<K extends keyof MediaQueryListEventMap>(type: K, listener: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
     removeEventListener<K extends keyof MediaQueryListEventMap>(type: K, listener: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
@@ -10402,7 +10281,6 @@ interface Node extends EventTarget {
      * Returns the last child.
      */
     readonly lastChild: ChildNode | null;
-    /** @deprecated */
     readonly namespaceURI: string | null;
     /**
      * Returns the next sibling.
@@ -10675,29 +10553,61 @@ declare var Notification: {
 interface OES_element_index_uint {
 }
 
+declare var OES_element_index_uint: {
+    prototype: OES_element_index_uint;
+    new(): OES_element_index_uint;
+};
+
 interface OES_standard_derivatives {
-    readonly FRAGMENT_SHADER_DERIVATIVE_HINT_OES: GLenum;
+    readonly FRAGMENT_SHADER_DERIVATIVE_HINT_OES: number;
 }
+
+declare var OES_standard_derivatives: {
+    prototype: OES_standard_derivatives;
+    new(): OES_standard_derivatives;
+    readonly FRAGMENT_SHADER_DERIVATIVE_HINT_OES: number;
+};
 
 interface OES_texture_float {
 }
 
+declare var OES_texture_float: {
+    prototype: OES_texture_float;
+    new(): OES_texture_float;
+};
+
 interface OES_texture_float_linear {
 }
 
+declare var OES_texture_float_linear: {
+    prototype: OES_texture_float_linear;
+    new(): OES_texture_float_linear;
+};
+
 interface OES_texture_half_float {
-    readonly HALF_FLOAT_OES: GLenum;
+    readonly HALF_FLOAT_OES: number;
 }
+
+declare var OES_texture_half_float: {
+    prototype: OES_texture_half_float;
+    new(): OES_texture_half_float;
+    readonly HALF_FLOAT_OES: number;
+};
 
 interface OES_texture_half_float_linear {
 }
 
+declare var OES_texture_half_float_linear: {
+    prototype: OES_texture_half_float_linear;
+    new(): OES_texture_half_float_linear;
+};
+
 interface OES_vertex_array_object {
-    bindVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES | null): void;
-    createVertexArrayOES(): WebGLVertexArrayObjectOES | null;
-    deleteVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES | null): void;
-    isVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES | null): GLboolean;
-    readonly VERTEX_ARRAY_BINDING_OES: GLenum;
+    readonly VERTEX_ARRAY_BINDING_OES: number;
+    bindVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): void;
+    createVertexArrayOES(): WebGLVertexArrayObjectOES;
+    deleteVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): void;
+    isVertexArrayOES(value: any): value is WebGLVertexArrayObjectOES;
 }
 
 interface OfflineAudioCompletionEvent extends Event {
@@ -11887,70 +11797,20 @@ declare var Range: {
     readonly START_TO_START: number;
 };
 
-interface ReadableByteStreamController {
-    readonly byobRequest: ReadableStreamBYOBRequest | undefined;
-    readonly desiredSize: number | null;
-    close(): void;
-    enqueue(chunk: ArrayBufferView): void;
-    error(error?: any): void;
-}
-
-interface ReadableStream<R = any> {
+interface ReadableStream {
     readonly locked: boolean;
-    cancel(reason?: any): Promise<void>;
-    getReader(options: { mode: "byob" }): ReadableStreamBYOBReader;
-    getReader(): ReadableStreamDefaultReader<R>;
-    pipeThrough<T>({ writable, readable }: { writable: WritableStream<R>, readable: ReadableStream<T> }, options?: PipeOptions): ReadableStream<T>;
-    pipeTo(dest: WritableStream<R>, options?: PipeOptions): Promise<void>;
-    tee(): [ReadableStream<R>, ReadableStream<R>];
+    cancel(): Promise<void>;
+    getReader(): ReadableStreamReader;
 }
 
 declare var ReadableStream: {
     prototype: ReadableStream;
-    new(underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number, size?: undefined }): ReadableStream<Uint8Array>;
-    new<R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>;
+    new(): ReadableStream;
 };
 
-interface ReadableStreamBYOBReader {
-    readonly closed: Promise<void>;
-    cancel(reason?: any): Promise<void>;
-    read<T extends ArrayBufferView>(view: T): Promise<ReadableStreamReadResult<T>>;
-    releaseLock(): void;
-}
-
-declare var ReadableStreamBYOBReader: {
-    prototype: ReadableStreamBYOBReader;
-    new(stream: ReadableStream<Uint8Array>): ReadableStreamBYOBReader;
-};
-
-interface ReadableStreamBYOBRequest {
-    readonly view: ArrayBufferView;
-    respond(bytesWritten: number): void;
-    respondWithNewView(view: ArrayBufferView): void;
-}
-
-interface ReadableStreamDefaultController<R = any> {
-    readonly desiredSize: number | null;
-    close(): void;
-    enqueue(chunk: R): void;
-    error(error?: any): void;
-}
-
-interface ReadableStreamDefaultReader<R = any> {
-    readonly closed: Promise<void>;
-    cancel(reason?: any): Promise<void>;
-    read(): Promise<ReadableStreamReadResult<R>>;
-    releaseLock(): void;
-}
-
-interface ReadableStreamReadResult<T> {
-    done: boolean;
-    value: T;
-}
-
-interface ReadableStreamReader<R = any> {
+interface ReadableStreamReader {
     cancel(): Promise<void>;
-    read(): Promise<ReadableStreamReadResult<R>>;
+    read(): Promise<any>;
     releaseLock(): void;
 }
 
@@ -11962,7 +11822,7 @@ declare var ReadableStreamReader: {
 interface Request extends Body {
     /**
      * Returns the cache mode associated with request, which is a string indicating
-     * how the request will interact with the browser's cache when fetching.
+     * how the the request will interact with the browser's cache when fetching.
      */
     readonly cache: RequestCache;
     /**
@@ -12100,42 +11960,6 @@ declare var SVGAngle: {
     readonly SVG_ANGLETYPE_UNSPECIFIED: number;
 };
 
-interface SVGAnimateElement extends SVGAnimationElement {
-    addEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimateElement, ev: SVGElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-    removeEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimateElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-
-declare var SVGAnimateElement: {
-    prototype: SVGAnimateElement;
-    new(): SVGAnimateElement;
-};
-
-interface SVGAnimateMotionElement extends SVGAnimationElement {
-    addEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimateMotionElement, ev: SVGElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-    removeEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimateMotionElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-
-declare var SVGAnimateMotionElement: {
-    prototype: SVGAnimateMotionElement;
-    new(): SVGAnimateMotionElement;
-};
-
-interface SVGAnimateTransformElement extends SVGAnimationElement {
-    addEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimateTransformElement, ev: SVGElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-    removeEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimateTransformElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-
-declare var SVGAnimateTransformElement: {
-    prototype: SVGAnimateTransformElement;
-    new(): SVGAnimateTransformElement;
-};
-
 interface SVGAnimatedAngle {
     readonly animVal: SVGAngle;
     readonly baseVal: SVGAngle;
@@ -12261,22 +12085,6 @@ declare var SVGAnimatedTransformList: {
     new(): SVGAnimatedTransformList;
 };
 
-interface SVGAnimationElement extends SVGElement {
-    readonly targetElement: SVGElement;
-    getCurrentTime(): number;
-    getSimpleDuration(): number;
-    getStartTime(): number;
-    addEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimationElement, ev: SVGElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-    removeEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGAnimationElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-
-declare var SVGAnimationElement: {
-    prototype: SVGAnimationElement;
-    new(): SVGAnimationElement;
-};
-
 interface SVGCircleElement extends SVGGraphicsElement {
     readonly cx: SVGAnimatedLength;
     readonly cy: SVGAnimatedLength;
@@ -12334,20 +12142,6 @@ declare var SVGComponentTransferFunctionElement: {
     readonly SVG_FECOMPONENTTRANSFER_TYPE_LINEAR: number;
     readonly SVG_FECOMPONENTTRANSFER_TYPE_TABLE: number;
     readonly SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN: number;
-};
-
-interface SVGCursorElement extends SVGElement {
-    readonly x: SVGAnimatedLength;
-    readonly y: SVGAnimatedLength;
-    addEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGCursorElement, ev: SVGElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-    removeEventListener<K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGCursorElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-
-declare var SVGCursorElement: {
-    prototype: SVGCursorElement;
-    new(): SVGCursorElement;
 };
 
 interface SVGDefsElement extends SVGGraphicsElement {
@@ -15007,23 +14801,6 @@ declare var TrackEvent: {
     new(typeArg: string, eventInitDict?: TrackEventInit): TrackEvent;
 };
 
-interface TransformStream<I = any, O = any> {
-    readonly readable: ReadableStream<O>;
-    readonly writable: WritableStream<I>;
-}
-
-declare var TransformStream: {
-    prototype: TransformStream;
-    new<I = any, O = any>(transformer?: Transformer<I, O>, writableStrategy?: QueuingStrategy<I>, readableStrategy?: QueuingStrategy<O>): TransformStream<I, O>;
-};
-
-interface TransformStreamDefaultController<O = any> {
-    readonly desiredSize: number | null;
-    enqueue(chunk: O): void;
-    error(reason?: any): void;
-    terminate(): void;
-}
-
 interface TransitionEvent extends Event {
     readonly elapsedTime: number;
     readonly propertyName: string;
@@ -15341,106 +15118,129 @@ declare var VideoTrackList: {
 };
 
 interface WEBGL_color_buffer_float {
-    readonly FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: GLenum;
-    readonly RGBA32F_EXT: GLenum;
-    readonly UNSIGNED_NORMALIZED_EXT: GLenum;
+    readonly FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: number;
+    readonly RGB32F_EXT: number;
+    readonly RGBA32F_EXT: number;
+    readonly UNSIGNED_NORMALIZED_EXT: number;
 }
 
 interface WEBGL_compressed_texture_astc {
+    readonly COMPRESSED_RGBA_ASTC_10x10_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_10x5_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_10x6_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_10x8_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_12x10_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_12x12_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_4x4_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_5x4_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_5x5_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_6x5_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_6x6_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_8x5_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_8x6_KHR: number;
+    readonly COMPRESSED_RGBA_ASTC_8x8_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR: number;
+    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR: number;
     getSupportedProfiles(): string[];
-    readonly COMPRESSED_RGBA_ASTC_10x10_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_10x5_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_10x6_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_10x8_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_12x10_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_12x12_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_4x4_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_5x4_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_5x5_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_6x5_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_6x6_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_8x5_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_8x6_KHR: GLenum;
-    readonly COMPRESSED_RGBA_ASTC_8x8_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR: GLenum;
-    readonly COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR: GLenum;
 }
 
 interface WEBGL_compressed_texture_s3tc {
-    readonly COMPRESSED_RGBA_S3TC_DXT1_EXT: GLenum;
-    readonly COMPRESSED_RGBA_S3TC_DXT3_EXT: GLenum;
-    readonly COMPRESSED_RGBA_S3TC_DXT5_EXT: GLenum;
-    readonly COMPRESSED_RGB_S3TC_DXT1_EXT: GLenum;
+    readonly COMPRESSED_RGBA_S3TC_DXT1_EXT: number;
+    readonly COMPRESSED_RGBA_S3TC_DXT3_EXT: number;
+    readonly COMPRESSED_RGBA_S3TC_DXT5_EXT: number;
+    readonly COMPRESSED_RGB_S3TC_DXT1_EXT: number;
 }
 
+declare var WEBGL_compressed_texture_s3tc: {
+    prototype: WEBGL_compressed_texture_s3tc;
+    new(): WEBGL_compressed_texture_s3tc;
+    readonly COMPRESSED_RGBA_S3TC_DXT1_EXT: number;
+    readonly COMPRESSED_RGBA_S3TC_DXT3_EXT: number;
+    readonly COMPRESSED_RGBA_S3TC_DXT5_EXT: number;
+    readonly COMPRESSED_RGB_S3TC_DXT1_EXT: number;
+};
+
 interface WEBGL_compressed_texture_s3tc_srgb {
-    readonly COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: GLenum;
-    readonly COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: GLenum;
-    readonly COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: GLenum;
-    readonly COMPRESSED_SRGB_S3TC_DXT1_EXT: GLenum;
+    readonly COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: number;
+    readonly COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: number;
+    readonly COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: number;
+    readonly COMPRESSED_SRGB_S3TC_DXT1_EXT: number;
 }
 
 interface WEBGL_debug_renderer_info {
-    readonly UNMASKED_RENDERER_WEBGL: GLenum;
-    readonly UNMASKED_VENDOR_WEBGL: GLenum;
+    readonly UNMASKED_RENDERER_WEBGL: number;
+    readonly UNMASKED_VENDOR_WEBGL: number;
 }
+
+declare var WEBGL_debug_renderer_info: {
+    prototype: WEBGL_debug_renderer_info;
+    new(): WEBGL_debug_renderer_info;
+    readonly UNMASKED_RENDERER_WEBGL: number;
+    readonly UNMASKED_VENDOR_WEBGL: number;
+};
 
 interface WEBGL_debug_shaders {
     getTranslatedShaderSource(shader: WebGLShader): string;
 }
 
 interface WEBGL_depth_texture {
-    readonly UNSIGNED_INT_24_8_WEBGL: GLenum;
+    readonly UNSIGNED_INT_24_8_WEBGL: number;
 }
 
+declare var WEBGL_depth_texture: {
+    prototype: WEBGL_depth_texture;
+    new(): WEBGL_depth_texture;
+    readonly UNSIGNED_INT_24_8_WEBGL: number;
+};
+
 interface WEBGL_draw_buffers {
-    drawBuffersWEBGL(buffers: GLenum[]): void;
-    readonly COLOR_ATTACHMENT0_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT10_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT11_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT12_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT13_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT14_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT15_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT1_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT2_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT3_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT4_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT5_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT6_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT7_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT8_WEBGL: GLenum;
-    readonly COLOR_ATTACHMENT9_WEBGL: GLenum;
-    readonly DRAW_BUFFER0_WEBGL: GLenum;
-    readonly DRAW_BUFFER10_WEBGL: GLenum;
-    readonly DRAW_BUFFER11_WEBGL: GLenum;
-    readonly DRAW_BUFFER12_WEBGL: GLenum;
-    readonly DRAW_BUFFER13_WEBGL: GLenum;
-    readonly DRAW_BUFFER14_WEBGL: GLenum;
-    readonly DRAW_BUFFER15_WEBGL: GLenum;
-    readonly DRAW_BUFFER1_WEBGL: GLenum;
-    readonly DRAW_BUFFER2_WEBGL: GLenum;
-    readonly DRAW_BUFFER3_WEBGL: GLenum;
-    readonly DRAW_BUFFER4_WEBGL: GLenum;
-    readonly DRAW_BUFFER5_WEBGL: GLenum;
-    readonly DRAW_BUFFER6_WEBGL: GLenum;
-    readonly DRAW_BUFFER7_WEBGL: GLenum;
-    readonly DRAW_BUFFER8_WEBGL: GLenum;
-    readonly DRAW_BUFFER9_WEBGL: GLenum;
-    readonly MAX_COLOR_ATTACHMENTS_WEBGL: GLenum;
-    readonly MAX_DRAW_BUFFERS_WEBGL: GLenum;
+    readonly COLOR_ATTACHMENT0_WEBGL: number;
+    readonly COLOR_ATTACHMENT10_WEBGL: number;
+    readonly COLOR_ATTACHMENT11_WEBGL: number;
+    readonly COLOR_ATTACHMENT12_WEBGL: number;
+    readonly COLOR_ATTACHMENT13_WEBGL: number;
+    readonly COLOR_ATTACHMENT14_WEBGL: number;
+    readonly COLOR_ATTACHMENT15_WEBGL: number;
+    readonly COLOR_ATTACHMENT1_WEBGL: number;
+    readonly COLOR_ATTACHMENT2_WEBGL: number;
+    readonly COLOR_ATTACHMENT3_WEBGL: number;
+    readonly COLOR_ATTACHMENT4_WEBGL: number;
+    readonly COLOR_ATTACHMENT5_WEBGL: number;
+    readonly COLOR_ATTACHMENT6_WEBGL: number;
+    readonly COLOR_ATTACHMENT7_WEBGL: number;
+    readonly COLOR_ATTACHMENT8_WEBGL: number;
+    readonly COLOR_ATTACHMENT9_WEBGL: number;
+    readonly DRAW_BUFFER0_WEBGL: number;
+    readonly DRAW_BUFFER10_WEBGL: number;
+    readonly DRAW_BUFFER11_WEBGL: number;
+    readonly DRAW_BUFFER12_WEBGL: number;
+    readonly DRAW_BUFFER13_WEBGL: number;
+    readonly DRAW_BUFFER14_WEBGL: number;
+    readonly DRAW_BUFFER15_WEBGL: number;
+    readonly DRAW_BUFFER1_WEBGL: number;
+    readonly DRAW_BUFFER2_WEBGL: number;
+    readonly DRAW_BUFFER3_WEBGL: number;
+    readonly DRAW_BUFFER4_WEBGL: number;
+    readonly DRAW_BUFFER5_WEBGL: number;
+    readonly DRAW_BUFFER6_WEBGL: number;
+    readonly DRAW_BUFFER7_WEBGL: number;
+    readonly DRAW_BUFFER8_WEBGL: number;
+    readonly DRAW_BUFFER9_WEBGL: number;
+    readonly MAX_COLOR_ATTACHMENTS_WEBGL: number;
+    readonly MAX_DRAW_BUFFERS_WEBGL: number;
+    drawBuffersWEBGL(buffers: number[]): void;
 }
 
 interface WEBGL_lose_context {
@@ -16342,7 +16142,7 @@ declare var WebGLUniformLocation: {
     new(): WebGLUniformLocation;
 };
 
-interface WebGLVertexArrayObjectOES extends WebGLObject {
+interface WebGLVertexArrayObjectOES {
 }
 
 interface WebKitPoint {
@@ -16399,6 +16199,9 @@ interface WheelEvent extends MouseEvent {
     readonly deltaX: number;
     readonly deltaY: number;
     readonly deltaZ: number;
+    readonly wheelDelta: number;
+    readonly wheelDeltaX: number;
+    readonly wheelDeltaY: number;
     getCurrentPoint(element: Element): void;
     initWheelEvent(typeArg: string, canBubbleArg: boolean, cancelableArg: boolean, viewArg: Window, detailArg: number, screenXArg: number, screenYArg: number, clientXArg: number, clientYArg: number, buttonArg: number, relatedTargetArg: EventTarget, modifiersListArg: string, deltaXArg: number, deltaYArg: number, deltaZArg: number, deltaMode: number): void;
     readonly DOM_DELTA_LINE: number;
@@ -16745,7 +16548,7 @@ interface Worker extends EventTarget, AbstractWorker {
 
 declare var Worker: {
     prototype: Worker;
-    new(stringUrl: string, options?: WorkerOptions): Worker;
+    new(stringUrl: string): Worker;
 };
 
 interface Worklet {
@@ -16757,30 +16560,40 @@ declare var Worklet: {
     new(): Worklet;
 };
 
-interface WritableStream<W = any> {
+interface WritableStream {
     readonly locked: boolean;
     abort(reason?: any): Promise<void>;
-    getWriter(): WritableStreamDefaultWriter<W>;
+    getWriter(): WritableStreamDefaultWriter;
 }
 
 declare var WritableStream: {
     prototype: WritableStream;
-    new<W = any>(underlyingSink?: UnderlyingSink<W>, strategy?: QueuingStrategy<W>): WritableStream<W>;
+    new(underlyingSink?: UnderlyingSink, strategy?: QueuingStrategy): WritableStream;
 };
 
 interface WritableStreamDefaultController {
     error(error?: any): void;
 }
 
-interface WritableStreamDefaultWriter<W = any> {
+declare var WritableStreamDefaultController: {
+    prototype: WritableStreamDefaultController;
+    new(): WritableStreamDefaultController;
+};
+
+interface WritableStreamDefaultWriter {
     readonly closed: Promise<void>;
-    readonly desiredSize: number | null;
+    readonly desiredSize: number;
     readonly ready: Promise<void>;
     abort(reason?: any): Promise<void>;
     close(): Promise<void>;
     releaseLock(): void;
-    write(chunk: W): Promise<void>;
+    write(chunk?: any): Promise<any>;
 }
+
+declare var WritableStreamDefaultWriter: {
+    prototype: WritableStreamDefaultWriter;
+    new(): WritableStreamDefaultWriter;
+};
 
 interface XMLDocument extends Document {
     addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: XMLDocument, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -16962,7 +16775,7 @@ declare var XMLSerializer: {
 interface XPathEvaluator {
     createExpression(expression: string, resolver: XPathNSResolver): XPathExpression;
     createNSResolver(nodeResolver?: Node): XPathNSResolver;
-    evaluate(expression: string, contextNode: Node, resolver: XPathNSResolver | ((prefix: string) => string | null) | null, type: number, result: XPathResult | null): XPathResult;
+    evaluate(expression: string, contextNode: Node, resolver: XPathNSResolver | null, type: number, result: XPathResult | null): XPathResult;
 }
 
 declare var XPathEvaluator: {
@@ -16980,7 +16793,7 @@ declare var XPathExpression: {
 };
 
 interface XPathNSResolver {
-    lookupNamespaceURI(prefix: string): string | null;
+    lookupNamespaceURI(prefix: string): string;
 }
 
 declare var XPathNSResolver: {
@@ -17131,10 +16944,6 @@ interface PositionErrorCallback {
     (positionError: PositionError): void;
 }
 
-interface QueuingStrategySizeCallback<T = any> {
-    (chunk: T): number;
-}
-
 interface RTCPeerConnectionErrorCallback {
     (error: DOMException): void;
 }
@@ -17147,44 +16956,20 @@ interface RTCStatsCallback {
     (report: RTCStatsReport): void;
 }
 
-interface ReadableByteStreamControllerCallback {
-    (controller: ReadableByteStreamController): void | PromiseLike<void>;
-}
-
-interface ReadableStreamDefaultControllerCallback<R> {
-    (controller: ReadableStreamDefaultController<R>): void | PromiseLike<void>;
-}
-
-interface ReadableStreamErrorCallback {
-    (reason: any): void | PromiseLike<void>;
-}
-
-interface TransformStreamDefaultControllerCallback<O> {
-    (controller: TransformStreamDefaultController<O>): void | PromiseLike<void>;
-}
-
-interface TransformStreamDefaultControllerTransformCallback<I, O> {
-    (chunk: I, controller: TransformStreamDefaultController<O>): void | PromiseLike<void>;
-}
-
 interface VoidFunction {
     (): void;
 }
 
-interface WritableStreamDefaultControllerCloseCallback {
-    (): void | PromiseLike<void>;
+interface WritableStreamChunkCallback {
+    (chunk: any, controller: WritableStreamDefaultController): void;
 }
 
-interface WritableStreamDefaultControllerStartCallback {
-    (controller: WritableStreamDefaultController): void | PromiseLike<void>;
-}
-
-interface WritableStreamDefaultControllerWriteCallback<W> {
-    (chunk: W, controller: WritableStreamDefaultController): void | PromiseLike<void>;
+interface WritableStreamDefaultControllerCallback {
+    (controller: WritableStreamDefaultController): void;
 }
 
 interface WritableStreamErrorCallback {
-    (reason: any): void | PromiseLike<void>;
+    (reason: string): void;
 }
 
 interface HTMLElementTagNameMap {
@@ -17818,7 +17603,7 @@ declare function removeEventListener<K extends keyof WindowEventMap>(type: K, li
 declare function removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 type BlobPart = BufferSource | Blob | string;
 type HeadersInit = Headers | string[][] | Record<string, string>;
-type BodyInit = Blob | BufferSource | FormData | URLSearchParams | ReadableStream<Uint8Array> | string;
+type BodyInit = Blob | BufferSource | FormData | URLSearchParams | ReadableStream | string;
 type RequestInfo = Request | string;
 type DOMHighResTimeStamp = number;
 type RenderingContext = CanvasRenderingContext2D | ImageBitmapRenderingContext | WebGLRenderingContext;
@@ -17864,7 +17649,6 @@ type IDBKeyPath = string;
 type Transferable = ArrayBuffer | MessagePort | ImageBitmap;
 type RTCIceGatherCandidate = RTCIceCandidateDictionary | RTCIceCandidateComplete;
 type RTCTransport = RTCDtlsTransport | RTCSrtpSdesTransport;
-/** @deprecated */
 type MouseWheelEvent = WheelEvent;
 type WindowProxy = Window;
 type AlignSetting = "start" | "center" | "end" | "left" | "right";
@@ -17887,13 +17671,11 @@ type ChannelCountMode = "max" | "clamped-max" | "explicit";
 type ChannelInterpretation = "speakers" | "discrete";
 type ClientTypes = "window" | "worker" | "sharedworker" | "all";
 type CompositeOperation = "replace" | "add" | "accumulate";
-type CompositeOperationOrAuto = "replace" | "add" | "accumulate" | "auto";
 type DirectionSetting = "" | "rl" | "lr";
 type DisplayCaptureSurfaceType = "monitor" | "window" | "application" | "browser";
 type DistanceModelType = "linear" | "inverse" | "exponential";
 type DocumentReadyState = "loading" | "interactive" | "complete";
 type EndOfStreamError = "network" | "decode";
-type EndingType = "transparent" | "native";
 type FillMode = "none" | "forwards" | "backwards" | "both" | "auto";
 type GamepadHand = "" | "left" | "right";
 type GamepadHapticActuatorType = "vibration";
@@ -17972,7 +17754,7 @@ type RequestMode = "navigate" | "same-origin" | "no-cors" | "cors";
 type RequestRedirect = "follow" | "error" | "manual";
 type ResponseType = "basic" | "cors" | "default" | "error" | "opaque" | "opaqueredirect";
 type ScopedCredentialType = "ScopedCred";
-type ScrollBehavior = "auto" | "smooth";
+type ScrollBehavior = "auto" | "instant" | "smooth";
 type ScrollLogicalPosition = "start" | "center" | "end" | "nearest";
 type ScrollRestoration = "auto" | "manual";
 type ScrollSetting = "" | "up";
