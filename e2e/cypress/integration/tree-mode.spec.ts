@@ -2,17 +2,17 @@ import { forAllCompilerVersions, visitSite, setVersion, setEditorText, setTreeMo
 import { TreeMode } from "../../../src/types";
 
 forAllCompilerVersions(packageName => {
-    describe(`forEachChild tree mode (${packageName})`, () => {
+    describe(`getChildren tree mode (${packageName})`, () => {
         before(() => {
             visitSite();
             setVersion(packageName);
-            setTreeMode(TreeMode.forEachChild);
-            setEditorText("class Test {}");
+            setTreeMode(TreeMode.getChildren);
+            setEditorText("console.log('test');");
         });
 
         after(() => {
             // revert for next tests
-            setTreeMode(TreeMode.getChildren);
+            setTreeMode(TreeMode.forEachChild);
         });
 
         checkState({
@@ -20,9 +20,33 @@ forAllCompilerVersions(packageName => {
                 name: "SourceFile",
                 selected: true,
                 children: [{
-                    name: "ClassDeclaration",
+                    name: "SyntaxList",
                     children: [{
-                        name: "Identifier"
+                        name: "ExpressionStatement",
+                        children: [{
+                            name: "CallExpression",
+                            children: [{
+                                name: "PropertyAccessExpression",
+                                children: [{
+                                    name: "Identifier"
+                                }, {
+                                    name: "DotToken"
+                                }, {
+                                    name: "Identifier"
+                                }]
+                            }, {
+                                name: "OpenParenToken",
+                            }, {
+                                name: "SyntaxList",
+                                children: [{
+                                    name: "StringLiteral"
+                                }]
+                            }, {
+                                name: "CloseParenToken",
+                            }]
+                        }, {
+                            name: "SemicolonToken"
+                        }]
                     }]
                 }, {
                     name: "EndOfFileToken"
@@ -32,7 +56,7 @@ forAllCompilerVersions(packageName => {
                 name: "SourceFile",
                 pos: 0,
                 start: 0,
-                end: 13
+                end: 20
             }
         });
     });

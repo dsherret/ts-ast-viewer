@@ -10,16 +10,18 @@ import "./external/react-treeview.css";
 import "./external/react-splitpane.css";
 import { StoreState, TreeMode, ApiLoadingState } from "./types";
 import { appReducer } from "./reducers";
+import { StateSaver } from "./utils";
 
 const initialScriptTarget: ScriptTarget = 6 /* Latest */;
 const initialScriptKind: ScriptKind = 4 /* TSX */;
 const initialCode = "";
+const stateSaver = new StateSaver();
 const store = createStore<StoreState>(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
     code: initialCode,
     options: {
         compilerPackageName: "typescript",
-        treeMode: TreeMode.getChildren,
+        treeMode: stateSaver.get().treeMode,
         scriptTarget: initialScriptTarget,
         scriptKind: initialScriptKind
     },
@@ -35,6 +37,17 @@ ReactDOM.render(
 
 // doing this for now because service workers were not playing nicely with the website being updated every day for @next support
 unregisterServiceWorker();
+
+// save changes
+store.subscribe(() => {
+    const state = store.getState();
+    if (state.options == null)
+        return;
+
+    const savedState = stateSaver.get();
+    savedState.treeMode = state.options.treeMode;
+    stateSaver.set(savedState);
+});
 
 // set global variables
 console.log("[ts-ast-viewer]: Inspect the ts, selectedNode, sourceFile, symbol, type, program, and typeChecker global variables here in the console.");

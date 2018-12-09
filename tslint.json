@@ -22,12 +22,7 @@
         "jsx-no-multiline-js": false,
         "label-position": true,
         "max-line-length": [ true, 180 ],
-        "member-ordering": [
-            true,
-            "public-before-private",
-            "static-before-instance",
-            "variables-before-functions"
-        ],
+        "member-ordering": false,
         "no-any": false,
         "no-arg": true,
         "no-bitwise": false,

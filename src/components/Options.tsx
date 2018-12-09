@@ -2,6 +2,7 @@ import React from "react";
 import { CompilerApi, ScriptKind, ScriptTarget, compilerVersionCollection, compilerPackageNames } from "../compiler";
 import { OptionsState, TreeMode } from "../types";
 import { css as cssConstants } from "../constants";
+import { EnumUtils } from "../utils";
 
 export interface OptionsProps {
     api: CompilerApi | undefined;
@@ -56,8 +57,8 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                 value={this.props.options.treeMode}
                 onChange={event => this.onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}
             >
-                <option value={TreeMode.getChildren}>node.getChildren()</option>
                 <option value={TreeMode.forEachChild}>node.forEachChild(child => ...)</option>
+                <option value={TreeMode.getChildren}>node.getChildren()</option>
             </select>
         );
         return (<Option name="Tree mode" value={selection} />);
@@ -82,14 +83,12 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
     private getEnumOption(name: string, prefix: string, e: any, currentValue: number, onChange: (value: number) => void) {
         const selection = (
             <select value={currentValue} onChange={(event) => onChange(parseInt(event.target.value, 10))}>
-                {Object.keys(e)
-                    .filter(key => !isNaN(parseInt(key, 10)))
-                    .map(kind => getOption(parseInt(kind, 10)))}
+                {EnumUtils.getValues(e).map(kind => getOption(kind))}
             </select>
         );
         return (<Option name={name} value={selection} />);
 
-        function getOption(value: any) {
+        function getOption(value: number) {
             return (<option value={value} key={value}>{prefix}.{e[value]}</option>);
         }
     }

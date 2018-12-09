@@ -1,5 +1,5 @@
 import constants from "./constants";
-import { compilerPackageNames, compilerVersionCollection } from "../../src/compiler";
+import { compilerPackageNames } from "../../src/compiler";
 import { TreeMode } from "../../src/types";
 
 let visited = false;
