@@ -83,13 +83,13 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
     private getEnumOption(name: string, prefix: string, e: any, currentValue: number, onChange: (value: number) => void) {
         const selection = (
             <select value={currentValue} onChange={(event) => onChange(parseInt(event.target.value, 10))}>
-                {EnumUtils.getValues(e).map(kind => getOption(kind))}
+                {EnumUtils.getNamesForValues(e).map(namesForValue => getOption(namesForValue.value, namesForValue.names))}
             </select>
         );
         return (<Option name={name} value={selection} />);
 
-        function getOption(value: number) {
-            return (<option value={value} key={value}>{prefix}.{e[value]}</option>);
+        function getOption(value: number, names: string[]) {
+            return (<option value={value} key={value}>{prefix}.{names.join(" / ")}</option>);
         }
     }
 

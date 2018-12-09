@@ -12,4 +12,20 @@ export class EnumUtils {
             .map(k => e[k])
             .filter(v => typeof v === "number") as T[];
     }
+
+    static getNamesForValues(e: any) {
+        const values: { [value: number]: string[] } = {};
+
+        for (const name of this.getNames(e)) {
+            const value = e[name];
+            if (values[value] == null)
+                values[value] = [];
+            values[value].push(name);
+        }
+
+        return Object.keys(values).map(key => ({
+            value: parseInt(key, 10),
+            names: values[key] as string[]
+        }));
+    }
 }
