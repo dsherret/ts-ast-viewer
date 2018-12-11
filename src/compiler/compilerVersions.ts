@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* Automatically maintained from package.json. Do not edit! */
 
-export type compilerVersions = "3.2.1" | "3.1.6" | "3.0.3" | "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2" | "2.5.3" | "2.4.2";
+export type compilerVersions = "3.2.2" | "3.1.6" | "3.0.3" | "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2" | "2.5.3" | "2.4.2";
 export type compilerPackageNames = "typescript" | "typescript-3.1.6" | "typescript-3.0.3" | "typescript-2.9.2" | "typescript-2.8.4" | "typescript-2.7.2" | "typescript-2.6.2" | "typescript-2.5.3" | "typescript-2.4.2";
 
 export const compilerVersionCollection: { version: compilerVersions; packageName: compilerPackageNames; }[] = [
-    { version: "3.2.1", packageName: "typescript" },
+    { version: "3.2.2", packageName: "typescript" },
     { version: "3.1.6", packageName: "typescript-3.1.6" },
     { version: "3.0.3", packageName: "typescript-3.0.3" },
     { version: "2.9.2", packageName: "typescript-2.9.2" },
