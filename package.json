@@ -42,7 +42,7 @@
     "react-split-pane": "^0.1.68",
     "react-treeview": "^0.4.7",
     "redux": "^3.7.2",
-    "typescript": "3.2.2",
+    "typescript": "3.3.1",
     "typescript-2.4.2": "npm:typescript@2.4.2",
     "typescript-2.5.3": "npm:typescript@2.5.3",
     "typescript-2.6.2": "npm:typescript@2.6.2",
@@ -50,7 +50,8 @@
     "typescript-2.8.4": "npm:typescript@2.8.4",
     "typescript-2.9.2": "npm:typescript@2.9.2",
     "typescript-3.0.3": "npm:typescript@3.0.3",
-    "typescript-3.1.6": "npm:typescript@3.1.6"
+    "typescript-3.1.6": "npm:typescript@3.1.6",
+    "typescript-3.2.4": "npm:typescript@3.2.4"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",
