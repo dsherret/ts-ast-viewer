@@ -1,5 +1,6 @@
-﻿import { connect, Dispatch } from "react-redux";
-import { Node, CompilerApi, getCompilerApi, hasLoadedCompilerApi, compilerPackageNames } from "./compiler";
+﻿import { Dispatch } from "react";
+import { connect } from "react-redux";
+import { Node, getCompilerApi, hasLoadedCompilerApi, compilerPackageNames } from "./compiler";
 import App from "./App";
 import * as actions from "./actions";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";

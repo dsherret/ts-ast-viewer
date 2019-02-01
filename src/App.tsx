@@ -31,12 +31,24 @@ export default function App(props: Props) {
                         onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
                         onClick={pos => props.onPosChange(pos)}
                         text={props.code}
+                        highlight={getCodeHighlightRange()}
                     />
                     {getCompilerDependentPanes()}
                 </SplitPane>
             </SplitPane>
         </div>
     );
+
+    function getCodeHighlightRange() {
+        if (props.compiler == null)
+            return undefined;
+
+        const { selectedNode, sourceFile } = props.compiler;
+        return selectedNode === sourceFile ? undefined : {
+            start: selectedNode.getStart(sourceFile, true),
+            end: selectedNode.end
+        };
+    }
 
     function getCompilerDependentPanes() {
         if (compiler == null || props.apiLoadingState === ApiLoadingState.Loading)

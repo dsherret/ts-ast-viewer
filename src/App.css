@@ -1,3 +1,4 @@
+/* todo: use some preprocessor to allow variables and such */
 * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -171,6 +172,10 @@ a,a:visited {
     background-color: #007acc;
     padding: 2px 4px;
     width: 100%;
+}
+
+#codeEditor .editorRangeHighlight {
+    background: #6f7163;
 }
 
 /* Tree Viewer */

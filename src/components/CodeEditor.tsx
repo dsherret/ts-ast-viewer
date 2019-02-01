@@ -3,11 +3,13 @@ import ReactMonacoEditorForTypes from "react-monaco-editor";
 import * as monacoEditorForTypes from "monaco-editor";
 import { Spinner } from "./Spinner";
 import { css as cssConstants } from "../constants";
+import { LineAndColumnComputer } from "../utils";
 
 export interface CodeEditorProps {
     onChange: (text: string) => void;
     onClick: (pos: number) => void;
     text: string;
+    highlight: { start: number; end: number } | undefined;
 }
 
 export interface CodeEditorState {
@@ -18,12 +20,14 @@ export interface CodeEditorState {
 }
 
 export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState> {
+    private editor: monacoEditorForTypes.editor.IStandaloneCodeEditor | undefined;
+
     constructor(props: CodeEditorProps) {
         super(props);
         this.state = {
             position: 0,
-            lineNumber: 0,
-            column: 0,
+            lineNumber: 1,
+            column: 1,
             editorComponent: undefined
         };
         this.editorDidMount = this.editorDidMount.bind(this);
@@ -36,6 +40,8 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     }
 
     render() {
+        this.updateHighlight();
+
         return (
             <div id={cssConstants.codeEditor.id}>
                 <div id={cssConstants.codeEditor.containerId}>
@@ -44,6 +50,40 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 <div id={cssConstants.codeEditor.infoId}>Pos {this.state.position}, Ln {this.state.lineNumber}, Col {this.state.column}</div>
             </div>
         );
+    }
+
+    private deltaDecorations: string[] = [];
+    private lineAndColumnComputer = new LineAndColumnComputer("");
+    private updateHighlight() {
+        if (this.editor == null)
+            return;
+
+        if (this.lineAndColumnComputer.text !== this.props.text)
+            this.lineAndColumnComputer = new LineAndColumnComputer(this.props.text);
+
+        const { highlight } = this.props;
+        const lineAndColumnComputer = this.lineAndColumnComputer;
+        const range = getRange();
+
+        this.deltaDecorations = this.editor.deltaDecorations(this.deltaDecorations, range == null ? [] : [{
+            range,
+            options: { className: "editorRangeHighlight" }
+        }]);
+
+        function getRange(): monacoEditorForTypes.IRange | undefined {
+            if (highlight == null)
+                return undefined;
+
+            const startInfo = lineAndColumnComputer.getNumberAndColumnFromPos(highlight.start);
+            const endInfo = lineAndColumnComputer.getNumberAndColumnFromPos(highlight.end);
+
+            return {
+                startLineNumber: startInfo.lineNumber,
+                startColumn: startInfo.column,
+                endLineNumber: endInfo.lineNumber,
+                endColumn: endInfo.column
+            };
+        }
     }
 
     private getEditor() {
@@ -66,6 +106,8 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     }
 
     private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {
+        this.editor = editor;
+
         editor.onDidChangeCursorPosition(e => {
             this.setState({
                 position: editor.getModel().getOffsetAt(e.position),
@@ -74,11 +116,10 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             });
         });
         editor.focus();
+        this.updateHighlight();
 
         // global method for cypress
         (window as any).setMonacoEditorText = (text: string) => {
-            const selection = editor.getSelection();
-
             editor.executeEdits("my-source", [{
                 range: editor.getModel().getFullModelRange(),
                 text
