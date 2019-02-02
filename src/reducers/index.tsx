@@ -1,7 +1,7 @@
 ﻿/* barrel:ignore */
 import { AllActions } from "../actions";
-import { StoreState, OptionsState } from "../types";
-import { Node, createSourceFile, CompilerApi, convertOptions } from "../compiler";
+import { StoreState, OptionsState, TreeMode } from "../types";
+import { Node, SourceFile, createSourceFile, CompilerApi, convertOptions, getChildrenFunction } from "../compiler";
 import { actions as actionNames } from "./../constants";
 
 export function appReducer(state: StoreState, action: AllActions): StoreState {
@@ -35,28 +35,14 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
         case actionNames.SET_CODE: {
             return { ...state, code: action.code };
         }
-        case actionNames.SET_POS: {
+        case actionNames.SET_RANGE: {
             if (state.compiler == null)
                 return state;
 
-            const pos = action.pos;
+            const range = action.range;
             const sourceFile = state.compiler.sourceFile;
-            let selectedNode: Node = sourceFile;
-            while (true) {
-                // todo: should use correct function here (ex. api.forEachChild based on the options)
-                const children = selectedNode.getChildren(sourceFile);
-                let found = false;
-                for (const child of children) {
-                    if (child.getStart(sourceFile) <= pos && child.end > pos) {
-                        selectedNode = child;
-                        found = true;
-                        break;
-                    }
-                }
 
-                if (!found)
-                    break;
-            }
+            const selectedNode = getDescendantAtRange(state.options.treeMode, sourceFile, range) || state.compiler.selectedNode;
 
             return {
                 ...state,
@@ -80,6 +66,43 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
         }
     }
     return state;
+
+    function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, range: [number, number]) {
+        const getChildren = getChildrenFunction(mode, sourceFile);
+        const syntaxKinds = state.compiler!.api.SyntaxKind;
+
+        let bestMatch: { node: Node; start: number; } = { node: sourceFile, start: sourceFile.getStart(sourceFile) };
+        searchDescendants(sourceFile);
+        return bestMatch.node;
+
+        function searchDescendants(node: Node) {
+            const children = getChildren(node);
+            for (const child of children) {
+                if (isBeforeRange(child.end))
+                    continue;
+
+                const isChildSyntaxList = child.kind === syntaxKinds.SyntaxList;
+                const childStart = child.getStart(sourceFile);
+
+                if (isAfterRange(childStart))
+                    return;
+
+                const hasSameStart = bestMatch.start === childStart && range[0] === childStart;
+                if (!isChildSyntaxList && !hasSameStart)
+                    bestMatch = { node: child, start: childStart };
+
+                searchDescendants(child);
+            }
+        }
+
+        function isBeforeRange(pos: number) {
+            return pos < range[0];
+        }
+
+        function isAfterRange(nodeEnd: number) {
+            return nodeEnd >= range[0] && nodeEnd > range[1];
+        }
+    }
 }
 
 function fillNewSourceFileState(api: CompilerApi, state: StoreState, code: string, options: OptionsState) {

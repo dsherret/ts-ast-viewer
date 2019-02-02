@@ -7,7 +7,7 @@ import { LineAndColumnComputer } from "../utils";
 
 export interface CodeEditorProps {
     onChange: (text: string) => void;
-    onClick: (pos: number) => void;
+    onClick: (range: [number, number]) => void;
     text: string;
     highlight: { start: number; end: number } | undefined;
 }
@@ -114,6 +114,17 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 lineNumber: e.position.lineNumber,
                 column: e.position.column
             });
+        });
+        editor.onMouseDown(e => {
+            if (e.target == null || e.target.range == null)
+                return;
+
+            // Sometimes e.target.range will be the column right before if clicked to the left enough,
+            // but the cursor position will still be at the next column. For that reason, always
+            // use the editor posiion.
+            const pos = editor.getPosition();
+            const start = this.lineAndColumnComputer.getPosFromLineAndColumn(pos.lineNumber, pos.column);
+            this.props.onClick([start, start]);
         });
         editor.focus();
         this.updateHighlight();

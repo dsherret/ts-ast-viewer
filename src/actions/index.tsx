@@ -51,15 +51,15 @@ export function setSelectedNode(node: Node): SetSelectedNode {
     };
 }
 
-export interface SetPos {
-    type: constants.SET_POS;
-    pos: number;
+export interface SetRange {
+    type: constants.SET_RANGE;
+    range: [number, number];
 }
 
-export function setPos(pos: number): SetPos {
+export function setRange(range: [number, number]): SetRange {
     return {
-        type: constants.SET_POS,
-        pos
+        type: constants.SET_RANGE,
+        range
     };
 }
 
@@ -75,4 +75,4 @@ export function setOptions(options: Partial<OptionsState>): SetOptions {
     };
 }
 
-export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetPos | SetOptions;
+export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetRange | SetOptions;

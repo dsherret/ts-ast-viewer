@@ -11,8 +11,8 @@ export type REFRESH_SOURCEFILE = typeof REFRESH_SOURCEFILE;
 export const SET_SELECTED_NODE = "SET_SELECTED_NODE";
 export type SET_SELECTED_NODE = typeof SET_SELECTED_NODE;
 
-export const SET_POS = "SET_POS";
-export type SET_POS = typeof SET_POS;
+export const SET_RANGE = "SET_RANGE";
+export type SET_RANGE = typeof SET_RANGE;
 
 export const SET_OPTIONS = "SET_OPTIONS";
 export type SET_OPTIONS = typeof SET_OPTIONS;

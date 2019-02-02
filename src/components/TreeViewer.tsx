@@ -1,7 +1,6 @@
 ﻿import React from "react";
-import { SourceFile, Node, CompilerApi } from "../compiler";
+import { SourceFile, Node, CompilerApi, getChildrenFunction } from "../compiler";
 import TreeView from "react-treeview";
-import CircularJson from "circular-json";
 import { getSyntaxKindName } from "../utils";
 import { TreeMode } from "../types";
 import { css as cssConstants } from "../constants";
@@ -16,15 +15,15 @@ export interface TreeViewerProps {
 
 export class TreeViewer extends React.Component<TreeViewerProps> {
     render() {
-        const {sourceFile, selectedNode, onSelectNode, mode, api} = this.props;
+        const { sourceFile, selectedNode, onSelectNode, mode, api } = this.props;
         let i = 0;
 
         return (
-            <div id={cssConstants.treeViewer.id}>{renderNode(this.props.sourceFile, getChildrenFunc())}</div>
+            <div id={cssConstants.treeViewer.id}>{renderNode(this.props.sourceFile, getChildrenFunction(mode, sourceFile))}</div>
         );
 
         function renderNode(node: Node, getChildren: (node: Node) => (Node[])): JSX.Element {
-            const children = node.getChildren(sourceFile);
+            const children = getChildren(node);
             const className = "nodeText" + (node === selectedNode ? " " + cssConstants.treeViewer.selectedNodeClass : "");
             const kindName = getSyntaxKindName(api, node.kind);
             const label = (<div onClick={() => onSelectNode(node)} className={className}>{kindName}</div>);
@@ -36,35 +35,10 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
                 return (
                     <div data-name={kindName} key={i++}>
                         <TreeView nodeLabel={label}>
-                            {getChildren(node).map(n => renderNode(n, getChildren))}
+                            {children.map(n => renderNode(n, getChildren))}
                         </TreeView>
                     </div>
                 );
-        }
-
-        function getChildrenFunc() {
-            switch (mode) {
-                case TreeMode.getChildren:
-                    return getAllChildren;
-                case TreeMode.forEachChild:
-                    return forEachChild;
-                default:
-                    const assertNever: never = mode;
-                    throw new Error(`Unhandled mode: ${mode}`);
-            }
-        }
-
-        function getAllChildren(node: Node) {
-            return node.getChildren(sourceFile);
-        }
-
-        function forEachChild(node: Node) {
-            const nodes: Node[] = [];
-            node.forEachChild(child => {
-                nodes.push(child);
-                return undefined;
-            });
-            return nodes;
         }
     }
 }

@@ -27,4 +27,16 @@ export class LineAndColumnComputer {
 
         return { lineNumber: lineInfo.number, column: Math.min(pos - lineInfo.pos + 1, lineInfo.length + 1) };
     }
+
+    getPosFromLineAndColumn(line: number, column: number) {
+        if (this.lineInfos.length === 0 || line < 1)
+            return 0;
+
+        const lineInfo = this.lineInfos[line - 1];
+        if (lineInfo == null) {
+            const lastLineInfo = this.lineInfos[this.lineInfos.length - 1];
+            return lastLineInfo.pos + lastLineInfo.length;
+        }
+        return lineInfo.pos + Math.min(lineInfo.length, column - 1);
+    }
 }

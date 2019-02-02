@@ -7,7 +7,7 @@ import "./App.css";
 
 export interface Props extends StoreState {
     onCodeChange: (compilerPackageName: compilerPackageNames, code: string) => void;
-    onPosChange: (pos: number) => void;
+    onRangeChange: (range: [number, number]) => void;
     onNodeChange: (node: Node) => void;
     onOptionsChange: (compilerPackageName: compilerPackageNames, options: Partial<OptionsState>) => void;
 }
@@ -29,7 +29,7 @@ export default function App(props: Props) {
                 <SplitPane split="vertical" minSize={50} defaultSize="33%">
                     <components.CodeEditor
                         onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
-                        onClick={pos => props.onPosChange(pos)}
+                        onClick={range => props.onRangeChange(range)}
                         text={props.code}
                         highlight={getCodeHighlightRange()}
                     />
