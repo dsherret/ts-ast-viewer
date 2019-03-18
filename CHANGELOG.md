@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.19.0...v0.20.0) (2019-03-18)
+
+
+### Bug Fixes
+
+* Enum members with same values should be grouped in options. ([5e001a5](https://github.com/dsherret/ts-ast-viewer/commit/5e001a5))
+
+
+### Features
+
+* [#21](https://github.com/dsherret/ts-ast-viewer/issues/21) - Highlight selected node. ([017b686](https://github.com/dsherret/ts-ast-viewer/commit/017b686))
+* [#37](https://github.com/dsherret/ts-ast-viewer/issues/37) - Make default tree mode forEachChild. ([320bf43](https://github.com/dsherret/ts-ast-viewer/commit/320bf43))
+* [#40](https://github.com/dsherret/ts-ast-viewer/issues/40) - Ability to get typescript compiler API factory code for source file text. ([54c6ccc](https://github.com/dsherret/ts-ast-viewer/commit/54c6ccc))
+* Add TS 3.3. ([fe397e7](https://github.com/dsherret/ts-ast-viewer/commit/fe397e7))
+* Select the clicked node in the code editor. ([35c4d6e](https://github.com/dsherret/ts-ast-viewer/commit/35c4d6e))
+* Update to TS 3.2.2. ([68583bc](https://github.com/dsherret/ts-ast-viewer/commit/68583bc))
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.18.1...v0.19.0) (2018-12-04)
 
