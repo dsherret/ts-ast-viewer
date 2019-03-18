@@ -20,11 +20,9 @@ export function setEditorText(text: string) {
 }
 
 export function toggleFactoryCode() {
-    // cy.server();
-    // cy.route("*.js").as("js");
-    cy.get(`#${constants.css.codeEditor.id} .view-lines`).trigger("contextmenu");
-    cy.get(`#${constants.css.codeEditor.id} .action-label:contains("Factory Code")`).click();
-    cy.wait(10000); // can't figure out how to get this to work otherwise
+    cy.get(`#${constants.css.options.id}`).click();
+    cy.get(`#${constants.css.options.showFactoryCodeId}`).check();
+    cy.get(`#${constants.css.options.id}`).click(); // hide
 }
 
 export function getFactoryCodeEditorText() {

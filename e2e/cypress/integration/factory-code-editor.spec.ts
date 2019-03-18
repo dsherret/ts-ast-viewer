@@ -1,7 +1,7 @@
 import { forAllCompilerVersions, visitSite, setVersion, setEditorText, toggleFactoryCode, checkFactoryCode} from "../helpers";
 
 forAllCompilerVersions(packageName => {
-    // todo: enable this after figuring out `toggleFactoryCode`
+    // todo: enable this after figuring out `toggleFactoryCode` (it might be working now... check again soon)
     describe.skip(`factory code editor (${packageName})`, () => {
         before(() => {
             visitSite();

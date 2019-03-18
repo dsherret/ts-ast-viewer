@@ -23,10 +23,10 @@ const store = createStore<StoreState>(appReducer, {
         compilerPackageName: "typescript",
         treeMode: stateSaver.get().treeMode,
         scriptTarget: initialScriptTarget,
-        scriptKind: initialScriptKind
+        scriptKind: initialScriptKind,
+        showFactoryCode: stateSaver.get().showFactoryCode
     },
-    compiler: undefined,
-    factoryCodeEnabled: false
+    compiler: undefined
 });
 
 ReactDOM.render(
@@ -47,6 +47,7 @@ store.subscribe(() => {
 
     const savedState = stateSaver.get();
     savedState.treeMode = state.options.treeMode;
+    savedState.showFactoryCode = state.options.showFactoryCode;
     stateSaver.set(savedState);
 });
 

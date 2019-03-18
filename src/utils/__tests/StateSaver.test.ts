@@ -27,8 +27,9 @@ describe("StateSaver", () => {
     it("should get the default state when nothing set", () => {
         const { saver } = setup();
         expect(saver.get()).toEqual({
-            version: 1,
-            treeMode: TreeMode.forEachChild
+            version: 2,
+            treeMode: TreeMode.forEachChild,
+            showFactoryCode: false
         });
     });
 
@@ -41,8 +42,9 @@ describe("StateSaver", () => {
 
         const saver2 = new StateSaver(localStorage);
         expect(saver2.get()).toEqual({
-            version: 1,
-            treeMode: TreeMode.getChildren
+            version: 2,
+            treeMode: TreeMode.getChildren,
+            showFactoryCode: false
         });
     });
 
@@ -50,11 +52,13 @@ describe("StateSaver", () => {
         const { saver } = setup();
         const state = saver.get();
         state.treeMode = TreeMode.getChildren;
+        state.showFactoryCode = true;
         saver.set(state);
 
         expect(saver.get()).toEqual({
-            version: 1,
-            treeMode: TreeMode.getChildren
+            version: 2,
+            treeMode: TreeMode.getChildren,
+            showFactoryCode: true
         });
     });
 
@@ -66,9 +70,24 @@ describe("StateSaver", () => {
             saver.set(state);
 
             expect(saver.get()).toEqual({
-                version: 1,
-                treeMode
+                version: 2,
+                treeMode,
+                showFactoryCode: false
             });
         }
+    });
+
+    it("should upgrade from version 1", () => {
+        const { saver, localStorage } = setup();
+        localStorage.setItem(StateSaver._stateKey, JSON.stringify({
+            version: 1,
+            treeMode: TreeMode.getChildren
+        }));
+
+        expect(saver.get()).toEqual({
+            version: 2,
+            treeMode: TreeMode.getChildren,
+            showFactoryCode: false
+        });
     });
 });

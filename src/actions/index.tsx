@@ -75,14 +75,4 @@ export function setOptions(options: Partial<OptionsState>): SetOptions {
     };
 }
 
-export interface ToggleFactoryCode {
-    type: constants.TOGGLE_FACTORY_CODE;
-}
-
-export function toggleFactoryCode(): ToggleFactoryCode {
-    return {
-        type: constants.TOGGLE_FACTORY_CODE
-    };
-}
-
-export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetRange | SetOptions | ToggleFactoryCode;
+export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetRange | SetOptions;

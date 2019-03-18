@@ -129,7 +129,7 @@ a,a:visited {
 #options .menu .optionName {
     display: inline-block;
     margin-right: 6px;
-    width: 95px;
+    width: 100px;
     text-align: right;
 }
 #options .menu .optionValue {

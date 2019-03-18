@@ -8,7 +8,6 @@ import { LineAndColumnComputer } from "../utils";
 export interface CodeEditorProps {
     onChange: (text: string) => void;
     onClick: (range: [number, number]) => void;
-    onToggleFactoryCode: () => void;
     text: string;
     highlight: { start: number; end: number } | undefined;
 }
@@ -127,15 +126,6 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             const start = this.lineAndColumnComputer.getPosFromLineAndColumn(pos.lineNumber, pos.column);
             this.props.onClick([start, start]);
         });
-        editor.addAction({
-            id: "ts-creator-toggle",
-            label: "View Factory Code",
-            precondition: undefined,
-            keybindingContext: undefined,
-            contextMenuGroupId: "navigation",
-            contextMenuOrder: 5,
-            run: () => this.props.onToggleFactoryCode()
-        });
         editor.focus();
         this.updateHighlight();
 
@@ -146,6 +136,5 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 text
             }]);
         };
-        (window as any).toggleFactoryCode = () => this.props.onToggleFactoryCode();
     }
 }

@@ -11,7 +11,6 @@ export interface Props extends StoreState {
     onRangeChange: (range: [number, number]) => void;
     onNodeChange: (node: Node) => void;
     onOptionsChange: (compilerPackageName: compilerPackageNames, options: Partial<OptionsState>) => void;
-    onToggleFactoryCode: () => void;
 }
 
 export default function App(props: Props) {
@@ -48,7 +47,7 @@ export default function App(props: Props) {
     }
 
     function getCodeEditorArea() {
-        if (props.factoryCodeEnabled) {
+        if (props.options.showFactoryCode) {
             return (
                 <SplitPane split="horizontal" defaultSize="75%">
                     {getCodeEditor()}
@@ -71,7 +70,6 @@ export default function App(props: Props) {
                 <components.CodeEditor
                     onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
                     onClick={range => props.onRangeChange(range)}
-                    onToggleFactoryCode={() => props.onToggleFactoryCode()}
                     text={props.code}
                     highlight={getCodeHighlightRange()}
                 />

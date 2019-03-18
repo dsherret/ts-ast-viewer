@@ -3,7 +3,8 @@ export default {
         id: "options",
         buttonId: "optionsButton",
         compilerVersionSelectionId: "compilerVersionSelection",
-        treeModeId: "treeMode"
+        treeModeId: "treeMode",
+        showFactoryCodeId: "showFactoryCode",
     },
     codeEditor: {
         id: "codeEditor",

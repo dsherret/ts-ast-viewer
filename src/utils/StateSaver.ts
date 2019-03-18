@@ -1,8 +1,12 @@
 import { TreeMode } from "../types";
 
-export interface SavedState {
-    version: number;
+export interface VersionedState {
+    version: 1 | 2;
+}
+
+export interface SavedState extends VersionedState {
     treeMode: TreeMode;
+    showFactoryCode: boolean;
 }
 
 export interface LocalStorage {
@@ -19,8 +23,9 @@ export class StateSaver {
 
     private get defaultState() {
         return {
-            version: 1,
-            treeMode: TreeMode.forEachChild
+            version: 2 as 2,
+            treeMode: TreeMode.forEachChild,
+            showFactoryCode: false
         };
     }
 
@@ -31,7 +36,7 @@ export class StateSaver {
         try {
             const text = this.localStorage.getItem(StateSaver._stateKey);
             if (text != null) {
-                const data = JSON.parse(text) || this.defaultState;
+                const data = transform(JSON.parse(text) || this.defaultState);
                 if (this.verifyData(data))
                     return data;
             }
@@ -56,10 +61,26 @@ export class StateSaver {
 
     private verifyData(data: SavedState): data is SavedState {
         // better to have some schema transforms in the future, but for now it's simple
-        if (data.version !== 1)
+        if (data.version !== 2)
             return false;
         if (data.treeMode !== TreeMode.forEachChild && data.treeMode !== TreeMode.getChildren)
             return false;
+        if (typeof data.showFactoryCode !== "boolean")
+            return false;
         return true;
     }
+}
+
+// todo: better transformations
+
+function transform(data: SavedState) {
+    transformToVersion2(data);
+    return data;
+}
+
+function transformToVersion2(data: VersionedState) {
+    if (data.version !== 1)
+        return;
+    (data as any).showFactoryCode = false;
+    data.version = 2;
 }

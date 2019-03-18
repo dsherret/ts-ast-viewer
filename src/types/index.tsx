@@ -6,7 +6,6 @@ export interface StoreState {
     options: OptionsState;
     apiLoadingState: ApiLoadingState;
     compiler: CompilerState | undefined;
-    factoryCodeEnabled: boolean;
 }
 
 export interface CompilerState {
@@ -22,6 +21,7 @@ export interface OptionsState {
     treeMode: TreeMode;
     scriptTarget: ScriptTarget;
     scriptKind: ScriptKind;
+    showFactoryCode: boolean;
 }
 
 export enum TreeMode {
