@@ -83,12 +83,15 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
 
     private getShowFactoryCode() {
         const selection = (
-            <input
-                id={cssConstants.options.showFactoryCodeId}
-                type="checkbox"
-                checked={this.props.options.showFactoryCode}
-                onChange={(event) => this.onChange({ showFactoryCode: !!event.target.checked })}
-            />
+            <div>
+                <input
+                    id={cssConstants.options.showFactoryCodeId}
+                    type="checkbox"
+                    checked={this.props.options.showFactoryCode}
+                    onChange={(event) => this.onChange({ showFactoryCode: !!event.target.checked })}
+                />
+                <span id="tsCreatorLink">(<a href="https://github.com/HearTao/ts-creator" target="_blank">ts-creator</a>)</span>
+            </div>
         );
         return (<Option name={"Factory code"} value={selection} />);
     }
