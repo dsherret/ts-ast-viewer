@@ -6,6 +6,7 @@ export interface StoreState {
     options: OptionsState;
     apiLoadingState: ApiLoadingState;
     compiler: CompilerState | undefined;
+    factoryCodeEnabled: boolean;
 }
 
 export interface CompilerState {

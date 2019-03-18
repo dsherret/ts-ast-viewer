@@ -10,6 +10,9 @@ export default {
         containerId: "editorContainer",
         infoId: "editorInfo"
     },
+    factoryCodeEditor: {
+        id: "factoryCodeEditor"
+    },
     treeViewer: {
         id: "treeViewer",
         selectedNodeClass: "selected"

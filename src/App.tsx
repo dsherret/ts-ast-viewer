@@ -3,6 +3,7 @@ import SplitPane from "react-split-pane";
 import * as components from "./components";
 import { Node, compilerPackageNames } from "./compiler";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
+import { isTsxScriptKind } from "./utils";
 import "./App.css";
 
 export interface Props extends StoreState {
@@ -10,6 +11,7 @@ export interface Props extends StoreState {
     onRangeChange: (range: [number, number]) => void;
     onNodeChange: (node: Node) => void;
     onOptionsChange: (compilerPackageName: compilerPackageNames, options: Partial<OptionsState>) => void;
+    onToggleFactoryCode: () => void;
 }
 
 export default function App(props: Props) {
@@ -27,12 +29,7 @@ export default function App(props: Props) {
                     />
                 </div>
                 <SplitPane split="vertical" minSize={50} defaultSize="33%">
-                    <components.CodeEditor
-                        onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
-                        onClick={range => props.onRangeChange(range)}
-                        text={props.code}
-                        highlight={getCodeHighlightRange()}
-                    />
+                    {getCodeEditorArea()}
                     {getCompilerDependentPanes()}
                 </SplitPane>
             </SplitPane>
@@ -48,6 +45,38 @@ export default function App(props: Props) {
             start: selectedNode.getStart(sourceFile, true),
             end: selectedNode.end
         };
+    }
+
+    function getCodeEditorArea() {
+        if (props.factoryCodeEnabled) {
+            return (
+                <SplitPane split="horizontal" defaultSize="75%">
+                    {getCodeEditor()}
+                    {getFactoryCodeEditor()}
+                </SplitPane>
+            );
+        }
+        else {
+            return getCodeEditor();
+        }
+
+        function getFactoryCodeEditor() {
+            if (compiler == null)
+                return <components.Spinner />;
+            return <components.FactoryCodeEditor text={props.code} isTsx={isTsxScriptKind(compiler.api, props.options.scriptKind)} />;
+        }
+
+        function getCodeEditor() {
+            return (
+                <components.CodeEditor
+                    onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
+                    onClick={range => props.onRangeChange(range)}
+                    onToggleFactoryCode={() => props.onToggleFactoryCode()}
+                    text={props.code}
+                    highlight={getCodeHighlightRange()}
+                />
+            );
+        }
     }
 
     function getCompilerDependentPanes() {

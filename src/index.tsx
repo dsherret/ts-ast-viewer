@@ -8,7 +8,7 @@ import { unregisterServiceWorker } from "./registerServiceWorker";
 import "./index.css";
 import "./external/react-treeview.css";
 import "./external/react-splitpane.css";
-import { StoreState, TreeMode, ApiLoadingState } from "./types";
+import { StoreState, ApiLoadingState } from "./types";
 import { appReducer } from "./reducers";
 import { StateSaver } from "./utils";
 
@@ -25,7 +25,8 @@ const store = createStore<StoreState>(appReducer, {
         scriptTarget: initialScriptTarget,
         scriptKind: initialScriptKind
     },
-    compiler: undefined
+    compiler: undefined,
+    factoryCodeEnabled: false
 });
 
 ReactDOM.render(

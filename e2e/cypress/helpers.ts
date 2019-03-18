@@ -11,12 +11,24 @@ export function visitSite() {
     visited = true;
 }
 
-export async function setEditorText(text: string) {
+export function setEditorText(text: string) {
     cy.window().then(win => {
         (win as any).setMonacoEditorText(text);
     });
     cy.get(`#${constants.css.codeEditor.id} .view-lines`).click();
     cy.wait(constants.general.sourceFileRefreshDelay + 150);
+}
+
+export function toggleFactoryCode() {
+    // cy.server();
+    // cy.route("*.js").as("js");
+    cy.get(`#${constants.css.codeEditor.id} .view-lines`).trigger("contextmenu");
+    cy.get(`#${constants.css.codeEditor.id} .action-label:contains("Factory Code")`).click();
+    cy.wait(10000); // can't figure out how to get this to work otherwise
+}
+
+export function getFactoryCodeEditorText() {
+    return cy.window().then(win => ((win as any).getFactoryCodeEditorText() as string).replace(/\r?\n/g, "\n"));
 }
 
 export function setVersion(packageName: compilerPackageNames) {
@@ -50,6 +62,7 @@ export interface State {
     type?: Type;
     symbol?: Symbol;
     signature?: Signature;
+    factoryCode?: string;
 }
 
 export function checkState(state: State) {
@@ -58,6 +71,7 @@ export function checkState(state: State) {
     checkType(state.type);
     checkSymbol(state.symbol);
     checkSignature(state.signature);
+    checkFactoryCode(state.factoryCode);
 }
 
 export interface TreeViewNode {
@@ -210,5 +224,26 @@ export function checkSignature(signature: Signature | undefined) {
 
     function getMainElement() {
         return cy.get(`#${constants.css.properties.signature.id}`);
+    }
+}
+
+export function checkFactoryCode(expectedCode: string | undefined) {
+    if (expectedCode == null) {
+        it("should not have the factory code open", () => {
+            getMainElement().should("not.exist");
+        });
+    }
+    else {
+        it("should have the factory code open", () => {
+            getMainElement().should("exist");
+        });
+
+        it("should have the correct text", () => {
+            getFactoryCodeEditorText().should("equal", expectedCode);
+        });
+    }
+
+    function getMainElement() {
+        return cy.get(`#${constants.css.factoryCodeEditor.id}`);
     }
 }

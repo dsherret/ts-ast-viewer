@@ -31,6 +31,9 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
             dispatch(actions.setOptions(options));
             if (fileNeedsChanging)
                 debouncedSourceFileRefresh(compilerPackageName);
+        },
+        onToggleFactoryCode: () => {
+            dispatch(actions.toggleFactoryCode());
         }
     };
 

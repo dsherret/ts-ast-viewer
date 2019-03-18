@@ -16,3 +16,6 @@ export type SET_RANGE = typeof SET_RANGE;
 
 export const SET_OPTIONS = "SET_OPTIONS";
 export type SET_OPTIONS = typeof SET_OPTIONS;
+
+export const TOGGLE_FACTORY_CODE = "TOGGLE_FACTORY_CODE";
+export type TOGGLE_FACTORY_CODE = typeof TOGGLE_FACTORY_CODE;

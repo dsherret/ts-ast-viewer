@@ -61,6 +61,12 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
                 }
             };
         }
+        case actionNames.TOGGLE_FACTORY_CODE: {
+            return {
+                ...state,
+                factoryCodeEnabled: !state.factoryCodeEnabled
+            };
+        }
         default: {
             const assertNever: never = action;
         }
