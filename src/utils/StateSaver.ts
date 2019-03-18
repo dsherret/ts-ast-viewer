@@ -25,7 +25,7 @@ export class StateSaver {
         return {
             version: 2 as 2,
             treeMode: TreeMode.forEachChild,
-            showFactoryCode: false
+            showFactoryCode: true
         };
     }
 
@@ -81,6 +81,6 @@ function transform(data: SavedState) {
 function transformToVersion2(data: VersionedState) {
     if (data.version !== 1)
         return;
-    (data as any).showFactoryCode = false;
+    (data as any).showFactoryCode = true;
     data.version = 2;
 }

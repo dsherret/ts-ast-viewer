@@ -29,7 +29,7 @@ describe("StateSaver", () => {
         expect(saver.get()).toEqual({
             version: 2,
             treeMode: TreeMode.forEachChild,
-            showFactoryCode: false
+            showFactoryCode: true
         });
     });
 
@@ -44,7 +44,7 @@ describe("StateSaver", () => {
         expect(saver2.get()).toEqual({
             version: 2,
             treeMode: TreeMode.getChildren,
-            showFactoryCode: false
+            showFactoryCode: true
         });
     });
 
@@ -52,13 +52,13 @@ describe("StateSaver", () => {
         const { saver } = setup();
         const state = saver.get();
         state.treeMode = TreeMode.getChildren;
-        state.showFactoryCode = true;
+        state.showFactoryCode = false;
         saver.set(state);
 
         expect(saver.get()).toEqual({
             version: 2,
             treeMode: TreeMode.getChildren,
-            showFactoryCode: true
+            showFactoryCode: false
         });
     });
 
@@ -72,7 +72,7 @@ describe("StateSaver", () => {
             expect(saver.get()).toEqual({
                 version: 2,
                 treeMode,
-                showFactoryCode: false
+                showFactoryCode: true
             });
         }
     });
@@ -87,7 +87,7 @@ describe("StateSaver", () => {
         expect(saver.get()).toEqual({
             version: 2,
             treeMode: TreeMode.getChildren,
-            showFactoryCode: false
+            showFactoryCode: true
         });
     });
 });
