@@ -69,7 +69,7 @@ export function checkState(state: State) {
     checkType(state.type);
     checkSymbol(state.symbol);
     checkSignature(state.signature);
-    checkFactoryCode(state.factoryCode);
+    // checkFactoryCode(state.factoryCode); // todo: re-enable this in the future
 }
 
 export interface TreeViewNode {
