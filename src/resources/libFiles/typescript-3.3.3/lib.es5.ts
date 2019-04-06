@@ -25,8 +25,8 @@ and limitations under the License.
 /// ECMAScript APIs
 /////////////////////////////
 
-declare var NaN: number;
-declare var Infinity: number;
+declare const NaN: number;
+declare const Infinity: number;
 
 /**
   * Evaluates JavaScript code and executes it.
@@ -267,7 +267,7 @@ interface ObjectConstructor {
 /**
   * Provides functionality common to all JavaScript objects.
   */
-declare var Object: ObjectConstructor;
+declare const Object: ObjectConstructor;
 
 /**
   * Creates a new function.
@@ -316,7 +316,7 @@ interface FunctionConstructor {
     readonly prototype: Function;
 }
 
-declare var Function: FunctionConstructor;
+declare const Function: FunctionConstructor;
 
 /**
  * Extracts the type of the 'this' parameter of a function type, or 'unknown' if the function type has no 'this' parameter.
@@ -527,7 +527,7 @@ interface StringConstructor {
 /**
   * Allows manipulation and formatting of text strings and determination and location of substrings within strings.
   */
-declare var String: StringConstructor;
+declare const String: StringConstructor;
 
 interface Boolean {
     /** Returns the primitive value of the specified object. */
@@ -540,7 +540,7 @@ interface BooleanConstructor {
     readonly prototype: Boolean;
 }
 
-declare var Boolean: BooleanConstructor;
+declare const Boolean: BooleanConstructor;
 
 interface Number {
     /**
@@ -602,7 +602,7 @@ interface NumberConstructor {
 }
 
 /** An object that represents a number of any kind. All JavaScript numbers are 64-bit floating-point numbers. */
-declare var Number: NumberConstructor;
+declare const Number: NumberConstructor;
 
 interface TemplateStringsArray extends ReadonlyArray<string> {
     readonly raw: ReadonlyArray<string>;
@@ -726,7 +726,7 @@ interface Math {
     tan(x: number): number;
 }
 /** An intrinsic object that provides basic mathematics functionality and constants. */
-declare var Math: Math;
+declare const Math: Math;
 
 /** Enables basic storage and retrieval of dates and times. */
 interface Date {
@@ -907,7 +907,7 @@ interface DateConstructor {
     now(): number;
 }
 
-declare var Date: DateConstructor;
+declare const Date: DateConstructor;
 
 interface RegExpMatchArray extends Array<string> {
     index?: number;
@@ -970,7 +970,7 @@ interface RegExpConstructor {
     lastMatch: string;
 }
 
-declare var RegExp: RegExpConstructor;
+declare const RegExp: RegExpConstructor;
 
 interface Error {
     name: string;
@@ -984,7 +984,7 @@ interface ErrorConstructor {
     readonly prototype: Error;
 }
 
-declare var Error: ErrorConstructor;
+declare const Error: ErrorConstructor;
 
 interface EvalError extends Error {
 }
@@ -995,7 +995,7 @@ interface EvalErrorConstructor {
     readonly prototype: EvalError;
 }
 
-declare var EvalError: EvalErrorConstructor;
+declare const EvalError: EvalErrorConstructor;
 
 interface RangeError extends Error {
 }
@@ -1006,7 +1006,7 @@ interface RangeErrorConstructor {
     readonly prototype: RangeError;
 }
 
-declare var RangeError: RangeErrorConstructor;
+declare const RangeError: RangeErrorConstructor;
 
 interface ReferenceError extends Error {
 }
@@ -1017,7 +1017,7 @@ interface ReferenceErrorConstructor {
     readonly prototype: ReferenceError;
 }
 
-declare var ReferenceError: ReferenceErrorConstructor;
+declare const ReferenceError: ReferenceErrorConstructor;
 
 interface SyntaxError extends Error {
 }
@@ -1028,7 +1028,7 @@ interface SyntaxErrorConstructor {
     readonly prototype: SyntaxError;
 }
 
-declare var SyntaxError: SyntaxErrorConstructor;
+declare const SyntaxError: SyntaxErrorConstructor;
 
 interface TypeError extends Error {
 }
@@ -1039,7 +1039,7 @@ interface TypeErrorConstructor {
     readonly prototype: TypeError;
 }
 
-declare var TypeError: TypeErrorConstructor;
+declare const TypeError: TypeErrorConstructor;
 
 interface URIError extends Error {
 }
@@ -1050,7 +1050,7 @@ interface URIErrorConstructor {
     readonly prototype: URIError;
 }
 
-declare var URIError: URIErrorConstructor;
+declare const URIError: URIErrorConstructor;
 
 interface JSON {
     /**
@@ -1059,14 +1059,14 @@ interface JSON {
       * @param reviver A function that transforms the results. This function is called for each member of the object.
       * If a member contains nested objects, the nested objects are transformed before the parent object is.
       */
-    parse(text: string, reviver?: (this: any, key: string, value: any) => any): any;
+    parse(text: string, reviver?: (key: any, value: any) => any): any;
     /**
       * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
       * @param value A JavaScript value, usually an object or array, to be converted.
       * @param replacer A function that transforms the results.
       * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
       */
-    stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
+    stringify(value: any, replacer?: (key: string, value: any) => any, space?: string | number): string;
     /**
       * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
       * @param value A JavaScript value, usually an object or array, to be converted.
@@ -1079,7 +1079,7 @@ interface JSON {
 /**
   * An intrinsic object that provides functions to convert JavaScript values to and from the JavaScript Object Notation (JSON) format.
   */
-declare var JSON: JSON;
+declare const JSON: JSON;
 
 
 /////////////////////////////
@@ -1137,13 +1137,13 @@ interface ReadonlyArray<T> {
       * @param callbackfn A function that accepts up to three arguments. The every method calls the callbackfn function for each element in array1 until the callbackfn returns false, or until the end of the array.
       * @param thisArg An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.
       */
-    every(callbackfn: (value: T, index: number, array: ReadonlyArray<T>) => unknown, thisArg?: any): boolean;
+    every(callbackfn: (value: T, index: number, array: ReadonlyArray<T>) => boolean, thisArg?: any): boolean;
     /**
       * Determines whether the specified callback function returns true for any element of an array.
       * @param callbackfn A function that accepts up to three arguments. The some method calls the callbackfn function for each element in array1 until the callbackfn returns true, or until the end of the array.
       * @param thisArg An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.
       */
-    some(callbackfn: (value: T, index: number, array: ReadonlyArray<T>) => unknown, thisArg?: any): boolean;
+    some(callbackfn: (value: T, index: number, array: ReadonlyArray<T>) => boolean, thisArg?: any): boolean;
     /**
       * Performs the specified action for each element in an array.
       * @param callbackfn  A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array.
@@ -1167,7 +1167,7 @@ interface ReadonlyArray<T> {
       * @param callbackfn A function that accepts up to three arguments. The filter method calls the callbackfn function one time for each element in the array.
       * @param thisArg An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.
       */
-    filter(callbackfn: (value: T, index: number, array: ReadonlyArray<T>) => unknown, thisArg?: any): T[];
+    filter(callbackfn: (value: T, index: number, array: ReadonlyArray<T>) => any, thisArg?: any): T[];
     /**
       * Calls the specified callback function for all the elements in an array. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
       * @param callbackfn A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the array.
@@ -1368,7 +1368,7 @@ interface ArrayConstructor {
     readonly prototype: Array<any>;
 }
 
-declare var Array: ArrayConstructor;
+declare const Array: ArrayConstructor;
 
 interface TypedPropertyDescriptor<T> {
     enumerable?: boolean;
@@ -1474,22 +1474,22 @@ type NonNullable<T> = T extends null | undefined ? never : T;
 /**
  * Obtain the parameters of a function type in a tuple
  */
-type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
+type Parameters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any ? P : never;
 
 /**
  * Obtain the parameters of a constructor function type in a tuple
  */
-type ConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? P : never;
+type ConstructorParameters<T extends new (...args: any[]) => any> = T extends new (...args: infer P) => any ? P : never;
 
 /**
  * Obtain the return type of a function type
  */
-type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
+type ReturnType<T extends (...args: any[]) => any> = T extends (...args: any[]) => infer R ? R : any;
 
 /**
  * Obtain the return type of a constructor function type
  */
-type InstanceType<T extends new (...args: any) => any> = T extends new (...args: any) => infer R ? R : any;
+type InstanceType<T extends new (...args: any[]) => any> = T extends new (...args: any[]) => infer R ? R : any;
 
 /**
  * Marker for contextual 'this' type
@@ -1527,7 +1527,7 @@ interface ArrayBufferConstructor {
     new(byteLength: number): ArrayBuffer;
     isView(arg: any): arg is ArrayBufferView;
 }
-declare var ArrayBuffer: ArrayBufferConstructor;
+declare const ArrayBuffer: ArrayBufferConstructor;
 
 interface ArrayBufferView {
     /**
@@ -1677,7 +1677,7 @@ interface DataView {
 interface DataViewConstructor {
     new(buffer: ArrayBufferLike, byteOffset?: number, byteLength?: number): DataView;
 }
-declare var DataView: DataViewConstructor;
+declare const DataView: DataViewConstructor;
 
 /**
   * A typed array of 8-bit integer values. The contents are initialized to 0. If the requested
@@ -1952,7 +1952,7 @@ interface Int8ArrayConstructor {
 
 
 }
-declare var Int8Array: Int8ArrayConstructor;
+declare const Int8Array: Int8ArrayConstructor;
 
 /**
   * A typed array of 8-bit unsigned integer values. The contents are initialized to 0. If the
@@ -2227,7 +2227,7 @@ interface Uint8ArrayConstructor {
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array;
 
 }
-declare var Uint8Array: Uint8ArrayConstructor;
+declare const Uint8Array: Uint8ArrayConstructor;
 
 /**
   * A typed array of 8-bit unsigned integer (clamped) values. The contents are initialized to 0.
@@ -2501,7 +2501,7 @@ interface Uint8ClampedArrayConstructor {
       */
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray;
 }
-declare var Uint8ClampedArray: Uint8ClampedArrayConstructor;
+declare const Uint8ClampedArray: Uint8ClampedArrayConstructor;
 
 /**
   * A typed array of 16-bit signed integer values. The contents are initialized to 0. If the
@@ -2776,7 +2776,7 @@ interface Int16ArrayConstructor {
 
 
 }
-declare var Int16Array: Int16ArrayConstructor;
+declare const Int16Array: Int16ArrayConstructor;
 
 /**
   * A typed array of 16-bit unsigned integer values. The contents are initialized to 0. If the
@@ -3052,7 +3052,7 @@ interface Uint16ArrayConstructor {
 
 
 }
-declare var Uint16Array: Uint16ArrayConstructor;
+declare const Uint16Array: Uint16ArrayConstructor;
 /**
   * A typed array of 32-bit signed integer values. The contents are initialized to 0. If the
   * requested number of bytes could not be allocated an exception is raised.
@@ -3326,7 +3326,7 @@ interface Int32ArrayConstructor {
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array;
 
 }
-declare var Int32Array: Int32ArrayConstructor;
+declare const Int32Array: Int32ArrayConstructor;
 
 /**
   * A typed array of 32-bit unsigned integer values. The contents are initialized to 0. If the
@@ -3600,7 +3600,7 @@ interface Uint32ArrayConstructor {
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array;
 
 }
-declare var Uint32Array: Uint32ArrayConstructor;
+declare const Uint32Array: Uint32ArrayConstructor;
 
 /**
   * A typed array of 32-bit float values. The contents are initialized to 0. If the requested number
@@ -3876,7 +3876,7 @@ interface Float32ArrayConstructor {
 
 
 }
-declare var Float32Array: Float32ArrayConstructor;
+declare const Float32Array: Float32ArrayConstructor;
 
 /**
   * A typed array of 64-bit float values. The contents are initialized to 0. If the requested
@@ -4151,7 +4151,7 @@ interface Float64ArrayConstructor {
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array;
 
 }
-declare var Float64Array: Float64ArrayConstructor;
+declare const Float64Array: Float64ArrayConstructor;
 
 /////////////////////////////
 /// ECMAScript Internationalization API

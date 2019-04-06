@@ -21,8 +21,11 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2019" />
+/// <reference lib="es2018" />
+/// <reference lib="esnext.asynciterable" />
+/// <reference lib="esnext.array" />
 /// <reference lib="esnext.bigint" />
+/// <reference lib="esnext.symbol" />
 /// <reference lib="esnext.intl" />
 `
 };

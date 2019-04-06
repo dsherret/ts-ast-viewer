@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.esnext.d.ts`,
+    fileName: `/lib.es2019.string.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,8 +21,18 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2019" />
-/// <reference lib="esnext.bigint" />
-/// <reference lib="esnext.intl" />
+interface String {
+  /** Removes the trailing white space and line terminator characters from a string. */
+  trimEnd(): string;
+
+  /** Removes the leading white space and line terminator characters from a string. */
+  trimStart(): string;
+
+  /** Removes the trailing white space and line terminator characters from a string. */
+  trimLeft(): string;
+
+  /** Removes the leading white space and line terminator characters from a string. */
+  trimRight(): string;
+}
 `
 };

@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.esnext.d.ts`,
+    fileName: `/lib.esnext.intl.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,8 +21,17 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2019" />
-/// <reference lib="esnext.bigint" />
-/// <reference lib="esnext.intl" />
+declare namespace Intl {
+    type NumberFormatPartTypes = "currency" | "decimal" | "fraction" | "group" | "infinity" | "integer" | "literal" | "minusSign" | "nan" | "plusSign" | "percentSign";
+
+    interface NumberFormatPart {
+        type: NumberFormatPartTypes;
+        value: string;
+    }
+
+    interface NumberFormat {
+        formatToParts(number?: number): NumberFormatPart[];
+    }
+  }
 `
 };

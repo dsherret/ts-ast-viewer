@@ -126,7 +126,7 @@ interface Atomics {
      * Wakes up sleeping agents that are waiting on the given index of the array, returning the
      * number of agents that were awoken.
      */
-    notify(typedArray: Int32Array, index: number, count: number): number;
+    wake(typedArray: Int32Array, index: number, count: number): number;
 
     /**
      * Stores the bitwise XOR of a value with the value at the given position in the array,
@@ -138,6 +138,5 @@ interface Atomics {
     readonly [Symbol.toStringTag]: "Atomics";
 }
 
-declare var Atomics: Atomics;
-`
+declare var Atomics: Atomics;`
 };

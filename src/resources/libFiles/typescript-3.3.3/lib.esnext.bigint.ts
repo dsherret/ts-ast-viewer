@@ -57,7 +57,7 @@ interface BigIntConstructor {
     asUintN(bits: number, int: bigint): bigint;
 }
 
-declare var BigInt: BigIntConstructor;
+declare const BigInt: BigIntConstructor;
 
 /**
   * A typed array of 64-bit signed integer values. The contents are initialized to 0. If the
@@ -326,7 +326,7 @@ interface BigInt64ArrayConstructor {
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array;
 }
 
-declare var BigInt64Array: BigInt64ArrayConstructor;
+declare const BigInt64Array: BigInt64ArrayConstructor;
 
 /**
   * A typed array of 64-bit unsigned integer values. The contents are initialized to 0. If the
@@ -595,7 +595,7 @@ interface BigUint64ArrayConstructor {
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array;
 }
 
-declare var BigUint64Array: BigUint64ArrayConstructor;
+declare const BigUint64Array: BigUint64ArrayConstructor;
 
 interface DataView {
     /**
@@ -629,6 +629,5 @@ interface DataView {
       * otherwise a little-endian value should be written.
       */
     setBigUint64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
-}
-`
+}`
 };
