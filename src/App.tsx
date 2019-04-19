@@ -62,7 +62,11 @@ export default function App(props: Props) {
         function getFactoryCodeEditor() {
             if (compiler == null)
                 return <components.Spinner />;
-            return <components.FactoryCodeEditor text={props.code} isTsx={isTsxScriptKind(compiler.api, props.options.scriptKind)} />;
+            return (
+                <components.ErrorBoundary getResetHash={() => props.code}>
+                    <components.FactoryCodeEditor text={props.code} isTsx={isTsxScriptKind(compiler.api, props.options.scriptKind)} />;
+                </components.ErrorBoundary>
+            );
         }
 
         function getCodeEditor() {
