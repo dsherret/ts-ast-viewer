@@ -203,6 +203,8 @@ a,a:visited {
 #treeViewer {
     overflow: auto;
     height: 100%;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 #treeViewer .nodeText {
