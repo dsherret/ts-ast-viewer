@@ -7572,9 +7572,9 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-creator@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/ts-creator/-/ts-creator-1.2.4.tgz#14a555720aeb1c8f7b37e4301ef9a2a7edf182b9"
+ts-creator@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/ts-creator/-/ts-creator-1.2.5.tgz#55110c88c27b3a476eb86518b59d0286bf9e1c6f"
   dependencies:
     cardinal "^2.1.1"
     get-stdin "^6.0.0"
@@ -7774,9 +7774,9 @@ typedarray@^0.0.6:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
 
-typescript@3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.2.tgz#9ed4e6475d906f589200193be056f5913caed481"
+typescript@3.4.5:
+  version "3.4.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
 
 typescript@^3.0.1:
   version "3.3.1"

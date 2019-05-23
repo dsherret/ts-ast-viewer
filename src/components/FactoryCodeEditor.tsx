@@ -77,6 +77,9 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
         if (this.state.tsCreator == null || this.state.tsCreator === false)
             return undefined;
 
-        return this.state.tsCreator(this.props.text, { prettierOptions: { semi: true }, tsx: this.props.isTsx });
+        return this.state.tsCreator(this.props.text, {
+            prettierOptions: { semi: true },
+            tsx: this.props.isTsx
+        });
     }
 }
