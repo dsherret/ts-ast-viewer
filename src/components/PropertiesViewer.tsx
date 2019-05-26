@@ -2,6 +2,7 @@
 import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
+import { BindingTools } from "../types";
 import { ArrayUtils, getSyntaxKindName, getEnumFlagNames } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 import { TooltipedText } from "./TooltipedText";
@@ -9,13 +10,14 @@ import { TooltipedText } from "./TooltipedText";
 export interface PropertiesViewerProps {
     api: CompilerApi;
     sourceFile: SourceFile;
-    typeChecker: TypeChecker;
+    bindingTools: () => BindingTools;
     selectedNode: Node;
+    bindingEnabled: boolean;
 }
 
 export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
     render() {
-        const {selectedNode, sourceFile, typeChecker, api} = this.props;
+        const { selectedNode, sourceFile, bindingEnabled, bindingTools, api } = this.props;
         return (
             <div className="propertiesViewer">
                 <div className="container">
@@ -23,22 +25,30 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
                     <div id={cssConstants.properties.node.id}>
                         {getForNode(api, selectedNode, sourceFile)}
                     </div>
-                    <h2>Type</h2>
-                    <div id={cssConstants.properties.type.id}>
-                        {getForType(api, selectedNode, typeChecker)}
-                    </div>
-                    <h2>Symbol</h2>
-                    <div id={cssConstants.properties.symbol.id}>
-                        {getForSymbol(api, selectedNode, typeChecker)}
-                    </div>
-                    <h2>Signature</h2>
-                    <div id={cssConstants.properties.signature.id}>
-                        {getForSignature(api, selectedNode, typeChecker)}
-                    </div>
+                    {bindingEnabled && getBindingSection(api, selectedNode, bindingTools().typeChecker)}
                 </div>
             </div>
         );
     }
+}
+
+function getBindingSection(api: CompilerApi, selectedNode: Node, typeChecker: TypeChecker) {
+    return (
+        <>
+            <h2>Type</h2>
+            <div id={cssConstants.properties.type.id}>
+                {getForType(api, selectedNode, typeChecker)}
+            </div>
+            <h2>Symbol</h2>
+            <div id={cssConstants.properties.symbol.id}>
+                {getForSymbol(api, selectedNode, typeChecker)}
+            </div>
+            <h2>Signature</h2>
+            <div id={cssConstants.properties.signature.id}>
+                {getForSignature(api, selectedNode, typeChecker)}
+            </div>
+        </>
+    );
 }
 
 function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile) {

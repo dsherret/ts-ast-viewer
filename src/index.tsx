@@ -14,16 +14,16 @@ import { StateSaver } from "./utils";
 
 const initialScriptTarget: ScriptTarget = 6 /* Latest */;
 const initialScriptKind: ScriptKind = 4 /* TSX */;
-const initialCode = "";
 const stateSaver = new StateSaver();
 const store = createStore<StoreState>(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
-    code: initialCode,
+    code: "",
     options: {
         compilerPackageName: "typescript",
         treeMode: stateSaver.get().treeMode,
         scriptTarget: initialScriptTarget,
         scriptKind: initialScriptKind,
+        bindingEnabled: true,
         showFactoryCode: stateSaver.get().showFactoryCode
     },
     compiler: undefined
@@ -63,10 +63,20 @@ store.subscribe(() => {
     windowAny.ts = state.compiler.api;
     windowAny.selectedNode = selectedNode;
     windowAny.sourceFile = state.compiler.sourceFile;
-    windowAny.typeChecker = state.compiler.typeChecker;
-    windowAny.program = state.compiler.program;
-    windowAny.type = tryGet(() => state.compiler!.typeChecker.getTypeAtLocation(selectedNode));
-    windowAny.symbol = tryGet(() => (selectedNode as any).symbol || state.compiler!.typeChecker.getSymbolAtLocation(selectedNode));
+
+    if (state.options.bindingEnabled) {
+        const bindingTools = state.compiler.bindingTools();
+        windowAny.typeChecker = bindingTools.typeChecker;
+        windowAny.program = bindingTools.program;
+        windowAny.type = tryGet(() => bindingTools.typeChecker.getTypeAtLocation(selectedNode));
+        windowAny.symbol = tryGet(() => (selectedNode as any).symbol || bindingTools.typeChecker.getSymbolAtLocation(selectedNode));
+    }
+    else {
+        windowAny.typeChecker = undefined;
+        windowAny.program = undefined;
+        windowAny.type = undefined;
+        windowAny.symbol = undefined;
+    }
 
     function tryGet<T>(getValue: () => T) {
         try {

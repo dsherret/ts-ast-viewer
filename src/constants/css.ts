@@ -4,6 +4,7 @@ export default {
         buttonId: "optionsButton",
         compilerVersionSelectionId: "compilerVersionSelection",
         treeModeId: "treeMode",
+        bindingEnabledId: "bindingEnabled",
         showFactoryCodeId: "showFactoryCode",
     },
     codeEditor: {

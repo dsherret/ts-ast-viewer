@@ -106,12 +106,11 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
 }
 
 function fillNewSourceFileState(api: CompilerApi, state: StoreState, code: string, options: OptionsState) {
-    const {sourceFile, program, typeChecker} = createSourceFile(api, code, options.scriptTarget, options.scriptKind);
+    const { sourceFile, bindingTools } = createSourceFile(api, code, options.scriptTarget, options.scriptKind);
     state.compiler = {
         api,
         sourceFile,
-        program,
-        typeChecker,
+        bindingTools,
         selectedNode: sourceFile
     };
 }

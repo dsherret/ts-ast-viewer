@@ -21,12 +21,14 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
         scriptKind: fromKind,
         scriptTarget: fromTarget,
         treeMode: 0,
+        bindingEnabled: true,
         showFactoryCode: true
     })).toEqual({
         compilerPackageName: "typescript",
         scriptKind: expectedKind,
         scriptTarget: expectedTarget,
         treeMode: 0,
+        bindingEnabled: true,
         showFactoryCode: true
     });
 }
