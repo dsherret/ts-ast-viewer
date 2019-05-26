@@ -18,6 +18,7 @@
   },
   "homepage": "https://ts-ast-viewer.com",
   "scripts": {
+    "postinstall": "yarn install --cwd e2e",
     "start": "npm run updateCompilerFiles && react-scripts-ts start",
     "build": "react-scripts-ts build",
     "lint": "tslint --project tsconfig.json",

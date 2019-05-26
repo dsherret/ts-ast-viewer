@@ -9,7 +9,6 @@ cache:
     - ~/e2e/.cache
 install:
   - yarn install
-  - yarn install --cwd e2e
   - yarn add typescript-next@npm:typescript@next
 script:
   - npm run cypress:ci
