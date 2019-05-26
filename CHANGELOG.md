@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.20.0...v0.21.0) (2019-05-26)
+
+
+### Bug Fixes
+
+* [#42](https://github.com/dsherret/ts-ast-viewer/issues/42) - Errors thrown in factory code shouldn't bring down the app. ([f1d97ca](https://github.com/dsherret/ts-ast-viewer/commit/f1d97ca))
+* TreeViewer: Add a slight amount of vertical padding. ([ccc269d](https://github.com/dsherret/ts-ast-viewer/commit/ccc269d))
+
+
+### Features
+
+* [#40](https://github.com/dsherret/ts-ast-viewer/issues/40) - Make visible by default. ([0abde14](https://github.com/dsherret/ts-ast-viewer/commit/0abde14))
+* [#40](https://github.com/dsherret/ts-ast-viewer/issues/40) - Move "show factory" to Options area. ([a87cc1f](https://github.com/dsherret/ts-ast-viewer/commit/a87cc1f))
+* [#45](https://github.com/dsherret/ts-ast-viewer/issues/45) - Ability to disable binding. ([390218c](https://github.com/dsherret/ts-ast-viewer/commit/390218c))
+* Add TS 3.4. ([041a7a8](https://github.com/dsherret/ts-ast-viewer/commit/041a7a8))
+* Upgrade to TypeScript 3.4.5 and ts-creator 1.2.5 ([7dd2f85](https://github.com/dsherret/ts-ast-viewer/commit/7dd2f85))
+
+
+
 <a name="0.20.0"></a>
 # [0.20.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.19.0...v0.20.0) (2019-03-18)
 
