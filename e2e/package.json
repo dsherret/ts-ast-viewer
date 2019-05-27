@@ -17,7 +17,7 @@
     "cypress": "^3.0.2",
     "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
-    "wait-on": "^2.1.0",
+    "wait-on": "^3.2.0",
     "webpack": "^4.15.1"
   }
 }
