@@ -7,7 +7,9 @@ export function visitSite() {
     // this is a quick fix to speed up the tests
     if (visited)
         return;
-    cy.visit(constants.siteUrl);
+    cy.visit(constants.siteUrl, {
+        retryOnStatusCodeFailure: true
+    });
     visited = true;
 }
 
