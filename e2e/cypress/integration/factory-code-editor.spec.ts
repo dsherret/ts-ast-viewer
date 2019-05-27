@@ -1,28 +1,24 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, toggleFactoryCode, checkFactoryCode} from "../helpers";
+import { forAllCompilerVersions, visitSite, setVersion, setEditorText, setFactoryCodeEnabled, checkFactoryCode } from "../helpers";
 
 forAllCompilerVersions(packageName => {
-    // todo: enable this after figuring out `toggleFactoryCode` (it might be working now... check again soon)
-    describe.skip(`factory code editor (${packageName})`, () => {
+    describe(`factory code editor (${packageName})`, () => {
         before(() => {
             visitSite();
             setVersion(packageName);
             setEditorText("foo();");
-            toggleFactoryCode();
+            setFactoryCodeEnabled(true);
         });
 
         after(() => {
             // revert for next tests
-            toggleFactoryCode();
+            setFactoryCodeEnabled(false);
         });
 
-        checkFactoryCode(`ts.updateSourceFileNode(
-  ts.createSourceFile('temporary.tsx', '', ts.ScriptTarget.Latest),
-  [
-    ts.createExpressionStatement(
-      ts.createCall(ts.createIdentifier('foo'), undefined, [])
-    )
-  ]
-);
+        checkFactoryCode(`[
+  ts.createExpressionStatement(
+    ts.createCall(ts.createIdentifier('foo'), undefined, [])
+  )
+];
 `.replace(/\r?\n/g, "\n"))
     });
 

@@ -101,7 +101,8 @@ export default function App(props: Props) {
                         api={compiler.api}
                         selectedNode={compiler.selectedNode}
                         sourceFile={compiler.sourceFile}
-                        typeChecker={compiler.typeChecker}
+                        bindingTools={compiler.bindingTools}
+                        bindingEnabled={props.options.bindingEnabled}
                     />
                 </SplitPane>
             </components.ErrorBoundary>);

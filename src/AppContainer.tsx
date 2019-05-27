@@ -27,7 +27,11 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
         onRangeChange: (range: [number, number]) => dispatch(actions.setRange(range)),
         onNodeChange: (node: Node) => dispatch(actions.setSelectedNode(node)),
         onOptionsChange: (compilerPackageName: compilerPackageNames, options: Partial<OptionsState>) => {
-            const fileNeedsChanging = options.scriptKind !== undefined || options.scriptTarget !== undefined || options.compilerPackageName !== undefined;
+            const fileNeedsChanging = options.scriptKind !== undefined
+                || options.scriptTarget !== undefined
+                || options.compilerPackageName !== undefined
+                || options.bindingEnabled !== undefined;
+
             dispatch(actions.setOptions(options));
             if (fileNeedsChanging)
                 debouncedSourceFileRefresh(compilerPackageName);

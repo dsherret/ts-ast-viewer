@@ -29,6 +29,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     {this.getTreeMode()}
                     {this.getScriptKind()}
                     {this.getScriptTarget()}
+                    {this.getBindingEnabled()}
                     {this.getShowFactoryCode()}
                     <div className="githubLink">
                         <a href="https://github.com/dsherret/ts-ast-viewer" target="_blank">View on GitHub</a>
@@ -79,6 +80,20 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
             return undefined;
         return this.getEnumOption("Script target", "ts.ScriptTarget", api.ScriptTarget, this.props.options.scriptTarget,
             value => this.onChange({ scriptTarget: value as ScriptTarget }));
+    }
+
+    private getBindingEnabled() {
+        const selection = (
+            <div>
+                <input
+                    id={cssConstants.options.bindingEnabledId}
+                    type="checkbox"
+                    checked={this.props.options.bindingEnabled}
+                    onChange={(event) => this.onChange({ bindingEnabled: !!event.target.checked })}
+                />
+            </div>
+        );
+        return (<Option name={"Binding"} value={selection} />);
     }
 
     private getShowFactoryCode() {

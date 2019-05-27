@@ -10,10 +10,15 @@ export interface StoreState {
 
 export interface CompilerState {
     api: CompilerApi;
-    program: Program;
-    typeChecker: TypeChecker;
     sourceFile: SourceFile;
     selectedNode: Node;
+    // this is deferred because binding may be disabled
+    bindingTools: () => BindingTools;
+}
+
+export interface BindingTools {
+    program: Program;
+    typeChecker: TypeChecker;
 }
 
 export interface OptionsState {
@@ -21,6 +26,7 @@ export interface OptionsState {
     treeMode: TreeMode;
     scriptTarget: ScriptTarget;
     scriptKind: ScriptKind;
+    bindingEnabled: boolean;
     showFactoryCode: boolean;
 }
 

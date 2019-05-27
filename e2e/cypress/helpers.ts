@@ -19,9 +19,17 @@ export function setEditorText(text: string) {
     cy.wait(constants.general.sourceFileRefreshDelay + 150);
 }
 
-export function toggleFactoryCode() {
+export function setFactoryCodeEnabled(enabled: boolean) {
     cy.get(`#${constants.css.options.id}`).click();
-    cy.get(`#${constants.css.options.showFactoryCodeId}`).check();
+    const checkbox = cy.get(`#${constants.css.options.showFactoryCodeId}`);
+    enabled ? checkbox.check() : checkbox.uncheck();
+    cy.get(`#${constants.css.options.id}`).click(); // hide
+}
+
+export function setBindingEnabled(enabled: boolean) {
+    cy.get(`#${constants.css.options.id}`).click();
+    const checkbox = cy.get(`#${constants.css.options.bindingEnabledId}`);
+    enabled ? checkbox.check() : checkbox.uncheck();
     cy.get(`#${constants.css.options.id}`).click(); // hide
 }
 
@@ -57,9 +65,9 @@ export function forAllCompilerVersions(action: (version: compilerPackageNames) =
 export interface State {
     treeView: TreeViewNode;
     node: Node;
-    type?: Type;
-    symbol?: Symbol;
-    signature?: Signature;
+    type?: Type | "none";
+    symbol?: Symbol | "none";
+    signature?: Signature | "none";
     factoryCode?: string;
 }
 
@@ -114,35 +122,54 @@ export function checkTreeView(tree: TreeViewNode) {
 }
 
 export interface Node {
-    name: string;
-    pos: number;
-    end: number;
-    start: number;
+    name?: string;
+    pos?: number;
+    end?: number;
+    start?: number;
+    isBound?: boolean;
 }
 
 export function checkNode(node: Node) {
-    it("should have the correct node name", () => {
-        getMainElement().find(">.tree-view>.tree-view_item").first().should("have.text", node.name);
-    });
+    if (node.name != null) {
+        it("should have the correct node name", () => {
+            getMainElement().find(">.tree-view>.tree-view_item").first().should("have.text", node.name);
+        });
+    }
 
-    it("should have the correct node pos", () => {
-        getPropertyValueElement("pos").should("have.text", node.pos.toString());
-    });
+    if (node.pos != null) {
+        it("should have the correct node pos", () => {
+            getPropertyValueElement("pos").should("have.text", node.pos!.toString());
+        });
+    }
 
-    it("should have the correct node end", () => {
-        getPropertyValueElement("end").should("have.text", node.end.toString());
-    });
+    if (node.end != null) {
+        it("should have the correct node end", () => {
+            getPropertyValueElement("end").should("have.text", node.end!.toString());
+        });
+    }
 
-    it("should have the correct node start", () => {
-        getMethodValueElement("getStart").should("have.text", node.start.toString());
-    });
+    if (node.start != null) {
+        it("should have the correct node start", () => {
+            getMethodValueElement("getStart").should("have.text", node.start!.toString());
+        });
+    }
+
+    if (typeof node.isBound === "boolean") {
+        it(`should${node.isBound ? " " : " not "}have a bound node`, () => {
+            getContainerElement("id").should(node.isBound ? "exist" : "not.exist");
+        });
+    }
 
     function getPropertyValueElement(name: string) {
-        return getMainElement().find(`>.tree-view>.tree-view_children>[data-name='${name}']>.value`).first();
+        return getContainerElement(name).find(`>.value`).first();
     }
 
     function getMethodValueElement(methodName: string) {
-        return getMainElement().find(`>.tree-view>.tree-view_children>[data-name='${methodName}()']>.methodResult`).first();
+        return getContainerElement(methodName + "()").find(`>.methodResult`).first();
+    }
+
+    function getContainerElement(name: string) {
+        return getMainElement().find(`>.tree-view>.tree-view_children>[data-name='${name}']`);
     }
 
     function getMainElement() {
@@ -154,9 +181,15 @@ export interface Type {
     name: string;
 }
 
-export function checkType(type: Type | undefined) {
+export function checkType(type: Type | "none" | undefined) {
     if (type == null) {
-        it("should not have a type", () => {
+        it("should not display the type", () => {
+            getMainElement().should("not.exist");
+        });
+        return;
+    }
+    else if (type === "none") {
+        it("should have a [None] type", () => {
             getMainElement().should("have.text", "[None]");
         });
         return;
@@ -179,9 +212,15 @@ export interface Symbol {
     name: string;
 }
 
-export function checkSymbol(symbol: Symbol | undefined) {
+export function checkSymbol(symbol: Symbol | "none" | undefined) {
     if (symbol == null) {
-        it("should not have a symbol", () => {
+        it("should not display the symbol", () => {
+            getMainElement().should("not.exist");
+        });
+        return;
+    }
+    else if (symbol === "none") {
+        it("should have a [None] symbol", () => {
             getMainElement().should("have.text", "[None]");
         });
         return;
@@ -204,9 +243,15 @@ export interface Signature {
     minArgumentCount: number;
 }
 
-export function checkSignature(signature: Signature | undefined) {
+export function checkSignature(signature: Signature | "none" | undefined) {
     if (signature == null) {
-        it("should not have a signature", () => {
+        it("should not display the signature", () => {
+            getMainElement().should("not.exist");
+        });
+        return;
+    }
+    else if (signature === "none") {
+        it("should have a [None] signature", () => {
             getMainElement().should("have.text", "[None]");
         });
         return;

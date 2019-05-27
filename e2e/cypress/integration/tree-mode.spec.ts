@@ -57,7 +57,10 @@ forAllCompilerVersions(packageName => {
                 pos: 0,
                 start: 0,
                 end: 20
-            }
+            },
+            type: "none",
+            symbol: "none",
+            signature: "none"
         });
     });
 });
