@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.es2019.d.ts`,
+    fileName: `/lib.es2020.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,10 +21,8 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2018" />
-/// <reference lib="es2019.array" />
-/// <reference lib="es2019.object" />
-/// <reference lib="es2019.string" />
-/// <reference lib="es2019.symbol" />
+/// <reference lib="es2019" />
+/// <reference lib="es2020.string" />
+/// <reference lib="es2020.symbol.wellknown" />
 `
 };

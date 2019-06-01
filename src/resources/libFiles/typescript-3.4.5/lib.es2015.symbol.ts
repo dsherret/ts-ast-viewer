@@ -1,6 +1,6 @@
 /* tslint:disable */
 export default {
-    fileName: `/lib.es2019.d.ts`,
+    fileName: `/lib.es2015.symbol.d.ts`,
     text: `/*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved. 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -21,10 +21,32 @@ and limitations under the License.
 /// <reference no-default-lib="true"/>
 
 
-/// <reference lib="es2018" />
-/// <reference lib="es2019.array" />
-/// <reference lib="es2019.object" />
-/// <reference lib="es2019.string" />
-/// <reference lib="es2019.symbol" />
-`
+interface SymbolConstructor {
+    /**
+     * A reference to the prototype.
+     */
+    readonly prototype: Symbol;
+
+    /**
+     * Returns a new unique Symbol value.
+     * @param  description Description of the new Symbol object.
+     */
+    (description?: string | number): symbol;
+
+    /**
+     * Returns a Symbol object from the global symbol registry matching the given key if found.
+     * Otherwise, returns a new symbol with this key.
+     * @param key key to search for.
+     */
+    for(key: string): symbol;
+
+    /**
+     * Returns a key from the global symbol registry matching the given Symbol if found.
+     * Otherwise, returns a undefined.
+     * @param sym Symbol to find the key for.
+     */
+    keyFor(sym: symbol): string | undefined;
+}
+
+declare var Symbol: SymbolConstructor;`
 };
