@@ -52,7 +52,7 @@ store.subscribe(() => {
 });
 
 // set global variables
-console.log("[ts-ast-viewer]: Inspect the ts, selectedNode, sourceFile, symbol, type, program, and typeChecker global variables here in the console.");
+console.log("[ts-ast-viewer]: Inspect the ts, sourceFile, node, symbol, type, signature, program, and typeChecker global variables here in the console.");
 store.subscribe(() => {
     const state = store.getState();
     if (state.compiler == null || state.compiler.selectedNode == null)
@@ -61,6 +61,7 @@ store.subscribe(() => {
     const windowAny = window as any;
     const selectedNode = state.compiler.selectedNode;
     windowAny.ts = state.compiler.api;
+    windowAny.node = selectedNode;
     windowAny.selectedNode = selectedNode;
     windowAny.sourceFile = state.compiler.sourceFile;
 
@@ -70,12 +71,14 @@ store.subscribe(() => {
         windowAny.program = bindingTools.program;
         windowAny.type = tryGet(() => bindingTools.typeChecker.getTypeAtLocation(selectedNode));
         windowAny.symbol = tryGet(() => (selectedNode as any).symbol || bindingTools.typeChecker.getSymbolAtLocation(selectedNode));
+        windowAny.signature = tryGet(() => bindingTools.typeChecker.getSignatureFromDeclaration(selectedNode as any));
     }
     else {
         windowAny.typeChecker = undefined;
         windowAny.program = undefined;
         windowAny.type = undefined;
         windowAny.symbol = undefined;
+        windowAny.signature = undefined;
     }
 
     function tryGet<T>(getValue: () => T) {
