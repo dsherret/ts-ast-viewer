@@ -31,7 +31,9 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     {this.getScriptTarget()}
                     {this.getBindingEnabled()}
                     {this.getShowFactoryCode()}
-                    <div className="githubLink">
+                    <div className="bottomLinks">
+                        <a href="https://github.com/dsherret/ts-ast-viewer/tree/master/docs/about.md" target="_blank">About</a>
+                        <span>&nbsp;|&nbsp;</span>
                         <a href="https://github.com/dsherret/ts-ast-viewer" target="_blank">View on GitHub</a>
                     </div>
                 </div>
