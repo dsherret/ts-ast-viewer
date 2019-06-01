@@ -15,6 +15,7 @@
   "dependencies": {
     "@cypress/webpack-preprocessor": "^2.0.1",
     "cypress": "^3.3.1",
+    "cypress-plugin-retries": "^1.2.2",
     "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
     "wait-on": "^3.2.0",

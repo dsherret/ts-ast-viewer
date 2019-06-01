@@ -57,11 +57,15 @@ export function selectNode(...selection: string[]) {
 }
 
 export function forAllCompilerVersions(action: (version: compilerPackageNames) => void) {
-    // todo: fix this code to test everything locally and only typescript-next on the ci
-    // only test typescript-next for the time being... manually uncomment to test others
-    action("typescript-next" as any);
-    // for (const versionInfo of compilerVersionCollection)
-    //     action(versionInfo.packageName);
+    if (process.env.CI) {
+        action("typescript-next" as any);
+    }
+    else {
+        action("typescript");
+        // todo: make testing everything configurable
+        // for (const versionInfo of compilerVersionCollection)
+        //     action(versionInfo.packageName);
+    }
 }
 
 export interface State {
