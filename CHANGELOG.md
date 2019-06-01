@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.22.0"></a>
+# [0.22.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.21.0...v0.22.0) (2019-06-01)
+
+
+### Features
+
+* Add about page. ([5eb4a31](https://github.com/dsherret/ts-ast-viewer/commit/5eb4a31))
+* Add signature to developer console. ([a892777](https://github.com/dsherret/ts-ast-viewer/commit/a892777))
+* Add TypeScript 3.5.1 ([6f21d2e](https://github.com/dsherret/ts-ast-viewer/commit/6f21d2e))
+
+
+
 <a name="0.21.0"></a>
 # [0.21.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.20.0...v0.21.0) (2019-05-26)
 
