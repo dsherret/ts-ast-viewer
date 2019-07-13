@@ -1,5 +1,4 @@
-﻿/* barrel:ignore */
-import { CompilerApi, Program, TypeChecker, SourceFile, Node, ScriptTarget, ScriptKind, compilerPackageNames } from "../compiler";
+﻿import { CompilerApi, Program, TypeChecker, SourceFile, Node, ScriptTarget, ScriptKind, CompilerPackageNames } from "../compiler";
 
 export interface StoreState {
     code: string;
@@ -9,6 +8,7 @@ export interface StoreState {
 }
 
 export interface CompilerState {
+    packageName: CompilerPackageNames;
     api: CompilerApi;
     sourceFile: SourceFile;
     selectedNode: Node;
@@ -22,7 +22,7 @@ export interface BindingTools {
 }
 
 export interface OptionsState {
-    compilerPackageName: compilerPackageNames;
+    compilerPackageName: CompilerPackageNames;
     treeMode: TreeMode;
     scriptTarget: ScriptTarget;
     scriptKind: ScriptKind;

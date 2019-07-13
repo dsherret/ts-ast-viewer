@@ -1,5 +1,5 @@
 import React from "react";
-import { CompilerApi, ScriptKind, ScriptTarget, compilerVersionCollection, compilerPackageNames } from "../compiler";
+import { CompilerApi, ScriptKind, ScriptTarget, compilerVersionCollection, CompilerPackageNames } from "../compiler";
 import { OptionsState, TreeMode } from "../types";
 import { css as cssConstants } from "../constants";
 import { EnumUtils } from "../utils";
@@ -46,7 +46,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
             <select
                 id={cssConstants.options.compilerVersionSelectionId}
                 value={this.props.options.compilerPackageName}
-                onChange={event => this.onChange({ compilerPackageName: event.target.value as compilerPackageNames })}
+                onChange={event => this.onChange({ compilerPackageName: event.target.value as CompilerPackageNames })}
             >
                 {compilerVersionCollection.map(v => (<option value={v.packageName} key={v.packageName}>{v.version}</option>))}
             </select>
@@ -107,7 +107,6 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     checked={this.props.options.showFactoryCode}
                     onChange={(event) => this.onChange({ showFactoryCode: !!event.target.checked })}
                 />
-                <span id="tsCreatorLink">(<a href="https://github.com/HearTao/ts-creator" target="_blank">ts-creator</a>)</span>
             </div>
         );
         return (<Option name={"Factory code"} value={selection} />);

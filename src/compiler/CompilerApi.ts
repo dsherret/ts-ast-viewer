@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import { compilerPackageNames } from "./compilerVersions";
+import { CompilerPackageNames } from "./compilerVersions";
 
 export interface CompilerApi {
     createSourceFile: typeof ts.createSourceFile;
@@ -15,7 +15,7 @@ export interface CompilerApi {
     SymbolFlags: typeof ts.SymbolFlags;
     TypeFlags: typeof ts.TypeFlags;
     tsAstViewer: {
-        packageName: compilerPackageNames;
+        packageName: CompilerPackageNames;
         cachedSourceFiles: { [name: string]: SourceFile | undefined; };
     };
     version: number;

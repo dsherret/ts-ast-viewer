@@ -1,5 +1,4 @@
-﻿/* barrel:ignore */
-import { Node, CompilerApi } from "../compiler";
+﻿import { Node, CompilerApi, CompilerPackageNames } from "../compiler";
 import { actions as constants } from "../constants";
 import { OptionsState, ApiLoadingState } from "../types";
 
@@ -29,12 +28,14 @@ export function setApiLoadingState(loadingState: ApiLoadingState): SetApiLoading
 
 export interface RefreshSourceFile {
     type: constants.REFRESH_SOURCEFILE;
+    compilerPackageName: CompilerPackageNames;
     api: CompilerApi;
 }
 
-export function refreshSourceFile(api: CompilerApi): RefreshSourceFile {
+export function refreshSourceFile(compilerPackageName: CompilerPackageNames, api: CompilerApi): RefreshSourceFile {
     return {
         type: constants.REFRESH_SOURCEFILE,
+        compilerPackageName,
         api
     };
 }

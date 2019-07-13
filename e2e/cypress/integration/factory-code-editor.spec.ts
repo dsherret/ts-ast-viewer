@@ -15,12 +15,12 @@ forAllCompilerVersions(packageName => {
         });
 
         checkFactoryCode(`[
-  ts.createExpressionStatement(
-    ts.createCall(ts.createIdentifier('foo'), undefined, [])
-  )
+  ts.createExpressionStatement(ts.createCall(
+    ts.createIdentifier("foo"),
+    undefined,
+    []
+  ))
 ];
-`.replace(/\r?\n/g, "\n"))
+`.replace(/\r?\n/g, "\n"));
     });
-
-    // todo: should test changing the script kind to a non-tsx script kind
 });

@@ -1,11 +1,11 @@
 /* Automatically maintained from package.json. Do not edit! */
 import { CompilerApi } from "./CompilerApi";
-import { compilerPackageNames, importCompilerApi, immportLibFiles } from "./compilerVersions";
+import { CompilerPackageNames, importCompilerApi, importLibFiles } from "./compilerVersions";
 
 const compilerTypes: { [name: string]: Promise<CompilerApi>; } = {};
 const compilerTypesLoaded: { [name: string]: true; } = {};
 
-export function getCompilerApi(packageName: compilerPackageNames): Promise<CompilerApi> {
+export function getCompilerApi(packageName: CompilerPackageNames): Promise<CompilerApi> {
     if (compilerTypes[packageName] == null) {
         compilerTypes[packageName] = loadCompilerApi(packageName);
         compilerTypes[packageName].catch(() => delete compilerTypes[packageName]);
@@ -13,12 +13,12 @@ export function getCompilerApi(packageName: compilerPackageNames): Promise<Compi
     return compilerTypes[packageName];
 }
 
-export function hasLoadedCompilerApi(packageName: compilerPackageNames) {
+export function hasLoadedCompilerApi(packageName: CompilerPackageNames) {
     return compilerTypesLoaded[packageName] === true;
 }
 
-async function loadCompilerApi(packageName: compilerPackageNames) {
-    const libFilesPromise = immportLibFiles(packageName);
+async function loadCompilerApi(packageName: CompilerPackageNames) {
+    const libFilesPromise = importLibFiles(packageName);
     const compilerApiPromise = importCompilerApi(packageName);
     const api = await compilerApiPromise as any as CompilerApi;
 

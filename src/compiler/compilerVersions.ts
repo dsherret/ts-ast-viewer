@@ -1,10 +1,11 @@
 /* tslint:disable */
 /* Automatically maintained from package.json. Do not edit! */
 
-export type compilerVersions = "3.5.3" | "3.4.5" | "3.3.3" | "3.2.4" | "3.1.6" | "3.0.3" | "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2";
-export type compilerPackageNames = "typescript" | "typescript-3.4.5" | "typescript-3.3.3" | "typescript-3.2.4" | "typescript-3.1.6" | "typescript-3.0.3" | "typescript-2.9.2" | "typescript-2.8.4" | "typescript-2.7.2" | "typescript-2.6.2";
+import { Node, CompilerApi } from "./CompilerApi";
+export type CompilerVersions = "3.5.3" | "3.4.5" | "3.3.3" | "3.2.4" | "3.1.6" | "3.0.3" | "2.9.2" | "2.8.4" | "2.7.2" | "2.6.2";
+export type CompilerPackageNames = "typescript" | "typescript-3.4.5" | "typescript-3.3.3" | "typescript-3.2.4" | "typescript-3.1.6" | "typescript-3.0.3" | "typescript-2.9.2" | "typescript-2.8.4" | "typescript-2.7.2" | "typescript-2.6.2";
 
-export const compilerVersionCollection: { version: compilerVersions; packageName: compilerPackageNames; }[] = [
+export const compilerVersionCollection: { version: CompilerVersions; packageName: CompilerPackageNames; }[] = [
     { version: "3.5.3", packageName: "typescript" },
     { version: "3.4.5", packageName: "typescript-3.4.5" },
     { version: "3.3.3", packageName: "typescript-3.3.3" },
@@ -17,7 +18,7 @@ export const compilerVersionCollection: { version: compilerVersions; packageName
     { version: "2.6.2", packageName: "typescript-2.6.2" }
 ];
 
-export async function importCompilerApi(packageName: compilerPackageNames) {
+export async function importCompilerApi(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
@@ -46,7 +47,7 @@ export async function importCompilerApi(packageName: compilerPackageNames) {
     }
 }
 
-export async function immportLibFiles(packageName: compilerPackageNames) {
+export async function importLibFiles(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
@@ -69,6 +70,35 @@ export async function immportLibFiles(packageName: compilerPackageNames) {
             return await import("../resources/libFiles/typescript-2.7.2/index");
         case "typescript-2.6.2":
             return await import("../resources/libFiles/typescript-2.6.2/index");
+        default:
+            const assertNever: never = packageName;
+            throw new Error(`Not implemented version: ${packageName}`);
+    }
+}
+
+export async function getGenerateFactoryCodeFunction(packageName: CompilerPackageNames): Promise<(ts: CompilerApi, node: Node) => string> {
+    // these explicit import statements are required to get webpack to include these modules
+    switch (packageName) {
+        case "typescript":
+            return (await import("../resources/factoryCode/typescript")).generateFactoryCode as any;
+        case "typescript-3.4.5":
+            return (await import("../resources/factoryCode/typescript-3.4.5")).generateFactoryCode as any;
+        case "typescript-3.3.3":
+            return (await import("../resources/factoryCode/typescript-3.3.3")).generateFactoryCode as any;
+        case "typescript-3.2.4":
+            return (await import("../resources/factoryCode/typescript-3.2.4")).generateFactoryCode as any;
+        case "typescript-3.1.6":
+            return (await import("../resources/factoryCode/typescript-3.1.6")).generateFactoryCode as any;
+        case "typescript-3.0.3":
+            return (await import("../resources/factoryCode/typescript-3.0.3")).generateFactoryCode as any;
+        case "typescript-2.9.2":
+            return (await import("../resources/factoryCode/typescript-2.9.2")).generateFactoryCode as any;
+        case "typescript-2.8.4":
+            return (await import("../resources/factoryCode/typescript-2.8.4")).generateFactoryCode as any;
+        case "typescript-2.7.2":
+            return (await import("../resources/factoryCode/typescript-2.7.2")).generateFactoryCode as any;
+        case "typescript-2.6.2":
+            return (await import("../resources/factoryCode/typescript-2.6.2")).generateFactoryCode as any;
         default:
             const assertNever: never = packageName;
             throw new Error(`Not implemented version: ${packageName}`);

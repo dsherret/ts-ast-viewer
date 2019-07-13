@@ -1,4 +1,3 @@
-/* barrel:ignore */
 export const SET_CODE = "SET_CODE";
 export type SET_CODE = typeof SET_CODE;
 

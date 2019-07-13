@@ -1,7 +1,6 @@
-﻿/* barrel:ignore */
-import { AllActions } from "../actions";
+﻿import { AllActions } from "../actions";
 import { StoreState, OptionsState, TreeMode } from "../types";
-import { Node, SourceFile, createSourceFile, CompilerApi, convertOptions, getChildrenFunction } from "../compiler";
+import { Node, SourceFile, createSourceFile, CompilerApi, convertOptions, getChildrenFunction, CompilerPackageNames } from "../compiler";
 import { actions as actionNames } from "./../constants";
 
 export function appReducer(state: StoreState, action: AllActions): StoreState {
@@ -29,7 +28,7 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
                 ...state,
                 options: convertOptions(state.compiler == null ? undefined : state.compiler.api, action.api, state.options)
             };
-            fillNewSourceFileState(action.api, newState, state.code, state.options);
+            fillNewSourceFileState(action.compilerPackageName, action.api, newState, state.code, state.options);
             return newState;
         }
         case actionNames.SET_CODE: {
@@ -105,9 +104,10 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
     }
 }
 
-function fillNewSourceFileState(api: CompilerApi, state: StoreState, code: string, options: OptionsState) {
+function fillNewSourceFileState(compilerPackageName: CompilerPackageNames, api: CompilerApi, state: StoreState, code: string, options: OptionsState) {
     const { sourceFile, bindingTools } = createSourceFile(api, code, options.scriptTarget, options.scriptKind);
     state.compiler = {
+        packageName: compilerPackageName,
         api,
         sourceFile,
         bindingTools,

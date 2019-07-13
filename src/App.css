@@ -155,13 +155,6 @@ a,a:visited {
     margin-right: 8px;
 }
 
-#options #tsCreatorLink {
-    margin-left: 4px;
-    position: relative;
-    bottom: 2px;
-    font-size: 0.9em;
-}
-
 /* Code Editor */
 
 #codeEditor {

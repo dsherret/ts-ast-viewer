@@ -1,6 +1,6 @@
 ﻿import { Dispatch } from "react";
 import { connect } from "react-redux";
-import { Node, getCompilerApi, hasLoadedCompilerApi, compilerPackageNames } from "./compiler";
+import { Node, getCompilerApi, hasLoadedCompilerApi, CompilerPackageNames } from "./compiler";
 import App from "./App";
 import * as actions from "./actions";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
@@ -14,19 +14,19 @@ export function mapStateToProps(state: StoreState) {
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
-    const debouncedSourceFileRefresh = debounce<compilerPackageNames>(compilerPackageName => updateSourceFile(compilerPackageName),
+    const debouncedSourceFileRefresh = debounce<CompilerPackageNames>(compilerPackageName => updateSourceFile(compilerPackageName),
         generalConstants.sourceFileRefreshDelay);
 
     updateSourceFile("typescript");
 
     return {
-        onCodeChange: (compilerPackageName: compilerPackageNames, code: string) => {
+        onCodeChange: (compilerPackageName: CompilerPackageNames, code: string) => {
             dispatch(actions.setCode(code));
             debouncedSourceFileRefresh(compilerPackageName);
         },
         onRangeChange: (range: [number, number]) => dispatch(actions.setRange(range)),
         onNodeChange: (node: Node) => dispatch(actions.setSelectedNode(node)),
-        onOptionsChange: (compilerPackageName: compilerPackageNames, options: Partial<OptionsState>) => {
+        onOptionsChange: (compilerPackageName: CompilerPackageNames, options: Partial<OptionsState>) => {
             const fileNeedsChanging = options.scriptKind !== undefined
                 || options.scriptTarget !== undefined
                 || options.compilerPackageName !== undefined
@@ -38,13 +38,13 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
         }
     };
 
-    async function updateSourceFile(compilerPackageName: compilerPackageNames) {
+    async function updateSourceFile(compilerPackageName: CompilerPackageNames) {
         const changeLoadingState = !hasLoadedCompilerApi(compilerPackageName);
         try {
             if (changeLoadingState)
                 dispatch(actions.setApiLoadingState(ApiLoadingState.Loading));
             const api = await getCompilerApi(compilerPackageName);
-            dispatch(actions.refreshSourceFile(api));
+            dispatch(actions.refreshSourceFile(compilerPackageName, api));
             if (changeLoadingState)
                 dispatch(actions.setApiLoadingState(ApiLoadingState.Loaded));
         } catch (err) {

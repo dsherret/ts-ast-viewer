@@ -1,18 +1,21 @@
 import React from "react";
 import ReactMonacoEditorForTypes from "react-monaco-editor";
 import * as monacoEditorForTypes from "monaco-editor";
-import tsCreatorForTypes from "ts-creator";
 import { Spinner } from "./Spinner";
 import { css as cssConstants } from "../constants";
+import { CompilerState } from "../types";
+import { FactoryCodeGenerator, CompilerPackageNames, getFactoryCodeGenerator } from "../compiler";
+
+// todo: Move out getting the code generation function from this class (need to start loading it sooner than what's done here)
 
 export interface FactoryCodeEditorProps {
-    text: string;
-    isTsx: boolean;
+    compiler: CompilerState;
 }
 
 export interface FactoryCodeEditorState {
     editorComponent: (typeof ReactMonacoEditorForTypes) | undefined | false;
-    tsCreator: (typeof tsCreatorForTypes) | undefined | false;
+    factoryCodeGenerator: FactoryCodeGenerator | false | undefined;
+    lastCompilerPackageName: CompilerPackageNames | undefined;
 }
 
 export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, FactoryCodeEditorState> {
@@ -22,7 +25,8 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
         super(props);
         this.state = {
             editorComponent: undefined,
-            tsCreator: undefined
+            factoryCodeGenerator: undefined,
+            lastCompilerPackageName: undefined
         };
         this.editorDidMount = this.editorDidMount.bind(this);
 
@@ -32,15 +36,11 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
             console.error(err);
             this.setState({ editorComponent: false });
         });
-        import("ts-creator").then(tsCreator => {
-            this.setState({ tsCreator: tsCreator.default });
-        }).catch(err => {
-            console.error(err);
-            this.setState({ tsCreator: false });
-        });
     }
 
     render() {
+        this.updateFactoryCodeGenerator();
+
         return (
             <div id={cssConstants.factoryCodeEditor.id}>
                 {this.getEditor()}
@@ -48,10 +48,27 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
         );
     }
 
+    private updateFactoryCodeGenerator() {
+        if (this.state.lastCompilerPackageName === this.props.compiler.packageName)
+            return;
+
+        this.setState({
+            factoryCodeGenerator: undefined,
+            lastCompilerPackageName: this.props.compiler.packageName
+        });
+
+        getFactoryCodeGenerator(this.props.compiler.packageName).then(factoryCodeGenerator => {
+            this.setState({ factoryCodeGenerator });
+        }).catch(err => {
+            console.error(err);
+            this.setState({ factoryCodeGenerator: false });
+        });
+    }
+
     private getEditor() {
-        if (this.state.editorComponent == null || this.state.tsCreator == null)
+        if (this.state.editorComponent == null || this.state.factoryCodeGenerator == null)
             return <Spinner backgroundColor="#1e1e1e" />;
-        if (this.state.editorComponent === false || this.state.tsCreator === false)
+        if (this.state.editorComponent === false || this.state.factoryCodeGenerator === false)
             return <div className={"errorMessage"}>Error loading factory code. Please refresh the page to try again.</div>;
 
         return (
@@ -75,12 +92,9 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
     }
 
     private getText() {
-        if (this.state.tsCreator == null || this.state.tsCreator === false)
+        if (this.state.factoryCodeGenerator == null || this.state.factoryCodeGenerator === false)
             return undefined;
 
-        return this.state.tsCreator(this.props.text, {
-            prettierOptions: { semi: true },
-            tsx: this.props.isTsx
-        });
+        return this.state.factoryCodeGenerator(this.props.compiler.api, this.props.compiler.selectedNode);
     }
 }

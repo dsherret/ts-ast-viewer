@@ -1,16 +1,15 @@
 import React from "react";
 import SplitPane from "react-split-pane";
 import * as components from "./components";
-import { Node, compilerPackageNames } from "./compiler";
+import { Node, CompilerPackageNames } from "./compiler";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
-import { isTsxScriptKind } from "./utils";
 import "./App.css";
 
 export interface Props extends StoreState {
-    onCodeChange: (compilerPackageName: compilerPackageNames, code: string) => void;
+    onCodeChange: (compilerPackageName: CompilerPackageNames, code: string) => void;
     onRangeChange: (range: [number, number]) => void;
     onNodeChange: (node: Node) => void;
-    onOptionsChange: (compilerPackageName: compilerPackageNames, options: Partial<OptionsState>) => void;
+    onOptionsChange: (compilerPackageName: CompilerPackageNames, options: Partial<OptionsState>) => void;
 }
 
 export default function App(props: Props) {
@@ -60,11 +59,12 @@ export default function App(props: Props) {
         }
 
         function getFactoryCodeEditor() {
-            if (compiler == null)
+            if (compiler == null || props.apiLoadingState === ApiLoadingState.Loading)
                 return <components.Spinner />;
+
             return (
                 <components.ErrorBoundary getResetHash={() => props.code}>
-                    <components.FactoryCodeEditor text={props.code} isTsx={isTsxScriptKind(compiler.api, props.options.scriptKind)} />;
+                    <components.FactoryCodeEditor compiler={compiler} />;
                 </components.ErrorBoundary>
             );
         }
