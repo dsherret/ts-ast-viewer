@@ -244,6 +244,8 @@ function getProperties(api: CompilerApi, rootItem: any) {
                         return getEnumFlagElement(api.NodeFlags, value);
                 }
             }
+            if (isTsType(parent) && key === "objectFlags")
+                return getEnumFlagElement(api.ObjectFlags, value);
             if (isTsType(parent) && key === "flags")
                 return getEnumFlagElement(api.TypeFlags, value);
             if (isTsSymbol(parent) && key === "flags")
