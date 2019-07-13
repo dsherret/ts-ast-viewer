@@ -52,17 +52,20 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
         if (this.state.lastCompilerPackageName === this.props.compiler.packageName)
             return;
 
-        this.setState({
-            factoryCodeGenerator: undefined,
-            lastCompilerPackageName: this.props.compiler.packageName
-        });
+        // todo: how to not do this in a render method? I'm not a react or web person
+        setTimeout(() => {
+            this.setState({
+                factoryCodeGenerator: undefined,
+                lastCompilerPackageName: this.props.compiler.packageName
+            });
 
-        getFactoryCodeGenerator(this.props.compiler.packageName).then(factoryCodeGenerator => {
-            this.setState({ factoryCodeGenerator });
-        }).catch(err => {
-            console.error(err);
-            this.setState({ factoryCodeGenerator: false });
-        });
+            getFactoryCodeGenerator(this.props.compiler.packageName).then(factoryCodeGenerator => {
+                this.setState({ factoryCodeGenerator });
+            }).catch(err => {
+                console.error(err);
+                this.setState({ factoryCodeGenerator: false });
+            });
+        }, 0);
     }
 
     private getEditor() {
