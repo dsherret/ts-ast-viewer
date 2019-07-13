@@ -193,14 +193,16 @@ function getProperties(api: CompilerApi, rootItem: any) {
                         <div className="key">{key}: [</div>
                         <div className="value">{value.map(v => getTreeNode(v))}</div>
                         <div className="suffix">]</div>
-                    </div>);
+                    </div>
+                );
         }
         else if (isTsNode(value))
             return (
                 <div className="object" key={key} data-name={key}>
                     <div className="key">{key}:</div>
                     <div className="value">{getTreeNode(value)}</div>
-                </div>);
+                </div>
+            );
         else if (isMap(value)) {
             const entries = ArrayUtils.from(value.entries());
             if (entries.length === 0)
@@ -211,7 +213,8 @@ function getProperties(api: CompilerApi, rootItem: any) {
                         <div className="key">{key}: {"{"}</div>
                         <div className="value">{entries.map(v => getTreeNode(v[1], v[0]))}</div>
                         <div className="suffix">{"}"}</div>
-                    </div>);
+                    </div>
+                );
         }
         else if (typeof value === "object") {
             if (getObjectKeys(value).length === 0)
@@ -221,14 +224,16 @@ function getProperties(api: CompilerApi, rootItem: any) {
                     <div className="object" key={key} data-name={key}>
                         <div className="key">{key}:</div>
                         <div className="value">{getTreeNode(value)}</div>
-                    </div>);
+                    </div>
+                );
         }
         else
             return (
                 <div className="text" key={key} data-name={key}>
                     <div className="key">{key}:</div>
                     <div className="value">{getCustomValue()}</div>
-                </div>);
+                </div>
+            );
 
         function getCustomValue() {
             if (isTsNode(parent)) {
@@ -294,7 +299,8 @@ function getProperties(api: CompilerApi, rootItem: any) {
             <div className="text" key={key} data-name={key}>
                 {key == null ? undefined : <div className="key" >{key}:</div>}
                 <div className="value">{value}</div>
-            </div>);
+            </div>
+        );
     }
 }
 

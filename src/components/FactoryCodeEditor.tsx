@@ -63,7 +63,8 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
                 language="typescript"
                 editorDidMount={this.editorDidMount}
                 options={{ automaticLayout: true, renderWhitespace: "none", readOnly: true, minimap: { enabled: false } }}
-            />);
+            />
+        );
     }
 
     private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {

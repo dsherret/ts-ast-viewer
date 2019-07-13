@@ -105,6 +105,7 @@ export default function App(props: Props) {
                         bindingEnabled={props.options.bindingEnabled}
                     />
                 </SplitPane>
-            </components.ErrorBoundary>);
+            </components.ErrorBoundary>
+        );
     }
 }

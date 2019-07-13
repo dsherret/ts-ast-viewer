@@ -8,14 +8,14 @@ import { unregisterServiceWorker } from "./registerServiceWorker";
 import "./index.css";
 import "./external/react-treeview.css";
 import "./external/react-splitpane.css";
-import { StoreState, ApiLoadingState } from "./types";
+import { ApiLoadingState } from "./types";
 import { appReducer } from "./reducers";
 import { StateSaver } from "./utils";
 
 const initialScriptTarget: ScriptTarget = 6 /* Latest */;
 const initialScriptKind: ScriptKind = 4 /* TSX */;
 const stateSaver = new StateSaver();
-const store = createStore<StoreState>(appReducer, {
+const store = createStore(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
     code: "",
     options: {
@@ -30,9 +30,7 @@ const store = createStore<StoreState>(appReducer, {
 });
 
 ReactDOM.render(
-    <Provider store={store}>
-        <AppContainer />
-    </Provider>,
+    <Provider store={store}><AppContainer /></Provider>,
     document.getElementById("root") as HTMLElement
 );
 

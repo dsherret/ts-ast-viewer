@@ -102,15 +102,20 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 onChange={text => this.props.onChange(text)}
                 editorDidMount={this.editorDidMount}
                 options={{ automaticLayout: true, renderWhitespace: "all", minimap: { enabled: false } }}
-            />);
+            />
+        );
     }
 
     private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {
         this.editor = editor;
 
         editor.onDidChangeCursorPosition(e => {
+            const editorModel = editor.getModel();
+            if (editorModel == null)
+                return;
+
             this.setState({
-                position: editor.getModel().getOffsetAt(e.position),
+                position: editorModel.getOffsetAt(e.position),
                 lineNumber: e.position.lineNumber,
                 column: e.position.column
             });
@@ -123,16 +128,22 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             // but the cursor position will still be at the next column. For that reason, always
             // use the editor posiion.
             const pos = editor.getPosition();
-            const start = this.lineAndColumnComputer.getPosFromLineAndColumn(pos.lineNumber, pos.column);
-            this.props.onClick([start, start]);
+            if (pos != null) {
+                const start = this.lineAndColumnComputer.getPosFromLineAndColumn(pos.lineNumber, pos.column);
+                this.props.onClick([start, start]);
+            }
         });
         editor.focus();
         this.updateHighlight();
 
         // global method for cypress
         (window as any).setMonacoEditorText = (text: string) => {
+            const editorModel = editor.getModel();
+            if (editorModel == null)
+                return;
+
             editor.executeEdits("my-source", [{
-                range: editor.getModel().getFullModelRange(),
+                range: editorModel.getFullModelRange(),
                 text
             }]);
         };

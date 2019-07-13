@@ -17,7 +17,8 @@ export class TooltipedText extends React.Component<TooltipedTextProps, { isHover
             <div className="tooltipedText" onMouseEnter={this.onMouseHoverChanged} onMouseLeave={this.onMouseHoverChanged}>
                 <div className="titleText">{this.props.text}</div>
                 {this.state.isHovering && this.getToolTip()}
-            </div>);
+            </div>
+        );
     }
 
     private onMouseHoverChanged() {

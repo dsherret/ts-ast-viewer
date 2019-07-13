@@ -13,12 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cypress/webpack-preprocessor": "^2.0.1",
-    "cypress": "^3.3.1",
+    "@cypress/webpack-preprocessor": "^4.1.0",
+    "cypress": "^3.4.0",
     "cypress-plugin-retries": "^1.2.2",
-    "ts-loader": "^4.4.2",
-    "typescript": "^2.9.2",
-    "wait-on": "^3.2.0",
-    "webpack": "^4.15.1"
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "wait-on": "^3.3.0",
+    "webpack": "^4.35.3"
   }
 }
