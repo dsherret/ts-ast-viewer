@@ -1,4 +1,4 @@
-import Project, { VariableDeclarationKind, SyntaxKind, NewLineKind } from "ts-simple-ast";
+import { Project, VariableDeclarationKind, SyntaxKind, NewLineKind } from "ts-morph";
 import { getCompilerVersions } from "./getCompilerVersions";
 import * as os from "os";
 
@@ -39,7 +39,7 @@ compilerVersionsFile.addFunctions([{
     isAsync: true,
     name: "importCompilerApi",
     parameters: [{ name: "packageName", type: "compilerPackageNames" }],
-    bodyText: writer => {
+    statements: writer => {
         writer.writeLine("// these explicit import statements are required to get webpack to include these modules");
         writer.write("switch (packageName)").block(() => {
             for (const version of versions) {
@@ -60,7 +60,7 @@ compilerVersionsFile.addFunctions([{
     isAsync: true,
     name: "immportLibFiles",
     parameters: [{ name: "packageName", type: "compilerPackageNames" }],
-    bodyText: writer => {
+    statements: writer => {
         writer.writeLine("// these explicit import statements are required to get webpack to include these modules");
         writer.write("switch (packageName)").block(() => {
             for (const version of versions) {
