@@ -2676,7 +2676,7 @@ export function generateFactoryCode(ts: typeof import("typescript-2.8.4"), initi
             }
             writer.write("]");
             writer.write(",").newLine();
-            writer.write(getFlagValues(ts.NodeFlags, "ts.NodeFlags", node.flags || 0, "None"));
+            writer.write(getNodeFlagValues(node.flags || 0));
         });
         writer.write(")");
     }
@@ -3212,7 +3212,7 @@ export function generateFactoryCode(ts: typeof import("typescript-2.8.4"), initi
                 writeNodeText(node.body)
             }
             writer.write(",").newLine();
-            writer.write(getFlagValues(ts.NodeFlags, "ts.NodeFlags", node.flags || 0, "None"));
+            writer.write(getNodeFlagValues(node.flags || 0));
         });
         writer.write(")");
     }
@@ -3911,16 +3911,29 @@ export function generateFactoryCode(ts: typeof import("typescript-2.8.4"), initi
         return map;
     }
 
-    function getFlagValues(enumObj: any, enumName: string, value: number, defaultName: string) {
+    function getNodeFlagValues(value: number) {
+        // ignore the BlockScoped node flag
+        return getFlagValuesAsString(ts.NodeFlags, "ts.NodeFlags", value || 0, "None", getFlagValues(ts.NodeFlags, value).filter(v => v !== ts.NodeFlags.BlockScoped));
+    }
+
+    function getFlagValuesAsString(enumObj: any, enumName: string, value: number, defaultName: string, flagValues?: number[]) {
+        flagValues = flagValues || getFlagValues(enumObj, value);
         const members: string[] = [];
+        for (const flagValue of flagValues)
+            members.push(enumName + "." + enumObj[flagValue]);
+        if (members.length === 0)
+            members.push(enumName + "." + defaultName);
+        return members.join(" | ");
+    }
+
+    function getFlagValues(enumObj: any, value: number) {
+        const members: number[] = [];
         for (const prop in enumObj) {
             if (typeof enumObj[prop] === "string")
                 continue;
             if ((enumObj[prop] & value) !== 0)
-                members.push(enumName + "." + prop);
+                members.push(enumObj[prop]);
         }
-        if (members.length === 0)
-            members.push(enumName + "." + defaultName);
-        return members.join(" | ");
+        return members;
     }
 }
