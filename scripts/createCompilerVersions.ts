@@ -16,10 +16,18 @@ const project = new Project({
 const compilerVersionsFile = project.addExistingSourceFile("./src/compiler/compilerVersions.ts");
 compilerVersionsFile.removeText();
 
-compilerVersionsFile.addStatements([{
+compilerVersionsFile.addStatements([writer => {
+    writer.writeLine("/* tslint:disable */")
+        .writeLine("/* Automatically maintained from package.json. Do not edit! */")
+        .blankLine();
+}, {
     kind: StructureKind.ImportDeclaration,
     namedImports: ["Node", "CompilerApi"],
     moduleSpecifier: "./CompilerApi"
+}, {
+    kind: StructureKind.ImportDeclaration,
+    namedImports: ["assertNever"],
+    moduleSpecifier: "../utils"
 }, {
     kind: StructureKind.TypeAlias,
     isExported: true,
@@ -30,19 +38,29 @@ compilerVersionsFile.addStatements([{
     isExported: true,
     name: "CompilerPackageNames",
     type: versions.map(v => `"${v.name}"`).join(" | ")
-}]);
-
-compilerVersionsFile
-    .addVariableStatement({
-        isExported: true,
-        declarationKind: VariableDeclarationKind.Const,
-        declarations: [{ name: "compilerVersionCollection", initializer: "[]", type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]" }]
-    })
-    .getDeclarations()[0]
-    .getInitializerIfKindOrThrow(SyntaxKind.ArrayLiteralExpression)
-    .addElements(versions.map(v => `{ version: "${v.version}", packageName: "${v.name}" }`), { useNewLines: true });
-
-compilerVersionsFile.addFunctions([{
+}, {
+    kind: StructureKind.VariableStatement,
+    isExported: true,
+    declarationKind: VariableDeclarationKind.Const,
+    declarations: [{
+        name: "compilerVersionCollection",
+        initializer: writer => {
+            writer.write("[").newLine();
+            writer.indentBlock(() => {
+                for (let i = 0; i < versions.length; i++) {
+                    const version = versions[i];
+                    writer.write(`{ version: "${version.version}", packageName: "${version.name}" }`);
+                    if (i < versions.length - 1)
+                        writer.write(",");
+                    writer.newLine();
+                }
+            });
+            writer.write("]");
+        },
+        type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]"
+    }],
+}, {
+    kind: StructureKind.Function,
     isExported: true,
     isAsync: true,
     name: "importCompilerApi",
@@ -58,12 +76,12 @@ compilerVersionsFile.addFunctions([{
             }
             writer.writeLine(`default:`);
             writer.indentBlock(() => {
-                writer.writeLine("const assertNever: never = packageName;")
-                    .writeLine("throw new Error(`Not implemented version: ${packageName}`);");
+                writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
     }
 }, {
+    kind: StructureKind.Function,
     isExported: true,
     isAsync: true,
     name: "importLibFiles",
@@ -79,12 +97,12 @@ compilerVersionsFile.addFunctions([{
             }
             writer.writeLine(`default:`);
             writer.indentBlock(() => {
-                writer.writeLine("const assertNever: never = packageName;")
-                    .writeLine("throw new Error(`Not implemented version: ${packageName}`);");
+                writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
     }
 }, {
+    kind: StructureKind.Function,
     isExported: true,
     isAsync: true,
     name: "getGenerateFactoryCodeFunction",
@@ -101,14 +119,10 @@ compilerVersionsFile.addFunctions([{
             }
             writer.writeLine(`default:`);
             writer.indentBlock(() => {
-                writer.writeLine("const assertNever: never = packageName;")
-                    .writeLine("throw new Error(`Not implemented version: ${packageName}`);");
+                writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
     }
 }]);
-compilerVersionsFile.insertText(0, writer => {
-    writer.writeLine("/* tslint:disable */").writeLine("/* Automatically maintained from package.json. Do not edit! */").newLine();
-});
 
 compilerVersionsFile.save();

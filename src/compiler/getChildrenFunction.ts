@@ -1,5 +1,6 @@
 import { Node, SourceFile } from "./CompilerApi";
 import { TreeMode } from "../types";
+import { assertNever } from "../utils";
 
 export function getChildrenFunction(mode: TreeMode, sourceFile: SourceFile) {
     switch (mode) {
@@ -8,8 +9,7 @@ export function getChildrenFunction(mode: TreeMode, sourceFile: SourceFile) {
         case TreeMode.forEachChild:
             return forEachChild;
         default:
-            const assertNever: never = mode;
-            throw new Error(`Unhandled mode: ${mode}`);
+            return assertNever(mode, `Unhandled mode: ${mode}`);
     }
 
     function getAllChildren(node: Node) {

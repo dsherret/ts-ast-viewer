@@ -3,7 +3,10 @@ import { StoreState, OptionsState, TreeMode } from "../types";
 import { Node, SourceFile, createSourceFile, CompilerApi, convertOptions, getChildrenFunction, CompilerPackageNames } from "../compiler";
 import { actions as actionNames } from "./../constants";
 
-export function appReducer(state: StoreState, action: AllActions): StoreState {
+export function appReducer(state: StoreState | undefined, action: AllActions): StoreState {
+    if (state == null)
+        throw new Error("State was undefined. Ensure it never is.");
+
     switch (action.type) {
         case actionNames.SET_SELECTED_NODE: {
             if (state.compiler == null)
@@ -61,14 +64,15 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
             };
         }
         default: {
+            // eslint-disable-next-line
             const assertNever: never = action;
+            return state;
         }
     }
-    return state;
 
     function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, range: [number, number]) {
         const getChildren = getChildrenFunction(mode, sourceFile);
-        const syntaxKinds = state.compiler!.api.SyntaxKind;
+        const syntaxKinds = state!.compiler!.api.SyntaxKind;
 
         let bestMatch: { node: Node; start: number; } = { node: sourceFile, start: sourceFile.getStart(sourceFile) };
         searchDescendants(sourceFile);

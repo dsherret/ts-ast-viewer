@@ -3,6 +3,7 @@ import { CompilerApi, ScriptKind, ScriptTarget, compilerVersionCollection, Compi
 import { OptionsState, TreeMode } from "../types";
 import { css as cssConstants } from "../constants";
 import { EnumUtils } from "../utils";
+import { ExternalLink } from "./ExternalLink";
 
 export interface OptionsProps {
     api: CompilerApi | undefined;
@@ -32,9 +33,9 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     {this.getBindingEnabled()}
                     {this.getShowFactoryCode()}
                     <div className="bottomLinks">
-                        <a href="https://github.com/dsherret/ts-ast-viewer/tree/master/docs/about.md" target="_blank">About</a>
+                        <ExternalLink text="About" url="https://github.com/dsherret/ts-ast-viewer/tree/master/docs/about.md" />
                         <span>&nbsp;|&nbsp;</span>
-                        <a href="https://github.com/dsherret/ts-ast-viewer" target="_blank">View on GitHub</a>
+                        <ExternalLink text="View on GitHub" url="https://github.com/dsherret/ts-ast-viewer" />
                     </div>
                 </div>
             </div>

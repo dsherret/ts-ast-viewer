@@ -19,11 +19,11 @@
   "homepage": "https://ts-ast-viewer.com",
   "scripts": {
     "postinstall": "yarn install --cwd e2e",
-    "start": "npm run updateCompilerFiles && react-scripts-ts --max_old_space_size=4096 start",
-    "build": "react-scripts-ts --max_old_space_size=4096 build",
+    "start": "npm run updateCompilerFiles && react-scripts --max_old_space_size=4096 start",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "lint": "tslint --project tsconfig.json",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
     "predeploy": "CI=false && cross-env NODE_OPTIONS=--max_old_space_size=4096 && npm run build",
     "deploy": "npm run predeploy && gh-pages -d build",
     "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode",
@@ -41,7 +41,6 @@
     "react-dom": "^16.8.6",
     "react-monaco-editor": "^0.26.2",
     "react-redux": "^7.1.0",
-    "react-scripts-ts": "^3.1.0",
     "react-spinners": "^0.5.8",
     "react-split-pane": "^0.1.87",
     "react-treeview": "^0.4.7",
@@ -70,11 +69,24 @@
     "cross-env": "^5.2.0",
     "gh-pages": "^2.0.1",
     "glob": "^7.1.4",
+    "react-scripts": "^3.0.1",
     "ts-factory-code-generator-generator": "^0.1.4",
     "ts-jest": "^24.0.2",
     "ts-morph": "^3.1.1",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "tslint-react": "^4.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

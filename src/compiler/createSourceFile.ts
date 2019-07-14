@@ -1,4 +1,5 @@
 ﻿import { CompilerApi, TypeChecker, Program, SourceFile, CompilerOptions, ScriptTarget, ScriptKind, CompilerHost } from "./CompilerApi";
+import { assertNever } from "../utils";
 
 export function createSourceFile(api: CompilerApi, code: string, scriptTarget: ScriptTarget, scriptKind: ScriptKind) {
     const filePath = `/ts-ast-viewer${getExtension(api, scriptKind)}`;
@@ -61,7 +62,6 @@ function getExtension(api: CompilerApi, scriptKind: ScriptKind) {
         case api.ScriptKind.Unknown:
             return "";
         default:
-            const assertNever: never = scriptKind;
-            throw new Error(`Not implemented ScriptKind: ${api.ScriptKind[scriptKind]}`);
+            return assertNever(scriptKind, `Not implemented ScriptKind: ${api.ScriptKind[scriptKind]}`);
     }
 }
