@@ -290,7 +290,7 @@ function getProperties(api: CompilerApi, rootItem: any) {
                     return name.getText();
                 }
                 return undefined;
-            } catch {
+            } catch (err) {
                 return undefined;
             }
         }

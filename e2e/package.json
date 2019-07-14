@@ -1,12 +1,13 @@
 {
   "name": "e2e",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "cypress:wait-run": "wait-on http://localhost:3000/ && npm run cypress:run",
+    "cypress:wait-run": "wait-on http-get://localhost:3000/ && npm run cypress:run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

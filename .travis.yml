@@ -14,6 +14,8 @@ script:
   - npm run cypress:ci
 before_deploy:
   - travis_wait 20 npm run predeploy
+env:
+  - CI=true
 deploy:
   provider: pages
   skip-cleanup: true

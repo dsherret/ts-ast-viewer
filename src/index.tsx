@@ -82,7 +82,7 @@ store.subscribe(() => {
     function tryGet<T>(getValue: () => T) {
         try {
             return getValue();
-        } catch {
+        } catch (err) {
             return undefined;
         }
     }

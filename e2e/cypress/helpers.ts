@@ -1,5 +1,5 @@
 import constants from "./constants";
-import { compilerPackageNames } from "../../src/compiler";
+import { CompilerPackageNames } from "../../src/compiler";
 import { TreeMode } from "../../src/types";
 
 let visited = false;
@@ -8,9 +8,12 @@ export function visitSite() {
     if (visited)
         return;
     cy.visit(constants.siteUrl, {
-        retryOnStatusCodeFailure: true
+        retryOnStatusCodeFailure: true,
+        onLoad: () => {
+            visited = true;
+        },
+        timeout: 30_000
     });
-    visited = true;
 }
 
 export function setEditorText(text: string) {
@@ -39,7 +42,7 @@ export function getFactoryCodeEditorText() {
     return cy.window().then(win => ((win as any).getFactoryCodeEditorText() as string).replace(/\r?\n/g, "\n"));
 }
 
-export function setVersion(packageName: compilerPackageNames) {
+export function setVersion(packageName: CompilerPackageNames) {
     cy.get(`#${constants.css.options.id}`).click();
     cy.get(`#${constants.css.options.compilerVersionSelectionId}`).select(packageName);
     cy.get(`#${constants.css.options.id}`).click(); // hide
@@ -56,8 +59,8 @@ export function selectNode(...selection: string[]) {
     cy.get(`#${constants.css.treeViewer.id} ${query} .nodeText`).first().click();
 }
 
-export function forAllCompilerVersions(action: (version: compilerPackageNames) => void) {
-    if (process.env.CI) {
+export function forAllCompilerVersions(action: (version: CompilerPackageNames) => void) {
+    if (process.env.CI != null) {
         action("typescript-next" as any);
     }
     else {
