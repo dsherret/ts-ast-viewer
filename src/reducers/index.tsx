@@ -84,14 +84,15 @@ export function appReducer(state: StoreState | undefined, action: AllActions): S
                 if (isBeforeRange(child.end))
                     continue;
 
-                const isChildSyntaxList = child.kind === syntaxKinds.SyntaxList;
                 const childStart = child.getStart(sourceFile);
 
                 if (isAfterRange(childStart))
                     return;
 
+                const isChildSyntaxList = child.kind === syntaxKinds.SyntaxList;
+                const isEndOfFileToken = child.kind === syntaxKinds.EndOfFileToken;
                 const hasSameStart = bestMatch.start === childStart && range[0] === childStart;
-                if (!isChildSyntaxList && !hasSameStart)
+                if (!isChildSyntaxList && !isEndOfFileToken && !hasSameStart)
                     bestMatch = { node: child, start: childStart };
 
                 searchDescendants(child);
