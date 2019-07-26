@@ -32,9 +32,23 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         };
         this.editorDidMount = this.editorDidMount.bind(this);
 
-        import("react-monaco-editor").then(editor => {
-            this.setState({ editorComponent: editor.default });
+        const reactMonacoEditorPromise = import("react-monaco-editor");
+        import("monaco-editor").then(monacoEditor => {
+            monacoEditor.languages.typescript.typescriptDefaults.setCompilerOptions({
+                target: monacoEditor.languages.typescript.ScriptTarget.ESNext
+            });
+            monacoEditor.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                noSemanticValidation: true
+            });
+
+            reactMonacoEditorPromise.then(editor => {
+                this.setState({ editorComponent: editor.default });
+            }).catch(err => {
+                console.log(err);
+                this.setState({ editorComponent: false });
+            });
         }).catch(err => {
+            console.log(err);
             this.setState({ editorComponent: false });
         });
     }
