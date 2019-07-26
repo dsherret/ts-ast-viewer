@@ -24,3 +24,7 @@ deploy:
   keep-history: true
   on:
     branch: master
+addons:
+  apt:
+    packages:
+    - libgconf-2-4
