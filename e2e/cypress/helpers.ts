@@ -20,7 +20,7 @@ export function setEditorText(text: string) {
     cy.window().then(win => {
         (win as any).setMonacoEditorText(text);
     });
-    cy.get(`#${constants.css.codeEditor.id} .view-lines`).click();
+    cy.get(`#${constants.css.mainCodeEditor.id} .view-lines`).click();
     cy.wait(constants.general.sourceFileRefreshDelay + 150);
 }
 

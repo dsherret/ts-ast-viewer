@@ -7,11 +7,8 @@ export default {
         bindingEnabledId: "bindingEnabled",
         showFactoryCodeId: "showFactoryCode",
     },
-    codeEditor: {
-        className: "codeEditor",
-        hasInfoClassName: "hasInfo",
-        containerClassName: "editorContainer",
-        infoClassName: "editorInfo"
+    mainCodeEditor: {
+        id: "codeEditor"
     },
     factoryCodeEditor: {
         id: "factoryCodeEditor"

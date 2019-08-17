@@ -2,6 +2,7 @@ import React from "react";
 import SplitPane from "react-split-pane";
 import * as components from "./components";
 import { Node, CompilerPackageNames } from "./compiler";
+import { css as cssConstants } from "./constants";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
 import "./App.css";
 
@@ -72,6 +73,7 @@ export default function App(props: Props) {
         function getCodeEditor() {
             return (
                 <components.CodeEditor
+                    id={cssConstants.mainCodeEditor.id}
                     onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
                     onClick={range => props.onRangeChange(range)}
                     text={props.code}

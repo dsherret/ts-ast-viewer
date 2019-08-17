@@ -2,10 +2,10 @@ import React from "react";
 import ReactMonacoEditorForTypes, { EditorDidMount } from "react-monaco-editor";
 import * as monacoEditorForTypes from "monaco-editor";
 import { Spinner } from "./Spinner";
-import { css as cssConstants } from "../constants";
 import { LineAndColumnComputer } from "../utils";
 
 export interface CodeEditorProps {
+    id?: string;
     onChange?: (text: string) => void;
     onClick?: (range: [number, number]) => void;
     text: string;
@@ -62,8 +62,8 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         this.updateHighlight();
 
         return (
-            <div className={getClassNames(this.props.showInfo)}>
-                <div className={cssConstants.codeEditor.containerClassName}>
+            <div id={this.props.id} className={getClassNames(this.props.showInfo)}>
+                <div className={"editorContainer"}>
                     {this.getEditor()}
                 </div>
                 {this.props.showInfo && this.getInfo()}
@@ -71,16 +71,16 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         );
 
         function getClassNames(showInfo: boolean | undefined) {
-            const classNames = [cssConstants.codeEditor.className];
+            const classNames = ["codeEditor"];
             if (showInfo)
-                classNames.push(cssConstants.codeEditor.hasInfoClassName)
+                classNames.push("hasInfo")
             return classNames.join(" ");
         }
     }
 
     private getInfo() {
         return (
-            <div className={cssConstants.codeEditor.infoClassName}>
+            <div className={"editorInfo"}>
                 Pos {this.state.position}, Ln {this.state.lineNumber}, Col {this.state.column}
             </div>
         );
