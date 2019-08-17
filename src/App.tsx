@@ -18,14 +18,14 @@ export default function App(props: Props) {
     return (
         <div className="App">
             <SplitPane split="horizontal" defaultSize={50} allowResize={false}>
-                <div className="AppHeader clearfix">
+                <header className="AppHeader clearfix">
                     <h2 id="title">TypeScript AST Viewer</h2>
                     <components.Options
                         api={compiler == null ? undefined : compiler.api}
                         options={props.options}
                         onChange={options => props.onOptionsChange(options.compilerPackageName || props.options.compilerPackageName, options)}
                     />
-                </div>
+                </header>
                 <SplitPane split="vertical" minSize={50} defaultSize="33%">
                     {getCodeEditorArea()}
                     {getCompilerDependentPanes()}
@@ -76,6 +76,9 @@ export default function App(props: Props) {
                     onClick={range => props.onRangeChange(range)}
                     text={props.code}
                     highlight={getCodeHighlightRange()}
+                    showInfo={true}
+                    renderWhiteSpace={true}
+                    editorDidMount={codeEditorDidMount}
                 />
             );
         }
@@ -107,5 +110,19 @@ export default function App(props: Props) {
                 </SplitPane>
             </components.ErrorBoundary>
         );
+    }
+
+    function codeEditorDidMount(editor: import("monaco-editor").editor.IStandaloneCodeEditor) {
+        // global method for cypress
+        (window as any).setMonacoEditorText = (text: string) => {
+            const editorModel = editor.getModel();
+            if (editorModel == null)
+                return;
+
+            editor.executeEdits("my-source", [{
+                range: editorModel.getFullModelRange(),
+                text
+            }]);
+        };
     }
 }

@@ -1,15 +1,19 @@
-﻿import React from "react";
-import ReactMonacoEditorForTypes from "react-monaco-editor";
+import React from "react";
+import ReactMonacoEditorForTypes, { EditorDidMount } from "react-monaco-editor";
 import * as monacoEditorForTypes from "monaco-editor";
 import { Spinner } from "./Spinner";
 import { css as cssConstants } from "../constants";
 import { LineAndColumnComputer } from "../utils";
 
 export interface CodeEditorProps {
-    onChange: (text: string) => void;
-    onClick: (range: [number, number]) => void;
+    onChange?: (text: string) => void;
+    onClick?: (range: [number, number]) => void;
     text: string;
-    highlight: { start: number; end: number } | undefined;
+    highlight?: { start: number; end: number } | undefined;
+    showInfo?: boolean;
+    readOnly?: boolean;
+    renderWhiteSpace?: boolean;
+    editorDidMount?: EditorDidMount;
 }
 
 export interface CodeEditorState {
@@ -38,7 +42,8 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 target: monacoEditor.languages.typescript.ScriptTarget.ESNext
             });
             monacoEditor.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-                noSemanticValidation: true
+                noSemanticValidation: true,
+                noSyntaxValidation: true
             });
 
             reactMonacoEditorPromise.then(editor => {
@@ -57,11 +62,26 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         this.updateHighlight();
 
         return (
-            <div id={cssConstants.codeEditor.id}>
-                <div id={cssConstants.codeEditor.containerId}>
+            <div className={getClassNames(this.props.showInfo)}>
+                <div className={cssConstants.codeEditor.containerClassName}>
                     {this.getEditor()}
                 </div>
-                <div id={cssConstants.codeEditor.infoId}>Pos {this.state.position}, Ln {this.state.lineNumber}, Col {this.state.column}</div>
+                {this.props.showInfo && this.getInfo()}
+            </div>
+        );
+
+        function getClassNames(showInfo: boolean | undefined) {
+            const classNames = [cssConstants.codeEditor.className];
+            if (showInfo)
+                classNames.push(cssConstants.codeEditor.hasInfoClassName)
+            return classNames.join(" ");
+        }
+    }
+
+    private getInfo() {
+        return (
+            <div className={cssConstants.codeEditor.infoClassName}>
+                Pos {this.state.position}, Ln {this.state.lineNumber}, Col {this.state.column}
             </div>
         );
     }
@@ -113,14 +133,25 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 value={this.props.text}
                 theme="vs-dark"
                 language="typescript"
-                onChange={text => this.props.onChange(text)}
+                onChange={text => this.props.onChange && this.props.onChange(text)}
                 editorDidMount={this.editorDidMount}
-                options={{ automaticLayout: true, renderWhitespace: "all", minimap: { enabled: false } }}
+                options={{
+                    automaticLayout: true,
+                    renderWhitespace: this.props.renderWhiteSpace ? "all" : "none",
+                    minimap: { enabled: false },
+                    readOnly: this.props.readOnly,
+                    quickSuggestions: false,
+                    wordBasedSuggestions: false,
+                    occurrencesHighlight: false,
+                    selectionHighlight: false,
+                    codeLens: false,
+                    suggestOnTriggerCharacters: false
+                }}
             />
         );
     }
 
-    private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {
+    private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor, monaco: typeof monacoEditorForTypes) {
         this.editor = editor;
 
         editor.onDidChangeCursorPosition(e => {
@@ -135,7 +166,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             });
         });
         editor.onMouseDown(e => {
-            if (e.target == null || e.target.range == null)
+            if (e.target == null || e.target.range == null || this.props.onClick == null)
                 return;
 
             // Sometimes e.target.range will be the column right before if clicked to the left enough,
@@ -150,16 +181,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         editor.focus();
         this.updateHighlight();
 
-        // global method for cypress
-        (window as any).setMonacoEditorText = (text: string) => {
-            const editorModel = editor.getModel();
-            if (editorModel == null)
-                return;
-
-            editor.executeEdits("my-source", [{
-                range: editorModel.getFullModelRange(),
-                text
-            }]);
-        };
+        if (this.props.editorDidMount)
+            this.props.editorDidMount(editor, monaco);
     }
 }

@@ -5,6 +5,7 @@ import { Spinner } from "./Spinner";
 import { css as cssConstants } from "../constants";
 import { CompilerState } from "../types";
 import { FactoryCodeGenerator, CompilerPackageNames, getFactoryCodeGenerator } from "../compiler";
+import { CodeEditor } from "./CodeEditor";
 
 // todo: Move out getting the code generation function from this class (need to start loading it sooner than what's done here)
 
@@ -19,8 +20,6 @@ export interface FactoryCodeEditorState {
 }
 
 export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, FactoryCodeEditorState> {
-    private editor: monacoEditorForTypes.editor.IStandaloneCodeEditor | undefined;
-
     constructor(props: FactoryCodeEditorProps) {
         super(props);
         this.state = {
@@ -29,13 +28,6 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
             lastCompilerPackageName: undefined
         };
         this.editorDidMount = this.editorDidMount.bind(this);
-
-        import("react-monaco-editor").then(editor => {
-            this.setState({ editorComponent: editor.default });
-        }).catch(err => {
-            console.error(err);
-            this.setState({ editorComponent: false });
-        });
     }
 
     render() {
@@ -69,34 +61,28 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
     }
 
     private getEditor() {
-        if (this.state.editorComponent == null || this.state.factoryCodeGenerator == null)
+        if (this.state.factoryCodeGenerator == null)
             return <Spinner backgroundColor="#1e1e1e" />;
-        if (this.state.editorComponent === false || this.state.factoryCodeGenerator === false)
+        if (this.state.factoryCodeGenerator === false)
             return <div className={"errorMessage"}>Error loading factory code. Please refresh the page to try again.</div>;
 
         return (
-            <this.state.editorComponent
-                width="100%"
-                height="100%"
-                value={this.getText()}
-                theme="vs-dark"
-                language="typescript"
+            <CodeEditor
                 editorDidMount={this.editorDidMount}
-                options={{ automaticLayout: true, renderWhitespace: "none", readOnly: true, minimap: { enabled: false } }}
+                text={this.getText()}
+                readOnly={true}
             />
         );
     }
 
     private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {
-        this.editor = editor;
-
         // global method for cypress
         (window as any).getFactoryCodeEditorText = () => editor.getValue();
     }
 
     private getText() {
         if (this.state.factoryCodeGenerator == null || this.state.factoryCodeGenerator === false)
-            return undefined;
+            return "";
 
         return this.state.factoryCodeGenerator(this.props.compiler.api, this.props.compiler.selectedNode);
     }

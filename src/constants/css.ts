@@ -8,9 +8,10 @@ export default {
         showFactoryCodeId: "showFactoryCode",
     },
     codeEditor: {
-        id: "codeEditor",
-        containerId: "editorContainer",
-        infoId: "editorInfo"
+        className: "codeEditor",
+        hasInfoClassName: "hasInfo",
+        containerClassName: "editorContainer",
+        infoClassName: "editorInfo"
     },
     factoryCodeEditor: {
         id: "factoryCodeEditor"

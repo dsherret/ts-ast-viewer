@@ -157,19 +157,22 @@ a,a:visited {
 
 /* Code Editor */
 
-#codeEditor {
+.codeEditor {
     width: 100%;
     height: 100%;
     position: relative;
 }
 
-#codeEditor #editorContainer {
+.codeEditor .editorContainer {
     width: 100%;
     height: 100%;
+}
+
+.codeEditor.hasInfo .editorContainer {
     padding-bottom: 22px;
 }
 
-#codeEditor #editorInfo {
+.codeEditor .editorInfo {
     position: absolute;
     bottom: 0px;
     background-color: #007acc;
@@ -177,7 +180,7 @@ a,a:visited {
     width: 100%;
 }
 
-#codeEditor .editorRangeHighlight {
+.codeEditor .editorRangeHighlight {
     background: #6f7163;
 }
 
