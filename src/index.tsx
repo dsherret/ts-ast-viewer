@@ -11,13 +11,21 @@ import "./external/react-splitpane.css";
 import { ApiLoadingState } from "./types";
 import { appReducer } from "./reducers";
 import { StateSaver } from "./utils";
+import { decompressFromEncodedURIComponent } from "lz-string"
 
 const initialScriptTarget: ScriptTarget = 6 /* Latest */;
 const initialScriptKind: ScriptKind = 4 /* TSX */;
 const stateSaver = new StateSaver();
+
+let initialCode = ""
+if (document.location.hash && document.location.hash.startsWith("#code")) {
+    const code = document.location.hash.replace("#code/", "").trim();
+    initialCode = decompressFromEncodedURIComponent(code);
+}
+
 const store = createStore(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
-    code: "",
+    code: initialCode,
     options: {
         compilerPackageName: "typescript",
         treeMode: stateSaver.get().treeMode,
