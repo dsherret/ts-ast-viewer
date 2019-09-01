@@ -115,6 +115,8 @@ export default function App(props: Props) {
     }
 
     function codeEditorDidMount(editor: import("monaco-editor").editor.IStandaloneCodeEditor) {
+        editor.focus();
+
         // global method for cypress
         (window as any).setMonacoEditorText = (text: string) => {
             const editorModel = editor.getModel();

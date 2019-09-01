@@ -178,7 +178,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 this.props.onClick([start, start]);
             }
         });
-        editor.focus();
+
         this.updateHighlight();
 
         if (this.props.editorDidMount)
