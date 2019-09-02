@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.22.0...v0.23.0) (2019-09-02)
+
+
+### Bug Fixes
+
+* [#53](https://github.com/dsherret/ts-ast-viewer/issues/53) By reverting react-monaco-editor to 0.17.2 ([322d349](https://github.com/dsherret/ts-ast-viewer/commit/322d349))
+* Do not select the EndOfFileToken when clicking on code in the editor. ([dcffa66](https://github.com/dsherret/ts-ast-viewer/commit/dcffa66))
+* Fix the wrong element being focused on load. ([38eb50d](https://github.com/dsherret/ts-ast-viewer/commit/38eb50d))
+* Hopefully fix travis failing. ([22b8d6d](https://github.com/dsherret/ts-ast-viewer/commit/22b8d6d))
+* Sadly remove ts 2.4.2 and 2.5.3 to fix CI memory issues on publish. ([e52fe69](https://github.com/dsherret/ts-ast-viewer/commit/e52fe69))
+* Update monaco-editor files for latest version. ([85498d2](https://github.com/dsherret/ts-ast-viewer/commit/85498d2))
+
+
+### Features
+
+* [#61](https://github.com/dsherret/ts-ast-viewer/issues/61) - Ability to create shareable urls. ([04355e5](https://github.com/dsherret/ts-ast-viewer/commit/04355e5))
+* Add popover for objectFlags like flags ([4a7663e](https://github.com/dsherret/ts-ast-viewer/commit/4a7663e))
+* Add popover for objectFlags like flags ([e091c31](https://github.com/dsherret/ts-ast-viewer/commit/e091c31))
+* Make TypeScript diagnostics more relaxed. ([ad667ad](https://github.com/dsherret/ts-ast-viewer/commit/ad667ad))
+* Update to ts-factory-code-generator-generator 0.2.0. ([fd95f88](https://github.com/dsherret/ts-ast-viewer/commit/fd95f88))
+* Use ts-factory-code-generator-generator's generated code for generating the factory code. ([4c0e3a2](https://github.com/dsherret/ts-ast-viewer/commit/4c0e3a2))
+
+
+
 <a name="0.22.0"></a>
 # [0.22.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.21.0...v0.22.0) (2019-06-01)
 
