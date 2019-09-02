@@ -14,8 +14,10 @@ export function mapStateToProps(state: StoreState) {
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
-    const debouncedSourceFileRefresh = debounce<CompilerPackageNames>(compilerPackageName => updateSourceFile(compilerPackageName),
-        generalConstants.sourceFileRefreshDelay);
+    const debouncedSourceFileRefresh = debounce<CompilerPackageNames>(
+        compilerPackageName => updateSourceFile(compilerPackageName),
+        generalConstants.sourceFileRefreshDelay
+    );
 
     updateSourceFile("typescript");
 

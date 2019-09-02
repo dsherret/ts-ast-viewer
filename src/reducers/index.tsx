@@ -1,7 +1,10 @@
 ﻿import { AllActions } from "../actions";
 import { StoreState, OptionsState, TreeMode } from "../types";
 import { Node, SourceFile, createSourceFile, CompilerApi, convertOptions, getChildrenFunction, CompilerPackageNames } from "../compiler";
+import { UrlSaver } from "../utils";
 import { actions as actionNames } from "./../constants";
+
+const urlSaver = new UrlSaver();
 
 export function appReducer(state: StoreState | undefined, action: AllActions): StoreState {
     if (state == null)
@@ -32,6 +35,7 @@ export function appReducer(state: StoreState | undefined, action: AllActions): S
                 options: convertOptions(state.compiler == null ? undefined : state.compiler.api, action.api, state.options)
             };
             fillNewSourceFileState(action.compilerPackageName, action.api, newState, state.code, state.options);
+            urlSaver.updateUrl(state.code);
             return newState;
         }
         case actionNames.SET_CODE: {
