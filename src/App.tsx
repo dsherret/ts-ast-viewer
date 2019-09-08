@@ -49,7 +49,7 @@ export default function App(props: Props) {
     function getCodeEditorArea() {
         if (props.options.showFactoryCode) {
             return (
-                <SplitPane split="horizontal" defaultSize="75%">
+                <SplitPane split="horizontal" defaultSize={window.innerHeight * 0.70}>
                     {getCodeEditor()}
                     {getFactoryCodeEditor()}
                 </SplitPane>
@@ -65,7 +65,7 @@ export default function App(props: Props) {
 
             return (
                 <components.ErrorBoundary getResetHash={() => props.code}>
-                    <components.FactoryCodeEditor compiler={compiler} />;
+                    <components.FactoryCodeEditor compiler={compiler} />
                 </components.ErrorBoundary>
             );
         }

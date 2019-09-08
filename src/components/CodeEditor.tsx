@@ -25,6 +25,7 @@ export interface CodeEditorState {
 
 export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState> {
     private editor: monacoEditorForTypes.editor.IStandaloneCodeEditor | undefined;
+    private outerContainerRef = React.createRef<HTMLDivElement>();
 
     constructor(props: CodeEditorProps) {
         super(props);
@@ -62,7 +63,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         this.updateHighlight();
 
         return (
-            <div id={this.props.id} className={getClassNames(this.props.showInfo)}>
+            <div id={this.props.id} ref={this.outerContainerRef} className={getClassNames(this.props.showInfo)}>
                 <div className={"editorContainer"}>
                     {this.getEditor()}
                 </div>
@@ -136,7 +137,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 onChange={text => this.props.onChange && this.props.onChange(text)}
                 editorDidMount={this.editorDidMount}
                 options={{
-                    automaticLayout: true,
+                    automaticLayout: false,
                     renderWhitespace: this.props.renderWhiteSpace ? "all" : "none",
                     minimap: { enabled: false },
                     readOnly: this.props.readOnly,
@@ -178,6 +179,22 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 this.props.onClick([start, start]);
             }
         });
+
+        // manually refresh the layout of the editor (lightweight compared to monaco editor)
+        let lastHeight = 0;
+        let lastWidth = 0;
+        setInterval(() => {
+            const containerElement = this.outerContainerRef.current!;
+            const width = containerElement.offsetWidth;
+            const height = containerElement.offsetHeight;
+            if (lastHeight === height && lastWidth === width)
+                return;
+
+            editor.layout();
+
+            lastHeight = height;
+            lastWidth = width;
+        }, 500);
 
         this.updateHighlight();
 
