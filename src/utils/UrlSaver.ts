@@ -16,8 +16,12 @@ export class UrlSaver {
 
     updateUrl(code: string) {
         if (code.length === 0)
-            document.location.hash = "";
+            updateLocationHash("");
         else
-            document.location.hash = `code/${compressToEncodedURIComponent(code)}`;
+            updateLocationHash(`code/${compressToEncodedURIComponent(code)}`);
+
+        function updateLocationHash(locationHash: string) {
+            window.history.replaceState(undefined, "", `#${locationHash}`);
+        }
     }
 }
