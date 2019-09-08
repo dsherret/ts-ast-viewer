@@ -184,7 +184,10 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         let lastHeight = 0;
         let lastWidth = 0;
         setInterval(() => {
-            const containerElement = this.outerContainerRef.current!;
+            const containerElement = this.outerContainerRef.current;
+            if (containerElement == null)
+                return;
+
             const width = containerElement.offsetWidth;
             const height = containerElement.offsetHeight;
             if (lastHeight === height && lastWidth === width)
