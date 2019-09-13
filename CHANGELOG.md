@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.24.0"></a>
+# [0.24.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.23.0...v0.24.0) (2019-09-13)
+
+
+### Bug Fixes
+
+* [#57](https://github.com/dsherret/ts-ast-viewer/issues/57) - Bottom left window's scroll bar flickers. ([a694aa5](https://github.com/dsherret/ts-ast-viewer/commit/a694aa5))
+* Do not update the browser history when updating the location hash. ([94d69ad](https://github.com/dsherret/ts-ast-viewer/commit/94d69ad))
+
+
+### Features
+
+* [#63](https://github.com/dsherret/ts-ast-viewer/issues/63) - Add TypeScript 3.6. ([849f68f](https://github.com/dsherret/ts-ast-viewer/commit/849f68f))
+
+
+
 <a name="0.23.0"></a>
 # [0.23.0](https://github.com/dsherret/ts-ast-viewer/compare/v0.22.0...v0.23.0) (2019-09-02)
 
