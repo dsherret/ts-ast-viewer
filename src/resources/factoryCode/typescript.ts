@@ -8,7 +8,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     if (ts.isSourceFile(initialNode)) {
         writer.write("[");
         if (initialNode.statements.length > 0) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < initialNode.statements.length; i++) {
                     const statement = initialNode.statements[i];
                     if (i > 0)
@@ -543,7 +543,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createQualifiedName(node: import("typescript").QualifiedName) {
         writer.write("ts.createQualifiedName(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.left)
             writer.write(",").newLine();
             writeNodeText(node.right)
@@ -560,7 +560,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTypeParameterDeclaration(node: import("typescript").TypeParameterDeclaration) {
         writer.write("ts.createTypeParameterDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.name)
             writer.write(",").newLine();
             if (node.constraint == null)
@@ -581,7 +581,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createParameter(node: import("typescript").ParameterDeclaration) {
         writer.write("ts.createParameter(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -591,7 +591,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -612,7 +612,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -662,7 +662,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createPropertySignature(node: import("typescript").PropertySignature) {
         writer.write("ts.createPropertySignature(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
@@ -672,7 +672,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -710,7 +710,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createProperty(node: import("typescript").PropertyDeclaration) {
         writer.write("ts.createProperty(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -720,7 +720,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -741,7 +741,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -780,7 +780,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createMethodSignature(node: import("typescript").MethodSignature) {
         writer.write("ts.createMethodSignature(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.typeParameters == null)
                 writer.write("undefined");
             else {
@@ -790,7 +790,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -808,7 +808,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -839,7 +839,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createMethod(node: import("typescript").MethodDeclaration) {
         writer.write("ts.createMethod(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -849,7 +849,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -870,7 +870,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -905,7 +905,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -923,7 +923,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -952,7 +952,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createConstructor(node: import("typescript").ConstructorDeclaration) {
         writer.write("ts.createConstructor(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -962,7 +962,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -983,7 +983,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -1001,7 +1001,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1024,7 +1024,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createGetAccessor(node: import("typescript").GetAccessorDeclaration) {
         writer.write("ts.createGetAccessor(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -1034,7 +1034,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -1055,7 +1055,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -1075,7 +1075,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1104,7 +1104,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createSetAccessor(node: import("typescript").SetAccessorDeclaration) {
         writer.write("ts.createSetAccessor(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -1114,7 +1114,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -1135,7 +1135,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -1155,7 +1155,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1178,7 +1178,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createCallSignature(node: import("typescript").CallSignatureDeclaration) {
         writer.write("ts.createCallSignature(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.typeParameters == null)
                 writer.write("undefined");
             else {
@@ -1188,7 +1188,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -1206,7 +1206,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1229,7 +1229,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createConstructSignature(node: import("typescript").ConstructSignatureDeclaration) {
         writer.write("ts.createConstructSignature(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.typeParameters == null)
                 writer.write("undefined");
             else {
@@ -1239,7 +1239,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -1257,7 +1257,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1280,7 +1280,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createIndexSignature(node: import("typescript").IndexSignatureDeclaration) {
         writer.write("ts.createIndexSignature(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -1290,7 +1290,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -1311,7 +1311,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -1329,7 +1329,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1358,7 +1358,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTypePredicateNode(node: import("typescript").TypePredicateNode) {
         writer.write("ts.createTypePredicateNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.parameterName)
             writer.write(",").newLine();
             writeNodeText(node.type)
@@ -1369,7 +1369,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTypeReferenceNode(node: import("typescript").TypeReferenceNode) {
         writer.write("ts.createTypeReferenceNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.typeName)
             writer.write(",").newLine();
             if (node.typeArguments == null)
@@ -1381,7 +1381,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeArguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeArguments!.length; i++) {
                             const item = node.typeArguments![i];
                             if (i > 0)
@@ -1399,7 +1399,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createFunctionTypeNode(node: import("typescript").FunctionTypeNode) {
         writer.write("ts.createFunctionTypeNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.typeParameters == null)
                 writer.write("undefined");
             else {
@@ -1409,7 +1409,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -1427,7 +1427,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1446,7 +1446,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createConstructorTypeNode(node: import("typescript").ConstructorTypeNode) {
         writer.write("ts.createConstructorTypeNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.typeParameters == null)
                 writer.write("undefined");
             else {
@@ -1456,7 +1456,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -1474,7 +1474,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -1504,7 +1504,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.members.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.members!.length; i++) {
                     const item = node.members![i];
                     if (i > 0)
@@ -1531,7 +1531,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.elementTypes.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.elementTypes!.length; i++) {
                     const item = node.elementTypes![i];
                     if (i > 0)
@@ -1564,7 +1564,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.types.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.types!.length; i++) {
                     const item = node.types![i];
                     if (i > 0)
@@ -1585,7 +1585,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.types.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.types!.length; i++) {
                     const item = node.types![i];
                     if (i > 0)
@@ -1601,7 +1601,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createConditionalTypeNode(node: import("typescript").ConditionalTypeNode) {
         writer.write("ts.createConditionalTypeNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.checkType)
             writer.write(",").newLine();
             writeNodeText(node.extendsType)
@@ -1622,7 +1622,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createImportTypeNode(node: import("typescript").ImportTypeNode) {
         writer.write("ts.createImportTypeNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.argument)
             writer.write(",").newLine();
             if (node.qualifier == null)
@@ -1640,7 +1640,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeArguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeArguments!.length; i++) {
                             const item = node.typeArguments![i];
                             if (i > 0)
@@ -1681,7 +1681,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createIndexedAccessTypeNode(node: import("typescript").IndexedAccessTypeNode) {
         writer.write("ts.createIndexedAccessTypeNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.objectType)
             writer.write(",").newLine();
             writeNodeText(node.indexType)
@@ -1692,7 +1692,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createMappedTypeNode(node: import("typescript").MappedTypeNode) {
         writer.write("ts.createMappedTypeNode(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.readonlyToken == null)
                 writer.write("undefined");
             else {
@@ -1730,7 +1730,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.elements.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.elements!.length; i++) {
                     const item = node.elements![i];
                     if (i > 0)
@@ -1751,7 +1751,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.elements.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.elements!.length; i++) {
                     const item = node.elements![i];
                     if (i > 0)
@@ -1767,7 +1767,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createBindingElement(node: import("typescript").BindingElement) {
         writer.write("ts.createBindingElement(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.dotDotDotToken == null)
                 writer.write("undefined");
             else {
@@ -1794,14 +1794,14 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createArrayLiteral(node: import("typescript").ArrayLiteralExpression) {
         writer.write("ts.createArrayLiteral(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.write("[");
             if (node.elements.length === 1) {
                 const item = node.elements![0];
                 writeNodeText(item)
             }
             else if (node.elements.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.elements!.length; i++) {
                         const item = node.elements![i];
                         if (i > 0)
@@ -1820,14 +1820,14 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createObjectLiteral(node: import("typescript").ObjectLiteralExpression) {
         writer.write("ts.createObjectLiteral(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.write("[");
             if (node.properties.length === 1) {
                 const item = node.properties![0];
                 writeNodeText(item)
             }
             else if (node.properties.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.properties!.length; i++) {
                         const item = node.properties![i];
                         if (i > 0)
@@ -1846,7 +1846,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createPropertyAccess(node: import("typescript").PropertyAccessExpression) {
         writer.write("ts.createPropertyAccess(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.name)
@@ -1857,7 +1857,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createElementAccess(node: import("typescript").ElementAccessExpression) {
         writer.write("ts.createElementAccess(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.argumentExpression)
@@ -1868,7 +1868,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createCall(node: import("typescript").CallExpression) {
         writer.write("ts.createCall(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             if (node.typeArguments == null)
@@ -1880,7 +1880,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeArguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeArguments!.length; i++) {
                             const item = node.typeArguments![i];
                             if (i > 0)
@@ -1898,7 +1898,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.arguments.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.arguments!.length; i++) {
                         const item = node.arguments![i];
                         if (i > 0)
@@ -1915,7 +1915,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createNew(node: import("typescript").NewExpression) {
         writer.write("ts.createNew(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             if (node.typeArguments == null)
@@ -1927,7 +1927,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeArguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeArguments!.length; i++) {
                             const item = node.typeArguments![i];
                             if (i > 0)
@@ -1948,7 +1948,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.arguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.arguments!.length; i++) {
                             const item = node.arguments![i];
                             if (i > 0)
@@ -1966,7 +1966,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTaggedTemplate(node: import("typescript").TaggedTemplateExpression) {
         writer.write("ts.createTaggedTemplate(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.tag)
             writer.write(",").newLine();
             writeNodeText(node.template)
@@ -1977,7 +1977,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTypeAssertion(node: import("typescript").TypeAssertion) {
         writer.write("ts.createTypeAssertion(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.type)
             writer.write(",").newLine();
             writeNodeText(node.expression)
@@ -1994,7 +1994,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createFunctionExpression(node: import("typescript").FunctionExpression) {
         writer.write("ts.createFunctionExpression(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
@@ -2004,7 +2004,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -2037,7 +2037,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -2055,7 +2055,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -2080,7 +2080,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createArrowFunction(node: import("typescript").ArrowFunction) {
         writer.write("ts.createArrowFunction(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
@@ -2090,7 +2090,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -2111,7 +2111,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -2129,7 +2129,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -2180,7 +2180,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createPrefix(node: import("typescript").PrefixUnaryExpression) {
         writer.write("ts.createPrefix(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.write("ts.SyntaxKind.").write(syntaxKindToName[node.operator])
             writer.write(",").newLine();
             writeNodeText(node.operand)
@@ -2191,7 +2191,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createPostfix(node: import("typescript").PostfixUnaryExpression) {
         writer.write("ts.createPostfix(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.operand)
             writer.write(",").newLine();
             writer.write("ts.SyntaxKind.").write(syntaxKindToName[node.operator])
@@ -2202,7 +2202,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createBinary(node: import("typescript").BinaryExpression) {
         writer.write("ts.createBinary(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.left)
             writer.write(",").newLine();
             writeNodeText(node.operatorToken)
@@ -2215,7 +2215,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createConditional(node: import("typescript").ConditionalExpression) {
         writer.write("ts.createConditional(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.condition)
             writer.write(",").newLine();
             writeNodeText(node.whenTrue)
@@ -2228,7 +2228,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTemplateExpression(node: import("typescript").TemplateExpression) {
         writer.write("ts.createTemplateExpression(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.head)
             writer.write(",").newLine();
             writer.write("[");
@@ -2237,7 +2237,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.templateSpans.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.templateSpans!.length; i++) {
                         const item = node.templateSpans![i];
                         if (i > 0)
@@ -2253,25 +2253,61 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
 
     function createTemplateHead(node: import("typescript").TemplateHead) {
         writer.write("ts.createTemplateHead(");
-        writer.quote(node.text.toString())
+        writer.newLine();
+        writer.indent(() => {
+            writer.quote(node.text.toString())
+            writer.write(",").newLine();
+            if (node.rawText == null)
+                writer.write("undefined");
+            else {
+                writer.quote(node.rawText.toString())
+            }
+        });
         writer.write(")");
     }
 
     function createTemplateMiddle(node: import("typescript").TemplateMiddle) {
         writer.write("ts.createTemplateMiddle(");
-        writer.quote(node.text.toString())
+        writer.newLine();
+        writer.indent(() => {
+            writer.quote(node.text.toString())
+            writer.write(",").newLine();
+            if (node.rawText == null)
+                writer.write("undefined");
+            else {
+                writer.quote(node.rawText.toString())
+            }
+        });
         writer.write(")");
     }
 
     function createTemplateTail(node: import("typescript").TemplateTail) {
         writer.write("ts.createTemplateTail(");
-        writer.quote(node.text.toString())
+        writer.newLine();
+        writer.indent(() => {
+            writer.quote(node.text.toString())
+            writer.write(",").newLine();
+            if (node.rawText == null)
+                writer.write("undefined");
+            else {
+                writer.quote(node.rawText.toString())
+            }
+        });
         writer.write(")");
     }
 
     function createNoSubstitutionTemplateLiteral(node: import("typescript").NoSubstitutionTemplateLiteral) {
         writer.write("ts.createNoSubstitutionTemplateLiteral(");
-        writer.quote(node.text.toString())
+        writer.newLine();
+        writer.indent(() => {
+            writer.quote(node.text.toString())
+            writer.write(",").newLine();
+            if (node.rawText == null)
+                writer.write("undefined");
+            else {
+                writer.quote(node.rawText.toString())
+            }
+        });
         writer.write(")");
     }
 
@@ -2294,7 +2330,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createClassExpression(node: import("typescript").ClassExpression) {
         writer.write("ts.createClassExpression(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
@@ -2304,7 +2340,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -2331,7 +2367,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -2352,7 +2388,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.heritageClauses.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.heritageClauses!.length; i++) {
                             const item = node.heritageClauses![i];
                             if (i > 0)
@@ -2370,7 +2406,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.members.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.members!.length; i++) {
                         const item = node.members![i];
                         if (i > 0)
@@ -2392,7 +2428,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createExpressionWithTypeArguments(node: import("typescript").ExpressionWithTypeArguments) {
         writer.write("ts.createExpressionWithTypeArguments(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.typeArguments == null)
                 writer.write("undefined");
             else {
@@ -2402,7 +2438,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeArguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeArguments!.length; i++) {
                             const item = node.typeArguments![i];
                             if (i > 0)
@@ -2422,7 +2458,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createAsExpression(node: import("typescript").AsExpression) {
         writer.write("ts.createAsExpression(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.type)
@@ -2439,7 +2475,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createMetaProperty(node: import("typescript").MetaProperty) {
         writer.write("ts.createMetaProperty(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.write("ts.SyntaxKind.").write(syntaxKindToName[node.keywordToken])
             writer.write(",").newLine();
             writeNodeText(node.name)
@@ -2450,7 +2486,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTemplateSpan(node: import("typescript").TemplateSpan) {
         writer.write("ts.createTemplateSpan(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.literal)
@@ -2466,14 +2502,14 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createBlock(node: import("typescript").Block) {
         writer.write("ts.createBlock(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.write("[");
             if (node.statements.length === 1) {
                 const item = node.statements![0];
                 writeNodeText(item)
             }
             else if (node.statements.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.statements!.length; i++) {
                         const item = node.statements![i];
                         if (i > 0)
@@ -2492,7 +2528,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createVariableStatement(node: import("typescript").VariableStatement) {
         writer.write("ts.createVariableStatement(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
@@ -2502,7 +2538,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -2533,7 +2569,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createIf(node: import("typescript").IfStatement) {
         writer.write("ts.createIf(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.thenStatement)
@@ -2550,7 +2586,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createDo(node: import("typescript").DoStatement) {
         writer.write("ts.createDo(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.statement)
             writer.write(",").newLine();
             writeNodeText(node.expression)
@@ -2561,7 +2597,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createWhile(node: import("typescript").WhileStatement) {
         writer.write("ts.createWhile(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.statement)
@@ -2572,7 +2608,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createFor(node: import("typescript").ForStatement) {
         writer.write("ts.createFor(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.initializer == null)
                 writer.write("undefined");
             else {
@@ -2599,7 +2635,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createForIn(node: import("typescript").ForInStatement) {
         writer.write("ts.createForIn(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.initializer)
             writer.write(",").newLine();
             writeNodeText(node.expression)
@@ -2612,7 +2648,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createForOf(node: import("typescript").ForOfStatement) {
         writer.write("ts.createForOf(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.awaitModifier == null)
                 writer.write("undefined");
             else {
@@ -2661,7 +2697,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createWith(node: import("typescript").WithStatement) {
         writer.write("ts.createWith(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.statement)
@@ -2672,7 +2708,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createSwitch(node: import("typescript").SwitchStatement) {
         writer.write("ts.createSwitch(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writeNodeText(node.caseBlock)
@@ -2683,7 +2719,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createLabel(node: import("typescript").LabeledStatement) {
         writer.write("ts.createLabel(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.label)
             writer.write(",").newLine();
             writeNodeText(node.statement)
@@ -2704,7 +2740,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTry(node: import("typescript").TryStatement) {
         writer.write("ts.createTry(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.tryBlock)
             writer.write(",").newLine();
             if (node.catchClause == null)
@@ -2730,7 +2766,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createVariableDeclaration(node: import("typescript").VariableDeclaration) {
         writer.write("ts.createVariableDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.name)
             writer.write(",").newLine();
             if (node.type == null)
@@ -2751,14 +2787,14 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createVariableDeclarationList(node: import("typescript").VariableDeclarationList) {
         writer.write("ts.createVariableDeclarationList(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.write("[");
             if (node.declarations.length === 1) {
                 const item = node.declarations![0];
                 writeNodeText(item)
             }
             else if (node.declarations.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.declarations!.length; i++) {
                         const item = node.declarations![i];
                         if (i > 0)
@@ -2777,7 +2813,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createFunctionDeclaration(node: import("typescript").FunctionDeclaration) {
         writer.write("ts.createFunctionDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -2787,7 +2823,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -2808,7 +2844,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -2841,7 +2877,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -2859,7 +2895,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.parameters.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.parameters!.length; i++) {
                         const item = node.parameters![i];
                         if (i > 0)
@@ -2888,7 +2924,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createClassDeclaration(node: import("typescript").ClassDeclaration) {
         writer.write("ts.createClassDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -2898,7 +2934,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -2919,7 +2955,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -2946,7 +2982,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -2967,7 +3003,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.heritageClauses.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.heritageClauses!.length; i++) {
                             const item = node.heritageClauses![i];
                             if (i > 0)
@@ -2985,7 +3021,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.members.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.members!.length; i++) {
                         const item = node.members![i];
                         if (i > 0)
@@ -3002,7 +3038,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createInterfaceDeclaration(node: import("typescript").InterfaceDeclaration) {
         writer.write("ts.createInterfaceDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3012,7 +3048,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3033,7 +3069,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3056,7 +3092,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -3077,7 +3113,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.heritageClauses.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.heritageClauses!.length; i++) {
                             const item = node.heritageClauses![i];
                             if (i > 0)
@@ -3095,7 +3131,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.members.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.members!.length; i++) {
                         const item = node.members![i];
                         if (i > 0)
@@ -3112,7 +3148,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createTypeAliasDeclaration(node: import("typescript").TypeAliasDeclaration) {
         writer.write("ts.createTypeAliasDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3122,7 +3158,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3143,7 +3179,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3166,7 +3202,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeParameters.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeParameters!.length; i++) {
                             const item = node.typeParameters![i];
                             if (i > 0)
@@ -3186,7 +3222,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createEnumDeclaration(node: import("typescript").EnumDeclaration) {
         writer.write("ts.createEnumDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3196,7 +3232,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3217,7 +3253,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3237,7 +3273,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.members.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.members!.length; i++) {
                         const item = node.members![i];
                         if (i > 0)
@@ -3254,7 +3290,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createModuleDeclaration(node: import("typescript").ModuleDeclaration) {
         writer.write("ts.createModuleDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3264,7 +3300,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3285,7 +3321,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3318,7 +3354,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.statements.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.statements!.length; i++) {
                     const item = node.statements![i];
                     if (i > 0)
@@ -3339,7 +3375,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.clauses.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.clauses!.length; i++) {
                     const item = node.clauses![i];
                     if (i > 0)
@@ -3361,7 +3397,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createImportEqualsDeclaration(node: import("typescript").ImportEqualsDeclaration) {
         writer.write("ts.createImportEqualsDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3371,7 +3407,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3392,7 +3428,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3414,7 +3450,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createImportDeclaration(node: import("typescript").ImportDeclaration) {
         writer.write("ts.createImportDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3424,7 +3460,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3445,7 +3481,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3471,7 +3507,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createImportClause(node: import("typescript").ImportClause) {
         writer.write("ts.createImportClause(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.name == null)
                 writer.write("undefined");
             else {
@@ -3501,7 +3537,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.elements.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.elements!.length; i++) {
                     const item = node.elements![i];
                     if (i > 0)
@@ -3517,7 +3553,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createImportSpecifier(node: import("typescript").ImportSpecifier) {
         writer.write("ts.createImportSpecifier(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.propertyName == null)
                 writer.write("undefined");
             else {
@@ -3532,7 +3568,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createExportAssignment(node: import("typescript").ExportAssignment) {
         writer.write("ts.createExportAssignment(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3542,7 +3578,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3563,7 +3599,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3589,7 +3625,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createExportDeclaration(node: import("typescript").ExportDeclaration) {
         writer.write("ts.createExportDeclaration(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.decorators == null)
                 writer.write("undefined");
             else {
@@ -3599,7 +3635,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.decorators.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.decorators!.length; i++) {
                             const item = node.decorators![i];
                             if (i > 0)
@@ -3620,7 +3656,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writer.write("ts.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
                 }
                 else if (node.modifiers.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.modifiers!.length; i++) {
                             const item = node.modifiers![i];
                             if (i > 0)
@@ -3655,7 +3691,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.elements.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.elements!.length; i++) {
                     const item = node.elements![i];
                     if (i > 0)
@@ -3671,7 +3707,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createExportSpecifier(node: import("typescript").ExportSpecifier) {
         writer.write("ts.createExportSpecifier(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.propertyName == null)
                 writer.write("undefined");
             else {
@@ -3692,7 +3728,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createJsxElement(node: import("typescript").JsxElement) {
         writer.write("ts.createJsxElement(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.openingElement)
             writer.write(",").newLine();
             writer.write("[");
@@ -3701,7 +3737,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.children.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.children!.length; i++) {
                         const item = node.children![i];
                         if (i > 0)
@@ -3720,7 +3756,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createJsxSelfClosingElement(node: import("typescript").JsxSelfClosingElement) {
         writer.write("ts.createJsxSelfClosingElement(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.tagName)
             writer.write(",").newLine();
             if (node.typeArguments == null)
@@ -3732,7 +3768,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeArguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeArguments!.length; i++) {
                             const item = node.typeArguments![i];
                             if (i > 0)
@@ -3752,7 +3788,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createJsxOpeningElement(node: import("typescript").JsxOpeningElement) {
         writer.write("ts.createJsxOpeningElement(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.tagName)
             writer.write(",").newLine();
             if (node.typeArguments == null)
@@ -3764,7 +3800,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                     writeNodeText(item)
                 }
                 else if (node.typeArguments.length > 1) {
-                    writer.indentBlock(() => {
+                    writer.indent(() => {
                         for (let i = 0; i < node.typeArguments!.length; i++) {
                             const item = node.typeArguments![i];
                             if (i > 0)
@@ -3790,7 +3826,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createJsxFragment(node: import("typescript").JsxFragment) {
         writer.write("ts.createJsxFragment(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.openingFragment)
             writer.write(",").newLine();
             writer.write("[");
@@ -3799,7 +3835,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.children.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.children!.length; i++) {
                         const item = node.children![i];
                         if (i > 0)
@@ -3818,7 +3854,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createJsxText(node: import("typescript").JsxText) {
         writer.write("ts.createJsxText(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.quote(node.text.toString())
             writer.write(",").newLine();
             writer.quote(node.containsOnlyTriviaWhiteSpaces.toString())
@@ -3839,7 +3875,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createJsxAttribute(node: import("typescript").JsxAttribute) {
         writer.write("ts.createJsxAttribute(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.name)
             writer.write(",").newLine();
             if (node.initializer == null)
@@ -3859,7 +3895,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.properties.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.properties!.length; i++) {
                     const item = node.properties![i];
                     if (i > 0)
@@ -3881,7 +3917,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createJsxExpression(node: import("typescript").JsxExpression) {
         writer.write("ts.createJsxExpression(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.dotDotDotToken == null)
                 writer.write("undefined");
             else {
@@ -3900,7 +3936,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createCaseClause(node: import("typescript").CaseClause) {
         writer.write("ts.createCaseClause(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
             writer.write("[");
@@ -3909,7 +3945,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.statements.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.statements!.length; i++) {
                         const item = node.statements![i];
                         if (i > 0)
@@ -3931,7 +3967,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.statements.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.statements!.length; i++) {
                     const item = node.statements![i];
                     if (i > 0)
@@ -3947,7 +3983,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createHeritageClause(node: import("typescript").HeritageClause) {
         writer.write("ts.createHeritageClause(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writer.write("ts.SyntaxKind.").write(syntaxKindToName[node.token])
             writer.write(",").newLine();
             writer.write("[");
@@ -3956,7 +3992,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writeNodeText(item)
             }
             else if (node.types.length > 1) {
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     for (let i = 0; i < node.types!.length; i++) {
                         const item = node.types![i];
                         if (i > 0)
@@ -3973,7 +4009,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createCatchClause(node: import("typescript").CatchClause) {
         writer.write("ts.createCatchClause(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             if (node.variableDeclaration == null)
                 writer.write("undefined");
             else {
@@ -3988,7 +4024,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createPropertyAssignment(node: import("typescript").PropertyAssignment) {
         writer.write("ts.createPropertyAssignment(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.name)
             writer.write(",").newLine();
             writeNodeText(node.initializer)
@@ -3999,7 +4035,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createShorthandPropertyAssignment(node: import("typescript").ShorthandPropertyAssignment) {
         writer.write("ts.createShorthandPropertyAssignment(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.name)
             writer.write(",").newLine();
             if (node.objectAssignmentInitializer == null)
@@ -4020,7 +4056,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createEnumMember(node: import("typescript").EnumMember) {
         writer.write("ts.createEnumMember(");
         writer.newLine();
-        writer.indentBlock(() => {
+        writer.indent(() => {
             writeNodeText(node.name)
             writer.write(",").newLine();
             if (node.initializer == null)
@@ -4040,7 +4076,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             writeNodeText(item)
         }
         else if (node.elements.length > 1) {
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < node.elements!.length; i++) {
                     const item = node.elements![i];
                     if (i > 0)

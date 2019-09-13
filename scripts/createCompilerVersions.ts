@@ -46,7 +46,7 @@ compilerVersionsFile.addStatements([writer => {
         name: "compilerVersionCollection",
         initializer: writer => {
             writer.write("[").newLine();
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 for (let i = 0; i < versions.length; i++) {
                     const version = versions[i];
                     writer.write(`{ version: "${version.version}", packageName: "${version.name}" }`);
@@ -70,12 +70,12 @@ compilerVersionsFile.addStatements([writer => {
         writer.write("switch (packageName)").block(() => {
             for (const version of versions) {
                 writer.writeLine(`case "${version.name}":`);
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     writer.writeLine(`return await import("${version.name}");`);
                 });
             }
             writer.writeLine(`default:`);
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
@@ -91,12 +91,12 @@ compilerVersionsFile.addStatements([writer => {
         writer.write("switch (packageName)").block(() => {
             for (const version of versions) {
                 writer.writeLine(`case "${version.name}":`);
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     writer.writeLine(`return await import("../resources/libFiles/${version.name}/index");`);
                 });
             }
             writer.writeLine(`default:`);
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
@@ -113,12 +113,12 @@ compilerVersionsFile.addStatements([writer => {
         writer.write("switch (packageName)").block(() => {
             for (const version of versions) {
                 writer.writeLine(`case "${version.name}":`);
-                writer.indentBlock(() => {
+                writer.indent(() => {
                     writer.writeLine(`return (await import("../resources/factoryCode/${version.name}")).generateFactoryCode as any;`);
                 });
             }
             writer.writeLine(`default:`);
-            writer.indentBlock(() => {
+            writer.indent(() => {
                 writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
