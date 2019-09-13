@@ -1,4 +1,3 @@
-/* tslint:disable */
 import CodeBlockWriter from "code-block-writer";
 
 export function generateFactoryCode(ts: typeof import("typescript-2.6.2"), initialNode: import("typescript-2.6.2").Node) {

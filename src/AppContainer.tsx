@@ -1,4 +1,4 @@
-﻿import { Dispatch } from "react";
+import { Dispatch } from "react";
 import { connect } from "react-redux";
 import { Node, getCompilerApi, hasLoadedCompilerApi, CompilerPackageNames } from "./compiler";
 import App from "./App";

@@ -4,7 +4,7 @@ export function getSyntaxKindName(api: CompilerApi, kind: SyntaxKind) {
     return getKindCacheForApi(api)[kind];
 }
 
-const kindCache: { [packageName: string]: { [kind: number]: string; } } = {};
+const kindCache: { [packageName: string]: { [kind: number]: string; }; } = {};
 
 function getKindCacheForApi(api: CompilerApi) {
     if (kindCache[api.tsAstViewer.packageName] == null)

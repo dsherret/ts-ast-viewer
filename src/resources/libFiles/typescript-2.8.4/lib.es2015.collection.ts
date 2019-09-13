@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2015.collection.d.ts`,
     text: `/*! *****************************************************************************

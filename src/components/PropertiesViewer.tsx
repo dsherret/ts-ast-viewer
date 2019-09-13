@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
@@ -187,7 +187,7 @@ function getProperties(api: CompilerApi, rootItem: any) {
         else if (value instanceof Array) {
             if (value.length === 0)
                 return getTextDiv(key, "[]");
-            else
+            else {
                 return (
                     <div className="array" key={key} data-name={key}>
                         <div className="key">{key}: [</div>
@@ -195,45 +195,50 @@ function getProperties(api: CompilerApi, rootItem: any) {
                         <div className="suffix">]</div>
                     </div>
                 );
+            }
         }
-        else if (isTsNode(value))
+        else if (isTsNode(value)) {
             return (
                 <div className="object" key={key} data-name={key}>
                     <div className="key">{key}:</div>
                     <div className="value">{getTreeNode(value)}</div>
                 </div>
             );
+        }
         else if (isMap(value)) {
             const entries = ArrayUtils.from(value.entries());
             if (entries.length === 0)
                 return getTextDiv(key, "{}");
-            else
+            else {
                 return (
                     <div className="array" key={key} data-name={key}>
-                        <div className="key">{key}: {"{"}</div>
+                        <div className="key">{key}:{"{"}</div>
                         <div className="value">{entries.map(v => getTreeNode(v[1], v[0]))}</div>
                         <div className="suffix">{"}"}</div>
                     </div>
                 );
+            }
         }
         else if (typeof value === "object") {
             if (getObjectKeys(value).length === 0)
                 return getTextDiv(key, "{}");
-            else
+            else {
                 return (
                     <div className="object" key={key} data-name={key}>
                         <div className="key">{key}:</div>
                         <div className="value">{getTreeNode(value)}</div>
                     </div>
                 );
+            }
         }
-        else
+        else {
             return (
                 <div className="text" key={key} data-name={key}>
                     <div className="key">{key}:</div>
                     <div className="value">{getCustomValue()}</div>
                 </div>
             );
+        }
 
         function getCustomValue() {
             if (isTsNode(parent)) {
@@ -299,7 +304,7 @@ function getProperties(api: CompilerApi, rootItem: any) {
     function getTextDiv(key: string | undefined, value: string) {
         return (
             <div className="text" key={key} data-name={key}>
-                {key == null ? undefined : <div className="key" >{key}:</div>}
+                {key == null ? undefined : <div className="key">{key}:</div>}
                 <div className="value">{value}</div>
             </div>
         );

@@ -1,4 +1,4 @@
-/* tslint:disable */
+// dprint-ignore-file
 /* Automatically maintained from package.json. Do not edit! */
 
 import { Node, CompilerApi } from "./CompilerApi";

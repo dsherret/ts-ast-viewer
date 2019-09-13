@@ -15,7 +15,6 @@ glob("./src/resources/factoryCode/*.ts", (err, filesToDelete) => {
     for (const version of versions) {
         const code = generateCode(version.name);
         const newFilePath = factoryCodeDir + `${version.name}.ts`;
-        fs.writeFileSync(newFilePath, `/* tslint:disable */${os.EOL}` +
-            `${code.replace(/\r?\n/g, os.EOL)}`);
+        fs.writeFileSync(newFilePath, `${code.replace(/\r?\n/g, os.EOL)}`);
     }
 });

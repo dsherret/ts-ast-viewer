@@ -35,14 +35,14 @@ forAllCompilerVersions(packageName => {
                                     name: "Identifier"
                                 }]
                             }, {
-                                name: "OpenParenToken",
+                                name: "OpenParenToken"
                             }, {
                                 name: "SyntaxList",
                                 children: [{
                                     name: "StringLiteral"
                                 }]
                             }, {
-                                name: "CloseParenToken",
+                                name: "CloseParenToken"
                             }]
                         }, {
                             name: "SemicolonToken"

@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.scripthost.d.ts`,
     text: `/*! *****************************************************************************

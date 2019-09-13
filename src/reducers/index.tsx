@@ -1,4 +1,4 @@
-﻿import { AllActions } from "../actions";
+import { AllActions } from "../actions";
 import { StoreState, OptionsState, TreeMode } from "../types";
 import { Node, SourceFile, createSourceFile, CompilerApi, convertOptions, getChildrenFunction, CompilerPackageNames } from "../compiler";
 import { UrlSaver } from "../utils";

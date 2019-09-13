@@ -12,6 +12,6 @@ forAllCompilerVersions(packageName => {
         // todo: more tests in the future
         checkType({
             name: "Test"
-        })
+        });
     });
 });

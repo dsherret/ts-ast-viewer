@@ -5,7 +5,7 @@ export default {
         compilerVersionSelectionId: "compilerVersionSelection",
         treeModeId: "treeMode",
         bindingEnabledId: "bindingEnabled",
-        showFactoryCodeId: "showFactoryCode",
+        showFactoryCodeId: "showFactoryCode"
     },
     mainCodeEditor: {
         id: "codeEditor"

@@ -60,9 +60,8 @@ export function selectNode(...selection: string[]) {
 }
 
 export function forAllCompilerVersions(action: (version: CompilerPackageNames) => void) {
-    if (process.env.CI != null) {
+    if (process.env.CI != null)
         action("typescript-next" as any);
-    }
     else {
         action("typescript");
         // todo: make testing everything configurable
@@ -105,8 +104,7 @@ export function checkTreeView(tree: TreeViewNode) {
         });
 
         it(`should have same selected (${name})`, () => {
-            getCurrentElement().find(".nodeText").first().should(node.selected ? "have.class" : "not.have.class",
-                constants.css.treeViewer.selectedNodeClass);
+            getCurrentElement().find(".nodeText").first().should(node.selected ? "have.class" : "not.have.class", constants.css.treeViewer.selectedNodeClass);
         });
 
         if (node.children == null) {

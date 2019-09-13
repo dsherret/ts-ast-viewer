@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2020.full.d.ts`,
     text: `/*! *****************************************************************************

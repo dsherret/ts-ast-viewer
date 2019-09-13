@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { SourceFile, Node, CompilerApi, getChildrenFunction } from "../compiler";
 import TreeView from "react-treeview";
 import { getSyntaxKindName } from "../utils";
@@ -27,11 +27,12 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
             const className = "nodeText" + (node === selectedNode ? " " + cssConstants.treeViewer.selectedNodeClass : "");
             const kindName = getSyntaxKindName(api, node.kind);
             const label = (<div onClick={() => onSelectNode(node)} className={className}>{kindName}</div>);
-            if (children.length === 0)
+            if (children.length === 0) {
                 return (
                     <div key={i++} className="endNode" data-name={kindName}>{label}</div>
                 );
-            else
+            }
+            else {
                 return (
                     <div data-name={kindName} key={i++}>
                         <TreeView nodeLabel={label}>
@@ -39,6 +40,7 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
                         </TreeView>
                     </div>
                 );
+            }
         }
     }
 }

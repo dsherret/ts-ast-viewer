@@ -15,6 +15,6 @@ forAllCompilerVersions(packageName => {
             pos: 11,
             end: 18,
             start: 12
-        })
+        });
     });
 });

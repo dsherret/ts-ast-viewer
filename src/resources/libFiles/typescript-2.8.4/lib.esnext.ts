@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.esnext.d.ts`,
     text: `/*! *****************************************************************************

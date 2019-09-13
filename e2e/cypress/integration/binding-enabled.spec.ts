@@ -1,4 +1,5 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, setBindingEnabled, checkType, checkNode, checkSymbol, checkSignature } from "../helpers";
+import { forAllCompilerVersions, visitSite, setVersion, setEditorText, setBindingEnabled, checkType, checkNode, checkSymbol,
+    checkSignature } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     describe(`should be bound by default (${packageName})`, () => {

@@ -14,7 +14,7 @@ export class EnumUtils {
     }
 
     static getNamesForValues(e: any) {
-        const values: { [value: number]: string[] } = {};
+        const values: { [value: number]: string[]; } = {};
 
         for (const name of this.getNames(e)) {
             const value = e[name];

@@ -17,7 +17,7 @@ const compilerVersionsFile = project.addExistingSourceFile("./src/compiler/compi
 compilerVersionsFile.removeText();
 
 compilerVersionsFile.addStatements([writer => {
-    writer.writeLine("/* tslint:disable */")
+    writer.writeLine("// dprint-ignore-file")
         .writeLine("/* Automatically maintained from package.json. Do not edit! */")
         .blankLine();
 }, {
@@ -58,7 +58,7 @@ compilerVersionsFile.addStatements([writer => {
             writer.write("]");
         },
         type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]"
-    }],
+    }]
 }, {
     kind: StructureKind.Function,
     isExported: true,

@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2018.promise.d.ts`,
     text: `/*! *****************************************************************************

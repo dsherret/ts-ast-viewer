@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2018.asyncgenerator.d.ts`,
     text: `/*! *****************************************************************************

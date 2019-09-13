@@ -25,6 +25,6 @@ export function getCompilerVersions() {
             return 1;
         if (b.version.startsWith("@next"))
             return -1;
-        return a.version > b.version ? -1 : 1
+        return a.version > b.version ? -1 : 1;
     });
 }

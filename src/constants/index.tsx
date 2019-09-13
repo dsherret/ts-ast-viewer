@@ -1,4 +1,4 @@
-﻿import * as actions from "./actions";
+import * as actions from "./actions";
 import css from "./css";
 import general from "./general";
 

@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2017.intl.d.ts`,
     text: `/*! *****************************************************************************

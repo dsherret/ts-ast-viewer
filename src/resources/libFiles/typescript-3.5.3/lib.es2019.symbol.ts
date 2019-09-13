@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2019.symbol.d.ts`,
     text: `/*! *****************************************************************************

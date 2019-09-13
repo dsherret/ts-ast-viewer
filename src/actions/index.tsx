@@ -1,4 +1,4 @@
-﻿import { Node, CompilerApi, CompilerPackageNames } from "../compiler";
+import { Node, CompilerApi, CompilerPackageNames } from "../compiler";
 import { actions as constants } from "../constants";
 import { OptionsState, ApiLoadingState } from "../types";
 

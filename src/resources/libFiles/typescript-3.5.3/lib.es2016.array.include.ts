@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2016.array.include.d.ts`,
     text: `/*! *****************************************************************************

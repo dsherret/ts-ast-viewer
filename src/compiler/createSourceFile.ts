@@ -1,4 +1,4 @@
-﻿import { CompilerApi, TypeChecker, Program, SourceFile, CompilerOptions, ScriptTarget, ScriptKind, CompilerHost } from "./CompilerApi";
+import { CompilerApi, TypeChecker, Program, SourceFile, CompilerOptions, ScriptTarget, ScriptKind, CompilerHost } from "./CompilerApi";
 import { assertNever } from "../utils";
 
 export function createSourceFile(api: CompilerApi, code: string, scriptTarget: ScriptTarget, scriptKind: ScriptKind) {

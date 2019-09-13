@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.dom.iterable.d.ts`,
     text: `/*! *****************************************************************************

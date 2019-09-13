@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.esnext.promise.d.ts`,
     text: `/*! *****************************************************************************

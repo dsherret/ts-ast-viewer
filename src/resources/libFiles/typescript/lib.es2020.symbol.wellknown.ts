@@ -1,4 +1,3 @@
-/* tslint:disable */
 export default {
     fileName: `/lib.es2020.symbol.wellknown.d.ts`,
     text: `/*! *****************************************************************************

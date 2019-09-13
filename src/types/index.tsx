@@ -1,4 +1,4 @@
-﻿import { CompilerApi, Program, TypeChecker, SourceFile, Node, ScriptTarget, ScriptKind, CompilerPackageNames } from "../compiler";
+import { CompilerApi, Program, TypeChecker, SourceFile, Node, ScriptTarget, ScriptKind, CompilerPackageNames } from "../compiler";
 
 export interface StoreState {
     code: string;

@@ -9,7 +9,7 @@ export interface CodeEditorProps {
     onChange?: (text: string) => void;
     onClick?: (range: [number, number]) => void;
     text: string;
-    highlight?: { start: number; end: number } | undefined;
+    highlight?: { start: number; end: number; } | undefined;
     showInfo?: boolean;
     readOnly?: boolean;
     renderWhiteSpace?: boolean;
@@ -74,7 +74,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         function getClassNames(showInfo: boolean | undefined) {
             const classNames = ["codeEditor"];
             if (showInfo)
-                classNames.push("hasInfo")
+                classNames.push("hasInfo");
             return classNames.join(" ");
         }
     }

@@ -9,9 +9,13 @@ function getCompilerApi(scriptKind: any, scriptTarget: any) {
 }
 
 function doTest(fromKind: number, fromTarget: number, expectedKind: number, expectedTarget: number) {
+    // dprint-ignore
     enum ScriptKindFrom { TSX, JSX, Extra }
+    // dprint-ignore
     enum ScriptKindTo { JSX, TSX }
+    // dprint-ignore
     enum ScriptTargetFrom { ES5, Latest, Extra }
+    // dprint-ignore
     enum ScriptTargetTo { Latest, ES5 }
     const apiFrom = getCompilerApi(ScriptKindFrom, ScriptTargetFrom);
     const apiTo = getCompilerApi(ScriptKindTo, ScriptTargetTo);
