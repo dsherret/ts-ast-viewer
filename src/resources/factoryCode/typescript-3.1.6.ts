@@ -99,15 +99,30 @@ export function generateFactoryCode(ts: typeof import("typescript-3.1.6"), initi
             case ts.SyntaxKind.IndexSignature:
                 createIndexSignature(node as import("typescript-3.1.6").IndexSignatureDeclaration);
                 return;
-            case ts.SyntaxKind.VoidKeyword:
             case ts.SyntaxKind.AnyKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.BooleanKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.NeverKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.NumberKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.ObjectKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.StringKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.SymbolKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.UndefinedKeyword:
+                createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
+                return;
             case ts.SyntaxKind.UnknownKeyword:
                 createKeywordTypeNode(node as import("typescript-3.1.6").KeywordTypeNode);
                 return;
