@@ -115,7 +115,8 @@ export default function App(props: Props) {
     }
 
     function codeEditorDidMount(editor: import("monaco-editor").editor.IStandaloneCodeEditor) {
-        editor.focus();
+        // For some reason a slight delay is necessary here. Otherwise it won't let the user type.
+        setTimeout(() => editor.focus(), 100);
 
         // global method for cypress
         (window as any).setMonacoEditorText = (text: string) => {
