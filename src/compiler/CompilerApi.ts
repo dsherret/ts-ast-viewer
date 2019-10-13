@@ -19,6 +19,8 @@ export interface CompilerApi {
         cachedSourceFiles: { [name: string]: SourceFile | undefined; };
     };
     version: number;
+    getLeadingCommentRanges: typeof ts.getLeadingCommentRanges;
+    getTrailingCommentRanges: typeof ts.getTrailingCommentRanges;
 }
 
 export type Node = ts.Node;
@@ -39,3 +41,4 @@ export type SyntaxKind = ts.SyntaxKind;
 export type CompilerHost = ts.CompilerHost;
 export type ReadonlyMap<T> = ts.ReadonlyMap<T>;
 export type Iterator<T> = ts.Iterator<T>;
+export type CommentRange = ts.CommentRange;

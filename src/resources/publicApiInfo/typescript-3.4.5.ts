@@ -182,6 +182,8 @@ export const nodePropertiesBySyntaxKind = new Map([
     ["UnparsedPrepend", new Set(["kind","data","parent","texts","flags","decorators","modifiers","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
     ["UnparsedText | SyntaxKind.UnparsedInternalText", new Set(["kind","parent","data","flags","decorators","modifiers","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
     ["UnparsedSyntheticReference", new Set(["kind","parent","data","flags","decorators","modifiers","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
+    ["SingleLineCommentTrivia", new Set(["hasTrailingNewLine","kind","pos","end","text",])],
+    ["MultiLineCommentTrivia", new Set(["hasTrailingNewLine","kind","pos","end","text",])],
 ]);
 
 export const symbolProperties = new Set([

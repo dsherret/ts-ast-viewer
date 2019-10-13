@@ -178,6 +178,8 @@ export const nodePropertiesBySyntaxKind = new Map([
     ["Bundle", new Set(["kind","prepends","sourceFiles","flags","decorators","modifiers","parent","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
     ["InputFiles", new Set(["kind","javascriptText","javascriptMapPath","javascriptMapText","declarationText","declarationMapPath","declarationMapText","flags","decorators","modifiers","parent","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
     ["UnparsedSource", new Set(["kind","text","sourceMapPath","sourceMapText","flags","decorators","modifiers","parent","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
+    ["SingleLineCommentTrivia", new Set(["hasTrailingNewLine","kind","pos","end","text",])],
+    ["MultiLineCommentTrivia", new Set(["hasTrailingNewLine","kind","pos","end","text",])],
 ]);
 
 export const symbolProperties = new Set([

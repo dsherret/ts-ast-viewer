@@ -1,5 +1,5 @@
 import React from "react";
-import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo } from "../compiler";
+import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo, CommentRange } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
@@ -39,7 +39,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps, Pro
                 <div className="container">
                     <h2>Node</h2>
                     <div id={cssConstants.properties.node.id}>
-                        {getForNode(context, selectedNode)}
+                        {getForSelectedNode(context, selectedNode)}
                     </div>
                     {bindingEnabled && getBindingSection(context, selectedNode, bindingTools().typeChecker)}
                 </div>
@@ -99,7 +99,7 @@ function getBindingSection(context: Context, selectedNode: Node, typeChecker: Ty
     );
 }
 
-function getForNode(context: Context, selectedNode: Node) {
+function getForSelectedNode(context: Context, selectedNode: Node) {
     return (<LazyTreeView nodeLabel={getSyntaxKindName(context.api, selectedNode.kind)} defaultCollapsed={false} getChildren={getChildren} />);
 
     function getChildren() {
@@ -115,19 +115,24 @@ function getForNode(context: Context, selectedNode: Node) {
                 {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
                 {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
                 {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
-                {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
+                {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts I need to report...) */}
                 {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(context.sourceFile), selectedNode.getEnd()))}
+                {/* comments */}
+                {getForCommentRanges(`ts.getLeadingCommentRanges(fileFullText, ${selectedNode.getFullStart()})`, context.api.getLeadingCommentRanges(context.sourceFile.text, selectedNode.getFullStart()))}
+                {getForCommentRanges(`ts.getTrailingCommentRanges(fileFullText, ${selectedNode.end})`, context.api.getTrailingCommentRanges(context.sourceFile.text, selectedNode.end))}
             </>
         );
     }
 
     function getMethodElement(name: string, result: string | number) {
-        return (
-            <div className="method" key={name} data-name={name}>
-                <span className="methodName">{name}:</span>
-                <span className="methodResult">{typeof result === "string" ? JSON.stringify(result) : result}</span>
-            </div>
-        );
+        return getTextDiv(name, typeof result === "string" ? result : JSON.stringify(result));
+    }
+
+    function getForCommentRanges(name: string, commentRanges: CommentRange[] | undefined) {
+        if (commentRanges == null)
+            return getTextDiv(name, "undefined");
+        else
+            return getArrayDiv(context, name, commentRanges);
     }
 }
 
@@ -186,178 +191,188 @@ function getOrReturnError<T>(getFunc: () => T): T | string {
     }
 }
 
-function getTreeView(context: Context, rootItem: any, rootLabel: string) {
-    return (<LazyTreeView nodeLabel={rootLabel} defaultCollapsed={false} getChildren={() => getProperties(context, rootItem)} />);
+function getTreeView(context: Context, obj: any, label: string) {
+    return (<LazyTreeView nodeLabel={label} defaultCollapsed={false} getChildren={() => getProperties(context, obj)} />);
 }
 
-function getProperties(context: Context, rootItem: any) {
-    let i = 0;
-    return getNodeKeyValuesForObject(rootItem);
+function getProperties(context: Context, obj: any) {
+    const keyValues = getObjectKeys(context, obj).map(key => ({ key, value: obj[key] }));
 
-    function getTreeNode(value: any, key?: string): JSX.Element {
-        const labelName = getLabelName(value);
-        key = getKey();
-
-        if (typeof value === "string")
-            return getTextDiv(key, `"${value}"`);
-        if (typeof value === "number")
-            return getTextDiv(key, value.toString());
-        if (typeof value === "boolean")
-            return getTextDiv(key, value.toString());
-        return (
-            <LazyTreeView nodeLabel={key} key={i++} defaultCollapsed={true} getChildren={() => getNodeKeyValuesForObject(value)} />
-        );
-
-        function getKey() {
-            if (key == null)
-                return labelName;
-            else if (labelName != null)
-                return `${key}: ${getLabelName(value)}`;
-            return key;
-        }
-    }
-
-    function getNodeKeyValuesForObject(obj: any) {
-        const keyValues = getObjectKeys(obj).map(key => ({ key, value: obj[key] }));
-
-        const values = (
-            <>
-                {keyValues.map(kv => (getNodeKeyValue(kv.key, kv.value, obj)))}
-            </>
-        );
-        return values;
-    }
+    const values = (
+        <>
+            {keyValues.map(kv => (getNodeKeyValue(kv.key, kv.value, obj)))}
+        </>
+    );
+    return values;
 
     function getNodeKeyValue(key: string, value: any, parent: any): JSX.Element {
         if (value === null)
             return getTextDiv(key, "null");
         else if (value === undefined)
             return getTextDiv(key, "undefined");
-        else if (value instanceof Array) {
-            if (value.length === 0)
-                return getTextDiv(key, "[]");
-            else {
-                return (
-                    <div className="array" key={key} data-name={key}>
-                        <div className="key">{key}: [</div>
-                        <div className="value">{value.map(v => getTreeNode(v))}</div>
-                        <div className="suffix">]</div>
-                    </div>
-                );
-            }
-        }
-        else if (isTsNode(value)) {
-            return (
-                <div className="object" key={key} data-name={key}>
-                    <div className="key">{key}:</div>
-                    <div className="value">{getTreeNode(value)}</div>
-                </div>
-            );
-        }
-        else if (isMap(value)) {
-            const entries = ArrayUtils.from(value.entries());
-            if (entries.length === 0)
-                return getTextDiv(key, "{}");
-            else {
-                return (
-                    <div className="array" key={key} data-name={key}>
-                        <div className="key">{key}:{"{"}</div>
-                        <div className="value">{entries.map(v => getTreeNode(v[1], v[0]))}</div>
-                        <div className="suffix">{"}"}</div>
-                    </div>
-                );
-            }
-        }
-        else if (typeof value === "object") {
-            if (getObjectKeys(value).length === 0)
-                return getTextDiv(key, "{}");
-            else {
-                return (
-                    <div className="object" key={key} data-name={key}>
-                        <div className="key">{key}:</div>
-                        <div className="value">{getTreeNode(value)}</div>
-                    </div>
-                );
-            }
-        }
-        else {
-            return (
-                <div className="text" key={key} data-name={key}>
-                    <div className="key">{key}:</div>
-                    <div className="value">{getCustomValue()}</div>
-                </div>
-            );
-        }
-
-        function getCustomValue() {
-            if (isTsNode(parent)) {
-                switch (key) {
-                    case "kind":
-                        return `${value} (SyntaxKind.${getSyntaxKindName(context.api, value)})`;
-                    case "flags":
-                        return getEnumFlagElement(context.api.NodeFlags, value);
-                }
-            }
-            if (isTsType(parent) && key === "objectFlags")
-                return getEnumFlagElement(context.api.ObjectFlags, value);
-            if (isTsType(parent) && key === "flags")
-                return getEnumFlagElement(context.api.TypeFlags, value);
-            if (isTsSymbol(parent) && key === "flags")
-                return getEnumFlagElement(context.api.SymbolFlags, value);
-            return CircularJson.stringify(value);
-        }
+        else if (value instanceof Array)
+            return getArrayDiv(context, key, value);
+        else if (isTsNode(value))
+            return getNodeDiv(context, key, value);
+        else if (isMap(value))
+            return getMapDiv(context, key, value);
+        else if (typeof value === "object")
+            return getObjectDiv(context, key, value);
+        else
+            return getCustomValueDiv(context, key, value, parent);
     }
+}
 
-    function getObjectKeys(obj: any) {
-        if (obj == null)
-            return [];
-        return Object.keys(obj).filter(key => isAllowedKey(context, obj, key));
-    }
-
-    function getLabelName(obj: any) {
-        if (obj == null)
-            return undefined;
-        if (isTsNode(obj))
-            return appendName(getSyntaxKindName(context.api, obj.kind));
-        if (isTsSignature(obj))
-            return appendName("Signature");
-        if (isTsType(obj))
-            return appendName("Type");
-        if (isTsSymbol(obj))
-            return appendName("Symbol");
-        const objType = typeof obj;
-        if (objType === "string" || objType === "number" || objType === "boolean")
-            return undefined;
-        return appendName("Object");
-
-        function appendName(title: string) {
-            const name = getName();
-            return name == null ? title : `${title} (${name})`;
-        }
-
-        function getName() {
-            try {
-                if (typeof obj.getName === "function")
-                    return obj.getName();
-                if (isTsNode(obj) && (obj as any).name != null) {
-                    const name = (obj as any).name as Node;
-                    return name.getText();
-                }
-                return undefined;
-            } catch (err) {
-                return undefined;
-            }
-        }
-    }
-
-    function getTextDiv(key: string | undefined, value: string) {
+function getArrayDiv(context: Context, key: string, value: unknown[]) {
+    if (value.length === 0)
+        return getTextDiv(key, "[]");
+    else {
         return (
-            <div className="text" key={key} data-name={key}>
-                {key == null ? undefined : <div className="key">{key}:</div>}
-                <div className="value">{value}</div>
+            <div className="array" key={key} data-name={key}>
+                <div className="key">{key}: [</div>
+                <div className="value">{value.map((v, i) => getTreeNode(context, v, undefined, i))}</div>
+                <div className="suffix">]</div>
             </div>
         );
     }
+}
+
+function getMapDiv(context: Context, key: string, value: ReadonlyMap<unknown>) {
+    const entries = ArrayUtils.from(value.entries());
+    if (entries.length === 0)
+        return getTextDiv(key, "{}");
+    else {
+        return (
+            <div className="array" key={key} data-name={key}>
+                <div className="key">{key}:{"{"}</div>
+                <div className="value">{entries.map((v, i) => getTreeNode(context, v[1], v[0], i))}</div>
+                <div className="suffix">{"}"}</div>
+            </div>
+        );
+    }
+}
+
+function getObjectDiv(context: Context, key: string, value: unknown) {
+    if (getObjectKeys(context, value).length === 0)
+        return getTextDiv(key, "{}");
+    else {
+        return (
+            <div className="object" key={key} data-name={key}>
+                <div className="key">{key}:</div>
+                <div className="value">{getTreeNode(context, value)}</div>
+            </div>
+        );
+    }
+}
+
+function getCustomValueDiv(context: Context, key: string, value: any, parent: any) {
+    return (
+        <div className="text" key={key} data-name={key}>
+            <div className="key">{key}:</div>
+            <div className="value">{getCustomValue()}</div>
+        </div>
+    );
+
+    function getCustomValue() {
+        if (isTsNode(parent)) {
+            switch (key) {
+                case "kind":
+                    return `${value} (SyntaxKind.${getSyntaxKindName(context.api, value)})`;
+                case "flags":
+                    return getEnumFlagElement(context.api.NodeFlags, value);
+            }
+        }
+        if (isTsType(parent) && key === "objectFlags")
+            return getEnumFlagElement(context.api.ObjectFlags, value);
+        if (isTsType(parent) && key === "flags")
+            return getEnumFlagElement(context.api.TypeFlags, value);
+        if (isTsSymbol(parent) && key === "flags")
+            return getEnumFlagElement(context.api.SymbolFlags, value);
+        return CircularJson.stringify(value);
+    }
+}
+
+function getNodeDiv(context: Context, key: string, value: Node) {
+    return (
+        <div className="object" key={key} data-name={key}>
+            <div className="key">{key}:</div>
+            <div className="value">{getTreeNode(context, value)}</div>
+        </div>
+    );
+}
+
+function getTextDiv(key: string | undefined, value: string) {
+    return (
+        <div className="text" key={key} data-name={key}>
+            {key == null ? undefined : <div className="key">{key}:</div>}
+            <div className="value">{value}</div>
+        </div>
+    );
+}
+
+function getTreeNode(context: Context, value: any, key?: string, index?: number): JSX.Element {
+    const labelName = getLabelName(context, value);
+    key = getKey();
+
+    if (typeof value === "string")
+        return getTextDiv(key, `"${value}"`);
+    if (typeof value === "number")
+        return getTextDiv(key, value.toString());
+    if (typeof value === "boolean")
+        return getTextDiv(key, value.toString());
+    return (
+        <LazyTreeView nodeLabel={key} key={index} defaultCollapsed={true} getChildren={() => getProperties(context, value)} />
+    );
+
+    function getKey() {
+        if (key == null)
+            return labelName;
+        else if (labelName != null)
+            return `${key}: ${getLabelName(context, value)}`;
+        return key;
+    }
+}
+
+function getLabelName(context: Context, obj: any) {
+    if (obj == null)
+        return undefined;
+    if (isTsNode(obj))
+        return appendName(getSyntaxKindName(context.api, obj.kind));
+    if (isTsSignature(obj))
+        return appendName("Signature");
+    if (isTsType(obj))
+        return appendName("Type");
+    if (isTsSymbol(obj))
+        return appendName("Symbol");
+    const objType = typeof obj;
+    if (objType === "string" || objType === "number" || objType === "boolean")
+        return undefined;
+    return appendName("Object");
+
+    function appendName(title: string) {
+        const name = getName();
+        return name == null ? title : `${title} (${name})`;
+    }
+
+    function getName() {
+        try {
+            if (typeof obj.getName === "function")
+                return obj.getName();
+            if (isTsNode(obj) && (obj as any).name != null) {
+                const name = (obj as any).name as Node;
+                return name.getText();
+            }
+            return undefined;
+        } catch (err) {
+            return undefined;
+        }
+    }
+}
+
+function getObjectKeys(context: Context, obj: any) {
+    if (obj == null)
+        return [];
+    return Object.keys(obj).filter(key => isAllowedKey(context, obj, key));
 }
 
 const nodeDisallowedKeys = new Set(["parent", "_children", "symbol"]);

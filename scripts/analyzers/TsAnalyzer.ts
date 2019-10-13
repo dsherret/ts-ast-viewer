@@ -39,6 +39,10 @@ export class TsAnalyzer {
             }
         }
 
+        // add the comment ranges in as well
+        result.set("SingleLineCommentTrivia", this.getPropertiesForExport("CommentRange"));
+        result.set("MultiLineCommentTrivia", this.getPropertiesForExport("CommentRange"));
+
         return result;
 
         function* getNodes() {

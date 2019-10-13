@@ -166,6 +166,8 @@ export const nodePropertiesBySyntaxKind = new Map([
     ["JSDocTypeLiteral", new Set(["kind","jsDocPropertyTags","isArrayType","flags","decorators","modifiers","parent","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
     ["SourceFile", new Set(["kind","statements","endOfFileToken","fileName","text","amdDependencies","moduleName","referencedFiles","typeReferenceDirectives","languageVariant","isDeclarationFile","hasNoDefaultLib","languageVersion","getLineAndCharacterOfPosition","getLineEndOfPosition","getLineStarts","getPositionOfLineAndCharacter","update","flags","decorators","modifiers","parent","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
     ["Bundle", new Set(["kind","sourceFiles","flags","decorators","modifiers","parent","getSourceFile","getChildCount","getChildAt","getChildren","getStart","getFullStart","getEnd","getWidth","getFullWidth","getLeadingTriviaWidth","getFullText","getText","getFirstToken","getLastToken","forEachChild","pos","end",])],
+    ["SingleLineCommentTrivia", new Set(["hasTrailingNewLine","kind","pos","end","text",])],
+    ["MultiLineCommentTrivia", new Set(["hasTrailingNewLine","kind","pos","end","text",])],
 ]);
 
 export const symbolProperties = new Set([
