@@ -32,6 +32,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     {this.getScriptTarget()}
                     {this.getBindingEnabled()}
                     {this.getShowFactoryCode()}
+                    {this.getShowInternals()}
                     <div className="bottomLinks">
                         <ExternalLink text="About" url="https://github.com/dsherret/ts-ast-viewer/tree/master/docs/about.md" />
                         <span>&nbsp;|&nbsp;</span>
@@ -111,6 +112,20 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
             </div>
         );
         return (<Option name={"Factory code"} value={selection} />);
+    }
+
+    private getShowInternals() {
+        const selection = (
+            <div>
+                <input
+                    id={cssConstants.options.showInternalsId}
+                    type="checkbox"
+                    checked={this.props.options.showInternals}
+                    onChange={(event) => this.onChange({ showInternals: !!event.target.checked })}
+                />
+            </div>
+        );
+        return (<Option name={"Show internals"} value={selection} />);
     }
 
     private getEnumOption(name: string, prefix: string, e: any, currentValue: number, onChange: (value: number) => void) {

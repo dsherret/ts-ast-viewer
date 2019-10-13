@@ -28,6 +28,7 @@ export interface OptionsState {
     scriptKind: ScriptKind;
     bindingEnabled: boolean;
     showFactoryCode: boolean;
+    showInternals: boolean;
 }
 
 export enum TreeMode {

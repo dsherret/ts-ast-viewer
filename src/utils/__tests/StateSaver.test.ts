@@ -27,9 +27,10 @@ describe("StateSaver", () => {
     it("should get the default state when nothing set", () => {
         const { saver } = setup();
         expect(saver.get()).toEqual({
-            version: 2,
+            version: 3,
             treeMode: TreeMode.forEachChild,
-            showFactoryCode: true
+            showFactoryCode: true,
+            showInternals: false
         });
     });
 
@@ -42,9 +43,10 @@ describe("StateSaver", () => {
 
         const saver2 = new StateSaver(localStorage);
         expect(saver2.get()).toEqual({
-            version: 2,
+            version: 3,
             treeMode: TreeMode.getChildren,
-            showFactoryCode: true
+            showFactoryCode: true,
+            showInternals: false
         });
     });
 
@@ -53,12 +55,14 @@ describe("StateSaver", () => {
         const state = saver.get();
         state.treeMode = TreeMode.getChildren;
         state.showFactoryCode = false;
+        state.showInternals = true;
         saver.set(state);
 
         expect(saver.get()).toEqual({
             version: 2,
             treeMode: TreeMode.getChildren,
-            showFactoryCode: false
+            showFactoryCode: false,
+            showInternals: true
         });
     });
 
@@ -72,7 +76,8 @@ describe("StateSaver", () => {
             expect(saver.get()).toEqual({
                 version: 2,
                 treeMode,
-                showFactoryCode: true
+                showFactoryCode: true,
+                showInternals: false
             });
         }
     });
@@ -85,9 +90,26 @@ describe("StateSaver", () => {
         }));
 
         expect(saver.get()).toEqual({
+            version: 3,
+            treeMode: TreeMode.getChildren,
+            showFactoryCode: true,
+            showInternals: false
+        });
+    });
+
+    it("should upgrade from version 2", () => {
+        const { saver, localStorage } = setup();
+        localStorage.setItem(StateSaver._stateKey, JSON.stringify({
             version: 2,
             treeMode: TreeMode.getChildren,
-            showFactoryCode: true
+            showFactoryCode: false
+        }));
+
+        expect(saver.get()).toEqual({
+            version: 3,
+            treeMode: TreeMode.getChildren,
+            showFactoryCode: false,
+            showInternals: false
         });
     });
 });

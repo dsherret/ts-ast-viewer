@@ -1,12 +1,12 @@
 import React from "react";
 
-export interface TooltipedTextProps {
+export interface ToolTippedTextProps {
     text: string;
 }
 
 // adapted from https://codesandbox.io/s/XopkqJ5oV
-export class TooltipedText extends React.Component<TooltipedTextProps, { isHovering: boolean; }> {
-    constructor(props: TooltipedTextProps) {
+export class ToolTippedText extends React.Component<ToolTippedTextProps, { isHovering: boolean; }> {
+    constructor(props: ToolTippedTextProps) {
         super(props);
         this.state = { isHovering: false };
         this.onMouseHoverChanged = this.onMouseHoverChanged.bind(this);
@@ -14,7 +14,7 @@ export class TooltipedText extends React.Component<TooltipedTextProps, { isHover
 
     render() {
         return (
-            <div className="tooltipedText" onMouseEnter={this.onMouseHoverChanged} onMouseLeave={this.onMouseHoverChanged}>
+            <div className="toolTippedText" onMouseEnter={this.onMouseHoverChanged} onMouseLeave={this.onMouseHoverChanged}>
                 <div className="titleText">{this.props.text}</div>
                 {this.state.isHovering && this.getToolTip()}
             </div>

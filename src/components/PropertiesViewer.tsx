@@ -1,63 +1,112 @@
 import React from "react";
-import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi } from "../compiler";
+import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
-import { BindingTools } from "../types";
+import { BindingTools, CompilerState } from "../types";
 import { ArrayUtils, getSyntaxKindName, getEnumFlagNames } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
-import { TooltipedText } from "./TooltipedText";
+import { ToolTippedText } from "./ToolTippedText";
 
 export interface PropertiesViewerProps {
-    api: CompilerApi;
+    compiler: CompilerState;
     sourceFile: SourceFile;
     bindingTools: () => BindingTools;
     selectedNode: Node;
     bindingEnabled: boolean;
+    showInternals: boolean;
 }
 
-export class PropertiesViewer extends React.Component<PropertiesViewerProps> {
+export interface PropertiesViewerState {
+    publicApiInfo: PublicApiInfo | undefined | false;
+    lastCompilerPackageName: CompilerPackageNames | undefined;
+}
+
+export class PropertiesViewer extends React.Component<PropertiesViewerProps, PropertiesViewerState> {
+    constructor(props: PropertiesViewerProps) {
+        super(props);
+        this.state = {
+            publicApiInfo: undefined,
+            lastCompilerPackageName: undefined
+        };
+    }
+
     render() {
-        const { selectedNode, sourceFile, bindingEnabled, bindingTools, api } = this.props;
+        this.updatePublicApiInfo();
+        const { selectedNode, sourceFile, bindingEnabled, bindingTools } = this.props;
+        const context: Context = { api: this.props.compiler.api, publicApiInfo: this.state.publicApiInfo, sourceFile };
         return (
             <div className="propertiesViewer">
                 <div className="container">
                     <h2>Node</h2>
                     <div id={cssConstants.properties.node.id}>
-                        {getForNode(api, selectedNode, sourceFile)}
+                        {getForNode(context, selectedNode)}
                     </div>
-                    {bindingEnabled && getBindingSection(api, selectedNode, bindingTools().typeChecker)}
+                    {bindingEnabled && getBindingSection(context, selectedNode, bindingTools().typeChecker)}
                 </div>
             </div>
         );
     }
+
+    private updatePublicApiInfo() {
+        if (this.props.showInternals) {
+            if (this.state.publicApiInfo != null)
+                setTimeout(() => this.setState({ publicApiInfo: undefined }), 0);
+            return;
+        }
+
+        if (this.state.lastCompilerPackageName === this.props.compiler.packageName && this.state.publicApiInfo != null)
+            return;
+
+        // todo: how to not do this in a render method? I'm not a react or web person
+        setTimeout(() => {
+            this.setState({
+                publicApiInfo: undefined,
+                lastCompilerPackageName: this.props.compiler.packageName
+            });
+
+            getPublicApiInfo(this.props.compiler.packageName).then(publicApiInfo => {
+                this.setState({ publicApiInfo });
+            }).catch(err => {
+                console.error(err);
+                this.setState({ publicApiInfo: false });
+            });
+        }, 0);
+    }
 }
 
-function getBindingSection(api: CompilerApi, selectedNode: Node, typeChecker: TypeChecker) {
+interface Context {
+    api: CompilerApi;
+    publicApiInfo: PublicApiInfo | undefined | false;
+    sourceFile: SourceFile;
+}
+
+function getBindingSection(context: Context, selectedNode: Node, typeChecker: TypeChecker) {
     return (
         <>
             <h2>Type</h2>
             <div id={cssConstants.properties.type.id}>
-                {getForType(api, selectedNode, typeChecker)}
+                {getForType(context, selectedNode, typeChecker)}
             </div>
             <h2>Symbol</h2>
             <div id={cssConstants.properties.symbol.id}>
-                {getForSymbol(api, selectedNode, typeChecker)}
+                {getForSymbol(context, selectedNode, typeChecker)}
             </div>
             <h2>Signature</h2>
             <div id={cssConstants.properties.signature.id}>
-                {getForSignature(api, selectedNode, typeChecker)}
+                {getForSignature(context, selectedNode, typeChecker)}
             </div>
         </>
     );
 }
 
-function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile) {
-    return (<LazyTreeView nodeLabel={getSyntaxKindName(api, selectedNode.kind)} defaultCollapsed={false} getChildren={getChildren} />);
+function getForNode(context: Context, selectedNode: Node) {
+    return (<LazyTreeView nodeLabel={getSyntaxKindName(context.api, selectedNode.kind)} defaultCollapsed={false} getChildren={getChildren} />);
 
     function getChildren() {
+        const { sourceFile } = context;
         return (
             <>
-                {getProperties(api, selectedNode)}
+                {getProperties(context, selectedNode)}
                 {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
                 {getMethodElement("getFullStart()", selectedNode.getFullStart())}
                 {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
@@ -67,7 +116,7 @@ function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile
                 {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
                 {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
                 {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts) */}
-                {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(sourceFile), selectedNode.getEnd()))}
+                {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(context.sourceFile), selectedNode.getEnd()))}
             </>
         );
     }
@@ -82,8 +131,8 @@ function getForNode(api: CompilerApi, selectedNode: Node, sourceFile: SourceFile
     }
 }
 
-function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
-    if (node.kind === api.SyntaxKind.SourceFile)
+function getForType(context: Context, node: Node, typeChecker: TypeChecker) {
+    if (node.kind === context.api.SyntaxKind.SourceFile)
         return (<>[None]</>);
 
     const type = getOrReturnError(() => typeChecker.getTypeAtLocation(node));
@@ -92,7 +141,7 @@ function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
     if (typeof type === "string")
         return (<>[Error getting type: {type}]</>);
 
-    return getTreeView(api, type, getTypeToString() || "Type");
+    return getTreeView(context, type, getTypeToString() || "Type");
 
     function getTypeToString() {
         try {
@@ -103,14 +152,14 @@ function getForType(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
     }
 }
 
-function getForSymbol(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
+function getForSymbol(context: Context, node: Node, typeChecker: TypeChecker) {
     const symbol = getOrReturnError(() => ((node as any).symbol as Symbol | undefined) || typeChecker.getSymbolAtLocation(node));
     if (symbol == null)
         return (<>[None]</>);
     if (typeof symbol === "string")
         return (<>[Error getting symbol: {symbol}]</>);
 
-    return getTreeView(api, symbol, getSymbolName() || "Symbol");
+    return getTreeView(context, symbol, getSymbolName() || "Symbol");
 
     function getSymbolName() {
         try {
@@ -121,12 +170,12 @@ function getForSymbol(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
     }
 }
 
-function getForSignature(api: CompilerApi, node: Node, typeChecker: TypeChecker) {
+function getForSignature(context: Context, node: Node, typeChecker: TypeChecker) {
     const signature = getOrReturnError(() => typeChecker.getSignatureFromDeclaration(node as any));
     if (signature == null || typeof signature === "string")
         return (<>[None]</>);
 
-    return getTreeView(api, signature, "Signature");
+    return getTreeView(context, signature, "Signature");
 }
 
 function getOrReturnError<T>(getFunc: () => T): T | string {
@@ -137,11 +186,11 @@ function getOrReturnError<T>(getFunc: () => T): T | string {
     }
 }
 
-function getTreeView(api: CompilerApi, rootItem: any, rootLabel: string) {
-    return (<LazyTreeView nodeLabel={rootLabel} defaultCollapsed={false} getChildren={() => getProperties(api, rootItem)} />);
+function getTreeView(context: Context, rootItem: any, rootLabel: string) {
+    return (<LazyTreeView nodeLabel={rootLabel} defaultCollapsed={false} getChildren={() => getProperties(context, rootItem)} />);
 }
 
-function getProperties(api: CompilerApi, rootItem: any) {
+function getProperties(context: Context, rootItem: any) {
     let i = 0;
     return getNodeKeyValuesForObject(rootItem);
 
@@ -244,17 +293,17 @@ function getProperties(api: CompilerApi, rootItem: any) {
             if (isTsNode(parent)) {
                 switch (key) {
                     case "kind":
-                        return `${value} (SyntaxKind.${getSyntaxKindName(api, value)})`;
+                        return `${value} (SyntaxKind.${getSyntaxKindName(context.api, value)})`;
                     case "flags":
-                        return getEnumFlagElement(api.NodeFlags, value);
+                        return getEnumFlagElement(context.api.NodeFlags, value);
                 }
             }
             if (isTsType(parent) && key === "objectFlags")
-                return getEnumFlagElement(api.ObjectFlags, value);
+                return getEnumFlagElement(context.api.ObjectFlags, value);
             if (isTsType(parent) && key === "flags")
-                return getEnumFlagElement(api.TypeFlags, value);
+                return getEnumFlagElement(context.api.TypeFlags, value);
             if (isTsSymbol(parent) && key === "flags")
-                return getEnumFlagElement(api.SymbolFlags, value);
+                return getEnumFlagElement(context.api.SymbolFlags, value);
             return CircularJson.stringify(value);
         }
     }
@@ -262,14 +311,14 @@ function getProperties(api: CompilerApi, rootItem: any) {
     function getObjectKeys(obj: any) {
         if (obj == null)
             return [];
-        return Object.keys(obj).filter(key => isAllowedKey(obj, key));
+        return Object.keys(obj).filter(key => isAllowedKey(context, obj, key));
     }
 
     function getLabelName(obj: any) {
         if (obj == null)
             return undefined;
         if (isTsNode(obj))
-            return appendName(getSyntaxKindName(api, obj.kind));
+            return appendName(getSyntaxKindName(context.api, obj.kind));
         if (isTsSignature(obj))
             return appendName("Signature");
         if (isTsType(obj))
@@ -311,14 +360,29 @@ function getProperties(api: CompilerApi, rootItem: any) {
     }
 }
 
-const nodeDisallowedKeys = ["parent", "_children", "symbol"];
-const typeDisallowedKeys = ["checker", "symbol"];
-function isAllowedKey(obj: any, key: string) {
-    if (isTsNode(obj))
-        return nodeDisallowedKeys.indexOf(key) === -1;
+const nodeDisallowedKeys = new Set(["parent", "_children", "symbol"]);
+const typeDisallowedKeys = new Set(["checker", "symbol"]);
+function isAllowedKey(context: Context, obj: any, key: string) {
+    const { publicApiInfo } = context;
+    if (isTsNode(obj)) {
+        if (nodeDisallowedKeys.has(key))
+            return false;
+        if (!publicApiInfo)
+            return true;
+        const kindName = getSyntaxKindName(context.api, obj.kind);
+        return hasInProperties(publicApiInfo.nodePropertiesBySyntaxKind.get(kindName));
+    }
     if (isTsType(obj))
-        return typeDisallowedKeys.indexOf(key) === -1;
+        return !typeDisallowedKeys.has(key) && hasInProperties(publicApiInfo && publicApiInfo.typeProperties);
+    if (isTsSignature(obj))
+        return hasInProperties(publicApiInfo && publicApiInfo.signatureProperties);
+    if (isTsSymbol(obj))
+        return hasInProperties(publicApiInfo && publicApiInfo.symbolProperties);
     return true;
+
+    function hasInProperties(publicApiProperties: Set<string> | undefined | false) {
+        return !publicApiProperties || publicApiProperties.has(key);
+    }
 }
 
 function isMap(value: any): value is ReadonlyMap<unknown> {
@@ -349,7 +413,7 @@ function getEnumFlagElement(enumObj: any, value: number) {
     if (names.length === 0)
         return <>{value}</>;
 
-    return <TooltipedText text={value.toString()}>{getNames()}</TooltipedText>;
+    return <ToolTippedText text={value.toString()}>{getNames()}</ToolTippedText>;
 
     function getNames() {
         return <ul>{names.map((name, i) => (<li key={i}>{name}</li>))}</ul>;

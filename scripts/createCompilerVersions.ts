@@ -102,12 +102,17 @@ compilerVersionsFile.addStatements([writer => {
         });
     }
 }, {
+    kind: StructureKind.TypeAlias,
+    isExported: true,
+    name: "FactoryCodeGenerator",
+    type: "(ts: CompilerApi, node: Node) => string"
+}, {
     kind: StructureKind.Function,
     isExported: true,
     isAsync: true,
     name: "getGenerateFactoryCodeFunction",
     parameters: [{ name: "packageName", type: "CompilerPackageNames" }],
-    returnType: "Promise<(ts: CompilerApi, node: Node) => string>",
+    returnType: "Promise<FactoryCodeGenerator>",
     statements: writer => {
         writer.writeLine("// these explicit import statements are required to get webpack to include these modules");
         writer.write("switch (packageName)").block(() => {
@@ -115,6 +120,45 @@ compilerVersionsFile.addStatements([writer => {
                 writer.writeLine(`case "${version.name}":`);
                 writer.indent(() => {
                     writer.writeLine(`return (await import("../resources/factoryCode/${version.name}")).generateFactoryCode as any;`);
+                });
+            }
+            writer.writeLine(`default:`);
+            writer.indent(() => {
+                writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
+            });
+        });
+    }
+}, {
+    kind: StructureKind.Interface,
+    isExported: true,
+    name: "PublicApiInfo",
+    properties: [{
+        name: "nodePropertiesBySyntaxKind",
+        type: "Map<string, Set<string>>"
+    }, {
+        name: "symbolProperties",
+        type: "Set<string>"
+    }, {
+        name: "typeProperties",
+        type: "Set<string>"
+    }, {
+        name: "signatureProperties",
+        type: "Set<string>"
+    }]
+}, {
+    kind: StructureKind.Function,
+    isExported: true,
+    isAsync: true,
+    name: "getPublicApiInfo",
+    returnType: "Promise<PublicApiInfo>",
+    parameters: [{ name: "packageName", type: "CompilerPackageNames" }],
+    statements: writer => {
+        writer.writeLine("// these explicit import statements are required to get webpack to include these modules");
+        writer.write("switch (packageName)").block(() => {
+            for (const version of versions) {
+                writer.writeLine(`case "${version.name}":`);
+                writer.indent(() => {
+                    writer.writeLine(`return (await import("../resources/publicApiInfo/${version.name}"));`);
                 });
             }
             writer.writeLine(`default:`);

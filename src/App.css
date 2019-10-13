@@ -67,17 +67,17 @@ a,a:visited {
     font-size: 1.5em;
 }
 
-/* Tooltiped Text */
-.tooltipedText {
+/* Tool-tipped Text */
+.toolTippedText {
     position: relative;
 }
 
-.tooltipedText .titleText {
+.toolTippedText .titleText {
     cursor: pointer;
     text-decoration: underline;
 }
 
-.tooltipedText .tooltipText {
+.toolTippedText .tooltipText {
     position: absolute;
     top: 18px;
     border: 1px solid white;
@@ -87,7 +87,7 @@ a,a:visited {
     z-index: 1;
 }
 
-.tooltipedText .tooltipText ul {
+.toolTippedText .tooltipText ul {
     margin-top: 0px;
     margin-bottom: 0px;
     padding-left: 1.5em;
@@ -112,8 +112,8 @@ a,a:visited {
 
 #options .menu {
     position: absolute;
-    width: 350px;
-    margin-left: -270px;
+    width: 364px;
+    margin-left: -284px;
     margin-top: -1px;
     background: #202020;
     border: 1px solid #fff;
@@ -129,7 +129,7 @@ a,a:visited {
 #options .menu .optionName {
     display: inline-block;
     margin-right: 6px;
-    width: 100px;
+    width: 114px;
     text-align: right;
 }
 #options .menu .optionValue {

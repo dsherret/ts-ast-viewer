@@ -103,11 +103,12 @@ export default function App(props: Props) {
                         mode={props.options.treeMode}
                     />
                     <components.PropertiesViewer
-                        api={compiler.api}
+                        compiler={compiler}
                         selectedNode={compiler.selectedNode}
                         sourceFile={compiler.sourceFile}
                         bindingTools={compiler.bindingTools}
                         bindingEnabled={props.options.bindingEnabled}
+                        showInternals={props.options.showInternals}
                     />
                 </SplitPane>
             </components.ErrorBoundary>

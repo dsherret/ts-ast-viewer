@@ -26,14 +26,16 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
         scriptTarget: fromTarget,
         treeMode: 0,
         bindingEnabled: true,
-        showFactoryCode: true
+        showFactoryCode: true,
+        showInternals: false
     })).toEqual({
         compilerPackageName: "typescript",
         scriptKind: expectedKind,
         scriptTarget: expectedTarget,
         treeMode: 0,
         bindingEnabled: true,
-        showFactoryCode: true
+        showFactoryCode: true,
+        showInternals: false
     });
 }
 

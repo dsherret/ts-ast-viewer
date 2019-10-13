@@ -25,7 +25,8 @@ const store = createStore(appReducer, {
         scriptTarget: initialScriptTarget,
         scriptKind: initialScriptKind,
         bindingEnabled: true,
-        showFactoryCode: stateSaver.get().showFactoryCode
+        showFactoryCode: stateSaver.get().showFactoryCode,
+        showInternals: stateSaver.get().showInternals
     },
     compiler: undefined
 });
@@ -47,6 +48,7 @@ store.subscribe(() => {
     const savedState = stateSaver.get();
     savedState.treeMode = state.options.treeMode;
     savedState.showFactoryCode = state.options.showFactoryCode;
+    savedState.showInternals = state.options.showInternals;
     stateSaver.set(savedState);
 });
 

@@ -1,8 +1,4 @@
-/* Automatically maintained from package.json. Do not edit! */
-import { CompilerApi, Node } from "./CompilerApi";
-import { CompilerPackageNames, getGenerateFactoryCodeFunction } from "./compilerVersions";
-
-export type FactoryCodeGenerator = (ts: CompilerApi, node: Node) => string;
+import { CompilerPackageNames, getGenerateFactoryCodeFunction, FactoryCodeGenerator } from "./compilerVersions";
 
 const cache: { [packageName: string]: Promise<FactoryCodeGenerator>; } = {};
 const hasLoadedVersion: { [packageName: string]: true; } = {};
@@ -14,8 +10,4 @@ export function getFactoryCodeGenerator(packageName: CompilerPackageNames): Prom
         cache[packageName].then(() => hasLoadedVersion[packageName] = true);
     }
     return cache[packageName];
-}
-
-export function hasLoadedFactoryCode(packageName: CompilerPackageNames) {
-    return hasLoadedVersion[packageName] === true;
 }

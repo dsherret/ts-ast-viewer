@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "build/scripts-dist",
+    "noEmit": true,
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
@@ -15,12 +15,5 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true
-  },
-  "exclude": [
-    "node_modules",
-    "build",
-    "acceptance-tests",
-    "webpack",
-    "jest"
-  ]
+  }
 }
