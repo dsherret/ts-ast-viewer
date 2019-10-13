@@ -59,7 +59,7 @@ describe("StateSaver", () => {
         saver.set(state);
 
         expect(saver.get()).toEqual({
-            version: 2,
+            version: 3,
             treeMode: TreeMode.getChildren,
             showFactoryCode: false,
             showInternals: true
@@ -74,7 +74,7 @@ describe("StateSaver", () => {
             saver.set(state);
 
             expect(saver.get()).toEqual({
-                version: 2,
+                version: 3,
                 treeMode,
                 showFactoryCode: true,
                 showInternals: false

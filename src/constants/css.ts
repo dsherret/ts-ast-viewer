@@ -1,4 +1,4 @@
-export default {
+export const css = {
     options: {
         id: "options",
         buttonId: "optionsButton",
@@ -6,7 +6,7 @@ export default {
         treeModeId: "treeMode",
         bindingEnabledId: "bindingEnabled",
         showFactoryCodeId: "showFactoryCode",
-        showInternalsId: "showInternals",
+        showInternalsId: "showInternals"
     },
     mainCodeEditor: {
         id: "codeEditor"

@@ -1,5 +1,6 @@
 import React from "react";
-import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo, CommentRange } from "../compiler";
+import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo,
+    CommentRange } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
@@ -118,8 +119,10 @@ function getForSelectedNode(context: Context, selectedNode: Node) {
                 {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts I need to report...) */}
                 {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(context.sourceFile), selectedNode.getEnd()))}
                 {/* comments */}
-                {getForCommentRanges(`ts.getLeadingCommentRanges(fileFullText, ${selectedNode.getFullStart()})`, context.api.getLeadingCommentRanges(context.sourceFile.text, selectedNode.getFullStart()))}
-                {getForCommentRanges(`ts.getTrailingCommentRanges(fileFullText, ${selectedNode.end})`, context.api.getTrailingCommentRanges(context.sourceFile.text, selectedNode.end))}
+                {getForCommentRanges(`ts.getLeadingCommentRanges(fileFullText, ${selectedNode.getFullStart()})`,
+                    context.api.getLeadingCommentRanges(context.sourceFile.text, selectedNode.getFullStart()))}
+                {getForCommentRanges(`ts.getTrailingCommentRanges(fileFullText, ${selectedNode.end})`,
+                    context.api.getTrailingCommentRanges(context.sourceFile.text, selectedNode.end))}
             </>
         );
     }

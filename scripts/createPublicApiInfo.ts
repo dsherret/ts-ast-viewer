@@ -28,9 +28,8 @@ function getCode(versionName: string) {
     writer.indent(() => {
         for (const [syntaxKindName, properties] of analyzer.getNodePropertiesBySyntaxKind()) {
             writer.write(`["${syntaxKindName}", new Set([`);
-            for (const prop of properties) {
+            for (const prop of properties)
                 writer.quote(prop).write(",");
-            }
             writer.write("])],").newLine();
         }
     });

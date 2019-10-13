@@ -24,7 +24,7 @@ export class TsAnalyzer {
 
     getNodePropertiesBySyntaxKind() {
         const result = new Map<string, Set<string>>();
-        const exports = this.tsSymbol.getExports()
+        const exports = this.tsSymbol.getExports();
 
         for (const node of getNodes()) {
             const type = node.getDeclarations()[0].getType();

@@ -31,6 +31,13 @@ export function setFactoryCodeEnabled(enabled: boolean) {
     cy.get(`#${constants.css.options.id}`).click(); // hide
 }
 
+export function setShowInternals(enabled: boolean) {
+    cy.get(`#${constants.css.options.id}`).click();
+    const checkbox = cy.get(`#${constants.css.options.showInternalsId}`);
+    enabled ? checkbox.check() : checkbox.uncheck();
+    cy.get(`#${constants.css.options.id}`).click(); // hide
+}
+
 export function setBindingEnabled(enabled: boolean) {
     cy.get(`#${constants.css.options.id}`).click();
     const checkbox = cy.get(`#${constants.css.options.bindingEnabledId}`);
@@ -134,6 +141,8 @@ export interface Node {
     end?: number;
     start?: number;
     isBound?: boolean;
+    /** test internal property */
+    haveScriptKindInternalProperty?: boolean;
 }
 
 export function checkNode(node: Node) {
@@ -166,13 +175,18 @@ export function checkNode(node: Node) {
             getContainerElement("id").should(node.isBound ? "exist" : "not.exist");
         });
     }
+    if (node.haveScriptKindInternalProperty != null) {
+        it("should have the script kind internal property", () => {
+            getContainerElement("scriptKind").should(node.haveScriptKindInternalProperty ? "exist" : "not.exist");
+        });
+    }
 
     function getPropertyValueElement(name: string) {
         return getContainerElement(name).find(`>.value`).first();
     }
 
     function getMethodValueElement(methodName: string) {
-        return getContainerElement(methodName + "()").find(`>.methodResult`).first();
+        return getContainerElement(methodName + "()").find(`>.value`).first();
     }
 
     function getContainerElement(name: string) {
