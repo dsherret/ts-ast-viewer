@@ -26,14 +26,9 @@ export class TsAnalyzer {
         const result = new Map<string, Set<string>>();
         const exports = this.tsSymbol.getExports();
 
-        for (const node of getNodes()) {
-            const type = node.getDeclarations()[0].getType();
-            const kindText = getKindOfNodeSymbol(node)!;
-            if (!result.has(kindText))
-                result.set(kindText, new Set());
-
-            const properties = result.get(kindText)!;
-            for (const prop of type.getProperties()) {
+        for (const [kindText, node] of getNodes()) {
+            const properties = getResultPropertiesSetForKind(kindText);
+            for (const prop of node.getDeclaredType().getProperties()) {
                 if (isAllowedProperty(prop))
                     properties.add(prop.getName());
             }
@@ -47,12 +42,9 @@ export class TsAnalyzer {
 
         function* getNodes() {
             for (const symbol of exports) {
-                if (isNode(symbol))
-                    yield symbol;
-            }
-
-            function isNode(symbol: Symbol) {
-                return getKindOfNodeSymbol(symbol) != null;
+                const kindText = getKindOfNodeSymbol(symbol);
+                if (kindText != null)
+                    yield [kindText, symbol] as const;
             }
         }
 
@@ -65,6 +57,17 @@ export class TsAnalyzer {
             if (!kindTypeText.startsWith("SyntaxKind."))
                 return undefined;
             return kindTypeText.replace(/^SyntaxKind\./, "");
+        }
+
+        function getResultPropertiesSetForKind(kindText: string) {
+            let properties = result.get(kindText);
+
+            if (properties == null) {
+                properties = new Set();
+                result.set(kindText, properties);
+            }
+
+            return properties;
         }
     }
 

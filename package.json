@@ -26,7 +26,7 @@
     "eject": "react-scripts eject",
     "predeploy": "CI=false && cross-env NODE_OPTIONS=--max_old_space_size=4096 && npm run build",
     "deploy": "npm run predeploy && gh-pages -d build",
-    "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode",
+    "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode && npm run createPublicApiInfo",
     "copyLibFiles": "ts-node --project scripts/tsconfig.json scripts/copyLibFiles.ts ",
     "createCompilerVersions": "ts-node --project scripts/tsconfig.json scripts/createCompilerVersions.ts",
     "createFactoryCode": "ts-node --project scripts/tsconfig.json scripts/createFactoryCode.ts",

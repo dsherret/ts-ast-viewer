@@ -1,17 +1,21 @@
 language: node_js
 node_js:
   - 11
+addons:
+  apt:
+    packages:
+    - libgconf-2-4
 cache:
+  yarn: true
   directories:
-    - ~/.npm
-    - ~/e2e/.npm
     - ~/.cache
-    - ~/e2e/.cache
 install:
   - yarn install
   - yarn add typescript-next@npm:typescript@next
 script:
   - npm run cypress:ci
+  # kill anything running in the background
+  - kill $(jobs -p) || true
 before_deploy:
   - travis_wait 20 npm run predeploy
 env:
@@ -24,7 +28,3 @@ deploy:
   keep-history: true
   on:
     branch: master
-addons:
-  apt:
-    packages:
-    - libgconf-2-4
