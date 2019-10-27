@@ -237,6 +237,10 @@ a,a:visited {
     margin-left: 6px;
 }
 
+.propertiesViewer .internal {
+    color: red;
+}
+
 .propertiesViewer .text .key {
     display: inline-block;
     margin-right: 2px;

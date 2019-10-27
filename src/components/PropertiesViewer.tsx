@@ -7,6 +7,7 @@ import { BindingTools, CompilerState } from "../types";
 import { ArrayUtils, getSyntaxKindName, getEnumFlagNames } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 import { ToolTippedText } from "./ToolTippedText";
+import { Spinner } from "./Spinner";
 
 export interface PropertiesViewerProps {
     compiler: CompilerState;
@@ -34,7 +35,16 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps, Pro
     render() {
         this.updatePublicApiInfo();
         const { selectedNode, sourceFile, bindingEnabled, bindingTools } = this.props;
-        const context: Context = { api: this.props.compiler.api, publicApiInfo: this.state.publicApiInfo, sourceFile };
+        const context: Context = {
+            api: this.props.compiler.api,
+            publicApiInfo: this.state.publicApiInfo,
+            showInternals: this.props.showInternals,
+            sourceFile
+        };
+
+        if (this.state.publicApiInfo == null)
+            return <Spinner backgroundColor="#1e1e1e" />;
+
         return (
             <div className="propertiesViewer">
                 <div className="container">
@@ -49,19 +59,12 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps, Pro
     }
 
     private updatePublicApiInfo() {
-        if (this.props.showInternals) {
-            if (this.state.publicApiInfo != null)
-                setTimeout(() => this.setState({ publicApiInfo: undefined }), 0);
-            return;
-        }
-
-        if (this.state.lastCompilerPackageName === this.props.compiler.packageName && this.state.publicApiInfo != null)
+        if (this.state.lastCompilerPackageName === this.props.compiler.packageName)
             return;
 
         // todo: how to not do this in a render method? I'm not a react or web person
         setTimeout(() => {
             this.setState({
-                publicApiInfo: undefined,
                 lastCompilerPackageName: this.props.compiler.packageName
             });
 
@@ -78,6 +81,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps, Pro
 interface Context {
     api: CompilerApi;
     publicApiInfo: PublicApiInfo | undefined | false;
+    showInternals: boolean;
     sourceFile: SourceFile;
 }
 
@@ -199,11 +203,19 @@ function getTreeView(context: Context, obj: any, label: string) {
 }
 
 function getProperties(context: Context, obj: any) {
-    const keyValues = getObjectKeys(context, obj).map(key => ({ key, value: obj[key] }));
+    const keyInfo = getObjectKeyInfo(context, obj);
 
     const values = (
         <>
-            {keyValues.map(kv => (getNodeKeyValue(kv.key, kv.value, obj)))}
+            {keyInfo.map(info => {
+                const element = getNodeKeyValue(info.key, info.value, obj);
+                if (info.permission === "internal") {
+                    return <div className="internal" key={info.key}>
+                        {element}
+                    </div>;
+                }
+                return element;
+            })}
         </>
     );
     return values;
@@ -256,7 +268,7 @@ function getMapDiv(context: Context, key: string, value: ReadonlyMap<unknown>) {
 }
 
 function getObjectDiv(context: Context, key: string, value: unknown) {
-    if (getObjectKeys(context, value).length === 0)
+    if (getObjectKeyInfo(context, value).length === 0)
         return getTextDiv(key, "{}");
     else {
         return (
@@ -372,15 +384,25 @@ function getLabelName(context: Context, obj: any) {
     }
 }
 
-function getObjectKeys(context: Context, obj: any) {
+function getObjectKeyInfo(context: Context, obj: any) {
     if (obj == null)
         return [];
-    return Object.keys(obj).filter(key => isAllowedKey(context, obj, key));
+    return Object.keys(obj)
+        .map(key => ({
+            key,
+            permission: getKeyPermission(context, obj, key),
+            value: obj[key]
+        }))
+        .filter(kv => {
+            if (kv.permission === false)
+                return false;
+            return context.showInternals || kv.permission !== "internal";
+        });
 }
 
 const nodeDisallowedKeys = new Set(["parent", "_children", "symbol"]);
 const typeDisallowedKeys = new Set(["checker", "symbol"]);
-function isAllowedKey(context: Context, obj: any, key: string) {
+function getKeyPermission(context: Context, obj: any, key: string): true | false | "internal" {
     const { publicApiInfo } = context;
     if (isTsNode(obj)) {
         if (nodeDisallowedKeys.has(key))
@@ -399,7 +421,9 @@ function isAllowedKey(context: Context, obj: any, key: string) {
     return true;
 
     function hasInProperties(publicApiProperties: Set<string> | undefined | false) {
-        return !publicApiProperties || publicApiProperties.has(key);
+        if (!publicApiProperties)
+            return true;
+        return publicApiProperties.has(key) ? true : "internal";
     }
 }
 
