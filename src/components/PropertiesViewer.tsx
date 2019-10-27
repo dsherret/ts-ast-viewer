@@ -210,7 +210,7 @@ function getProperties(context: Context, obj: any) {
             {keyInfo.map(info => {
                 const element = getNodeKeyValue(info.key, info.value, obj);
                 if (info.permission === "internal") {
-                    return <div className="internal" key={info.key}>
+                    return <div className="internal" key={info.key} data-name={info.key}>
                         {element}
                     </div>;
                 }

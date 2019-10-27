@@ -182,11 +182,11 @@ export function checkNode(node: Node) {
     }
 
     function getPropertyValueElement(name: string) {
-        return getContainerElement(name).find(`>.value`).first();
+        return getContainerElement(name).find(`.value`).first();
     }
 
     function getMethodValueElement(methodName: string) {
-        return getContainerElement(methodName + "()").find(`>.value`).first();
+        return getContainerElement(methodName + "()").find(`.value`).first();
     }
 
     function getContainerElement(name: string) {
@@ -220,10 +220,6 @@ export function checkType(type: Type | "none" | undefined) {
         getMainElement().find(">.tree-view>.tree-view_item").first().should("have.text", type.name);
     });
 
-    function getPropertyValueElement(name: string) {
-        return getMainElement().find(`>.tree-view>.tree-view_children>[data-name='${name}']>.value`).first();
-    }
-
     function getMainElement() {
         return cy.get(`#${constants.css.properties.type.id}`);
     }
@@ -250,10 +246,6 @@ export function checkSymbol(symbol: Symbol | "none" | undefined) {
     it("should have the correct symbol name", () => {
         getMainElement().find(">.tree-view>.tree-view_item").first().should("have.text", symbol.name);
     });
-
-    function getPropertyValueElement(name: string) {
-        return getMainElement().find(`>.tree-view>.tree-view_children>[data-name='${name}']>.value`).first();
-    }
 
     function getMainElement() {
         return cy.get(`#${constants.css.properties.symbol.id}`);
@@ -283,7 +275,7 @@ export function checkSignature(signature: Signature | "none" | undefined) {
     });
 
     function getPropertyValueElement(name: string) {
-        return getMainElement().find(`>.tree-view>.tree-view_children>[data-name='${name}']>.value`).first();
+        return getMainElement().find(`>.tree-view>.tree-view_children>[data-name='${name}'] .value`).first();
     }
 
     function getMainElement() {
