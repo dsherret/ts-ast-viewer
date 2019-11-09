@@ -237,7 +237,7 @@ a,a:visited {
     margin-left: 6px;
 }
 
-.propertiesViewer .internal {
+.propertiesViewer .internal > div > .key {
     color: red;
 }
 
