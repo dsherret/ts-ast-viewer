@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/dsherret/ts-ast-viewer/issues"
   },
-  "homepage": "https://ts-ast-viewer.com",
+  "homepage": "./",
   "scripts": {
     "postinstall": "yarn install --cwd e2e",
     "start": "npm run updateCompilerFiles && react-scripts --max_old_space_size=4096 start",
