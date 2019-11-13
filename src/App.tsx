@@ -1,14 +1,13 @@
 import React from "react";
 import SplitPane from "react-split-pane";
 import * as components from "./components";
-import { Node, CompilerPackageNames } from "./compiler";
+import { Node, CompilerPackageNames, getDescendantAtRange } from "./compiler";
 import { css as cssConstants } from "./constants";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
 import "./App.css";
 
 export interface Props extends StoreState {
     onCodeChange: (compilerPackageName: CompilerPackageNames, code: string) => void;
-    onRangeChange: (range: [number, number]) => void;
     onNodeChange: (node: Node) => void;
     onOptionsChange: (compilerPackageName: CompilerPackageNames, options: Partial<OptionsState>) => void;
 }
@@ -75,7 +74,16 @@ export default function App(props: Props) {
                 <components.CodeEditor
                     id={cssConstants.mainCodeEditor.id}
                     onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
-                    onClick={range => props.onRangeChange(range)}
+                    onClick={range => {
+                        if (props.compiler == null)
+                            return;
+                        const descendant = getDescendantAtRange(
+                            props.options.treeMode,
+                            props.compiler.sourceFile,
+                            range,
+                            props.compiler.api);
+                        props.onNodeChange(descendant);
+                    }}
                     text={props.code}
                     highlight={getCodeHighlightRange()}
                     showInfo={true}

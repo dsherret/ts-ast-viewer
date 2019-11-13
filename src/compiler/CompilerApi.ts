@@ -18,7 +18,7 @@ export interface CompilerApi {
         packageName: CompilerPackageNames;
         cachedSourceFiles: { [name: string]: SourceFile | undefined; };
     };
-    version: number;
+    version: string;
     getLeadingCommentRanges: typeof ts.getLeadingCommentRanges;
     getTrailingCommentRanges: typeof ts.getTrailingCommentRanges;
 }

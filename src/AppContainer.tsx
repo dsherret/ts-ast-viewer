@@ -26,7 +26,6 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
             dispatch(actions.setCode(code));
             debouncedSourceFileRefresh(compilerPackageName);
         },
-        onRangeChange: (range: [number, number]) => dispatch(actions.setRange(range)),
         onNodeChange: (node: Node) => dispatch(actions.setSelectedNode(node)),
         onOptionsChange: (compilerPackageName: CompilerPackageNames, options: Partial<OptionsState>) => {
             const fileNeedsChanging = options.scriptKind !== undefined
