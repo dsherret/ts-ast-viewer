@@ -25,7 +25,7 @@ export class TreeViewer extends React.Component<TreeViewerProps> {
         function renderNode(node: Node, getChildren: (node: Node) => (Node[])): JSX.Element {
             const children = getChildren(node);
             const className = "nodeText" + (node === selectedNode ? " " + cssConstants.treeViewer.selectedNodeClass : "");
-            const kindName = getSyntaxKindName(api, node.kind);
+            const kindName = getSyntaxKindName(api, node);
             const label = (<div onClick={() => onSelectNode(node)} className={className}>{kindName}</div>);
             if (children.length === 0) {
                 return (

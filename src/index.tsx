@@ -8,25 +8,24 @@ import { unregisterServiceWorker } from "./registerServiceWorker";
 import "./index.css";
 import "./external/react-treeview.css";
 import "./external/react-splitpane.css";
-import { ApiLoadingState } from "./types";
+import { ApiLoadingState, TreeMode } from "./types";
 import { appReducer } from "./reducers";
-import { StateSaver, UrlSaver } from "./utils";
+import { UrlSaver } from "./utils";
 
 const initialScriptTarget: ScriptTarget = 6 /* Latest */;
 const initialScriptKind: ScriptKind = 4 /* TSX */;
-const stateSaver = new StateSaver();
 
 const store = createStore(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
     code: new UrlSaver().getUrlCode(),
     options: {
         compilerPackageName: "typescript",
-        treeMode: stateSaver.get().treeMode,
+        treeMode: TreeMode.getChildrenWithComments,
         scriptTarget: initialScriptTarget,
         scriptKind: initialScriptKind,
         bindingEnabled: true,
-        showFactoryCode: stateSaver.get().showFactoryCode,
-        showInternals: stateSaver.get().showInternals
+        showFactoryCode: true,
+        showInternals: false
     },
     compiler: undefined
 });
@@ -38,19 +37,6 @@ ReactDOM.render(
 
 // doing this for now because service workers were not playing nicely with the website being updated every day for @next support
 unregisterServiceWorker();
-
-// save changes
-store.subscribe(() => {
-    const state = store.getState();
-    if (state.options == null)
-        return;
-
-    const savedState = stateSaver.get();
-    savedState.treeMode = state.options.treeMode;
-    savedState.showFactoryCode = state.options.showFactoryCode;
-    savedState.showInternals = state.options.showInternals;
-    stateSaver.set(savedState);
-});
 
 // set global variables
 console.log("[ts-ast-viewer]: Inspect the ts, sourceFile, node, symbol, type, signature, program, and typeChecker global variables here in the console.");

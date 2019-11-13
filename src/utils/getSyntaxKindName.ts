@@ -1,7 +1,10 @@
-import { CompilerApi, SyntaxKind } from "../compiler";
+import { CommentNodeParser, CommentListKind } from "@ts-morph/comment-parser";
+import { CompilerApi, Node } from "../compiler";
 
-export function getSyntaxKindName(api: CompilerApi, kind: SyntaxKind) {
-    return getKindCacheForApi(api)[kind];
+export function getSyntaxKindName(api: CompilerApi, node: Node) {
+    if (CommentNodeParser.isCommentList(node))
+        return "CommentList" + CommentListKind[node.commentListKind];
+    return getKindCacheForApi(api)[node.kind];
 }
 
 const kindCache: { [packageName: string]: { [kind: number]: string; }; } = {};

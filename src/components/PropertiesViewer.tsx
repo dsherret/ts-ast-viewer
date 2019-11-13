@@ -105,7 +105,7 @@ function getBindingSection(context: Context, selectedNode: Node, typeChecker: Ty
 }
 
 function getForSelectedNode(context: Context, selectedNode: Node) {
-    return (<LazyTreeView nodeLabel={getSyntaxKindName(context.api, selectedNode.kind)} defaultCollapsed={false} getChildren={getChildren} />);
+    return (<LazyTreeView nodeLabel={getSyntaxKindName(context.api, selectedNode)} defaultCollapsed={false} getChildren={getChildren} />);
 
     function getChildren() {
         const { sourceFile } = context;
@@ -352,7 +352,7 @@ function getLabelName(context: Context, obj: any) {
     if (obj == null)
         return undefined;
     if (isTsNode(obj))
-        return appendName(getSyntaxKindName(context.api, obj.kind));
+        return appendName(getSyntaxKindName(context.api, obj));
     if (isTsSignature(obj))
         return appendName("Signature");
     if (isTsType(obj))
@@ -409,7 +409,7 @@ function getKeyPermission(context: Context, obj: any, key: string): true | false
             return false;
         if (!publicApiInfo)
             return true;
-        const kindName = getSyntaxKindName(context.api, obj.kind);
+        const kindName = getSyntaxKindName(context.api, obj);
         return hasInProperties(publicApiInfo.nodePropertiesBySyntaxKind.get(kindName));
     }
     if (isTsType(obj))

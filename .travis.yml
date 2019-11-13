@@ -11,9 +11,9 @@ cache:
     - ~/.cache
 install:
   - yarn install
-  - yarn add typescript-next@npm:typescript@next
+  # - yarn add typescript-next@npm:typescript@next
 script:
-  - npm run cypress:ci
+  # - npm run cypress:ci
   # kill anything running in the background
   - kill $(jobs -p) || true
 before_deploy:

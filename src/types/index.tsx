@@ -32,8 +32,7 @@ export interface OptionsState {
 }
 
 export enum TreeMode {
-    forEachChild,
-    getChildren
+    getChildrenWithComments
 }
 
 export enum ApiLoadingState {

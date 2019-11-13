@@ -37,6 +37,7 @@
     "cypress:open": "npm run --prefix e2e cypress:open"
   },
   "dependencies": {
+    "@ts-morph/comment-parser": "^0.0.9",
     "circular-json": "^0.5.9",
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.18.1",
@@ -48,18 +49,7 @@
     "react-split-pane": "^0.1.87",
     "react-treeview": "^0.4.7",
     "redux": "^4.0.4",
-    "typescript": "3.7.2",
-    "typescript-2.6.2": "npm:typescript@2.6.2",
-    "typescript-2.7.2": "npm:typescript@2.7.2",
-    "typescript-2.8.4": "npm:typescript@2.8.4",
-    "typescript-2.9.2": "npm:typescript@2.9.2",
-    "typescript-3.0.3": "npm:typescript@3.0.3",
-    "typescript-3.1.6": "npm:typescript@3.1.6",
-    "typescript-3.2.4": "npm:typescript@3.2.4",
-    "typescript-3.3.3": "npm:typescript@3.3.3",
-    "typescript-3.4.5": "npm:typescript@3.4.5",
-    "typescript-3.5.3": "npm:typescript@3.5.3",
-    "typescript-3.6.4": "npm:typescript@3.6.4"
+    "typescript": "3.7.2"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",
