@@ -133,7 +133,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 createKeywordTypeNode(node as import("typescript").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.TypePredicate:
-                createTypePredicateNode(node as import("typescript").TypePredicateNode);
+                createTypePredicateNodeWithModifier(node as import("typescript").TypePredicateNode);
                 return;
             case ts.SyntaxKind.TypeReference:
                 createTypeReferenceNode(node as import("typescript").TypeReferenceNode);
@@ -211,14 +211,35 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 createObjectLiteral(node as import("typescript").ObjectLiteralExpression);
                 return;
             case ts.SyntaxKind.PropertyAccessExpression:
-                createPropertyAccess(node as import("typescript").PropertyAccessExpression);
-                return;
+                if (ts.isPropertyAccessChain(node)) {
+                    createPropertyAccessChain(node as import("typescript").PropertyAccessChain);
+                    return;
+                }
+                if (ts.isPropertyAccessExpression(node)) {
+                    createPropertyAccess(node as import("typescript").PropertyAccessExpression);
+                    return;
+                }
+                throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.ElementAccessExpression:
-                createElementAccess(node as import("typescript").ElementAccessExpression);
-                return;
+                if (ts.isElementAccessChain(node)) {
+                    createElementAccessChain(node as import("typescript").ElementAccessChain);
+                    return;
+                }
+                if (ts.isElementAccessExpression(node)) {
+                    createElementAccess(node as import("typescript").ElementAccessExpression);
+                    return;
+                }
+                throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.CallExpression:
-                createCall(node as import("typescript").CallExpression);
-                return;
+                if (ts.isCallChain(node)) {
+                    createCallChain(node as import("typescript").CallChain);
+                    return;
+                }
+                if (ts.isCallExpression(node)) {
+                    createCall(node as import("typescript").CallExpression);
+                    return;
+                }
+                throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.NewExpression:
                 createNew(node as import("typescript").NewExpression);
                 return;
@@ -1371,13 +1392,23 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write(")");
     }
 
-    function createTypePredicateNode(node: import("typescript").TypePredicateNode) {
-        writer.write("ts.createTypePredicateNode(");
+    function createTypePredicateNodeWithModifier(node: import("typescript").TypePredicateNode) {
+        writer.write("ts.createTypePredicateNodeWithModifier(");
         writer.newLine();
         writer.indent(() => {
+            if (node.assertsModifier == null)
+                writer.write("undefined");
+            else {
+                writeNodeText(node.assertsModifier)
+            }
+            writer.write(",").newLine();
             writeNodeText(node.parameterName)
             writer.write(",").newLine();
-            writeNodeText(node.type)
+            if (node.type == null)
+                writer.write("undefined");
+            else {
+                writeNodeText(node.type)
+            }
         });
         writer.write(")");
     }
@@ -1870,6 +1901,23 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write(")");
     }
 
+    function createPropertyAccessChain(node: import("typescript").PropertyAccessChain) {
+        writer.write("ts.createPropertyAccessChain(");
+        writer.newLine();
+        writer.indent(() => {
+            writeNodeText(node.expression)
+            writer.write(",").newLine();
+            if (node.questionDotToken == null)
+                writer.write("undefined");
+            else {
+                writeNodeText(node.questionDotToken)
+            }
+            writer.write(",").newLine();
+            writeNodeText(node.name)
+        });
+        writer.write(")");
+    }
+
     function createElementAccess(node: import("typescript").ElementAccessExpression) {
         writer.write("ts.createElementAccess(");
         writer.newLine();
@@ -1881,11 +1929,81 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write(")");
     }
 
+    function createElementAccessChain(node: import("typescript").ElementAccessChain) {
+        writer.write("ts.createElementAccessChain(");
+        writer.newLine();
+        writer.indent(() => {
+            writeNodeText(node.expression)
+            writer.write(",").newLine();
+            if (node.questionDotToken == null)
+                writer.write("undefined");
+            else {
+                writeNodeText(node.questionDotToken)
+            }
+            writer.write(",").newLine();
+            writeNodeText(node.argumentExpression)
+        });
+        writer.write(")");
+    }
+
     function createCall(node: import("typescript").CallExpression) {
         writer.write("ts.createCall(");
         writer.newLine();
         writer.indent(() => {
             writeNodeText(node.expression)
+            writer.write(",").newLine();
+            if (node.typeArguments == null)
+                writer.write("undefined");
+            else {
+                writer.write("[");
+                if (node.typeArguments.length === 1) {
+                    const item = node.typeArguments![0];
+                    writeNodeText(item)
+                }
+                else if (node.typeArguments.length > 1) {
+                    writer.indent(() => {
+                        for (let i = 0; i < node.typeArguments!.length; i++) {
+                            const item = node.typeArguments![i];
+                            if (i > 0)
+                                writer.write(",").newLine();
+                            writeNodeText(item)
+                        }
+                    });
+                }
+                writer.write("]");
+            }
+            writer.write(",").newLine();
+            writer.write("[");
+            if (node.arguments.length === 1) {
+                const item = node.arguments![0];
+                writeNodeText(item)
+            }
+            else if (node.arguments.length > 1) {
+                writer.indent(() => {
+                    for (let i = 0; i < node.arguments!.length; i++) {
+                        const item = node.arguments![i];
+                        if (i > 0)
+                            writer.write(",").newLine();
+                        writeNodeText(item)
+                    }
+                });
+            }
+            writer.write("]");
+        });
+        writer.write(")");
+    }
+
+    function createCallChain(node: import("typescript").CallChain) {
+        writer.write("ts.createCallChain(");
+        writer.newLine();
+        writer.indent(() => {
+            writeNodeText(node.expression)
+            writer.write(",").newLine();
+            if (node.questionDotToken == null)
+                writer.write("undefined");
+            else {
+                writeNodeText(node.questionDotToken)
+            }
             writer.write(",").newLine();
             if (node.typeArguments == null)
                 writer.write("undefined");

@@ -32,7 +32,7 @@ interface Map<K, V> {
 
 interface MapConstructor {
     new(): Map<any, any>;
-    new<K, V>(entries?: ReadonlyArray<readonly [K, V]> | null): Map<K, V>;
+    new<K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
     readonly prototype: Map<any, any>;
 }
 declare var Map: MapConstructor;
@@ -52,7 +52,7 @@ interface WeakMap<K extends object, V> {
 }
 
 interface WeakMapConstructor {
-    new <K extends object = object, V = any>(entries?: ReadonlyArray<[K, V]> | null): WeakMap<K, V>;
+    new <K extends object = object, V = any>(entries?: readonly [K, V][] | null): WeakMap<K, V>;
     readonly prototype: WeakMap<object, any>;
 }
 declare var WeakMap: WeakMapConstructor;
@@ -67,7 +67,7 @@ interface Set<T> {
 }
 
 interface SetConstructor {
-    new <T = any>(values?: ReadonlyArray<T> | null): Set<T>;
+    new <T = any>(values?: readonly T[] | null): Set<T>;
     readonly prototype: Set<any>;
 }
 declare var Set: SetConstructor;
@@ -85,7 +85,7 @@ interface WeakSet<T extends object> {
 }
 
 interface WeakSetConstructor {
-    new <T extends object = object>(values?: ReadonlyArray<T> | null): WeakSet<T>;
+    new <T extends object = object>(values?: readonly T[] | null): WeakSet<T>;
     readonly prototype: WeakSet<object>;
 }
 declare var WeakSet: WeakSetConstructor;
