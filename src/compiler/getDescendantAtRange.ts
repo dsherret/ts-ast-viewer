@@ -16,7 +16,9 @@ export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, ran
             if (isBeforeRange(child.end))
                 continue;
 
-            const childStart = child.getStart(sourceFile, true);
+            // workaround for compiler api bug (see PR #35029 in typescript repo)
+            const jsDocs = ((child as any).jsDoc) as Node[] | undefined;
+            const childStart = jsDocs && jsDocs.length > 0 ? jsDocs[0].pos : child.getStart(sourceFile);
 
             if (isAfterRange(childStart))
                 return;
