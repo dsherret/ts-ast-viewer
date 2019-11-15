@@ -1177,9 +1177,9 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
-"@ts-morph/comment-parser@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@ts-morph/comment-parser/-/comment-parser-0.0.9.tgz#471b62a79a8bce6ad625425d6acc17cf9e32a079"
+"@ts-morph/comment-parser@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@ts-morph/comment-parser/-/comment-parser-0.0.11.tgz#643a5458a444990a979a95d50b45c7d672efcb1c"
   dependencies:
     "@ts-morph/common" "~0.1.1"
 

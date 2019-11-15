@@ -37,7 +37,7 @@
     "cypress:open": "npm run --prefix e2e cypress:open"
   },
   "dependencies": {
-    "@ts-morph/comment-parser": "^0.0.9",
+    "@ts-morph/comment-parser": "^0.0.11",
     "circular-json": "^0.5.9",
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.18.1",
