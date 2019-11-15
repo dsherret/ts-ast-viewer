@@ -27,7 +27,6 @@ export interface OptionsState {
     scriptTarget: ScriptTarget;
     scriptKind: ScriptKind;
     bindingEnabled: boolean;
-    showFactoryCode: boolean;
     showInternals: boolean;
 }
 

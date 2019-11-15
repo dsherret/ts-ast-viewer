@@ -31,7 +31,6 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     {this.getScriptKind()}
                     {this.getScriptTarget()}
                     {this.getBindingEnabled()}
-                    {this.getShowFactoryCode()}
                     {this.getShowInternals()}
                     <div className="bottomLinks">
                         <ExternalLink text="About" url="https://github.com/dsherret/ts-ast-viewer/tree/master/docs/about.md" />
@@ -97,20 +96,6 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
             </div>
         );
         return (<Option name={"Binding"} value={selection} />);
-    }
-
-    private getShowFactoryCode() {
-        const selection = (
-            <div>
-                <input
-                    id={cssConstants.options.showFactoryCodeId}
-                    type="checkbox"
-                    checked={this.props.options.showFactoryCode}
-                    onChange={(event) => this.onChange({ showFactoryCode: !!event.target.checked })}
-                />
-            </div>
-        );
-        return (<Option name={"Factory code"} value={selection} />);
     }
 
     private getShowInternals() {

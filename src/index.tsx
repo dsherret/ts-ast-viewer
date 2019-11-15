@@ -24,7 +24,6 @@ const store = createStore(appReducer, {
         scriptTarget: initialScriptTarget,
         scriptKind: initialScriptKind,
         bindingEnabled: true,
-        showFactoryCode: true,
         showInternals: false
     },
     compiler: undefined

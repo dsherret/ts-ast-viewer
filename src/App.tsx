@@ -46,52 +46,27 @@ export default function App(props: Props) {
     }
 
     function getCodeEditorArea() {
-        if (props.options.showFactoryCode) {
-            return (
-                <SplitPane split="horizontal" defaultSize={window.innerHeight * 0.70}>
-                    {getCodeEditor()}
-                    {getFactoryCodeEditor()}
-                </SplitPane>
-            );
-        }
-        else {
-            return getCodeEditor();
-        }
-
-        function getFactoryCodeEditor() {
-            if (compiler == null || props.apiLoadingState === ApiLoadingState.Loading)
-                return <components.Spinner />;
-
-            return (
-                <components.ErrorBoundary getResetHash={() => props.code}>
-                    <components.FactoryCodeEditor compiler={compiler} />
-                </components.ErrorBoundary>
-            );
-        }
-
-        function getCodeEditor() {
-            return (
-                <components.CodeEditor
-                    id={cssConstants.mainCodeEditor.id}
-                    onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
-                    onClick={range => {
-                        if (props.compiler == null)
-                            return;
-                        const descendant = getDescendantAtRange(
-                            props.options.treeMode,
-                            props.compiler.sourceFile,
-                            range,
-                            props.compiler.api);
-                        props.onNodeChange(descendant);
-                    }}
-                    text={props.code}
-                    highlight={getCodeHighlightRange()}
-                    showInfo={true}
-                    renderWhiteSpace={true}
-                    editorDidMount={codeEditorDidMount}
-                />
-            );
-        }
+        return (
+            <components.CodeEditor
+                id={cssConstants.mainCodeEditor.id}
+                onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
+                onClick={range => {
+                    if (props.compiler == null)
+                        return;
+                    const descendant = getDescendantAtRange(
+                        props.options.treeMode,
+                        props.compiler.sourceFile,
+                        range,
+                        props.compiler.api);
+                    props.onNodeChange(descendant);
+                }}
+                text={props.code}
+                highlight={getCodeHighlightRange()}
+                showInfo={true}
+                renderWhiteSpace={true}
+                editorDidMount={codeEditorDidMount}
+            />
+        );
     }
 
     function getCompilerDependentPanes() {
