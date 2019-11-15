@@ -16,7 +16,7 @@ export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, ran
             if (isBeforeRange(child.end))
                 continue;
 
-            const childStart = child.getStart(sourceFile);
+            const childStart = child.getStart(sourceFile, true);
 
             if (isAfterRange(childStart))
                 return;
