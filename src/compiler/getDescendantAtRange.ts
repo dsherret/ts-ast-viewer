@@ -13,18 +13,18 @@ export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, ran
     function searchDescendants(node: Node) {
         const children = getChildren(node);
         for (const child of children) {
-            if (isBeforeRange(child.end))
+            const isSyntaxList = child.kind === syntaxKinds.SyntaxList;
+            if (!isSyntaxList && isBeforeRange(child.end))
                 continue;
 
             const childStart = child.getStart(sourceFile);
 
-            if (isAfterRange(childStart))
+            if (!isSyntaxList && isAfterRange(childStart))
                 return;
 
-            const isChildSyntaxList = child.kind === syntaxKinds.SyntaxList;
             const isEndOfFileToken = child.kind === syntaxKinds.EndOfFileToken;
             const hasSameStart = bestMatch.start === childStart && range[0] === childStart;
-            if (!isChildSyntaxList && !isEndOfFileToken && !hasSameStart)
+            if (!isSyntaxList && !isEndOfFileToken && !hasSameStart)
                 bestMatch = { node: child, start: childStart };
 
             searchDescendants(child);
