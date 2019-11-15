@@ -6,3 +6,4 @@ export * from "./getChildrenFunction";
 export * from "./getFactoryCodeGenerator";
 export * from "./getCompilerApi";
 export * from "./getDescendantAtRange";
+export * from "./getStartSafe";
