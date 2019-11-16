@@ -1,5 +1,6 @@
 import { TreeMode } from "../types";
 import { getChildrenFunction } from "./getChildrenFunction";
+import { getStartSafe } from "./getStartSafe";
 import { Node, SourceFile, CompilerApi } from "./CompilerApi";
 
 export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, range: [number, number], compilerApi: CompilerApi) {
@@ -13,21 +14,20 @@ export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, ran
     function searchDescendants(node: Node) {
         const children = getChildren(node);
         for (const child of children) {
-            if (isBeforeRange(child.end))
-                continue;
+            if (child.kind !== syntaxKinds.SyntaxList) {
+                if (isBeforeRange(child.end))
+                    continue;
 
-            // workaround for compiler api bug (see PR #35029 in typescript repo)
-            const jsDocs = ((child as any).jsDoc) as Node[] | undefined;
-            const childStart = jsDocs && jsDocs.length > 0 ? jsDocs[0].pos : child.getStart(sourceFile);
+                const childStart = getStartSafe(child, sourceFile);
 
-            if (isAfterRange(childStart))
-                return;
+                if (isAfterRange(childStart))
+                    return;
 
-            const isChildSyntaxList = child.kind === syntaxKinds.SyntaxList;
-            const isEndOfFileToken = child.kind === syntaxKinds.EndOfFileToken;
-            const hasSameStart = bestMatch.start === childStart && range[0] === childStart;
-            if (!isChildSyntaxList && !isEndOfFileToken && !hasSameStart)
-                bestMatch = { node: child, start: childStart };
+                const isEndOfFileToken = child.kind === syntaxKinds.EndOfFileToken;
+                const hasSameStart = bestMatch.start === childStart && range[0] === childStart;
+                if (!isEndOfFileToken && !hasSameStart)
+                    bestMatch = { node: child, start: childStart };
+            }
 
             searchDescendants(child);
         }
