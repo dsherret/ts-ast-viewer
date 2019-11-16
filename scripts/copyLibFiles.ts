@@ -20,11 +20,11 @@ glob("./src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
 
             for (const filePath of filePaths) {
                 const newFilePath = libVersionDir + path.basename(filePath, ".d.ts") + ".ts";
-                const fileText = fs.readFileSync(filePath).toString().replace(/\`/g, "\\`");
+                const fileText = fs.readFileSync(filePath).toString("utf8");
                 fs.writeFileSync(newFilePath, `export default {\n`
                     + `    fileName: \`/${path.basename(filePath)}\`,\n`
                     + `    // File text is copyright Microsoft Corporation and is distributed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)\n`
-                    + `    text: \`${minifyDeclarationFileText(fileText).replace(/\r?\n/g, "\\n")}\`\n`
+                    + `    text: \`${minifyDeclarationFileText(fileText).replace(/\r?\n/g, "\\n").replace(/`/g, "\\`")}\`\n`
                     + `};`, { encoding: "utf8" });
             }
 
