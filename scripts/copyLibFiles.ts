@@ -2,8 +2,8 @@
 import * as glob from "glob";
 import * as fs from "fs";
 import * as path from "path";
-import * as ts from "typescript";
 import { getCompilerVersions } from "./getCompilerVersions";
+import { minifyDeclarationFileText } from "./utils/minifyDeclarationFileText";
 
 const versions = getCompilerVersions();
 
@@ -38,49 +38,3 @@ glob("./src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
         });
     }
 });
-
-function minifyDeclarationFileText(text: string) {
-    const scanner = ts.createScanner(
-        ts.ScriptTarget.Latest,
-        /* skipTrivia */ false,
-        ts.LanguageVariant.Standard,
-        text
-    );
-    let result = "";
-
-    while (scanner.scan() !== ts.SyntaxKind.EndOfFileToken) {
-        const token = scanner.getToken();
-        switch (token) {
-            case ts.SyntaxKind.WhitespaceTrivia:
-            case ts.SyntaxKind.NewLineTrivia:
-                continue;
-            case ts.SyntaxKind.SingleLineCommentTrivia:
-                const tokenText = scanner.getTokenText();
-                // simple check to just keep all triple slash comments in case they are a directive
-                if (!tokenText.startsWith("///") || !tokenText.includes("<"))
-                    continue;
-                result += tokenText + "\n";
-                break;
-            case ts.SyntaxKind.MultiLineCommentTrivia: {
-                const tokenText = scanner.getTokenText();
-                const isJsDoc = tokenText.startsWith("/**");
-
-                if (!isJsDoc)
-                    continue;
-
-                // remove the leading whitespace on each line
-                result += tokenText.replace(/^\s+\*/mg, " *");
-                break;
-            }
-            default:
-                result += scanner.getTokenText();
-
-                // This could be improved by conditionally doing this as having a space here is
-                // unnecessary in many scenarios.
-                if (token >= ts.SyntaxKind.FirstKeyword && token <= ts.SyntaxKind.LastKeyword)
-                    result += " ";
-        }
-    }
-
-    return result;
-}
