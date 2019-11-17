@@ -3226,6 +3226,10 @@ dprint@^0.7.3:
     globby "^10.0.1"
     minimist "^1.2.0"
 
+dts-minify@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/dts-minify/-/dts-minify-0.2.0.tgz#057a212d5cfd38c0375955e4c1f040b82601a1e8"
+
 duplexer@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
@@ -8876,6 +8880,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
 
 "typescript-3.6.4@npm:typescript@3.6.4", typescript@^3.0.1, typescript@^3.6.3:
+  name typescript-3.6.4
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
 

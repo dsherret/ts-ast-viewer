@@ -1,5 +1,5 @@
 export default {
     fileName: `/lib.es2020.symbol.wellknown.d.ts`,
     // File text is copyright Microsoft Corporation and is distributed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
-    text: `/// <reference no-default-lib="true"/>\n/// <reference lib="es2015.iterable" />\n/// <reference lib="es2015.symbol" />\ninterface SymbolConstructor{/** * A regular expression method that matches the regular expression against a string. Called * by the String.prototype.matchAll method. */readonly matchAll:symbol;}interface RegExp{/** * Matches a string with this regular expression, and returns an iterable of matches * containing the results of that search. * @param string A string to search within. */[Symbol.matchAll](str:string):IterableIterator<RegExpMatchArray>;}`
+    text: `/// <reference no-default-lib="true"/>\n/// <reference lib="es2015.iterable" />\n/// <reference lib="es2015.symbol" />\ninterface SymbolConstructor{readonly matchAll:symbol;}interface RegExp{[Symbol.matchAll](str:string):IterableIterator<RegExpMatchArray>;}`
 };

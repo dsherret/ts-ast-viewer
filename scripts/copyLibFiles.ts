@@ -2,10 +2,12 @@
 import * as glob from "glob";
 import * as fs from "fs";
 import * as path from "path";
+import * as ts from "typescript";
+import { createMinifier } from "dts-minify";
 import { getCompilerVersions } from "./getCompilerVersions";
-import { minifyDeclarationFileText } from "./utils/minifyDeclarationFileText";
 
 const versions = getCompilerVersions();
+const minifier = createMinifier(ts);
 
 glob("./src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
     for (const filePath of filesToDelete)
@@ -24,7 +26,7 @@ glob("./src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
                 fs.writeFileSync(newFilePath, `export default {\n`
                     + `    fileName: \`/${path.basename(filePath)}\`,\n`
                     + `    // File text is copyright Microsoft Corporation and is distributed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)\n`
-                    + `    text: \`${minifyDeclarationFileText(fileText).replace(/\r?\n/g, "\\n").replace(/`/g, "\\`")}\`\n`
+                    + `    text: \`${minifier.minify(fileText).replace(/\r?\n/g, "\\n").replace(/`/g, "\\`")}\`\n`
                     + `};`, { encoding: "utf8" });
             }
 

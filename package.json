@@ -76,6 +76,7 @@
     "dprint": "^0.7.3",
     "dprint-plugin-jsonc": "^0.2.4",
     "dprint-plugin-typescript": "^0.10.0",
+    "dts-minify": "^0.2.0",
     "gh-pages": "^2.1.1",
     "glob": "^7.1.4",
     "react-scripts": "^3.2.0",
