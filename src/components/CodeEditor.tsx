@@ -139,7 +139,6 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                     minimap: { enabled: false },
                     readOnly: this.props.readOnly,
                     quickSuggestions: false,
-                    wordBasedSuggestions: false,
                     occurrencesHighlight: false,
                     selectionHighlight: false,
                     codeLens: false,
