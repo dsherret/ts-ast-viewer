@@ -53,7 +53,7 @@ store.subscribe(() => {
 });
 
 // set global variables
-console.log("[ts-ast-viewer]: Inspect the ts, sourceFile, node, symbol, type, signature, program, and typeChecker global variables here in the console.");
+console.log("[ts-ast-viewer]: Inspect the ts, sourceFile, node, symbol, type, signature, program, and checker/typeChecker global variables here in the console.");
 store.subscribe(() => {
     const state = store.getState();
     if (state.compiler == null || state.compiler.selectedNode == null)
@@ -68,6 +68,7 @@ store.subscribe(() => {
 
     if (state.options.bindingEnabled) {
         const bindingTools = state.compiler.bindingTools();
+        windowAny.checker = bindingTools.typeChecker;
         windowAny.typeChecker = bindingTools.typeChecker;
         windowAny.program = bindingTools.program;
         windowAny.type = tryGet(() => bindingTools.typeChecker.getTypeAtLocation(selectedNode));
