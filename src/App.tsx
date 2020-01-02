@@ -1,7 +1,7 @@
 import React from "react";
 import SplitPane from "react-split-pane";
 import * as components from "./components";
-import { Node, CompilerPackageNames, getDescendantAtRange } from "./compiler";
+import { Node, CompilerPackageNames, getDescendantAtRange, getStartSafe } from "./compiler";
 import { css as cssConstants } from "./constants";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
 import "./App.css";
@@ -40,7 +40,7 @@ export default function App(props: Props) {
 
         const { selectedNode, sourceFile } = props.compiler;
         return selectedNode === sourceFile ? undefined : {
-            start: selectedNode.getStart(sourceFile, true),
+            start: getStartSafe(selectedNode, sourceFile),
             end: selectedNode.end
         };
     }

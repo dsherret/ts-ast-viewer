@@ -1,6 +1,6 @@
 import React from "react";
 import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo,
-    CommentRange } from "../compiler";
+    CommentRange, getStartSafe} from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
@@ -115,7 +115,7 @@ function getForSelectedNode(context: Context, selectedNode: Node) {
                 {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
                 {getMethodElement("getFullStart()", selectedNode.getFullStart())}
                 {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
-                {getMethodElement("getStart(sourceFile, true)", selectedNode.getStart(sourceFile, true))}
+                {getMethodElement("getStart(sourceFile, true)", getStartSafe(selectedNode, sourceFile))}
                 {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
                 {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
                 {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}

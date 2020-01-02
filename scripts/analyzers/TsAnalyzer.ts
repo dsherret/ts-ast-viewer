@@ -5,7 +5,7 @@ export class TsAnalyzer {
 
     constructor(typeScriptModuleName: string) {
         const project = new Project({ compilerOptions: { strictNullChecks: true } });
-        const tsSourceFile = project.addExistingSourceFile(`node_modules/${typeScriptModuleName}/lib/typescript.d.ts`);
+        const tsSourceFile = project.addSourceFileAtPath(`node_modules/${typeScriptModuleName}/lib/typescript.d.ts`);
 
         this.tsSymbol = tsSourceFile.getNamespaceOrThrow("ts").getSymbolOrThrow();
     }

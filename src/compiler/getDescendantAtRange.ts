@@ -1,5 +1,6 @@
 import { TreeMode } from "../types";
 import { getChildrenFunction } from "./getChildrenFunction";
+import { getStartSafe } from "./getStartSafe";
 import { Node, SourceFile, CompilerApi } from "./CompilerApi";
 
 export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, range: [number, number], compilerApi: CompilerApi) {
@@ -17,7 +18,7 @@ export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, ran
             if (!isSyntaxList && isBeforeRange(child.end))
                 continue;
 
-            const childStart = child.getStart(sourceFile, true);
+            const childStart = getStartSafe(child, sourceFile);
 
             if (!isSyntaxList && isAfterRange(childStart))
                 return;

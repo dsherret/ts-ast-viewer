@@ -17,6 +17,7 @@ describe("getEnumFlagNames", () => {
             "SetAccessorExcludes",
             "ModuleMember",
             "ExportHasLocal",
+            "ExportDoesNotSupportDefaultModifier",
             "Classifiable"
         ]);
     });

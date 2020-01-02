@@ -5,3 +5,4 @@ export * from "./createSourceFile";
 export * from "./getChildrenFunction";
 export * from "./getCompilerApi";
 export * from "./getDescendantAtRange";
+export * from "./getStartSafe";

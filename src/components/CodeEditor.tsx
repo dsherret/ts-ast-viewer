@@ -40,11 +40,8 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         const reactMonacoEditorPromise = import("react-monaco-editor");
         import("monaco-editor").then(monacoEditor => {
             monacoEditor.languages.typescript.typescriptDefaults.setCompilerOptions({
-                target: monacoEditor.languages.typescript.ScriptTarget.ESNext
-            });
-            monacoEditor.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-                noSemanticValidation: true,
-                noSyntaxValidation: true
+                target: monacoEditor.languages.typescript.ScriptTarget.ESNext,
+                allowNonTsExtensions: true
             });
 
             reactMonacoEditorPromise.then(editor => {
@@ -142,7 +139,6 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                     minimap: { enabled: false },
                     readOnly: this.props.readOnly,
                     quickSuggestions: false,
-                    wordBasedSuggestions: false,
                     occurrencesHighlight: false,
                     selectionHighlight: false,
                     codeLens: false,
