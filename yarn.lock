@@ -6613,8 +6613,8 @@ p-limit@^1.1.0:
     p-try "^1.0.0"
 
 p-limit@^2.0.0, p-limit@^2.2.0:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.2.1.tgz#aa07a788cc3151c939b5131f63570f0dd2009537"
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.2.2.tgz#61279b67721f5287aa1c13a9a7fbbc48c9291b1e"
   dependencies:
     p-try "^2.0.0"
 
@@ -8950,8 +8950,8 @@ terser-webpack-plugin@^1.4.1:
     worker-farm "^1.7.0"
 
 terser@^4.1.2, terser@^4.3.9:
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-4.4.3.tgz#401abc52b88869cf904412503b1eb7da093ae2f0"
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.5.0.tgz#c93504b3235bd3409dade19c97ed2c185a96ac76"
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
