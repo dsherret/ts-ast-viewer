@@ -151,6 +151,9 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor, monaco: typeof monacoEditorForTypes) {
         this.editor = editor;
 
+        // use lf newlines
+        editor.getModel()?.setEOL(monaco.editor.EndOfLineSequence.LF);
+
         editor.onDidChangeCursorPosition(e => {
             const editorModel = editor.getModel();
             if (editorModel == null)
