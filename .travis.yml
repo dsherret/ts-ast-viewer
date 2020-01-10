@@ -12,6 +12,7 @@ cache:
 install:
   - yarn install
   - yarn add typescript-next@npm:typescript@next
+  - yarn updateCompilerFiles
 script:
   # - npm run cypress:ci # todo: move cypress to a github action to see if it's more reliable there
   # kill anything running in the background
