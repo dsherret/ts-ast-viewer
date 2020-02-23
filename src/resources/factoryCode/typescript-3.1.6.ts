@@ -1650,7 +1650,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.1.6"), initi
             if (node.isTypeOf == null)
                 writer.write("undefined");
             else {
-                writer.quote(node.isTypeOf.toString())
+                writer.write(node.isTypeOf.toString())
             }
         });
         writer.write(")");
@@ -3573,7 +3573,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.1.6"), initi
             if (node.isExportEquals == null)
                 writer.write("undefined");
             else {
-                writer.quote(node.isExportEquals.toString())
+                writer.write(node.isExportEquals.toString())
             }
             writer.write(",").newLine();
             writeNodeText(node.expression)

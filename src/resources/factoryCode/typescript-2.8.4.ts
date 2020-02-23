@@ -3497,7 +3497,7 @@ export function generateFactoryCode(ts: typeof import("typescript-2.8.4"), initi
             if (node.isExportEquals == null)
                 writer.write("undefined");
             else {
-                writer.quote(node.isExportEquals.toString())
+                writer.write(node.isExportEquals.toString())
             }
             writer.write(",").newLine();
             writeNodeText(node.expression)

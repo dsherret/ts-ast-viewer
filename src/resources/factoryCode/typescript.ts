@@ -42,6 +42,9 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             case ts.SyntaxKind.Identifier:
                 createIdentifier(node as import("typescript").Identifier);
                 return;
+            case ts.SyntaxKind.PrivateIdentifier:
+                createPrivateIdentifier(node as import("typescript").PrivateIdentifier);
+                return;
             case ts.SyntaxKind.SuperKeyword:
                 createSuper(node as import("typescript").SuperExpression);
                 return;
@@ -429,6 +432,9 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             case ts.SyntaxKind.NamespaceImport:
                 createNamespaceImport(node as import("typescript").NamespaceImport);
                 return;
+            case ts.SyntaxKind.NamespaceExport:
+                createNamespaceExport(node as import("typescript").NamespaceExport);
+                return;
             case ts.SyntaxKind.NamedImports:
                 createNamedImports(node as import("typescript").NamedImports);
                 return;
@@ -548,6 +554,12 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
 
     function createIdentifier(node: import("typescript").Identifier) {
         writer.write("ts.createIdentifier(");
+        writer.quote(node.text.toString())
+        writer.write(")");
+    }
+
+    function createPrivateIdentifier(node: import("typescript").PrivateIdentifier) {
+        writer.write("ts.createPrivateIdentifier(");
         writer.quote(node.text.toString())
         writer.write(")");
     }
@@ -1702,7 +1714,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             if (node.isTypeOf == null)
                 writer.write("undefined");
             else {
-                writer.quote(node.isTypeOf.toString())
+                writer.write(node.isTypeOf.toString())
             }
         });
         writer.write(")");
@@ -3653,12 +3665,20 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             else {
                 writeNodeText(node.namedBindings)
             }
+            writer.write(",").newLine();
+            writer.write(node.isTypeOnly.toString())
         });
         writer.write(")");
     }
 
     function createNamespaceImport(node: import("typescript").NamespaceImport) {
         writer.write("ts.createNamespaceImport(");
+        writeNodeText(node.name)
+        writer.write(")");
+    }
+
+    function createNamespaceExport(node: import("typescript").NamespaceExport) {
+        writer.write("ts.createNamespaceExport(");
         writeNodeText(node.name)
         writer.write(")");
     }
@@ -3748,7 +3768,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             if (node.isExportEquals == null)
                 writer.write("undefined");
             else {
-                writer.quote(node.isExportEquals.toString())
+                writer.write(node.isExportEquals.toString())
             }
             writer.write(",").newLine();
             writeNodeText(node.expression)
@@ -3813,6 +3833,8 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             else {
                 writeNodeText(node.moduleSpecifier)
             }
+            writer.write(",").newLine();
+            writer.write(node.isTypeOnly.toString())
         });
         writer.write(")");
     }
@@ -3991,7 +4013,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.indent(() => {
             writer.quote(node.text.toString())
             writer.write(",").newLine();
-            writer.quote(node.containsOnlyTriviaWhiteSpaces.toString())
+            writer.write(node.containsOnlyTriviaWhiteSpaces.toString())
         });
         writer.write(")");
     }
