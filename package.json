@@ -78,7 +78,7 @@
     "dts-minify": "^0.2.0",
     "gh-pages": "^2.2.0",
     "glob": "^7.1.6",
-    "react-scripts": "^3.4.0",
+    "react-scripts": "3.4.0",
     "ts-factory-code-generator-generator": "^0.5.3",
     "ts-jest": "^25.2.1",
     "ts-morph": "^7.0.0",
