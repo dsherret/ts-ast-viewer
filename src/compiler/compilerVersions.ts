@@ -3,10 +3,10 @@
 
 import { Node, CompilerApi } from "./CompilerApi";
 import { assertNever } from "../utils";
-export type CompilerVersions = "3.7.2";
+export type CompilerVersions = "3.7.4";
 export type CompilerPackageNames = "typescript";
 export const compilerVersionCollection: { version: CompilerVersions; packageName: CompilerPackageNames; }[] = [
-        { version: "3.7.2", packageName: "typescript" }
+        { version: "3.7.4", packageName: "typescript" }
     ];
 
 export async function importCompilerApi(packageName: CompilerPackageNames) {
