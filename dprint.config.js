@@ -12,7 +12,7 @@ module.exports.config = {
             singleBodyPosition: "nextLine",
             preferHanging: true,
             nextControlFlowPosition: "nextLine",
-            "arrowFunctionExpression.useParentheses": "preferNone",
+            "arrowFunction.useParentheses": "preferNone",
             "tryStatement.nextControlFlowPosition": "sameLine"
         }),
         new JsoncPlugin({
