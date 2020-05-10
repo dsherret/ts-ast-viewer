@@ -1,7 +1,6 @@
 import React from "react";
-import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo,
-    CommentRange,
-    getStartSafe} from "../compiler";
+import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo, CommentRange,
+    getStartSafe } from "../compiler";
 import CircularJson from "circular-json";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
@@ -29,7 +28,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps, Pro
         super(props);
         this.state = {
             publicApiInfo: undefined,
-            lastCompilerPackageName: undefined
+            lastCompilerPackageName: undefined,
         };
     }
 
@@ -40,7 +39,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps, Pro
             api: this.props.compiler.api,
             publicApiInfo: this.state.publicApiInfo,
             showInternals: this.props.showInternals,
-            sourceFile
+            sourceFile,
         };
 
         if (this.state.publicApiInfo == null)
@@ -66,7 +65,7 @@ export class PropertiesViewer extends React.Component<PropertiesViewerProps, Pro
         // todo: how to not do this in a render method? I'm not a react or web person
         setTimeout(() => {
             this.setState({
-                lastCompilerPackageName: this.props.compiler.packageName
+                lastCompilerPackageName: this.props.compiler.packageName,
             });
 
             getPublicApiInfo(this.props.compiler.packageName).then(publicApiInfo => {
@@ -392,7 +391,7 @@ function getObjectKeyInfo(context: Context, obj: any) {
         .map(key => ({
             key,
             permission: getKeyPermission(context, obj, key),
-            value: obj[key]
+            value: obj[key],
         }))
         .filter(kv => {
             if (kv.permission === false)

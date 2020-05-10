@@ -2,8 +2,8 @@
 import { CompilerApi } from "./CompilerApi";
 import { CompilerPackageNames, importCompilerApi, importLibFiles } from "./compilerVersions";
 
-const compilerTypes: { [name: string]: Promise<CompilerApi>; } = {};
-const compilerTypesLoaded: { [name: string]: true; } = {};
+const compilerTypes: { [name: string]: Promise<CompilerApi> } = {};
+const compilerTypesLoaded: { [name: string]: true } = {};
 
 export function getCompilerApi(packageName: CompilerPackageNames): Promise<CompilerApi> {
     if (compilerTypes[packageName] == null) {
@@ -24,7 +24,7 @@ async function loadCompilerApi(packageName: CompilerPackageNames) {
 
     api.tsAstViewer = {
         packageName,
-        cachedSourceFiles: {}
+        cachedSourceFiles: {},
     };
     const libFiles = await libFilesPromise;
 
@@ -37,7 +37,7 @@ async function loadCompilerApi(packageName: CompilerPackageNames) {
 
     function getLibSourceFiles() {
         return Object.keys(libFiles)
-            .map(key => libFiles[key] as { fileName: string; text: string; })
+            .map(key => libFiles[key] as { fileName: string; text: string })
             .map(libFile => api.createSourceFile(libFile.fileName, libFile.text, api.ScriptTarget.Latest, false, api.ScriptKind.TS));
     }
 }

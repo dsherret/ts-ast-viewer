@@ -16,7 +16,7 @@ export interface CompilerApi {
     TypeFlags: typeof ts.TypeFlags;
     tsAstViewer: {
         packageName: CompilerPackageNames;
-        cachedSourceFiles: { [name: string]: SourceFile | undefined; };
+        cachedSourceFiles: { [name: string]: SourceFile | undefined };
     };
     version: string;
     getLeadingCommentRanges: typeof ts.getLeadingCommentRanges;

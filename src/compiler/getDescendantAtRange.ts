@@ -7,7 +7,7 @@ export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, ran
     const getChildren = getChildrenFunction(mode, sourceFile);
     const syntaxKinds = compilerApi.SyntaxKind;
 
-    let bestMatch: { node: Node; start: number; } = { node: sourceFile, start: sourceFile.getStart(sourceFile) };
+    let bestMatch: { node: Node; start: number } = { node: sourceFile, start: sourceFile.getStart(sourceFile) };
     searchDescendants(sourceFile);
     return bestMatch.node;
 

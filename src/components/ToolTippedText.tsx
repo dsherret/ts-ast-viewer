@@ -5,7 +5,7 @@ export interface ToolTippedTextProps {
 }
 
 // adapted from https://codesandbox.io/s/XopkqJ5oV
-export class ToolTippedText extends React.Component<ToolTippedTextProps, { isHovering: boolean; }> {
+export class ToolTippedText extends React.Component<ToolTippedTextProps, { isHovering: boolean }> {
     constructor(props: ToolTippedTextProps) {
         super(props);
         this.state = { isHovering: false };

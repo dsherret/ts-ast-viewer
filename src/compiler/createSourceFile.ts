@@ -4,7 +4,7 @@ import { assertNever } from "../utils";
 export function createSourceFile(api: CompilerApi, code: string, scriptTarget: ScriptTarget, scriptKind: ScriptKind) {
     const filePath = `/ts-ast-viewer${getExtension(api, scriptKind)}`;
     const sourceFile = api.createSourceFile(filePath, code, scriptTarget, false, scriptKind);
-    let bindingResult: { typeChecker: TypeChecker; program: Program; } | undefined;
+    let bindingResult: { typeChecker: TypeChecker; program: Program } | undefined;
 
     return { sourceFile, bindingTools: getBindingTools };
 
@@ -17,7 +17,7 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
 
     function getBindingResult() {
         const options: CompilerOptions = { strict: true, target: scriptTarget, allowJs: true, module: api.ModuleKind.ES2015 };
-        const files: { [name: string]: SourceFile | undefined; } = { [filePath]: sourceFile, ...api.tsAstViewer.cachedSourceFiles };
+        const files: { [name: string]: SourceFile | undefined } = { [filePath]: sourceFile, ...api.tsAstViewer.cachedSourceFiles };
 
         const compilerHost: CompilerHost = {
             getSourceFile: (fileName: string, languageVersion: ScriptTarget, onError?: (message: string) => void) => {
@@ -36,7 +36,7 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
             getCanonicalFileName: (fileName: string) => fileName,
             useCaseSensitiveFileNames: () => true,
             getNewLine: () => "\n",
-            getEnvironmentVariable: () => ""
+            getEnvironmentVariable: () => "",
         };
         const program = api.createProgram([...Object.keys(files)], options, compilerHost);
         const typeChecker = program.getTypeChecker();

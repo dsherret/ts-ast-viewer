@@ -13,18 +13,18 @@ module.exports.config = {
             preferHanging: true,
             nextControlFlowPosition: "nextLine",
             "arrowFunction.useParentheses": "preferNone",
-            "tryStatement.nextControlFlowPosition": "sameLine"
+            "tryStatement.nextControlFlowPosition": "sameLine",
         }),
         new JsoncPlugin({
-            indentWidth: 2
-        })
+            indentWidth: 2,
+        }),
     ],
     includes: [
-        "**/*{.ts|.tsx|.json|.js}"
+        "**/*{.ts,.tsx,.json,.js}",
     ],
     excludes: [
         "public/vs/**/*.*",
         "build/**/*.*",
-        "src/resources/**/*.*"
-    ]
+        "src/resources/**/*.*",
+    ],
 };

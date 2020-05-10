@@ -4,7 +4,7 @@ import { CompilerApi } from "../CompilerApi";
 function getCompilerApi(scriptKind: any, scriptTarget: any) {
     return {
         ScriptKind: scriptKind,
-        ScriptTarget: scriptTarget
+        ScriptTarget: scriptTarget,
     } as any as CompilerApi;
 }
 
@@ -27,7 +27,7 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
         treeMode: 0,
         bindingEnabled: true,
         showFactoryCode: true,
-        showInternals: false
+        showInternals: false,
     })).toEqual({
         compilerPackageName: "typescript",
         scriptKind: expectedKind,
@@ -35,7 +35,7 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
         treeMode: 0,
         bindingEnabled: true,
         showFactoryCode: true,
-        showInternals: false
+        showInternals: false,
     });
 }
 

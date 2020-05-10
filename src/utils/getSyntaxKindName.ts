@@ -4,7 +4,7 @@ export function getSyntaxKindName(api: CompilerApi, kind: SyntaxKind) {
     return getKindCacheForApi(api)[kind];
 }
 
-const kindCache: { [packageName: string]: { [kind: number]: string; }; } = {};
+const kindCache: { [packageName: string]: { [kind: number]: string } } = {};
 
 function getKindCacheForApi(api: CompilerApi) {
     if (kindCache[api.tsAstViewer.packageName] == null)
@@ -14,7 +14,7 @@ function getKindCacheForApi(api: CompilerApi) {
 
 function getKindNamesForApi(api: CompilerApi) {
     // some SyntaxKinds are repeated, so only use the first one
-    const kindNames: { [kind: number]: string; } = {};
+    const kindNames: { [kind: number]: string } = {};
     for (const name of Object.keys(api.SyntaxKind).filter(k => isNaN(parseInt(k, 10)))) {
         const value = (api.SyntaxKind as any)[name] as number;
         if (kindNames[value] == null)

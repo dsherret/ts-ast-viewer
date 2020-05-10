@@ -1,7 +1,7 @@
 import { CompilerPackageNames, getGenerateFactoryCodeFunction, FactoryCodeGenerator } from "./compilerVersions";
 
-const cache: { [packageName: string]: Promise<FactoryCodeGenerator>; } = {};
-const hasLoadedVersion: { [packageName: string]: true; } = {};
+const cache: { [packageName: string]: Promise<FactoryCodeGenerator> } = {};
+const hasLoadedVersion: { [packageName: string]: true } = {};
 
 export function getFactoryCodeGenerator(packageName: CompilerPackageNames): Promise<FactoryCodeGenerator> {
     if (cache[packageName] == null) {

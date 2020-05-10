@@ -6,30 +6,30 @@ export const css = {
         treeModeId: "treeMode",
         bindingEnabledId: "bindingEnabled",
         showFactoryCodeId: "showFactoryCode",
-        showInternalsId: "showInternals"
+        showInternalsId: "showInternals",
     },
     mainCodeEditor: {
-        id: "codeEditor"
+        id: "codeEditor",
     },
     factoryCodeEditor: {
-        id: "factoryCodeEditor"
+        id: "factoryCodeEditor",
     },
     treeViewer: {
         id: "treeViewer",
-        selectedNodeClass: "selected"
+        selectedNodeClass: "selected",
     },
     properties: {
         node: {
-            id: "node"
+            id: "node",
         },
         type: {
-            id: "type"
+            id: "type",
         },
         symbol: {
-            id: "symbol"
+            id: "symbol",
         },
         signature: {
-            id: "signature"
-        }
-    }
+            id: "signature",
+        },
+    },
 };

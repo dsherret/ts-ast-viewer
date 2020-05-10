@@ -14,7 +14,7 @@ export class EnumUtils {
     }
 
     static getNamesForValues(e: any) {
-        const values: { [value: number]: string[]; } = {};
+        const values: { [value: number]: string[] } = {};
 
         for (const name of this.getNames(e)) {
             const value = e[name];
@@ -25,7 +25,7 @@ export class EnumUtils {
 
         return Object.keys(values).map(key => ({
             value: parseInt(key, 10),
-            names: values[key] as string[]
+            names: values[key] as string[],
         }));
     }
 }

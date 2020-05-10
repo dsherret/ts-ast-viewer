@@ -12,7 +12,7 @@ export function visitSite() {
         onLoad: () => {
             visited = true;
         },
-        timeout: 30_000
+        timeout: 30_000,
     });
 }
 

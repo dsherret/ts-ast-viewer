@@ -25,7 +25,7 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
         this.state = {
             editorComponent: undefined,
             factoryCodeGenerator: undefined,
-            lastCompilerPackageName: undefined
+            lastCompilerPackageName: undefined,
         };
         this.editorDidMount = this.editorDidMount.bind(this);
     }
@@ -48,7 +48,7 @@ export class FactoryCodeEditor extends React.Component<FactoryCodeEditorProps, F
         setTimeout(() => {
             this.setState({
                 factoryCodeGenerator: undefined,
-                lastCompilerPackageName: this.props.compiler.packageName
+                lastCompilerPackageName: this.props.compiler.packageName,
             });
 
             getFactoryCodeGenerator(this.props.compiler.packageName).then(factoryCodeGenerator => {

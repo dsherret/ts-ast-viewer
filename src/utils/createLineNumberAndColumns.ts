@@ -21,7 +21,7 @@ export function createLineNumberAndColumns(text: string) {
         lineInfos.push({
             pos: lastPos,
             length: pos - lastPos,
-            number: lineInfos.length + 1
+            number: lineInfos.length + 1,
         });
         lastPos = pos + 1;
     }

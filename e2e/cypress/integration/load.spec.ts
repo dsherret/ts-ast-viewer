@@ -15,21 +15,21 @@ forAllCompilerVersions(packageName => {
                 children: [{
                     name: "ClassDeclaration",
                     children: [{
-                        name: "Identifier"
-                    }]
+                        name: "Identifier",
+                    }],
                 }, {
-                    name: "EndOfFileToken"
-                }]
+                    name: "EndOfFileToken",
+                }],
             },
             node: {
                 name: "SourceFile",
                 pos: 0,
                 start: 0,
-                end: 13
+                end: 13,
             },
             type: "none",
             symbol: "none",
-            signature: "none"
+            signature: "none",
         });
     });
 });

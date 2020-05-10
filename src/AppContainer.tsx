@@ -9,14 +9,14 @@ import { debounce } from "./utils";
 
 export function mapStateToProps(state: StoreState) {
     return {
-        ...state
+        ...state,
     };
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
     const debouncedSourceFileRefresh = debounce<CompilerPackageNames>(
         compilerPackageName => updateSourceFile(compilerPackageName),
-        generalConstants.sourceFileRefreshDelay
+        generalConstants.sourceFileRefreshDelay,
     );
 
     updateSourceFile("typescript");
@@ -36,7 +36,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
             dispatch(actions.setOptions(options));
             if (fileNeedsChanging)
                 debouncedSourceFileRefresh(compilerPackageName);
-        }
+        },
     };
 
     async function updateSourceFile(compilerPackageName: CompilerPackageNames) {

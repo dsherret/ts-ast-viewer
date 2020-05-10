@@ -11,7 +11,7 @@ export interface OptionsProps {
     onChange: (options: Partial<OptionsState>) => void;
 }
 
-export class Options extends React.Component<OptionsProps, { showOptionsMenu: boolean; }> {
+export class Options extends React.Component<OptionsProps, { showOptionsMenu: boolean }> {
     constructor(props: OptionsProps) {
         super(props);
 
@@ -93,7 +93,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     id={cssConstants.options.bindingEnabledId}
                     type="checkbox"
                     checked={this.props.options.bindingEnabled}
-                    onChange={(event) => this.onChange({ bindingEnabled: !!event.target.checked })}
+                    onChange={event => this.onChange({ bindingEnabled: !!event.target.checked })}
                 />
             </div>
         );
@@ -107,7 +107,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     id={cssConstants.options.showFactoryCodeId}
                     type="checkbox"
                     checked={this.props.options.showFactoryCode}
-                    onChange={(event) => this.onChange({ showFactoryCode: !!event.target.checked })}
+                    onChange={event => this.onChange({ showFactoryCode: !!event.target.checked })}
                 />
             </div>
         );
@@ -121,7 +121,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     id={cssConstants.options.showInternalsId}
                     type="checkbox"
                     checked={this.props.options.showInternals}
-                    onChange={(event) => this.onChange({ showInternals: !!event.target.checked })}
+                    onChange={event => this.onChange({ showInternals: !!event.target.checked })}
                 />
             </div>
         );
@@ -130,7 +130,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
 
     private getEnumOption(name: string, prefix: string, e: any, currentValue: number, onChange: (value: number) => void) {
         const selection = (
-            <select value={currentValue} onChange={(event) => onChange(parseInt(event.target.value, 10))}>
+            <select value={currentValue} onChange={event => onChange(parseInt(event.target.value, 10))}>
                 {EnumUtils.getNamesForValues(e).map(namesForValue => getOption(namesForValue.value, namesForValue.names))}
             </select>
         );
@@ -146,7 +146,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
     }
 }
 
-class Option extends React.Component<{ name: string; value: JSX.Element; }> {
+class Option extends React.Component<{ name: string; value: JSX.Element }> {
     render() {
         return (
             <div className="option">

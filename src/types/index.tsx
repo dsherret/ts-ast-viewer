@@ -33,11 +33,11 @@ export interface OptionsState {
 
 export enum TreeMode {
     forEachChild,
-    getChildren
+    getChildren,
 }
 
 export enum ApiLoadingState {
     Loading,
     Loaded,
-    Error
+    Error,
 }

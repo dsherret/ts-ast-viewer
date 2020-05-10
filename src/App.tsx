@@ -41,7 +41,7 @@ export default function App(props: Props) {
         const { selectedNode, sourceFile } = props.compiler;
         return selectedNode === sourceFile ? undefined : {
             start: getStartSafe(selectedNode, sourceFile),
-            end: selectedNode.end
+            end: selectedNode.end,
         };
     }
 
@@ -81,7 +81,8 @@ export default function App(props: Props) {
                             props.options.treeMode,
                             props.compiler.sourceFile,
                             range,
-                            props.compiler.api);
+                            props.compiler.api,
+                        );
                         props.onNodeChange(descendant);
                     }}
                     text={props.code}
@@ -135,7 +136,7 @@ export default function App(props: Props) {
 
             editor.executeEdits("my-source", [{
                 range: editorModel.getFullModelRange(),
-                text
+                text,
             }]);
         };
     }

@@ -11,6 +11,6 @@ export function convertOptions(apiFrom: CompilerApi | undefined, apiTo: Compiler
     return {
         ...options,
         scriptTarget: scriptTarget == null ? apiTo.ScriptTarget.Latest : scriptTarget,
-        scriptKind: scriptKind == null ? apiTo.ScriptKind.TSX : scriptKind
+        scriptKind: scriptKind == null ? apiTo.ScriptKind.TSX : scriptKind,
     };
 }

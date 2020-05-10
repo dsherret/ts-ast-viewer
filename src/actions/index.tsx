@@ -10,7 +10,7 @@ export interface SetCode {
 export function setCode(code: string): SetCode {
     return {
         type: constants.SET_CODE,
-        code
+        code,
     };
 }
 
@@ -22,7 +22,7 @@ export interface SetApiLoadingState {
 export function setApiLoadingState(loadingState: ApiLoadingState): SetApiLoadingState {
     return {
         type: constants.SET_API_LOADING_STATE,
-        loadingState
+        loadingState,
     };
 }
 
@@ -36,7 +36,7 @@ export function refreshSourceFile(compilerPackageName: CompilerPackageNames, api
     return {
         type: constants.REFRESH_SOURCEFILE,
         compilerPackageName,
-        api
+        api,
     };
 }
 
@@ -48,7 +48,7 @@ export interface SetSelectedNode {
 export function setSelectedNode(node: Node): SetSelectedNode {
     return {
         type: constants.SET_SELECTED_NODE,
-        node
+        node,
     };
 }
 
@@ -60,7 +60,7 @@ export interface SetOptions {
 export function setOptions(options: Partial<OptionsState>): SetOptions {
     return {
         type: constants.SET_OPTIONS,
-        options
+        options,
     };
 }
 

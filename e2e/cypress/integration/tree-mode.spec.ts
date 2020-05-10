@@ -28,39 +28,39 @@ forAllCompilerVersions(packageName => {
                             children: [{
                                 name: "PropertyAccessExpression",
                                 children: [{
-                                    name: "Identifier"
+                                    name: "Identifier",
                                 }, {
-                                    name: "DotToken"
+                                    name: "DotToken",
                                 }, {
-                                    name: "Identifier"
-                                }]
+                                    name: "Identifier",
+                                }],
                             }, {
-                                name: "OpenParenToken"
+                                name: "OpenParenToken",
                             }, {
                                 name: "SyntaxList",
                                 children: [{
-                                    name: "StringLiteral"
-                                }]
+                                    name: "StringLiteral",
+                                }],
                             }, {
-                                name: "CloseParenToken"
-                            }]
+                                name: "CloseParenToken",
+                            }],
                         }, {
-                            name: "SemicolonToken"
-                        }]
-                    }]
+                            name: "SemicolonToken",
+                        }],
+                    }],
                 }, {
-                    name: "EndOfFileToken"
-                }]
+                    name: "EndOfFileToken",
+                }],
             },
             node: {
                 name: "SourceFile",
                 pos: 0,
                 start: 0,
-                end: 20
+                end: 20,
             },
             type: "none",
             symbol: "none",
-            signature: "none"
+            signature: "none",
         });
     });
 });

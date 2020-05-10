@@ -2,7 +2,7 @@ import { LineAndColumnComputer } from "../LineAndColumnComputer";
 
 describe("LineAndColumnComputer", () => {
     describe("#getNumberAndColumnFromPos", () => {
-        function doTest(text: string, pos: number, expectedResult: { lineNumber: number; column: number; }) {
+        function doTest(text: string, pos: number, expectedResult: { lineNumber: number; column: number }) {
             const computer = new LineAndColumnComputer(text);
             const result = computer.getNumberAndColumnFromPos(pos);
             expect(result).toEqual(expectedResult);

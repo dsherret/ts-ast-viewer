@@ -14,7 +14,7 @@ describe("StateSaver", () => {
             setItem(key: string, value: string) {
                 if (key === StateSaver._stateKey)
                     savedData = value;
-            }
+            },
         };
     }
 
@@ -30,7 +30,7 @@ describe("StateSaver", () => {
             version: 3,
             treeMode: TreeMode.forEachChild,
             showFactoryCode: true,
-            showInternals: false
+            showInternals: false,
         });
     });
 
@@ -46,7 +46,7 @@ describe("StateSaver", () => {
             version: 3,
             treeMode: TreeMode.getChildren,
             showFactoryCode: true,
-            showInternals: false
+            showInternals: false,
         });
     });
 
@@ -62,7 +62,7 @@ describe("StateSaver", () => {
             version: 3,
             treeMode: TreeMode.getChildren,
             showFactoryCode: false,
-            showInternals: true
+            showInternals: true,
         });
     });
 
@@ -77,7 +77,7 @@ describe("StateSaver", () => {
                 version: 3,
                 treeMode,
                 showFactoryCode: true,
-                showInternals: false
+                showInternals: false,
             });
         }
     });
@@ -86,14 +86,14 @@ describe("StateSaver", () => {
         const { saver, localStorage } = setup();
         localStorage.setItem(StateSaver._stateKey, JSON.stringify({
             version: 1,
-            treeMode: TreeMode.getChildren
+            treeMode: TreeMode.getChildren,
         }));
 
         expect(saver.get()).toEqual({
             version: 3,
             treeMode: TreeMode.getChildren,
             showFactoryCode: true,
-            showInternals: false
+            showInternals: false,
         });
     });
 
@@ -102,14 +102,14 @@ describe("StateSaver", () => {
         localStorage.setItem(StateSaver._stateKey, JSON.stringify({
             version: 2,
             treeMode: TreeMode.getChildren,
-            showFactoryCode: false
+            showFactoryCode: false,
         }));
 
         expect(saver.get()).toEqual({
             version: 3,
             treeMode: TreeMode.getChildren,
             showFactoryCode: false,
-            showInternals: false
+            showInternals: false,
         });
     });
 });

@@ -11,7 +11,7 @@ forAllCompilerVersions(packageName => {
 
         // todo: more tests in the future
         checkSymbol({
-            name: "Test"
+            name: "Test",
         });
     });
 });

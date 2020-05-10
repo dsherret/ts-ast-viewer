@@ -14,7 +14,7 @@ forAllCompilerVersions(packageName => {
             name: "Identifier",
             pos: 8,
             end: 16,
-            start: 9
+            start: 9,
         });
     });
 });

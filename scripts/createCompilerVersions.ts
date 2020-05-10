@@ -8,8 +8,8 @@ const versions = getCompilerVersions();
 // setup
 const project = new Project({
     manipulationSettings: {
-        newLineKind: os.EOL === "\n" ? NewLineKind.LineFeed : NewLineKind.CarriageReturnLineFeed
-    }
+        newLineKind: os.EOL === "\n" ? NewLineKind.LineFeed : NewLineKind.CarriageReturnLineFeed,
+    },
 });
 
 // update compiler types file
@@ -23,21 +23,21 @@ compilerVersionsFile.addStatements([writer => {
 }, {
     kind: StructureKind.ImportDeclaration,
     namedImports: ["Node", "CompilerApi"],
-    moduleSpecifier: "./CompilerApi"
+    moduleSpecifier: "./CompilerApi",
 }, {
     kind: StructureKind.ImportDeclaration,
     namedImports: ["assertNever"],
-    moduleSpecifier: "../utils"
+    moduleSpecifier: "../utils",
 }, {
     kind: StructureKind.TypeAlias,
     isExported: true,
     name: "CompilerVersions",
-    type: versions.map(v => `"${v.version}"`).join(" | ")
+    type: versions.map(v => `"${v.version}"`).join(" | "),
 }, {
     kind: StructureKind.TypeAlias,
     isExported: true,
     name: "CompilerPackageNames",
-    type: versions.map(v => `"${v.name}"`).join(" | ")
+    type: versions.map(v => `"${v.name}"`).join(" | "),
 }, {
     kind: StructureKind.VariableStatement,
     isExported: true,
@@ -57,8 +57,8 @@ compilerVersionsFile.addStatements([writer => {
             });
             writer.write("]");
         },
-        type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]"
-    }]
+        type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]",
+    }],
 }, {
     kind: StructureKind.Function,
     isExported: true,
@@ -79,7 +79,7 @@ compilerVersionsFile.addStatements([writer => {
                 writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
-    }
+    },
 }, {
     kind: StructureKind.Function,
     isExported: true,
@@ -100,12 +100,12 @@ compilerVersionsFile.addStatements([writer => {
                 writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
-    }
+    },
 }, {
     kind: StructureKind.TypeAlias,
     isExported: true,
     name: "FactoryCodeGenerator",
-    type: "(ts: CompilerApi, node: Node) => string"
+    type: "(ts: CompilerApi, node: Node) => string",
 }, {
     kind: StructureKind.Function,
     isExported: true,
@@ -127,24 +127,24 @@ compilerVersionsFile.addStatements([writer => {
                 writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
-    }
+    },
 }, {
     kind: StructureKind.Interface,
     isExported: true,
     name: "PublicApiInfo",
     properties: [{
         name: "nodePropertiesBySyntaxKind",
-        type: "Map<string, Set<string>>"
+        type: "Map<string, Set<string>>",
     }, {
         name: "symbolProperties",
-        type: "Set<string>"
+        type: "Set<string>",
     }, {
         name: "typeProperties",
-        type: "Set<string>"
+        type: "Set<string>",
     }, {
         name: "signatureProperties",
-        type: "Set<string>"
-    }]
+        type: "Set<string>",
+    }],
 }, {
     kind: StructureKind.Function,
     isExported: true,
@@ -166,7 +166,7 @@ compilerVersionsFile.addStatements([writer => {
                 writer.writeLine("return assertNever(packageName, `Not implemented version: ${packageName}`);");
             });
         });
-    }
+    },
 }]);
 
 compilerVersionsFile.save();

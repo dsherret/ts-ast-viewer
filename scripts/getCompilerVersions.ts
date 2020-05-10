@@ -5,7 +5,7 @@ export function getCompilerVersions() {
     const dependencies = fileData["dependencies"];
     const keyRegEx = /^typescript(-[0-9]+\.[0-9]+\.[0-9]+)?$/;
     const versionRegEx = /[0-9]+\.[0-9]+\.[0-9]+/;
-    const versions: { version: string; name: string; }[] = [];
+    const versions: { version: string; name: string }[] = [];
 
     for (const key of Object.keys(dependencies)) {
         if (key === "typescript-next") {

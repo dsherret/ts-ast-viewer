@@ -4,7 +4,7 @@ describe("EnumUtils", () => {
     enum MyEnum {
         Value1 = 1,
         Value2 = 2,
-        SameValue = 1
+        SameValue = 1,
     }
 
     describe("#getValues", () => {
@@ -23,7 +23,7 @@ describe("EnumUtils", () => {
         it("should get all the names and values of an enum", () => {
             expect(EnumUtils.getNamesForValues(MyEnum)).toEqual([
                 { value: 1, names: ["Value1", "SameValue"] },
-                { value: 2, names: ["Value2"] }
+                { value: 2, names: ["Value2"] },
             ]);
         });
     });

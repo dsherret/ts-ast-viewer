@@ -9,7 +9,7 @@ forAllCompilerVersions(packageName => {
         });
 
         checkNode({
-            haveScriptKindInternalProperty: false
+            haveScriptKindInternalProperty: false,
         });
     });
 
@@ -27,7 +27,7 @@ forAllCompilerVersions(packageName => {
         });
 
         checkNode({
-            haveScriptKindInternalProperty: true
+            haveScriptKindInternalProperty: true,
         });
     });
 });

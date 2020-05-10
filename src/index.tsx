@@ -26,14 +26,14 @@ const store = createStore(appReducer, {
         scriptKind: initialScriptKind,
         bindingEnabled: true,
         showFactoryCode: stateSaver.get().showFactoryCode,
-        showInternals: stateSaver.get().showInternals
+        showInternals: stateSaver.get().showInternals,
     },
-    compiler: undefined
+    compiler: undefined,
 });
 
 ReactDOM.render(
     <Provider store={store}><AppContainer /></Provider>,
-    document.getElementById("root") as HTMLElement
+    document.getElementById("root") as HTMLElement,
 );
 
 // doing this for now because service workers were not playing nicely with the website being updated every day for @next support
@@ -53,7 +53,9 @@ store.subscribe(() => {
 });
 
 // set global variables
-console.log("[ts-ast-viewer]: Inspect the ts, sourceFile, node, symbol, type, signature, program, and checker/typeChecker global variables here in the console.");
+console.log(
+    "[ts-ast-viewer]: Inspect the ts, sourceFile, node, symbol, type, signature, program, and checker/typeChecker global variables here in the console.",
+);
 store.subscribe(() => {
     const state = store.getState();
     if (state.compiler == null || state.compiler.selectedNode == null)

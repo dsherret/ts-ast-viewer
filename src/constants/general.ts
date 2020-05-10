@@ -1,3 +1,3 @@
 export const general = {
-    sourceFileRefreshDelay: 150
+    sourceFileRefreshDelay: 150,
 };

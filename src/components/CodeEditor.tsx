@@ -9,7 +9,7 @@ export interface CodeEditorProps {
     onChange?: (text: string) => void;
     onClick?: (range: [number, number]) => void;
     text: string;
-    highlight?: { start: number; end: number; } | undefined;
+    highlight?: { start: number; end: number } | undefined;
     showInfo?: boolean;
     readOnly?: boolean;
     renderWhiteSpace?: boolean;
@@ -33,7 +33,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             position: 0,
             lineNumber: 1,
             column: 1,
-            editorComponent: undefined
+            editorComponent: undefined,
         };
         this.editorDidMount = this.editorDidMount.bind(this);
 
@@ -41,7 +41,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         import("monaco-editor").then(monacoEditor => {
             monacoEditor.languages.typescript.typescriptDefaults.setCompilerOptions({
                 target: monacoEditor.languages.typescript.ScriptTarget.ESNext,
-                allowNonTsExtensions: true
+                allowNonTsExtensions: true,
             });
 
             reactMonacoEditorPromise.then(editor => {
@@ -99,7 +99,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
 
         this.deltaDecorations = this.editor.deltaDecorations(this.deltaDecorations, range == null ? [] : [{
             range,
-            options: { className: "editorRangeHighlight" }
+            options: { className: "editorRangeHighlight" },
         }]);
 
         function getRange(): monacoEditorForTypes.IRange | undefined {
@@ -113,7 +113,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 startLineNumber: startInfo.lineNumber,
                 startColumn: startInfo.column,
                 endLineNumber: endInfo.lineNumber,
-                endColumn: endInfo.column
+                endColumn: endInfo.column,
             };
         }
     }
@@ -142,7 +142,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                     occurrencesHighlight: false,
                     selectionHighlight: false,
                     codeLens: false,
-                    suggestOnTriggerCharacters: false
+                    suggestOnTriggerCharacters: false,
                 }}
             />
         );
@@ -162,7 +162,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             this.setState({
                 position: editorModel.getOffsetAt(e.position),
                 lineNumber: e.position.lineNumber,
-                column: e.position.column
+                column: e.position.column,
             });
         });
         editor.onMouseDown(e => {

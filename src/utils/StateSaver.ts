@@ -27,7 +27,7 @@ export class StateSaver {
             version: 3 as 3,
             treeMode: TreeMode.forEachChild,
             showFactoryCode: true,
-            showInternals: false
+            showInternals: false,
         };
     }
 

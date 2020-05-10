@@ -52,7 +52,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
             this.lastResetHash = undefined;
             this.setState({
                 hasError: false,
-                error: undefined
+                error: undefined,
             });
             return false;
         }
