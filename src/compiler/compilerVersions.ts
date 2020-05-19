@@ -3,8 +3,8 @@
 
 import { Node, CompilerApi } from "./CompilerApi";
 import { assertNever } from "../utils";
-export type CompilerVersions = "3.9.2" | "3.8.3" | "3.7.5" | "3.6.4" | "3.5.3" | "3.4.5" | "3.3.3" | "3.2.4" | "3.1.6" | "3.0.3" | "2.9.2" | "2.8.4";
-export type CompilerPackageNames = "typescript" | "typescript-3.8.3" | "typescript-3.7.5" | "typescript-3.6.4" | "typescript-3.5.3" | "typescript-3.4.5" | "typescript-3.3.3" | "typescript-3.2.4" | "typescript-3.1.6" | "typescript-3.0.3" | "typescript-2.9.2" | "typescript-2.8.4";
+export type CompilerVersions = "3.9.2" | "3.8.3" | "3.7.5" | "3.6.4" | "3.5.3" | "3.4.5" | "3.3.3" | "3.2.4" | "3.1.6" | "3.0.3";
+export type CompilerPackageNames = "typescript" | "typescript-3.8.3" | "typescript-3.7.5" | "typescript-3.6.4" | "typescript-3.5.3" | "typescript-3.4.5" | "typescript-3.3.3" | "typescript-3.2.4" | "typescript-3.1.6" | "typescript-3.0.3";
 export const compilerVersionCollection: { version: CompilerVersions; packageName: CompilerPackageNames; }[] = [
         { version: "3.9.2", packageName: "typescript" },
         { version: "3.8.3", packageName: "typescript-3.8.3" },
@@ -15,9 +15,7 @@ export const compilerVersionCollection: { version: CompilerVersions; packageName
         { version: "3.3.3", packageName: "typescript-3.3.3" },
         { version: "3.2.4", packageName: "typescript-3.2.4" },
         { version: "3.1.6", packageName: "typescript-3.1.6" },
-        { version: "3.0.3", packageName: "typescript-3.0.3" },
-        { version: "2.9.2", packageName: "typescript-2.9.2" },
-        { version: "2.8.4", packageName: "typescript-2.8.4" }
+        { version: "3.0.3", packageName: "typescript-3.0.3" }
     ];
 
 export async function importCompilerApi(packageName: CompilerPackageNames) {
@@ -43,10 +41,6 @@ export async function importCompilerApi(packageName: CompilerPackageNames) {
             return await import("typescript-3.1.6");
         case "typescript-3.0.3":
             return await import("typescript-3.0.3");
-        case "typescript-2.9.2":
-            return await import("typescript-2.9.2");
-        case "typescript-2.8.4":
-            return await import("typescript-2.8.4");
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -75,10 +69,6 @@ export async function importLibFiles(packageName: CompilerPackageNames) {
             return await import("../resources/libFiles/typescript-3.1.6/index");
         case "typescript-3.0.3":
             return await import("../resources/libFiles/typescript-3.0.3/index");
-        case "typescript-2.9.2":
-            return await import("../resources/libFiles/typescript-2.9.2/index");
-        case "typescript-2.8.4":
-            return await import("../resources/libFiles/typescript-2.8.4/index");
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -109,10 +99,6 @@ export async function getGenerateFactoryCodeFunction(packageName: CompilerPackag
             return (await import("../resources/factoryCode/typescript-3.1.6")).generateFactoryCode as any;
         case "typescript-3.0.3":
             return (await import("../resources/factoryCode/typescript-3.0.3")).generateFactoryCode as any;
-        case "typescript-2.9.2":
-            return (await import("../resources/factoryCode/typescript-2.9.2")).generateFactoryCode as any;
-        case "typescript-2.8.4":
-            return (await import("../resources/factoryCode/typescript-2.8.4")).generateFactoryCode as any;
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -148,10 +134,6 @@ export async function getPublicApiInfo(packageName: CompilerPackageNames): Promi
             return (await import("../resources/publicApiInfo/typescript-3.1.6"));
         case "typescript-3.0.3":
             return (await import("../resources/publicApiInfo/typescript-3.0.3"));
-        case "typescript-2.9.2":
-            return (await import("../resources/publicApiInfo/typescript-2.9.2"));
-        case "typescript-2.8.4":
-            return (await import("../resources/publicApiInfo/typescript-2.8.4"));
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
