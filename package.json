@@ -1,6 +1,6 @@
 {
   "name": "ts-ast-viewer",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
     "react-split-pane": "^0.1.91",
     "react-treeview": "^0.4.7",
     "redux": "^4.0.5",
-    "typescript": "3.8.3",
+    "typescript": "3.9.2",
     "typescript-2.8.4": "npm:typescript@2.8.4",
     "typescript-2.9.2": "npm:typescript@2.9.2",
     "typescript-3.0.3": "npm:typescript@3.0.3",
@@ -58,7 +58,8 @@
     "typescript-3.4.5": "npm:typescript@3.4.5",
     "typescript-3.5.3": "npm:typescript@3.5.3",
     "typescript-3.6.4": "npm:typescript@3.6.4",
-    "typescript-3.7.5": "npm:typescript@3.7.5"
+    "typescript-3.7.5": "npm:typescript@3.7.5",
+    "typescript-3.8.3": "npm:typescript@3.8.3"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",

@@ -319,8 +319,15 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 createAsExpression(node as import("typescript").AsExpression);
                 return;
             case ts.SyntaxKind.NonNullExpression:
-                createNonNullExpression(node as import("typescript").NonNullExpression);
-                return;
+                if (ts.isNonNullChain(node)) {
+                    createNonNullChain(node as import("typescript").NonNullChain);
+                    return;
+                }
+                if (ts.isNonNullExpression(node)) {
+                    createNonNullExpression(node as import("typescript").NonNullExpression);
+                    return;
+                }
+                throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.MetaProperty:
                 createMetaProperty(node as import("typescript").MetaProperty);
                 return;
@@ -2614,6 +2621,12 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
 
     function createNonNullExpression(node: import("typescript").NonNullExpression) {
         writer.write("ts.createNonNullExpression(");
+        writeNodeText(node.expression)
+        writer.write(")");
+    }
+
+    function createNonNullChain(node: import("typescript").NonNullChain) {
+        writer.write("ts.createNonNullChain(");
         writeNodeText(node.expression)
         writer.write(")");
     }
