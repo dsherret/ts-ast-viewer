@@ -10,5 +10,5 @@ If you open up the developer console it will provide some compiler objects that 
 
 ## Additional Resources
 
-* [TypeScript Architectual Overview](https://github.com/microsoft/TypeScript/wiki/Architectural-Overview)
-* [Using the Compiler API](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+* [TypeScript Architectual Overview](https://github.com/AtOmXpLuS/TypeScript/wiki/Architectural-Overview)
+* [Using the Compiler API](https://github.com/AtOmXpLuS/TypeScript/wiki/Using-the-Compiler-API)
