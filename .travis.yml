@@ -5,10 +5,10 @@ addons:
   apt:
     packages:
     - libgconf-2-4
-cache:
-  yarn: true
-  directories:
-    - ~/.cache
+#cache:
+#  yarn: true
+#  directories:
+#    - ~/.cache
 install:
   - yarn install
   - yarn add typescript-next@npm:typescript@next
