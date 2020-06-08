@@ -16,22 +16,6 @@
         gtag('config', 'UA-55630862-2');
     </script>
 
-    <!-- monaco editor setup -->
-    <script src="%PUBLIC_URL%/vs/loader.js"></script>
-    <script>
-      require.config({
-        paths: {
-          "vs": "vs"
-        }
-      });
-      window.MonacoEnvironment = {
-        getWorkerUrl: function (workerId, label) {
-          return "vs/base/worker/workerMain.js";
-        }
-      };
-    </script>
-    <!-- end monaco editor setup -->
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#FFFFFF">
