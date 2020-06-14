@@ -1,6 +1,7 @@
 import React from "react";
-import ReactMonacoEditorForTypes, { EditorDidMount } from "react-monaco-editor";
-import * as monacoEditorForTypes from "monaco-editor";
+import type ReactMonacoEditorForTypes from "react-monaco-editor";
+import type { EditorDidMount } from "react-monaco-editor";
+import type * as monacoEditorForTypes from "monaco-editor";
 import { Spinner } from "./Spinner";
 import { LineAndColumnComputer } from "../utils";
 
@@ -26,6 +27,7 @@ export interface CodeEditorState {
 export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState> {
     private editor: monacoEditorForTypes.editor.IStandaloneCodeEditor | undefined;
     private outerContainerRef = React.createRef<HTMLDivElement>();
+    private disposables: monacoEditorForTypes.IDisposable[] = [];
 
     constructor(props: CodeEditorProps) {
         super(props);
@@ -74,6 +76,13 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 classNames.push("hasInfo");
             return classNames.join(" ");
         }
+    }
+
+    componentWillUnmount() {
+        for (const disposable of this.disposables) {
+            disposable.dispose();
+        }
+        this.disposables.length = 0; // clear
     }
 
     private getInfo() {
@@ -154,7 +163,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         // use lf newlines
         editor.getModel()?.setEOL(monaco.editor.EndOfLineSequence.LF);
 
-        editor.onDidChangeCursorPosition(e => {
+        this.disposables.push(editor.onDidChangeCursorPosition(e => {
             const editorModel = editor.getModel();
             if (editorModel == null)
                 return;
@@ -164,8 +173,8 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 lineNumber: e.position.lineNumber,
                 column: e.position.column,
             });
-        });
-        editor.onMouseDown(e => {
+        }));
+        this.disposables.push(editor.onMouseDown(e => {
             if (e.target == null || e.target.range == null || this.props.onClick == null)
                 return;
 
@@ -177,12 +186,12 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
                 const start = this.lineAndColumnComputer.getPosFromLineAndColumn(pos.lineNumber, pos.column);
                 this.props.onClick([start, start]);
             }
-        });
+        }));
 
         // manually refresh the layout of the editor (lightweight compared to monaco editor)
         let lastHeight = 0;
         let lastWidth = 0;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
             const containerElement = this.outerContainerRef.current;
             if (containerElement == null)
                 return;
@@ -197,6 +206,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             lastHeight = height;
             lastWidth = width;
         }, 500);
+        this.disposables.push({ dispose: () => clearInterval(intervalId) })
 
         this.updateHighlight();
 
