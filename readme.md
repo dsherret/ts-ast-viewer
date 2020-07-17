@@ -1,5 +1,4 @@
-﻿TypeScript AST Viewer
-=====================
+﻿# TypeScript AST Viewer
 
 [![Build Status](https://travis-ci.org/dsherret/ts-ast-viewer.svg?branch=master)](https://travis-ci.org/dsherret/ts-ast-viewer)
 
@@ -23,5 +22,5 @@ yarn cypress
 
 ### Adding a new TypeScript version
 
-1. Update *package.json* with new version.
+1. Update _package.json_ with new version.
 2. Run `yarn updateCompilerFiles`.

@@ -34,7 +34,7 @@ glob("./src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
                 libVersionDir + "index.ts",
                 filePaths
                     .map(p => path.basename(p, ".d.ts"))
-                    .map((p, i) => "export { default as export" + i + ' } from "./' + p + '";').join("\n") + "\n",
+                    .map((p, i) => "export { default as export" + i + " } from \"./" + p + "\";").join("\n") + "\n",
                 { encoding: "utf8" },
             );
         });

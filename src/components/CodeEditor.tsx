@@ -79,9 +79,8 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     }
 
     componentWillUnmount() {
-        for (const disposable of this.disposables) {
+        for (const disposable of this.disposables)
             disposable.dispose();
-        }
         this.disposables.length = 0; // clear
     }
 
@@ -206,7 +205,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             lastHeight = height;
             lastWidth = width;
         }, 500);
-        this.disposables.push({ dispose: () => clearInterval(intervalId) })
+        this.disposables.push({ dispose: () => clearInterval(intervalId) });
 
         this.updateHighlight();
 
