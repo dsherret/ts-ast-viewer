@@ -1,262 +1,266 @@
 /* todo: use some preprocessor to allow variables and such */
 * {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
-html, body, .App, #root {
-    width: 100%;
-    height: 100%;
+html,
+body,
+.App,
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 .App {
-    text-align: left;
+  text-align: left;
 }
 
 .SplitPane {
-    background-color: #272822;
-    color: #fff;
+  background-color: #272822;
+  color: #fff;
 }
 
 .AppHeader {
-    background-color: #222;
-    color: white;
-    padding: 10px;
-    width: 100%;
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  width: 100%;
 }
 
 h2 {
-    margin: 0px 0px 5px 0px;
-    padding: 0;
+  margin: 0px 0px 5px 0px;
+  padding: 0;
 }
 h2:not(:first-child) {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 h3 {
-    margin: 15px 0px 0px 0px;
-    padding: 0;
+  margin: 15px 0px 0px 0px;
+  padding: 0;
 }
 
-a,a:visited {
-    color: #fff;
+a,
+a:visited {
+  color: #fff;
 }
 
 #title {
-    float: left;
+  float: left;
 }
 
 .clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
+  content: "";
+  clear: both;
+  display: table;
 }
 
 .verticallyCenter {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .horizontallyCenter > div {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .fillHeight {
-    height: 100%;
+  height: 100%;
 }
 
 .errorMessage {
-    color: red;
-    font-size: 1.5em;
+  color: red;
+  font-size: 1.5em;
 }
 
 /* Tool-tipped Text */
 .toolTippedText {
-    position: relative;
+  position: relative;
 }
 
 .toolTippedText .titleText {
-    cursor: pointer;
-    text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .toolTippedText .tooltipText {
-    position: absolute;
-    top: 18px;
-    border: 1px solid white;
-    background: #202020;
-    padding: 10px;
-    font-family: Consolas, "Courier New", monospace;
-    z-index: 1;
+  position: absolute;
+  top: 18px;
+  border: 1px solid white;
+  background: #202020;
+  padding: 10px;
+  font-family: Consolas, "Courier New", monospace;
+  z-index: 1;
 }
 
 .toolTippedText .tooltipText ul {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-left: 1.5em;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 1.5em;
 }
 
 /* Options */
 
 #options {
-    float: right;
+  float: right;
 }
 
 #options #optionsButton {
-    line-height: 28px;
-    width: 80px;
-    text-align: center;
-    color: #fff;
-    background-color: #202020;
-    border: 1px solid #fff;
-    font-size: 16px;
-    cursor: pointer;
+  line-height: 28px;
+  width: 80px;
+  text-align: center;
+  color: #fff;
+  background-color: #202020;
+  border: 1px solid #fff;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 #options .menu {
-    position: absolute;
-    width: 364px;
-    margin-left: -284px;
-    margin-top: -1px;
-    background: #202020;
-    border: 1px solid #fff;
-    z-index: 100;
-    padding: 10px;
-    font-size: 16px;
+  position: absolute;
+  width: 364px;
+  margin-left: -284px;
+  margin-top: -1px;
+  background: #202020;
+  border: 1px solid #fff;
+  z-index: 100;
+  padding: 10px;
+  font-size: 16px;
 }
 
 #options .menu .option:not(:first-child) {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 #options .menu .optionName {
-    display: inline-block;
-    margin-right: 6px;
-    width: 114px;
-    text-align: right;
+  display: inline-block;
+  margin-right: 6px;
+  width: 114px;
+  text-align: right;
 }
 #options .menu .optionValue {
-    display: inline-block;
+  display: inline-block;
 }
 #options .menu .optionValue select {
-    width: 220px;
+  width: 220px;
 }
 
 #options .menuLine {
-    position: absolute;
-    background: #202020;
-    height: 1px;
-    width: 78px;
-    margin-top: -1px;
-    z-index: 101;
-    margin-left: 1px;
+  position: absolute;
+  background: #202020;
+  height: 1px;
+  width: 78px;
+  margin-top: -1px;
+  z-index: 101;
+  margin-left: 1px;
 }
 
 #options .bottomLinks {
-    text-align: right;
-    margin-top: 5px;
-    margin-right: 8px;
+  text-align: right;
+  margin-top: 5px;
+  margin-right: 8px;
 }
 
 /* Code Editor */
 
 .codeEditor {
-    width: 100%;
-    height: 100%;
-    position: relative;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .codeEditor .editorContainer {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .codeEditor.hasInfo .editorContainer {
-    padding-bottom: 22px;
+  padding-bottom: 22px;
 }
 
 .codeEditor .editorInfo {
-    position: absolute;
-    bottom: 0px;
-    background-color: #007acc;
-    padding: 2px 4px;
-    width: 100%;
+  position: absolute;
+  bottom: 0px;
+  background-color: #007acc;
+  padding: 2px 4px;
+  width: 100%;
 }
 
 .codeEditor .editorRangeHighlight {
-    background: #6f7163;
+  background: #6f7163;
 }
 
 /* Factory Code Editor */
 
 #factoryCodeEditor {
-    padding-top: 10px;
-    width: 100%;
-    height: 100%;
-    /* vscode color */
-    background: #1E1E1E;
+  padding-top: 10px;
+  width: 100%;
+  height: 100%;
+  /* vscode color */
+  background: #1e1e1e;
 }
 
 /* Tree Viewer */
 
 #treeViewer {
-    overflow: auto;
-    height: 100%;
-    padding-top: 2px;
-    padding-bottom: 2px;
+  overflow: auto;
+  height: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 #treeViewer .nodeText {
-    cursor: pointer;
-    display: inline-block;
+  cursor: pointer;
+  display: inline-block;
 }
 
 #treeViewer .nodeText.selected {
-    color: #A6E22E;
+  color: #a6e22e;
 }
 
 #treeViewer .endNode {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 3px;
 }
 
 /* Properties Viewer */
 
 .propertiesViewer {
-    overflow: auto;
-    height: 100%;
-    margin-left: 4px;
-    padding-bottom: 5px;
+  overflow: auto;
+  height: 100%;
+  margin-left: 4px;
+  padding-bottom: 5px;
 }
 
 .propertiesViewer > .container > div > :first-child:not(.tree-view) {
-    margin-top: 6px;
-    margin-left: 6px;
+  margin-top: 6px;
+  margin-left: 6px;
 }
 
 .propertiesViewer .internal > div > .key {
-    color: red;
+  color: red;
 }
 
 .propertiesViewer .text .key {
-    display: inline-block;
-    margin-right: 2px;
+  display: inline-block;
+  margin-right: 2px;
 }
 
 .propertiesViewer .text .value {
-    display: inline-block;
+  display: inline-block;
 }
 
 .propertiesViewer .object {
-    display: flex;
+  display: flex;
 }
 .propertiesViewer .object > .value {
-    padding-left: 3px;
+  padding-left: 3px;
 }
 
 .propertiesViewer .array > .value {
-    padding-left: 7px;
+  padding-left: 7px;
 }
