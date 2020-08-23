@@ -48,7 +48,7 @@
     "react-split-pane": "^0.1.91",
     "react-treeview": "^0.4.7",
     "redux": "^4.0.5",
-    "typescript": "3.9.2",
+    "typescript": "3.9.7",
     "typescript-3.0.3": "npm:typescript@3.0.3",
     "typescript-3.1.6": "npm:typescript@3.1.6",
     "typescript-3.2.4": "npm:typescript@3.2.4",
@@ -77,7 +77,7 @@
     "monaco-editor-webpack-plugin": "^1.9.0",
     "react-app-rewired": "^2.1.6",
     "react-scripts": "3.4.1",
-    "ts-factory-code-generator-generator": "^0.5.5",
+    "ts-factory-code-generator-generator": "^0.6.0",
     "ts-jest": "^25.5.1",
     "ts-morph": "^7.0.3",
     "ts-node": "^8.10.1"
