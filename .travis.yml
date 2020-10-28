@@ -20,13 +20,13 @@ script:
 before_deploy:
   - travis_wait 20 npm run predeploy
   # temporary stuff for comments folder
-  - git clone https://github.com/dsherret/ts-ast-viewer.git comments
-  - cd comments
-  - git checkout comments
-  - yarn install
-  - travis_wait 20 npm run predeploy
-  - mv build ../build/comments
-  - cd ../
+  # - git clone https://github.com/dsherret/ts-ast-viewer.git comments
+  # - cd comments
+  # - git checkout comments
+  # - yarn install
+  # - travis_wait 20 npm run predeploy
+  # - mv build ../build/comments
+  # - cd ../
 env:
   - CI=true
 deploy:
