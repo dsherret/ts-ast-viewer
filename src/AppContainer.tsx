@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
-import { Node, getCompilerApi, hasLoadedCompilerApi, CompilerPackageNames } from "./compiler";
+import { Node, getCompilerApi, hasLoadedCompilerApi, CompilerPackageNames, compilerVersionCollection } from "./compiler";
 import App from "./App";
 import * as actions from "./actions";
 import { StoreState, OptionsState, ApiLoadingState } from "./types";
@@ -19,7 +19,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.AllActions>) {
         generalConstants.sourceFileRefreshDelay,
     );
 
-    updateSourceFile("typescript");
+    updateSourceFile(compilerVersionCollection[0].packageName);
 
     return {
         onCodeChange: (compilerPackageName: CompilerPackageNames, code: string) => {

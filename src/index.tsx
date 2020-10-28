@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { ScriptTarget, ScriptKind } from "./compiler";
+import { ScriptTarget, ScriptKind, compilerVersionCollection } from "./compiler";
 import AppContainer from "./AppContainer";
 import { unregisterServiceWorker } from "./registerServiceWorker";
 import "./index.css";
@@ -20,7 +20,7 @@ const store = createStore(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
     code: new UrlSaver().getUrlCode(),
     options: {
-        compilerPackageName: "typescript",
+        compilerPackageName: compilerVersionCollection[0].packageName,
         treeMode: stateSaver.get().treeMode,
         scriptTarget: initialScriptTarget,
         scriptKind: initialScriptKind,

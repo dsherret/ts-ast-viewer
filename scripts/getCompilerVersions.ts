@@ -3,7 +3,7 @@ import * as fs from "fs";
 export function getCompilerVersions() {
     const fileData = JSON.parse(fs.readFileSync("./package.json", "utf-8"));
     const dependencies = fileData["dependencies"];
-    const keyRegEx = /^typescript(-[0-9]+\.[0-9]+\.[0-9]+)?$/;
+    const keyRegEx = /^typescript(-[0-9]+\.[0-9]+\.[0-9]+)$/;
     const versionRegEx = /[0-9]+\.[0-9]+\.[0-9]+/;
     const versions: { version: string; name: string }[] = [];
 

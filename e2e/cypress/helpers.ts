@@ -1,5 +1,5 @@
 import constants from "./constants";
-import { CompilerPackageNames } from "../../src/compiler";
+import { CompilerPackageNames, compilerVersionCollection } from "../../src/compiler";
 import { TreeMode } from "../../src/types";
 
 let visited = false;
@@ -70,7 +70,7 @@ export function forAllCompilerVersions(action: (version: CompilerPackageNames) =
     if (process.env.CI != null)
         action("typescript-next" as any);
     else {
-        action("typescript");
+        action(compilerVersionCollection[0].packageName);
         // todo: make testing everything configurable
         // for (const versionInfo of compilerVersionCollection)
         //     action(versionInfo.packageName);
