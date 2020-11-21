@@ -10549,13 +10549,13 @@ trim-repeated@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-ts-factory-code-generator-generator@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/ts-factory-code-generator-generator/-/ts-factory-code-generator-generator-0.6.0.tgz#44720ea80c836f305ad457dd0ae47291a43a7139"
-  integrity sha512-lLq0aL8TA6gzub09m6uQFqak01iJ2Z3xx9QuxDzo9YN3NV0runwlRQB9/gc2vHUXt2iQnVo1iwjP9I5GnlUg1A==
+ts-factory-code-generator-generator@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/ts-factory-code-generator-generator/-/ts-factory-code-generator-generator-0.6.1.tgz#4c54580e4240891ea67b80e911edd1a89bfdbefa"
+  integrity sha512-Up6b5EomlBAF8BXiFUMk0clv8WPb7Zno6V2V6yiSxiEye8l6lO8uDFN59f6j3jxBqepso/vM6Msoz3/0tBp7OA==
   dependencies:
     string-similarity "^4.0.2"
-    ts-morph "^8.0.0"
+    ts-morph "^8.1.0"
     typescript "^4.0.2"
 
 ts-jest@^26.4.3:
@@ -10576,7 +10576,16 @@ ts-jest@^26.4.3:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-morph@^8.0.0, ts-morph@^8.1.2:
+ts-morph@^8.1.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-8.2.0.tgz#41d83cd501cbd897eb029ac489d6d5b927555c57"
+  integrity sha512-NHHWu+7I2/AOZiTni5w3f+xCfIxrkzPCcQbTGa81Yk3pr23a4h9xLLEE6tIGuYIubWjkjr9QVC3ITqgmA5touQ==
+  dependencies:
+    "@dsherret/to-absolute-glob" "^2.0.2"
+    "@ts-morph/common" "~0.6.0"
+    code-block-writer "^10.1.0"
+
+ts-morph@^8.1.2:
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-8.1.2.tgz#f0bee6be6fbd8c3174ac5d6c0423a035e36c2bbd"
   integrity sha512-5w4TzmMzECrBunIku1T6/Y0Y2IJ9sHT6hAlfF59WugXnsq1dv6DSioA+s6LgUiswxjgaJgZndOKgu8BrLcYjKw==

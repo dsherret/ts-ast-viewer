@@ -24,3 +24,7 @@ yarn cypress
 
 1. Update _package.json_ with new version.
 2. Run `yarn updateCompilerFiles`.
+
+### Factory Code Generation
+
+The code that code generates the factory code is automatically maintained by [ts-factory-code-generator-generator](https://github.com/dsherret/ts-factory-code-generator-generator/).

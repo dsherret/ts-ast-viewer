@@ -528,6 +528,15 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         }
     }
 
+    function writeNodeTextForTypeNode(node: import("typescript-3.8.3").TypeNode) {
+        if (node.kind >= ts.SyntaxKind.FirstKeyword && node.kind <= ts.SyntaxKind.LastKeyword) {
+            writer.write("ts.createKeywordTypeNode(ts.SyntaxKind.").write(syntaxKindToName[node.kind]).write(")");
+        }
+        else {
+            writeNodeText(node);
+        }
+    }
+
     function createNumericLiteral(node: import("typescript-3.8.3").NumericLiteral) {
         writer.write("ts.createNumericLiteral(");
         writer.quote(node.text.toString())
@@ -615,13 +624,13 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.constraint == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.constraint)
+                writeNodeTextForTypeNode(node.constraint)
             }
             writer.write(",").newLine();
             if (node.default == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.default)
+                writeNodeTextForTypeNode(node.default)
             }
         });
         writer.write(")");
@@ -690,7 +699,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             if (node.initializer == null)
@@ -744,7 +753,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             if (node.initializer == null)
@@ -814,7 +823,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             if (node.initializer == null)
@@ -871,7 +880,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             writeNodeText(node.name)
@@ -986,7 +995,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             if (node.body == null)
@@ -1138,7 +1147,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             if (node.body == null)
@@ -1269,7 +1278,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
         });
         writer.write(")");
@@ -1320,7 +1329,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
         });
         writer.write(")");
@@ -1392,7 +1401,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
         });
         writer.write(")");
@@ -1419,7 +1428,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
         });
         writer.write(")");
@@ -1437,7 +1446,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -1445,7 +1454,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
@@ -1497,7 +1506,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             }
             writer.write("]");
             writer.write(",").newLine();
-            writeNodeText(node.type)
+            writeNodeTextForTypeNode(node.type)
         });
         writer.write(")");
     }
@@ -1544,7 +1553,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             }
             writer.write("]");
             writer.write(",").newLine();
-            writeNodeText(node.type)
+            writeNodeTextForTypeNode(node.type)
         });
         writer.write(")");
     }
@@ -1578,7 +1587,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
 
     function createArrayTypeNode(node: import("typescript-3.8.3").ArrayTypeNode) {
         writer.write("ts.createArrayTypeNode(");
-        writeNodeText(node.elementType)
+        writeNodeTextForTypeNode(node.elementType)
         writer.write(")");
     }
 
@@ -1587,7 +1596,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.write("[");
         if (node.elementTypes.length === 1) {
             const item = node.elementTypes![0];
-            writeNodeText(item)
+            writeNodeTextForTypeNode(item)
         }
         else if (node.elementTypes.length > 1) {
             writer.indent(() => {
@@ -1595,7 +1604,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                     const item = node.elementTypes![i];
                     if (i > 0)
                         writer.write(",").newLine();
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
             });
         }
@@ -1605,13 +1614,13 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
 
     function createOptionalTypeNode(node: import("typescript-3.8.3").OptionalTypeNode) {
         writer.write("ts.createOptionalTypeNode(");
-        writeNodeText(node.type)
+        writeNodeTextForTypeNode(node.type)
         writer.write(")");
     }
 
     function createRestTypeNode(node: import("typescript-3.8.3").RestTypeNode) {
         writer.write("ts.createRestTypeNode(");
-        writeNodeText(node.type)
+        writeNodeTextForTypeNode(node.type)
         writer.write(")");
     }
 
@@ -1620,7 +1629,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.write("[");
         if (node.types.length === 1) {
             const item = node.types![0];
-            writeNodeText(item)
+            writeNodeTextForTypeNode(item)
         }
         else if (node.types.length > 1) {
             writer.indent(() => {
@@ -1628,7 +1637,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                     const item = node.types![i];
                     if (i > 0)
                         writer.write(",").newLine();
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
             });
         }
@@ -1641,7 +1650,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.write("[");
         if (node.types.length === 1) {
             const item = node.types![0];
-            writeNodeText(item)
+            writeNodeTextForTypeNode(item)
         }
         else if (node.types.length > 1) {
             writer.indent(() => {
@@ -1649,7 +1658,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                     const item = node.types![i];
                     if (i > 0)
                         writer.write(",").newLine();
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
             });
         }
@@ -1661,13 +1670,13 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.write("ts.createConditionalTypeNode(");
         writer.newLine();
         writer.indent(() => {
-            writeNodeText(node.checkType)
+            writeNodeTextForTypeNode(node.checkType)
             writer.write(",").newLine();
-            writeNodeText(node.extendsType)
+            writeNodeTextForTypeNode(node.extendsType)
             writer.write(",").newLine();
-            writeNodeText(node.trueType)
+            writeNodeTextForTypeNode(node.trueType)
             writer.write(",").newLine();
-            writeNodeText(node.falseType)
+            writeNodeTextForTypeNode(node.falseType)
         });
         writer.write(")");
     }
@@ -1682,7 +1691,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.write("ts.createImportTypeNode(");
         writer.newLine();
         writer.indent(() => {
-            writeNodeText(node.argument)
+            writeNodeTextForTypeNode(node.argument)
             writer.write(",").newLine();
             if (node.qualifier == null)
                 writer.write("undefined");
@@ -1696,7 +1705,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -1704,7 +1713,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
@@ -1722,7 +1731,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
 
     function createParenthesizedType(node: import("typescript-3.8.3").ParenthesizedTypeNode) {
         writer.write("ts.createParenthesizedType(");
-        writeNodeText(node.type)
+        writeNodeTextForTypeNode(node.type)
         writer.write(")");
     }
 
@@ -1733,7 +1742,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
 
     function createTypeOperatorNode(node: import("typescript-3.8.3").TypeOperatorNode) {
         writer.write("ts.createTypeOperatorNode(");
-        writeNodeText(node.type)
+        writeNodeTextForTypeNode(node.type)
         writer.write(")");
     }
 
@@ -1741,9 +1750,9 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.write("ts.createIndexedAccessTypeNode(");
         writer.newLine();
         writer.indent(() => {
-            writeNodeText(node.objectType)
+            writeNodeTextForTypeNode(node.objectType)
             writer.write(",").newLine();
-            writeNodeText(node.indexType)
+            writeNodeTextForTypeNode(node.indexType)
         });
         writer.write(")");
     }
@@ -1769,7 +1778,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
         });
         writer.write(")");
@@ -1970,7 +1979,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -1978,7 +1987,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
@@ -2023,7 +2032,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -2031,7 +2040,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
@@ -2070,7 +2079,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -2078,7 +2087,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
@@ -2124,7 +2133,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.write("ts.createTypeAssertion(");
         writer.newLine();
         writer.indent(() => {
-            writeNodeText(node.type)
+            writeNodeTextForTypeNode(node.type)
             writer.write(",").newLine();
             writeNodeText(node.expression)
         });
@@ -2215,7 +2224,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             writeNodeText(node.body)
@@ -2289,7 +2298,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             writeNodeText(node.equalsGreaterThanToken)
@@ -2581,7 +2590,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -2589,7 +2598,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
@@ -2607,7 +2616,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
         writer.indent(() => {
             writeNodeText(node.expression)
             writer.write(",").newLine();
-            writeNodeText(node.type)
+            writeNodeTextForTypeNode(node.type)
         });
         writer.write(")");
     }
@@ -2918,7 +2927,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             if (node.initializer == null)
@@ -3055,7 +3064,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
             if (node.type == null)
                 writer.write("undefined");
             else {
-                writeNodeText(node.type)
+                writeNodeTextForTypeNode(node.type)
             }
             writer.write(",").newLine();
             if (node.body == null)
@@ -3360,7 +3369,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("]");
             }
             writer.write(",").newLine();
-            writeNodeText(node.type)
+            writeNodeTextForTypeNode(node.type)
         });
         writer.write(")");
     }
@@ -3921,7 +3930,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -3929,7 +3938,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
@@ -3953,7 +3962,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                 writer.write("[");
                 if (node.typeArguments.length === 1) {
                     const item = node.typeArguments![0];
-                    writeNodeText(item)
+                    writeNodeTextForTypeNode(item)
                 }
                 else if (node.typeArguments.length > 1) {
                     writer.indent(() => {
@@ -3961,7 +3970,7 @@ export function generateFactoryCode(ts: typeof import("typescript-3.8.3"), initi
                             const item = node.typeArguments![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writeNodeText(item)
+                            writeNodeTextForTypeNode(item)
                         }
                     });
                 }
