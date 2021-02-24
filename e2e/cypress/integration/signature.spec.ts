@@ -1,4 +1,4 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, selectNode, checkSignature, setShowInternals } from "../helpers";
+import { checkSignature, forAllCompilerVersions, selectNode, setEditorText, setShowInternals, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     describe(`selecting a node with a signature (${packageName})`, () => {

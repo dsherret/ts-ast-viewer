@@ -1,9 +1,9 @@
 import React from "react";
-import { SourceFile, Node, CompilerApi, getChildrenFunction } from "../compiler";
 import TreeView from "react-treeview";
-import { getSyntaxKindName } from "../utils";
-import { TreeMode } from "../types";
+import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler";
 import { css as cssConstants } from "../constants";
+import { TreeMode } from "../types";
+import { getSyntaxKindName } from "../utils";
 
 export interface TreeViewerProps {
     api: CompilerApi;

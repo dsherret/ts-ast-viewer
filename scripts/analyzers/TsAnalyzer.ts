@@ -1,4 +1,4 @@
-import { Project, Symbol, ts, InterfaceDeclaration, Type } from "ts-morph";
+import { InterfaceDeclaration, Project, Symbol, ts, Type } from "ts-morph";
 
 export class TsAnalyzer {
     private readonly tsSymbol: Symbol;

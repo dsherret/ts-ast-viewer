@@ -1,13 +1,13 @@
-import React from "react";
-import { TypeChecker, Node, SourceFile, Symbol, Type, Signature, ReadonlyMap, CompilerApi, PublicApiInfo, CompilerPackageNames, getPublicApiInfo, CommentRange,
-    getStartSafe } from "../compiler";
 import CircularJson from "circular-json";
+import React from "react";
+import { CommentRange, CompilerApi, CompilerPackageNames, getPublicApiInfo, getStartSafe, Node, PublicApiInfo, ReadonlyMap, Signature, SourceFile, Symbol, Type,
+    TypeChecker } from "../compiler";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
-import { ArrayUtils, getSyntaxKindName, getEnumFlagNames } from "../utils";
+import { ArrayUtils, getEnumFlagNames, getSyntaxKindName } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
-import { ToolTippedText } from "./ToolTippedText";
 import { Spinner } from "./Spinner";
+import { ToolTippedText } from "./ToolTippedText";
 
 export interface PropertiesViewerProps {
     compiler: CompilerState;

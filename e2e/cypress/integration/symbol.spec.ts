@@ -1,4 +1,4 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, selectNode, checkSymbol } from "../helpers";
+import { checkSymbol, forAllCompilerVersions, selectNode, setEditorText, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     describe(`selecting a node with a symbol (${packageName})`, () => {

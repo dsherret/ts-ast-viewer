@@ -1,5 +1,5 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, setTreeMode, checkState } from "../helpers";
 import { TreeMode } from "../../../src/types";
+import { checkState, forAllCompilerVersions, setEditorText, setTreeMode, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     describe(`getChildren tree mode (${packageName})`, () => {

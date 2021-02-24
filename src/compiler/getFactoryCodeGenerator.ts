@@ -1,4 +1,4 @@
-import { CompilerPackageNames, getGenerateFactoryCodeFunction, FactoryCodeGenerator } from "./compilerVersions";
+import { CompilerPackageNames, FactoryCodeGenerator, getGenerateFactoryCodeFunction } from "./compilerVersions";
 
 const cache: { [packageName: string]: Promise<FactoryCodeGenerator> } = {};
 const hasLoadedVersion: { [packageName: string]: true } = {};

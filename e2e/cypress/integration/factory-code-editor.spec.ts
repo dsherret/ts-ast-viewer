@@ -1,4 +1,4 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, setFactoryCodeEnabled, checkFactoryCode } from "../helpers";
+import { checkFactoryCode, forAllCompilerVersions, setEditorText, setFactoryCodeEnabled, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     describe(`factory code editor (${packageName})`, () => {

@@ -1,5 +1,5 @@
 import { ArrayUtils } from "./ArrayUtils";
-import { LineNumberAndColumn, createLineNumberAndColumns } from "./createLineNumberAndColumns";
+import { createLineNumberAndColumns, LineNumberAndColumn } from "./createLineNumberAndColumns";
 
 /** An efficient way to compute the line and column of a position in a string. */
 export class LineAndColumnComputer {

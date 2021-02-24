@@ -1,5 +1,5 @@
-import { CompilerApi } from "./CompilerApi";
 import { OptionsState } from "../types";
+import { CompilerApi } from "./CompilerApi";
 
 export function convertOptions(apiFrom: CompilerApi | undefined, apiTo: CompilerApi, options: OptionsState) {
     if (apiFrom == null || apiFrom === apiTo)

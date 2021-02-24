@@ -1,7 +1,7 @@
 import React from "react";
-import { CompilerApi, ScriptKind, ScriptTarget, compilerVersionCollection, CompilerPackageNames } from "../compiler";
-import { OptionsState, TreeMode } from "../types";
+import { CompilerApi, CompilerPackageNames, compilerVersionCollection, ScriptKind, ScriptTarget } from "../compiler";
 import { css as cssConstants } from "../constants";
+import { OptionsState, TreeMode } from "../types";
 import { EnumUtils } from "../utils";
 import { ExternalLink } from "./ExternalLink";
 

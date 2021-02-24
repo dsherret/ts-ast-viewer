@@ -1,4 +1,4 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, selectNode, checkNode } from "../helpers";
+import { checkNode, forAllCompilerVersions, selectNode, setEditorText, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     // tests for issue #36

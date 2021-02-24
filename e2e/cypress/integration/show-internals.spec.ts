@@ -1,4 +1,4 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, checkNode, setShowInternals } from "../helpers";
+import { checkNode, forAllCompilerVersions, setEditorText, setShowInternals, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     describe(`should have internals hidden by default (${packageName})`, () => {

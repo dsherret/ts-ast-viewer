@@ -1,10 +1,10 @@
 import React from "react";
 import SplitPane from "react-split-pane";
-import * as components from "./components";
-import { Node, CompilerPackageNames, getDescendantAtRange, getStartSafe } from "./compiler";
-import { css as cssConstants } from "./constants";
-import { StoreState, OptionsState, ApiLoadingState } from "./types";
 import "./App.css";
+import { CompilerPackageNames, getDescendantAtRange, getStartSafe, Node } from "./compiler";
+import * as components from "./components";
+import { css as cssConstants } from "./constants";
+import { ApiLoadingState, OptionsState, StoreState } from "./types";
 
 export interface Props extends StoreState {
     onCodeChange: (compilerPackageName: CompilerPackageNames, code: string) => void;

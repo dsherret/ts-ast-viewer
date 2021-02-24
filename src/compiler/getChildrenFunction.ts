@@ -1,6 +1,6 @@
-import { Node, SourceFile } from "./CompilerApi";
 import { TreeMode } from "../types";
 import { assertNever } from "../utils";
+import { Node, SourceFile } from "./CompilerApi";
 
 export function getChildrenFunction(mode: TreeMode, sourceFile: SourceFile) {
     switch (mode) {

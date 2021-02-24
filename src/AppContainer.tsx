@@ -1,10 +1,10 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
-import { Node, getCompilerApi, hasLoadedCompilerApi, CompilerPackageNames, compilerVersionCollection } from "./compiler";
-import App from "./App";
 import * as actions from "./actions";
-import { StoreState, OptionsState, ApiLoadingState } from "./types";
+import App from "./App";
+import { CompilerPackageNames, compilerVersionCollection, getCompilerApi, hasLoadedCompilerApi, Node } from "./compiler";
 import { general as generalConstants } from "./constants";
+import { ApiLoadingState, OptionsState, StoreState } from "./types";
 import { debounce } from "./utils";
 
 export function mapStateToProps(state: StoreState) {

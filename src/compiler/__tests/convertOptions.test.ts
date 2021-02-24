@@ -1,5 +1,5 @@
-import { convertOptions } from "../convertOptions";
 import { CompilerApi } from "../CompilerApi";
+import { convertOptions } from "../convertOptions";
 
 function getCompilerApi(scriptKind: any, scriptTarget: any) {
     return {

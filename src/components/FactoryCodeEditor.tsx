@@ -1,11 +1,11 @@
+import * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
 import ReactMonacoEditorForTypes from "react-monaco-editor";
-import * as monacoEditorForTypes from "monaco-editor";
-import { Spinner } from "./Spinner";
+import { CompilerPackageNames, FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler";
 import { css as cssConstants } from "../constants";
 import { CompilerState } from "../types";
-import { FactoryCodeGenerator, CompilerPackageNames, getFactoryCodeGenerator } from "../compiler";
 import { CodeEditor } from "./CodeEditor";
+import { Spinner } from "./Spinner";
 
 // todo: Move out getting the code generation function from this class (need to start loading it sooner than what's done here)
 

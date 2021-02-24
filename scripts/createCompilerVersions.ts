@@ -1,6 +1,6 @@
-import { Project, VariableDeclarationKind, SyntaxKind, NewLineKind, StructureKind } from "ts-morph";
-import { getCompilerVersions } from "./getCompilerVersions";
 import * as os from "os";
+import { NewLineKind, Project, StructureKind, SyntaxKind, VariableDeclarationKind } from "ts-morph";
+import { getCompilerVersions } from "./getCompilerVersions";
 
 // get versions
 const versions = getCompilerVersions();

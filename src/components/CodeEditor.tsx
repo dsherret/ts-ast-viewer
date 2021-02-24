@@ -1,9 +1,9 @@
+import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
 import type ReactMonacoEditorForTypes from "react-monaco-editor";
 import type { EditorDidMount } from "react-monaco-editor";
-import type * as monacoEditorForTypes from "monaco-editor";
-import { Spinner } from "./Spinner";
 import { LineAndColumnComputer } from "../utils";
+import { Spinner } from "./Spinner";
 
 export interface CodeEditorProps {
     id?: string;

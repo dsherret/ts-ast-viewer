@@ -1,15 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { ScriptTarget, ScriptKind, compilerVersionCollection } from "./compiler";
+import { createStore } from "redux";
 import AppContainer from "./AppContainer";
-import { unregisterServiceWorker } from "./registerServiceWorker";
-import "./index.css";
-import "./external/react-treeview.css";
+import { compilerVersionCollection, ScriptKind, ScriptTarget } from "./compiler";
 import "./external/react-splitpane.css";
-import { ApiLoadingState } from "./types";
+import "./external/react-treeview.css";
+import "./index.css";
 import { appReducer } from "./reducers";
+import { unregisterServiceWorker } from "./registerServiceWorker";
+import { ApiLoadingState } from "./types";
 import { StateSaver, UrlSaver } from "./utils";
 
 const initialScriptTarget: ScriptTarget = 6 /* Latest */;
@@ -32,7 +32,9 @@ const store = createStore(appReducer, {
 });
 
 ReactDOM.render(
-    <Provider store={store}><AppContainer /></Provider>,
+    <Provider store={store}>
+        <AppContainer />
+    </Provider>,
     document.getElementById("root") as HTMLElement,
 );
 

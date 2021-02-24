@@ -1,5 +1,5 @@
-import TreeView from "react-treeview";
 import React, { Component } from "react";
+import TreeView from "react-treeview";
 
 export interface LazyTreeViewState {
     collapsed: boolean;

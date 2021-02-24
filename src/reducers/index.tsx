@@ -1,8 +1,8 @@
 import { AllActions } from "../actions";
-import { StoreState, OptionsState } from "../types";
-import { createSourceFile, CompilerApi, convertOptions, CompilerPackageNames } from "../compiler";
-import { UrlSaver } from "../utils";
+import { CompilerApi, CompilerPackageNames, convertOptions, createSourceFile } from "../compiler";
 import { actions as actionNames } from "./../constants";
+import { OptionsState, StoreState } from "../types";
+import { UrlSaver } from "../utils";
 
 const urlSaver = new UrlSaver();
 

@@ -1,4 +1,4 @@
-import { forAllCompilerVersions, visitSite, setVersion, setEditorText, checkState } from "../helpers";
+import { checkState, forAllCompilerVersions, setEditorText, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
     describe(`basic loading (${packageName})`, () => {

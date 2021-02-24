@@ -1,6 +1,6 @@
-import constants from "./constants";
 import { CompilerPackageNames, compilerVersionCollection } from "../../src/compiler";
 import { TreeMode } from "../../src/types";
+import constants from "./constants";
 
 let visited = false;
 export function visitSite() {

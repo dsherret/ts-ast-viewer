@@ -1,6 +1,6 @@
-import { Node, CompilerApi, CompilerPackageNames } from "../compiler";
+import { CompilerApi, CompilerPackageNames, Node } from "../compiler";
 import { actions as constants } from "../constants";
-import { OptionsState, ApiLoadingState } from "../types";
+import { ApiLoadingState, OptionsState } from "../types";
 
 export interface SetCode {
     type: constants.SET_CODE;

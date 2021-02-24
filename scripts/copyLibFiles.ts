@@ -1,9 +1,9 @@
 /* Copies the lib.d.ts files from node_modules into the src directory of the library for easy access */
-import * as glob from "glob";
+import { createMinifier } from "dts-minify";
 import * as fs from "fs";
+import * as glob from "glob";
 import * as path from "path";
 import * as ts from "typescript";
-import { createMinifier } from "dts-minify";
 import { getCompilerVersions } from "./getCompilerVersions";
 
 const versions = getCompilerVersions();
