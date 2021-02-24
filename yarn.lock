@@ -4042,10 +4042,10 @@ dotenv@8.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
-dts-minify@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/dts-minify/-/dts-minify-0.2.0.tgz#057a212d5cfd38c0375955e4c1f040b82601a1e8"
-  integrity sha512-erQo5DSQPb1HK4q0N5CHC9U7AYCmE1o9KD6T/waErFwUc7JG4nGmW0d+eD5ZFgB9M+/DSx6FJbkqKWe6aPluSw==
+dts-minify@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/dts-minify/-/dts-minify-0.2.3.tgz#c70cf307cbcf74ad11d9ec80a0e239f6dde1b5c9"
+  integrity sha512-njGBE4h3j6QnDxT8cxKhNHLvk/e5C4jM2OKgmX1oBJk/DI13LxtjJz2NbUNcNciDMLUUNCzUxEfuKl0Df95rtw==
 
 duplexer@^0.1.1:
   version "0.1.2"
@@ -10684,11 +10684,6 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-"typescript-3.1.6@npm:typescript@3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
-  integrity sha512-tDMYfVtvpb96msS1lDX9MEdHrW4yOuZ4Kdc4Him9oU796XldPYF/t2+uKoX0BBa0hXXwDlqYQbXY5Rzjzc5hBA==
-
 "typescript-3.2.4@npm:typescript@3.2.4":
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.4.tgz#c585cb952912263d915b462726ce244ba510ef3d"
@@ -10735,10 +10730,15 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.5.tgz#ae9dddfd1069f1cb5beb3ef3b2170dd7c1332389"
   integrity sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
 
-"typescript-4.1.2@npm:typescript@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.2.tgz#6369ef22516fe5e10304aae5a5c4862db55380e9"
-  integrity sha512-thGloWsGH3SOxv1SoY7QojKi0tc+8FnOmiarEGMbd/lar7QOEd3hvlx3Fp5y6FlDUGl9L+pd4n2e+oToGMmhRQ==
+"typescript-4.1.5@npm:typescript@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"
+  integrity sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
+
+"typescript-4.2.2@npm:typescript@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.2.tgz#1450f020618f872db0ea17317d16d8da8ddb8c4c"
+  integrity sha512-tbb+NVrLfnsJy3M59lsDgrzWIflR4d4TIUjz+heUnHZwdF7YsrMTKoRERiIvI2lvBG95dfpLxB21WZhys1bgaQ==
 
 unc-path-regex@^0.1.2:
   version "0.1.2"

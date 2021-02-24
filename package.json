@@ -49,7 +49,6 @@
     "react-treeview": "^0.4.7",
     "redux": "^4.0.5",
     "typescript": "3.9.7",
-    "typescript-3.1.6": "npm:typescript@3.1.6",
     "typescript-3.2.4": "npm:typescript@3.2.4",
     "typescript-3.3.3": "npm:typescript@3.3.3",
     "typescript-3.4.5": "npm:typescript@3.4.5",
@@ -59,7 +58,8 @@
     "typescript-3.8.3": "npm:typescript@3.8.3",
     "typescript-3.9.7": "npm:typescript@3.9.7",
     "typescript-4.0.5": "npm:typescript@4.0.5",
-    "typescript-4.1.2": "npm:typescript@4.1.2"
+    "typescript-4.1.5": "npm:typescript@4.1.5",
+    "typescript-4.2.2": "npm:typescript@4.2.2"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",
@@ -73,7 +73,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-treeview": "^0.4.2",
     "cross-env": "^7.0.2",
-    "dts-minify": "^0.2.0",
+    "dts-minify": "^0.2.3",
     "gh-pages": "^3.1.0",
     "glob": "^7.1.6",
     "monaco-editor-webpack-plugin": "^2.0.0",
