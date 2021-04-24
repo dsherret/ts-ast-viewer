@@ -34,7 +34,7 @@ export class Options extends React.Component<OptionsProps, { showOptionsMenu: bo
                     {this.getShowFactoryCode()}
                     {this.getShowInternals()}
                     <div className="bottomLinks">
-                        <ExternalLink text="About" url="https://github.com/dsherret/ts-ast-viewer/tree/master/docs/about.md" />
+                        <ExternalLink text="About" url="https://github.com/dsherret/ts-ast-viewer/tree/main/docs/about.md" />
                         <span>&nbsp;|&nbsp;</span>
                         <ExternalLink text="View on GitHub" url="https://github.com/dsherret/ts-ast-viewer" />
                     </div>
