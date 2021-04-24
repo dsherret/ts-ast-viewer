@@ -10,8 +10,6 @@ jobs:
   build:
     name: test ubuntu-latest
     runs-on: ubuntu-latest
-    env:
-      CI: true
     steps:
     - uses: actions/checkout@v2
     - name: Build
@@ -20,7 +18,7 @@ jobs:
         yarn add typescript-next@npm:typescript@next
         yarn updateCompilerFiles
         yarn test
-        yarn build
+        yarn predeploy
     # todo: re-enable in the future
     # - name: Test
     #   run: |
