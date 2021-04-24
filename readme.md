@@ -1,6 +1,6 @@
 ﻿# TypeScript AST Viewer
 
-[![Build Status](https://travis-ci.org/dsherret/ts-ast-viewer.svg?branch=master)](https://travis-ci.org/dsherret/ts-ast-viewer)
+[![CI](https://github.com/dsherret/ts-ast-viewer/workflows/CI/badge.svg)](https://github.com/dsherret/ts-ast-viewer/actions?query=workflow%3ACI)
 
 Source code for https://ts-ast-viewer.com
 

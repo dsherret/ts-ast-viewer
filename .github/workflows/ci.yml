@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # do this every day at 7AM UTC
+    - cron: "0 7 * * *"
+jobs:
+  build:
+    name: test ubuntu-latest
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: |
+        yarn install
+        yarn add typescript-next@npm:typescript@next
+        yarn updateCompilerFiles
+        yarn test
+        yarn build
+    # todo: re-enable in the future
+    # - name: Test
+    #   run: |
+    #     - npm run cypress:ci
+    #     # kill anything running in the background
+    #     - kill $(jobs -p) || true
+    - name: Deploy
+      if: github.ref == 'refs/heads/main'
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      with:
+        branch: gh-pages
+        folder: build

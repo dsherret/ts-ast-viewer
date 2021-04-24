@@ -6,7 +6,6 @@ import AppContainer from "./AppContainer";
 import { compilerVersionCollection, ScriptKind, ScriptTarget } from "./compiler";
 import "./external/react-splitpane.css";
 import "./external/react-treeview.css";
-import "./index.css";
 import { appReducer } from "./reducers";
 import { unregisterServiceWorker } from "./registerServiceWorker";
 import { ApiLoadingState } from "./types";
