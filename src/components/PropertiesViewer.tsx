@@ -1,7 +1,7 @@
 import CircularJson from "circular-json";
 import React from "react";
 import { CommentRange, CompilerApi, CompilerPackageNames, getPublicApiInfo, getStartSafe, Node, PublicApiInfo, ReadonlyMap, Signature, SourceFile, Symbol, Type,
-    TypeChecker } from "../compiler";
+    TypeChecker, FlowNode } from "../compiler";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
 import { ArrayUtils, getEnumFlagNames, getSyntaxKindName } from "../utils";
@@ -100,6 +100,10 @@ function getBindingSection(context: Context, selectedNode: Node, typeChecker: Ty
             <div id={cssConstants.properties.signature.id}>
                 {getForSignature(context, selectedNode, typeChecker)}
             </div>
+            <h2>FlowNode</h2>
+            <div>
+                {getForFlowNode(context, selectedNode, typeChecker)}
+            </div>
         </>
     );
 }
@@ -188,6 +192,14 @@ function getForSignature(context: Context, node: Node, typeChecker: TypeChecker)
         return (<>[None]</>);
 
     return getTreeView(context, signature, "Signature");
+}
+
+function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) {
+    const nodeWithFlowNode = node as Node & { flowNode?: FlowNode };
+    if (nodeWithFlowNode.flowNode == null)
+        return (<>[None]</>);
+
+    return getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode");
 }
 
 function getOrReturnError<T>(getFunc: () => T): T | string {
@@ -303,6 +315,8 @@ function getCustomValueDiv(context: Context, key: string, value: any, parent: an
             return getEnumFlagElement(context.api.TypeFlags, value);
         if (isTsSymbol(parent) && key === "flags")
             return getEnumFlagElement(context.api.SymbolFlags, value);
+        if (isFlowNode(parent) && key === "flags")
+            return getEnumFlagElement(context.api.FlowFlags, value);
         return CircularJson.stringify(value);
     }
 }
@@ -448,6 +462,11 @@ function isTsSignature(value: any): value is Signature {
     if (value.declaration == null)
         return false;
     return isTsNode(value.declaration);
+}
+
+function isFlowNode(value: any): value is FlowNode {
+    // TODO: FlowStart does not have antecedent(s)
+    return value.antecedents != null || value.antecedent != null;
 }
 
 function getEnumFlagElement(enumObj: any, value: number) {

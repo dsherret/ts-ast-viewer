@@ -14,6 +14,7 @@ export interface CompilerApi {
     ObjectFlags: typeof ts.ObjectFlags;
     SymbolFlags: typeof ts.SymbolFlags;
     TypeFlags: typeof ts.TypeFlags;
+    FlowFlags: typeof ts.FlowFlags;
     tsAstViewer: {
         packageName: CompilerPackageNames;
         cachedSourceFiles: { [name: string]: SourceFile | undefined };
@@ -42,3 +43,4 @@ export type CompilerHost = ts.CompilerHost;
 export type ReadonlyMap<T> = ts.ReadonlyMap<T>;
 export type Iterator<T> = ts.Iterator<T>;
 export type CommentRange = ts.CommentRange;
+export type FlowNode = ts.FlowNode;
