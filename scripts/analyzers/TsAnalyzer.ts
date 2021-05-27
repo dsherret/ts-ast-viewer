@@ -1,4 +1,4 @@
-import { InterfaceDeclaration, Project, Symbol, ts, Type } from "ts-morph";
+import { Project, Symbol, ts, Type } from "ts-morph";
 
 export class TsAnalyzer {
     private readonly tsSymbol: Symbol;
@@ -7,7 +7,7 @@ export class TsAnalyzer {
         const project = new Project({ compilerOptions: { strictNullChecks: true } });
         const tsSourceFile = project.addSourceFileAtPath(`node_modules/${typeScriptModuleName}/lib/typescript.d.ts`);
 
-        this.tsSymbol = tsSourceFile.getNamespaceOrThrow("ts").getSymbolOrThrow();
+        this.tsSymbol = tsSourceFile.getModuleOrThrow("ts").getSymbolOrThrow();
     }
 
     getSymbolProperties() {
