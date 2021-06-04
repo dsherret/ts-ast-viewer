@@ -1,7 +1,7 @@
 import CircularJson from "circular-json";
-import React from "react";
-import { CommentRange, CompilerApi, CompilerPackageNames, getPublicApiInfo, getStartSafe, Node, PublicApiInfo, ReadonlyMap, Signature, SourceFile, Symbol, Type,
-    TypeChecker, FlowNode } from "../compiler";
+import React, { useEffect, useState } from "react";
+import { CommentRange, CompilerApi, CompilerPackageNames, FlowNode, getPublicApiInfo, getStartSafe, Node, PublicApiInfo, ReadonlyMap, Signature, SourceFile,
+    Symbol, Type, TypeChecker } from "../compiler";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
 import { ArrayUtils, getEnumFlagNames, getSyntaxKindName } from "../utils";
@@ -18,64 +18,42 @@ export interface PropertiesViewerProps {
     showInternals: boolean;
 }
 
-export interface PropertiesViewerState {
-    publicApiInfo: PublicApiInfo | undefined | false;
-    lastCompilerPackageName: CompilerPackageNames | undefined;
-}
+export function PropertiesViewer(props: PropertiesViewerProps) {
+    const [publicApiInfo, setPublicApiInfo] = useState<PublicApiInfo | false | undefined>(undefined);
 
-export class PropertiesViewer extends React.Component<PropertiesViewerProps, PropertiesViewerState> {
-    constructor(props: PropertiesViewerProps) {
-        super(props);
-        this.state = {
-            publicApiInfo: undefined,
-            lastCompilerPackageName: undefined,
-        };
-    }
+    useEffect(() => {
+        setPublicApiInfo(undefined);
 
-    render() {
-        this.updatePublicApiInfo();
-        const { selectedNode, sourceFile, bindingEnabled, bindingTools } = this.props;
-        const context: Context = {
-            api: this.props.compiler.api,
-            publicApiInfo: this.state.publicApiInfo,
-            showInternals: this.props.showInternals,
-            sourceFile,
-        };
+        getPublicApiInfo(props.compiler.packageName).then(publicApiInfo => {
+            setPublicApiInfo(publicApiInfo);
+        }).catch(err => {
+            console.error(err);
+            setPublicApiInfo(false);
+        });
+    }, [props.compiler.packageName]);
 
-        if (this.state.publicApiInfo == null)
-            return <Spinner backgroundColor="#1e1e1e" />;
+    const { selectedNode, sourceFile, bindingEnabled, bindingTools } = props;
+    const context: Context = {
+        api: props.compiler.api,
+        publicApiInfo,
+        showInternals: props.showInternals,
+        sourceFile,
+    };
 
-        return (
-            <div className="propertiesViewer">
-                <div className="container">
-                    <h2>Node</h2>
-                    <div id={cssConstants.properties.node.id}>
-                        {getForSelectedNode(context, selectedNode)}
-                    </div>
-                    {bindingEnabled && getBindingSection(context, selectedNode, bindingTools().typeChecker)}
+    if (publicApiInfo == null)
+        return <Spinner backgroundColor="#1e1e1e" />;
+
+    return (
+        <div className="propertiesViewer">
+            <div className="container">
+                <h2>Node</h2>
+                <div id={cssConstants.properties.node.id}>
+                    {getForSelectedNode(context, selectedNode)}
                 </div>
+                {bindingEnabled && getBindingSection(context, selectedNode, bindingTools().typeChecker)}
             </div>
-        );
-    }
-
-    private updatePublicApiInfo() {
-        if (this.state.lastCompilerPackageName === this.props.compiler.packageName)
-            return;
-
-        // todo: how to not do this in a render method? I'm not a react or web person
-        setTimeout(() => {
-            this.setState({
-                lastCompilerPackageName: this.props.compiler.packageName,
-            });
-
-            getPublicApiInfo(this.props.compiler.packageName).then(publicApiInfo => {
-                this.setState({ publicApiInfo });
-            }).catch(err => {
-                console.error(err);
-                this.setState({ publicApiInfo: false });
-            });
-        }, 0);
-    }
+        </div>
+    );
 }
 
 interface Context {

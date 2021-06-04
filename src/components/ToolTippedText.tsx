@@ -1,31 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 
 export interface ToolTippedTextProps {
     text: string;
+    children: React.ReactNode;
 }
 
 // adapted from https://codesandbox.io/s/XopkqJ5oV
-export class ToolTippedText extends React.Component<ToolTippedTextProps, { isHovering: boolean }> {
-    constructor(props: ToolTippedTextProps) {
-        super(props);
-        this.state = { isHovering: false };
-        this.onMouseHoverChanged = this.onMouseHoverChanged.bind(this);
+export function ToolTippedText(props: ToolTippedTextProps) {
+    const [isHovering, setIsHovering] = useState(false);
+
+    return (
+        <div className="toolTippedText" onMouseEnter={onMouseHoverChanged} onMouseLeave={onMouseHoverChanged}>
+            <div className="titleText">{props.text}</div>
+            {isHovering && getToolTip()}
+        </div>
+    );
+
+    function onMouseHoverChanged() {
+        setIsHovering(!isHovering);
     }
 
-    render() {
-        return (
-            <div className="toolTippedText" onMouseEnter={this.onMouseHoverChanged} onMouseLeave={this.onMouseHoverChanged}>
-                <div className="titleText">{this.props.text}</div>
-                {this.state.isHovering && this.getToolTip()}
-            </div>
-        );
-    }
-
-    private onMouseHoverChanged() {
-        this.setState({ isHovering: !this.state.isHovering });
-    }
-
-    private getToolTip() {
-        return <div className="tooltipText">{this.props.children}</div>;
+    function getToolTip() {
+        return <div className="tooltipText">{props.children}</div>;
     }
 }

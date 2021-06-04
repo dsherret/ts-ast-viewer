@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import TreeView from "react-treeview";
 
 export interface LazyTreeViewState {
@@ -11,23 +11,12 @@ export interface LazyTreeViewProps {
     getChildren: () => JSX.Element;
 }
 
-export class LazyTreeView extends Component<LazyTreeViewProps, LazyTreeViewState> {
-    constructor(props: LazyTreeViewProps) {
-        super(props);
-        this.state = {
-            collapsed: props.defaultCollapsed,
-        };
-        this.toggleState = this.toggleState.bind(this);
-    }
+export function LazyTreeView(props: LazyTreeViewProps) {
+    const [isCollapsed, setIsCollapsed] = useState(props.defaultCollapsed);
 
-    render() {
-        if (this.state.collapsed)
-            return (<TreeView nodeLabel={this.props.nodeLabel} collapsed={true} onClick={this.toggleState} />);
-        else
-            return (<TreeView nodeLabel={this.props.nodeLabel} collapsed={false} onClick={this.toggleState}>{this.props.getChildren()}</TreeView>);
-    }
+    return (<TreeView nodeLabel={props.nodeLabel} collapsed={isCollapsed} onClick={toggleState}>{isCollapsed ? undefined : props.getChildren()}</TreeView>);
 
-    toggleState() {
-        this.setState({ collapsed: !this.state.collapsed });
+    function toggleState() {
+        setIsCollapsed(!isCollapsed);
     }
 }

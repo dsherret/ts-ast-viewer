@@ -49,11 +49,11 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             reactMonacoEditorPromise.then(editor => {
                 this.setState({ editorComponent: editor.default });
             }).catch(err => {
-                console.log(err);
+                console.error(err);
                 this.setState({ editorComponent: false });
             });
         }).catch(err => {
-            console.log(err);
+            console.error(err);
             this.setState({ editorComponent: false });
         });
     }

@@ -1,5 +1,6 @@
 export * from "./ArrayUtils";
 export * from "./assertNever";
+export * from "./Box";
 export * from "./createHashSet";
 export * from "./debounce";
 export * from "./EnumUtils";
