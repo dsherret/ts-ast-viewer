@@ -1,19 +1,14 @@
-import React from "react";
+import { useAppContext } from "AppContext";
 import SplitPane from "react-split-pane";
 import "./App.css";
-import { CompilerPackageNames, getDescendantAtRange, getStartSafe, Node } from "./compiler";
+import { getDescendantAtRange, getStartSafe } from "./compiler";
 import * as components from "./components";
 import { css as cssConstants } from "./constants";
-import { ApiLoadingState, OptionsState, StoreState } from "./types";
+import { ApiLoadingState } from "./types";
 
-export interface Props extends StoreState {
-    onCodeChange: (compilerPackageName: CompilerPackageNames, code: string) => void;
-    onNodeChange: (node: Node) => void;
-    onOptionsChange: (compilerPackageName: CompilerPackageNames, options: Partial<OptionsState>) => void;
-}
-
-export default function App(props: Props) {
-    const compiler = props.compiler;
+export function App() {
+    const { state, dispatch } = useAppContext();
+    const compiler = state.compiler;
 
     return (
         <div className="App">
@@ -22,8 +17,12 @@ export default function App(props: Props) {
                     <h2 id="title">TypeScript AST Viewer</h2>
                     <components.Options
                         api={compiler == null ? undefined : compiler.api}
-                        options={props.options}
-                        onChange={options => props.onOptionsChange(options.compilerPackageName || props.options.compilerPackageName, options)}
+                        options={state.options}
+                        onChange={options =>
+                            dispatch({
+                                type: "SET_OPTIONS",
+                                options,
+                            })}
                     />
                 </header>
                 <SplitPane split="vertical" minSize={50} defaultSize="33%">
@@ -35,10 +34,10 @@ export default function App(props: Props) {
     );
 
     function getCodeHighlightRange() {
-        if (props.compiler == null)
+        if (compiler == null)
             return undefined;
 
-        const { selectedNode, sourceFile } = props.compiler;
+        const { selectedNode, sourceFile } = compiler;
         return selectedNode === sourceFile ? undefined : {
             start: getStartSafe(selectedNode, sourceFile),
             end: selectedNode.end,
@@ -46,7 +45,7 @@ export default function App(props: Props) {
     }
 
     function getCodeEditorArea() {
-        if (props.options.showFactoryCode) {
+        if (state.options.showFactoryCode) {
             return (
                 <SplitPane split="horizontal" defaultSize={window.innerHeight * 0.70}>
                     {getCodeEditor()}
@@ -59,11 +58,11 @@ export default function App(props: Props) {
         }
 
         function getFactoryCodeEditor() {
-            if (compiler == null || props.apiLoadingState === ApiLoadingState.Loading)
+            if (compiler == null || state.apiLoadingState === ApiLoadingState.Loading)
                 return <components.Spinner />;
 
             return (
-                <components.ErrorBoundary getResetHash={() => props.code}>
+                <components.ErrorBoundary getResetHash={() => state.code}>
                     <components.FactoryCodeEditor compiler={compiler} />
                 </components.ErrorBoundary>
             );
@@ -73,19 +72,19 @@ export default function App(props: Props) {
             return (
                 <components.CodeEditor
                     id={cssConstants.mainCodeEditor.id}
-                    onChange={code => props.onCodeChange(props.options.compilerPackageName, code)}
+                    onChange={code => dispatch({ type: "SET_CODE", code })}
                     onClick={range => {
-                        if (props.compiler == null)
+                        if (compiler == null)
                             return;
                         const descendant = getDescendantAtRange(
-                            props.options.treeMode,
-                            props.compiler.sourceFile,
+                            state.options.treeMode,
+                            compiler.sourceFile,
                             range,
-                            props.compiler.api,
+                            compiler.api,
                         );
-                        props.onNodeChange(descendant);
+                        dispatch({ type: "SET_SELECTED_NODE", node: descendant });
                     }}
-                    text={props.code}
+                    text={state.code}
                     highlight={getCodeHighlightRange()}
                     showInfo={true}
                     renderWhiteSpace={true}
@@ -96,9 +95,9 @@ export default function App(props: Props) {
     }
 
     function getCompilerDependentPanes() {
-        if (compiler == null || props.apiLoadingState === ApiLoadingState.Loading)
+        if (compiler == null || state.apiLoadingState === ApiLoadingState.Loading)
             return <components.Spinner />;
-        else if (props.apiLoadingState === ApiLoadingState.Error)
+        else if (state.apiLoadingState === ApiLoadingState.Error)
             return <div className={"errorMessage"}>Error loading compiler API. Please refresh the page to try again.</div>;
 
         return (
@@ -108,16 +107,16 @@ export default function App(props: Props) {
                         api={compiler.api}
                         selectedNode={compiler.selectedNode}
                         sourceFile={compiler.sourceFile}
-                        onSelectNode={node => props.onNodeChange(node)}
-                        mode={props.options.treeMode}
+                        onSelectNode={node => dispatch({ type: "SET_SELECTED_NODE", node })}
+                        mode={state.options.treeMode}
                     />
                     <components.PropertiesViewer
                         compiler={compiler}
                         selectedNode={compiler.selectedNode}
                         sourceFile={compiler.sourceFile}
                         bindingTools={compiler.bindingTools}
-                        bindingEnabled={props.options.bindingEnabled}
-                        showInternals={props.options.showInternals}
+                        bindingEnabled={state.options.bindingEnabled}
+                        showInternals={state.options.showInternals}
                     />
                 </SplitPane>
             </components.ErrorBoundary>

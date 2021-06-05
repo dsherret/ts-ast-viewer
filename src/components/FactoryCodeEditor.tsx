@@ -1,7 +1,6 @@
-import * as monacoEditorForTypes from "monaco-editor";
+import type * as monacoEditorForTypes from "monaco-editor";
 import React, { useEffect, useState } from "react";
-import ReactMonacoEditorForTypes from "react-monaco-editor";
-import { CompilerPackageNames, FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler";
+import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler";
 import { CompilerState } from "../types";
 import { Box } from "../utils";
 import { CodeEditor } from "./CodeEditor";
@@ -11,12 +10,6 @@ import { Spinner } from "./Spinner";
 
 export interface FactoryCodeEditorProps {
     compiler: CompilerState;
-}
-
-export interface FactoryCodeEditorState {
-    editorComponent: (typeof ReactMonacoEditorForTypes) | undefined | false;
-    factoryCodeGenerator: FactoryCodeGenerator | false | undefined;
-    lastCompilerPackageName: CompilerPackageNames | undefined;
 }
 
 export function FactoryCodeEditor(props: FactoryCodeEditorProps) {

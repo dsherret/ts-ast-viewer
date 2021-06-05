@@ -1,4 +1,4 @@
-import { CompilerApi, CompilerPackageNames, Node } from "../compiler";
+import { CompilerApi, Node } from "../compiler";
 import { actions as constants } from "../constants";
 import { ApiLoadingState, OptionsState } from "../types";
 
@@ -28,14 +28,12 @@ export function setApiLoadingState(loadingState: ApiLoadingState): SetApiLoading
 
 export interface RefreshSourceFile {
     type: constants.REFRESH_SOURCEFILE;
-    compilerPackageName: CompilerPackageNames;
     api: CompilerApi;
 }
 
-export function refreshSourceFile(compilerPackageName: CompilerPackageNames, api: CompilerApi): RefreshSourceFile {
+export function refreshSourceFile(api: CompilerApi): RefreshSourceFile {
     return {
         type: constants.REFRESH_SOURCEFILE,
-        compilerPackageName,
         api,
     };
 }

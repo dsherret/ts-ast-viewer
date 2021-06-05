@@ -6,10 +6,7 @@ import { UrlSaver } from "../utils";
 
 const urlSaver = new UrlSaver();
 
-export function appReducer(state: StoreState | undefined, action: AllActions): StoreState {
-    if (state == null)
-        throw new Error("State was undefined. Ensure it never is.");
-
+export function appReducer(state: StoreState, action: AllActions): StoreState {
     switch (action.type) {
         case actionNames.SET_SELECTED_NODE: {
             if (state.compiler == null)
@@ -34,7 +31,7 @@ export function appReducer(state: StoreState | undefined, action: AllActions): S
                 ...state,
                 options: convertOptions(state.compiler == null ? undefined : state.compiler.api, action.api, state.options),
             };
-            fillNewSourceFileState(action.compilerPackageName, action.api, newState, state.code, state.options);
+            fillNewSourceFileState(newState.options.compilerPackageName, action.api, newState, state.code, state.options);
             urlSaver.updateUrl(state.code);
             return newState;
         }

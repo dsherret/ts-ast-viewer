@@ -1,7 +1,7 @@
 import CircularJson from "circular-json";
 import React, { useEffect, useState } from "react";
-import { CommentRange, CompilerApi, CompilerPackageNames, FlowNode, getPublicApiInfo, getStartSafe, Node, PublicApiInfo, ReadonlyMap, Signature, SourceFile,
-    Symbol, Type, TypeChecker } from "../compiler";
+import { CommentRange, CompilerApi, FlowNode, getPublicApiInfo, getStartSafe, Node, PublicApiInfo, ReadonlyMap, Signature, SourceFile, Symbol, Type,
+    TypeChecker } from "../compiler";
 import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
 import { ArrayUtils, getEnumFlagNames, getSyntaxKindName } from "../utils";

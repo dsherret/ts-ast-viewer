@@ -1,9 +1,5 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import TreeView from "react-treeview";
-
-export interface LazyTreeViewState {
-    collapsed: boolean;
-}
 
 export interface LazyTreeViewProps {
     defaultCollapsed: boolean;
