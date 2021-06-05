@@ -15,7 +15,7 @@ jobs:
     - name: Build
       run: |
         yarn install
-        yarn add typescript-next@npm:typescript@next
+       (cd site && yarn add typescript-next@npm:typescript@next)
         yarn updateCompilerFiles
         yarn test
         yarn predeploy

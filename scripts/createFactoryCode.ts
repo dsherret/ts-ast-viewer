@@ -5,7 +5,7 @@ import { generateCode } from "ts-factory-code-generator-generator";
 import { getCompilerVersions } from "./getCompilerVersions";
 
 const versions = getCompilerVersions();
-const factoryCodeDir = "./src/resources/factoryCode/";
+const factoryCodeDir = "./site/src/resources/factoryCode/";
 
 glob(`${factoryCodeDir}/*.ts`, (err, filesToDelete) => {
     for (const filePath of filesToDelete)

@@ -6,7 +6,7 @@ import { TsAnalyzer } from "./analyzers";
 import { getCompilerVersions } from "./getCompilerVersions";
 
 const versions = getCompilerVersions();
-const publicApiInfoDir = "./src/resources/publicApiInfo/";
+const publicApiInfoDir = "./site/src/resources/publicApiInfo/";
 
 glob(`${publicApiInfoDir}/*.ts`, (err, filesToDelete) => {
     for (const filePath of filesToDelete)

@@ -9,11 +9,11 @@ import { getCompilerVersions } from "./getCompilerVersions";
 const versions = getCompilerVersions();
 const minifier = createMinifier(ts);
 
-glob("./src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
+glob("./site/src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
     for (const filePath of filesToDelete)
         fs.unlinkSync(filePath);
 
-    const libFilesDir = "./src/resources/libFiles/";
+    const libFilesDir = "./site/src/resources/libFiles/";
     for (const version of versions) {
         glob(`./node_modules/${version.name}/lib/lib*.d.ts`, (err, filePaths) => {
             const libVersionDir = libFilesDir + version.name + "/";

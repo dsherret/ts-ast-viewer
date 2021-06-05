@@ -22,8 +22,8 @@ yarn cypress
 
 ### Adding a new TypeScript version
 
-1. Update _package.json_ with new version.
-2. Run `yarn updateCompilerFiles`.
+1. Update _sites/package.json_ with new version.
+2. Run `yarn updateCompilerFiles` in the root directory.
 
 ### Factory Code Generation
 

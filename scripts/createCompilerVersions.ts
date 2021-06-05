@@ -13,7 +13,7 @@ const project = new Project({
 });
 
 // update compiler types file
-const compilerVersionsFile = project.addSourceFileAtPath("./src/compiler/compilerVersions.ts");
+const compilerVersionsFile = project.addSourceFileAtPath("./site/src/compiler/compilerVersions.ts");
 compilerVersionsFile.removeText();
 
 compilerVersionsFile.addStatements([writer => {
