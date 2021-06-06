@@ -1,5 +1,4 @@
-import { CompilerPackageNames, compilerVersionCollection } from "../../src/compiler";
-import { TreeMode } from "../../src/types";
+import { CompilerPackageNames, compilerVersionCollection, TreeMode } from "@ts-ast-viewer/shared";
 import constants from "./constants";
 
 let visited = false;
@@ -142,7 +141,7 @@ export interface Node {
     start?: number;
     isBound?: boolean;
     /** test internal property */
-    haveScriptKindInternalProperty?: boolean;
+    haveInternalProperties?: boolean;
 }
 
 export function checkNode(node: Node) {
@@ -175,9 +174,9 @@ export function checkNode(node: Node) {
             getContainerElement("id").should(node.isBound ? "exist" : "not.exist");
         });
     }
-    if (node.haveScriptKindInternalProperty != null) {
-        it("should have the script kind internal property", () => {
-            getContainerElement("scriptKind").should(node.haveScriptKindInternalProperty ? "exist" : "not.exist");
+    if (node.haveInternalProperties != null) {
+        it(`should ${node.haveInternalProperties ? "have" : "not have"} internal properties`, () => {
+            getContainerElement("transformFlags").should(node.haveInternalProperties ? "exist" : "not.exist");
         });
     }
 

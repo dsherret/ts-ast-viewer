@@ -11,16 +11,14 @@
     "arrowFunction.useParentheses": "preferNone",
     "tryStatement.nextControlFlowPosition": "sameLine"
   },
-  "json": {
-    "indentWidth": 2
-  },
   "includes": ["**/*.{ts,tsx,js,jsx,json,md,css}"],
   "excludes": [
     "**/node_modules",
     "**/*-lock.json",
     "public/vs",
-    "build",
-    "src/resources",
+    "shared/dist",
+    "site/build",
+    "site/src/resources",
     "CHANGELOG.md"
   ],
   "plugins": [

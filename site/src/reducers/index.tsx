@@ -1,5 +1,6 @@
+import { CompilerPackageNames } from "@ts-ast-viewer/shared";
 import { AllActions } from "../actions";
-import { CompilerApi, CompilerPackageNames, convertOptions, createSourceFile } from "../compiler";
+import { CompilerApi, convertOptions, createSourceFile } from "../compiler";
 import { actions as actionNames } from "./../constants";
 import { OptionsState, StoreState } from "../types";
 import { UrlSaver } from "../utils";

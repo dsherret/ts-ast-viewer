@@ -25,6 +25,7 @@
     "predeploy": "CI=false && cross-env NODE_OPTIONS=--max_old_space_size=4096 && npm run build"
   },
   "dependencies": {
+    "@ts-ast-viewer/shared": "^1.0.0",
     "circular-json": "^0.5.9",
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.24.0",

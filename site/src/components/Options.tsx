@@ -1,7 +1,7 @@
+import { CompilerPackageNames, compilerVersionCollection, constants, TreeMode } from "@ts-ast-viewer/shared";
 import React, { useState } from "react";
-import { CompilerApi, CompilerPackageNames, compilerVersionCollection, ScriptKind, ScriptTarget } from "../compiler";
-import { css as cssConstants } from "../constants";
-import { OptionsState, TreeMode } from "../types";
+import { CompilerApi, ScriptKind, ScriptTarget } from "../compiler";
+import { OptionsState } from "../types";
 import { EnumUtils } from "../utils";
 import { ExternalLink } from "./ExternalLink";
 
@@ -14,8 +14,8 @@ export interface OptionsProps {
 export function Options(props: OptionsProps) {
     const [showOptionsMenu, setShowOptionsMenu] = useState(false);
 
-    return <div id={cssConstants.options.id}>
-        <div id={cssConstants.options.buttonId} onClick={() => setShowOptionsMenu(!showOptionsMenu)}>
+    return <div id={constants.css.options.id}>
+        <div id={constants.css.options.buttonId} onClick={() => setShowOptionsMenu(!showOptionsMenu)}>
             Options
         </div>
         <div className="menuLine" hidden={!showOptionsMenu} />
@@ -38,7 +38,7 @@ export function Options(props: OptionsProps) {
     function getCompilerVersions() {
         const selection = (
             <select
-                id={cssConstants.options.compilerVersionSelectionId}
+                id={constants.css.options.compilerVersionSelectionId}
                 value={props.options.compilerPackageName}
                 onChange={event => onChange({ compilerPackageName: event.target.value as CompilerPackageNames })}
             >
@@ -51,7 +51,7 @@ export function Options(props: OptionsProps) {
     function getTreeMode() {
         const selection = (
             <select
-                id={cssConstants.options.treeModeId}
+                id={constants.css.options.treeModeId}
                 value={props.options.treeMode}
                 onChange={event => onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}
             >
@@ -81,7 +81,7 @@ export function Options(props: OptionsProps) {
         const selection = (
             <div>
                 <input
-                    id={cssConstants.options.bindingEnabledId}
+                    id={constants.css.options.bindingEnabledId}
                     type="checkbox"
                     checked={props.options.bindingEnabled}
                     onChange={event => onChange({ bindingEnabled: !!event.target.checked })}
@@ -95,7 +95,7 @@ export function Options(props: OptionsProps) {
         const selection = (
             <div>
                 <input
-                    id={cssConstants.options.showFactoryCodeId}
+                    id={constants.css.options.showFactoryCodeId}
                     type="checkbox"
                     checked={props.options.showFactoryCode}
                     onChange={event => onChange({ showFactoryCode: !!event.target.checked })}
@@ -109,7 +109,7 @@ export function Options(props: OptionsProps) {
         const selection = (
             <div>
                 <input
-                    id={cssConstants.options.showInternalsId}
+                    id={constants.css.options.showInternalsId}
                     type="checkbox"
                     checked={props.options.showInternals}
                     onChange={event => onChange({ showInternals: !!event.target.checked })}

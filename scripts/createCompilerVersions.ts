@@ -12,32 +12,24 @@ const project = new Project({
     },
 });
 
-// update compiler types file
-const compilerVersionsFile = project.addSourceFileAtPath("./site/src/compiler/compilerVersions.ts");
-compilerVersionsFile.removeText();
+// update shared compiler types file
+const sharedCompilerVersionsFile = project.addSourceFileAtPath("./shared/src/compilerVersions.generated.ts");
+sharedCompilerVersionsFile.removeText();
 
-compilerVersionsFile.addStatements([writer => {
+sharedCompilerVersionsFile.addStatements([writer => {
     writer.writeLine("// dprint-ignore-file")
-        .writeLine("/* Automatically maintained from package.json. Do not edit! */")
+        .writeLine("/* Automatically maintained from sites/package.json. Do not edit! */")
         .blankLine();
-}, {
-    kind: StructureKind.ImportDeclaration,
-    namedImports: ["Node", "CompilerApi"],
-    moduleSpecifier: "./CompilerApi",
-}, {
-    kind: StructureKind.ImportDeclaration,
-    namedImports: ["assertNever"],
-    moduleSpecifier: "../utils",
-}, {
-    kind: StructureKind.TypeAlias,
-    isExported: true,
-    name: "CompilerVersions",
-    type: versions.map(v => `"${v.version}"`).join(" | "),
 }, {
     kind: StructureKind.TypeAlias,
     isExported: true,
     name: "CompilerPackageNames",
     type: versions.map(v => `"${v.name}"`).join(" | "),
+}, {
+    kind: StructureKind.TypeAlias,
+    isExported: true,
+    name: "CompilerVersions",
+    type: versions.map(v => `"${v.version}"`).join(" | "),
 }, {
     kind: StructureKind.VariableStatement,
     isExported: true,
@@ -59,6 +51,29 @@ compilerVersionsFile.addStatements([writer => {
         },
         type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]",
     }],
+}]);
+sharedCompilerVersionsFile.saveSync();
+
+// update compiler types file
+const compilerVersionsFile = project.addSourceFileAtPath("./site/src/compiler/compilerVersions.generated.ts");
+compilerVersionsFile.removeText();
+
+compilerVersionsFile.addStatements([writer => {
+    writer.writeLine("// dprint-ignore-file")
+        .writeLine("/* Automatically maintained from package.json. Do not edit! */")
+        .blankLine();
+}, {
+    kind: StructureKind.ImportDeclaration,
+    namedImports: ["CompilerPackageNames", "CompilerVersions"],
+    moduleSpecifier: "@ts-ast-viewer/shared",
+}, {
+    kind: StructureKind.ImportDeclaration,
+    namedImports: ["Node", "CompilerApi"],
+    moduleSpecifier: "./CompilerApi",
+}, {
+    kind: StructureKind.ImportDeclaration,
+    namedImports: ["assertNever"],
+    moduleSpecifier: "../utils",
 }, {
     kind: StructureKind.Function,
     isExported: true,
@@ -169,4 +184,4 @@ compilerVersionsFile.addStatements([writer => {
     },
 }]);
 
-compilerVersionsFile.save();
+compilerVersionsFile.saveSync();

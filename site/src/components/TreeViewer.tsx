@@ -1,8 +1,7 @@
+import { constants, TreeMode } from "@ts-ast-viewer/shared";
 import React from "react";
 import TreeView from "react-treeview";
 import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler";
-import { css as cssConstants } from "../constants";
-import { TreeMode } from "../types";
 import { getSyntaxKindName } from "../utils";
 
 export interface TreeViewerProps {
@@ -18,12 +17,12 @@ export function TreeViewer(props: TreeViewerProps) {
     let i = 0;
 
     return (
-        <div id={cssConstants.treeViewer.id}>{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>
+        <div id={constants.css.treeViewer.id}>{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>
     );
 
     function renderNode(node: Node, getChildren: (node: Node) => (Node[])): JSX.Element {
         const children = getChildren(node);
-        const className = "nodeText" + (node === selectedNode ? " " + cssConstants.treeViewer.selectedNodeClass : "");
+        const className = "nodeText" + (node === selectedNode ? " " + constants.css.treeViewer.selectedNodeClass : "");
         const kindName = getSyntaxKindName(api, node.kind);
         const label = (<div onClick={() => onSelectNode(node)} className={className}>{kindName}</div>);
         if (children.length === 0) {

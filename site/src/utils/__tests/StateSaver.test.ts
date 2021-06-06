@@ -1,4 +1,4 @@
-import { TreeMode } from "../../types";
+import { TreeMode } from "@ts-ast-viewer/shared";
 import { EnumUtils } from "../EnumUtils";
 import { StateSaver } from "../StateSaver";
 

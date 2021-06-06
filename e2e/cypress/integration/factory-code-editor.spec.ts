@@ -15,8 +15,8 @@ forAllCompilerVersions(packageName => {
         });
 
         checkFactoryCode(`[
-  ts.createExpressionStatement(ts.createCall(
-    ts.createIdentifier("foo"),
+  factory.createExpressionStatement(factory.createCallExpression(
+    factory.createIdentifier("foo"),
     undefined,
     []
   ))

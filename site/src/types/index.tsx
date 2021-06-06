@@ -1,4 +1,5 @@
-import { CompilerApi, CompilerPackageNames, Node, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "../compiler";
+import { CompilerPackageNames, TreeMode } from "@ts-ast-viewer/shared";
+import { CompilerApi, Node, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "../compiler";
 
 export interface StoreState {
     code: string;
@@ -29,11 +30,6 @@ export interface OptionsState {
     bindingEnabled: boolean;
     showFactoryCode: boolean;
     showInternals: boolean;
-}
-
-export enum TreeMode {
-    forEachChild,
-    getChildren,
 }
 
 export enum ApiLoadingState {

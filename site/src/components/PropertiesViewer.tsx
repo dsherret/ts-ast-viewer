@@ -1,8 +1,8 @@
+import { constants } from "@ts-ast-viewer/shared";
 import CircularJson from "circular-json";
 import React, { useEffect, useState } from "react";
 import { CommentRange, CompilerApi, FlowNode, getPublicApiInfo, getStartSafe, Node, PublicApiInfo, ReadonlyMap, Signature, SourceFile, Symbol, Type,
     TypeChecker } from "../compiler";
-import { css as cssConstants } from "../constants";
 import { BindingTools, CompilerState } from "../types";
 import { ArrayUtils, getEnumFlagNames, getSyntaxKindName } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
@@ -47,7 +47,7 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
         <div className="propertiesViewer">
             <div className="container">
                 <h2>Node</h2>
-                <div id={cssConstants.properties.node.id}>
+                <div id={constants.css.properties.node.id}>
                     {getForSelectedNode(context, selectedNode)}
                 </div>
                 {bindingEnabled && getBindingSection(context, selectedNode, bindingTools().typeChecker)}
@@ -67,15 +67,15 @@ function getBindingSection(context: Context, selectedNode: Node, typeChecker: Ty
     return (
         <>
             <h2>Type</h2>
-            <div id={cssConstants.properties.type.id}>
+            <div id={constants.css.properties.type.id}>
                 {getForType(context, selectedNode, typeChecker)}
             </div>
             <h2>Symbol</h2>
-            <div id={cssConstants.properties.symbol.id}>
+            <div id={constants.css.properties.symbol.id}>
                 {getForSymbol(context, selectedNode, typeChecker)}
             </div>
             <h2>Signature</h2>
-            <div id={cssConstants.properties.signature.id}>
+            <div id={constants.css.properties.signature.id}>
                 {getForSignature(context, selectedNode, typeChecker)}
             </div>
             <h2>FlowNode</h2>

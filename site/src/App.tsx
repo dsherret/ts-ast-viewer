@@ -1,9 +1,9 @@
+import { constants } from "@ts-ast-viewer/shared";
 import { useAppContext } from "AppContext";
 import SplitPane from "react-split-pane";
 import "./App.css";
 import { getDescendantAtRange, getStartSafe } from "./compiler";
 import * as components from "./components";
-import { css as cssConstants } from "./constants";
 import { ApiLoadingState } from "./types";
 
 export function App() {
@@ -71,7 +71,7 @@ export function App() {
         function getCodeEditor() {
             return (
                 <components.CodeEditor
-                    id={cssConstants.mainCodeEditor.id}
+                    id={constants.css.mainCodeEditor.id}
                     onChange={code => dispatch({ type: "SET_CODE", code })}
                     onClick={range => {
                         if (compiler == null)

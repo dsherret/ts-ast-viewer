@@ -1,7 +1,6 @@
-import { css, general } from "../../src/constants";
+import { constants } from "@ts-ast-viewer/shared";
 
 export default {
     siteUrl: "http://localhost:3000",
-    css,
-    general,
+    ...constants,
 };

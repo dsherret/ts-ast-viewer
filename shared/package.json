@@ -1,0 +1,14 @@
+{
+  "name": "@ts-ast-viewer/shared",
+  "version": "1.0.0",
+  "author": "David Sherret",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo 'Ignored'"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  }
+}

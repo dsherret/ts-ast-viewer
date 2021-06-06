@@ -3,6 +3,7 @@
   "author": "David Sherret",
   "license": "MIT",
   "workspaces": [
+    "shared",
     "site",
     "e2e"
   ],

@@ -1,7 +1,7 @@
+import { constants } from "@ts-ast-viewer/shared";
 import type * as monacoEditorForTypes from "monaco-editor";
 import React, { useEffect, useState } from "react";
 import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler";
-import { css } from "../constants";
 import { CompilerState } from "../types";
 import { Box } from "../utils";
 import { CodeEditor } from "./CodeEditor";
@@ -34,7 +34,7 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
 
     return (
         <CodeEditor
-            id={css.factoryCodeEditor.id}
+            id={constants.css.factoryCodeEditor.id}
             editorDidMount={editorDidMount}
             text={getText()}
             readOnly={true}

@@ -1,8 +1,8 @@
+import { compilerVersionCollection, constants } from "@ts-ast-viewer/shared";
 import { AllActions } from "actions";
 import React, { useEffect, useReducer } from "react";
 import * as actions from "./actions";
-import { compilerVersionCollection, getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler";
-import { general as generalConstants } from "./constants";
+import { getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler";
 import { appReducer } from "./reducers";
 import { ApiLoadingState, StoreState } from "./types";
 import { sleep, StateSaver, UrlSaver } from "./utils";
@@ -54,7 +54,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
                 if (changeLoadingState)
                     dispatch(actions.setApiLoadingState(ApiLoadingState.Loading));
                 else
-                    await sleep(generalConstants.sourceFileRefreshDelay); // debounce
+                    await sleep(constants.general.sourceFileRefreshDelay); // debounce
 
                 if (abortSignal.aborted)
                     return;

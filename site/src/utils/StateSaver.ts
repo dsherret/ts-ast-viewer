@@ -1,4 +1,4 @@
-import { TreeMode } from "../types";
+import { TreeMode } from "@ts-ast-viewer/shared";
 
 export interface VersionedState {
     version: 1 | 2 | 3;

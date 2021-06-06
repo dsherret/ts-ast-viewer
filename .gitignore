@@ -4,4 +4,6 @@ yarn-debug.log*
 yarn-error.log*
 *.js.map
 .vs
+shared/dist
 site/build
+tsconfig.tsbuildinfo

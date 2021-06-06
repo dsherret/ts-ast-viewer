@@ -1,4 +1,4 @@
-import { TreeMode } from "../../../src/types";
+import { TreeMode } from "@ts-ast-viewer/shared";
 import { checkState, forAllCompilerVersions, setEditorText, setTreeMode, setVersion, visitSite } from "../helpers";
 
 forAllCompilerVersions(packageName => {
