@@ -15,8 +15,9 @@ jobs:
     - name: Build
       run: |
         yarn install
-       (cd site && yarn add typescript-next@npm:typescript@next)
+        (cd site && yarn add typescript-next@npm:typescript@next)
         yarn updateCompilerFiles
+        (cd shared && yarn build)
         yarn test
         yarn predeploy
     # todo: re-enable in the future
@@ -30,4 +31,4 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.1.1
       with:
         branch: gh-pages
-        folder: build
+        folder: site/build
