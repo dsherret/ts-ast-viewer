@@ -7,8 +7,8 @@ Source code for https://ts-ast-viewer.com
 ## Developing
 
 ```
-# install
-yarn install
+# install and setup
+yarn setup
 
 # run locally, this can take a long time to boot up
 yarn start
