@@ -1,6 +1,7 @@
 import { CompilerPackageNames, compilerVersionCollection, constants, TreeMode } from "@ts-ast-viewer/shared";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { CompilerApi, ScriptKind, ScriptTarget } from "../compiler";
+import { useOnClickOutside } from "../hooks";
 import { OptionsState } from "../types";
 import { EnumUtils } from "../utils";
 import { ExternalLink } from "./ExternalLink";
@@ -12,10 +13,13 @@ export interface OptionsProps {
 }
 
 export function Options(props: OptionsProps) {
+    const containerRef = useRef<HTMLDivElement | null>(null);
     const [showOptionsMenu, setShowOptionsMenu] = useState(false);
 
-    return <div id={constants.css.options.id}>
-        <div id={constants.css.options.buttonId} onClick={() => setShowOptionsMenu(!showOptionsMenu)}>
+    useOnClickOutside(containerRef, () => setShowOptionsMenu(false));
+
+    return <div id={constants.css.options.id} ref={containerRef}>
+        <div id={constants.css.options.buttonId} onClick={() => setShowOptionsMenu(!showOptionsMenu)} role="button">
             Options
         </div>
         <div className="menuLine" hidden={!showOptionsMenu} />
