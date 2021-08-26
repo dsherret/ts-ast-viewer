@@ -25,13 +25,13 @@
     "cypress:open": "npm run --prefix e2e cypress:open"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.3",
-    "@types/node": "^15.6.1",
+    "@types/glob": "^7.1.4",
+    "@types/node": "^16.7.2",
     "cross-env": "^7.0.3",
     "dts-minify": "^0.2.3",
     "glob": "^7.1.7",
     "ts-factory-code-generator-generator": "^0.6.2",
-    "ts-morph": "^11.0.0",
-    "ts-node": "^10.0.0"
+    "ts-morph": "^11.0.3",
+    "ts-node": "^10.2.1"
   }
 }
