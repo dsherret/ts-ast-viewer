@@ -8,8 +8,10 @@ import { assertNever } from "../utils";
 export async function importCompilerApi(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.3.2":
-            return await import("typescript-4.3.2");
+        case "typescript-4.4.2":
+            return await import("typescript-4.4.2");
+        case "typescript-4.3.5":
+            return await import("typescript-4.3.5");
         case "typescript-4.2.4":
             return await import("typescript-4.2.4");
         case "typescript-4.1.5":
@@ -38,8 +40,10 @@ export async function importCompilerApi(packageName: CompilerPackageNames) {
 export async function importLibFiles(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.3.2":
-            return await import("../resources/libFiles/typescript-4.3.2/index");
+        case "typescript-4.4.2":
+            return await import("../resources/libFiles/typescript-4.4.2/index");
+        case "typescript-4.3.5":
+            return await import("../resources/libFiles/typescript-4.3.5/index");
         case "typescript-4.2.4":
             return await import("../resources/libFiles/typescript-4.2.4/index");
         case "typescript-4.1.5":
@@ -70,8 +74,10 @@ export type FactoryCodeGenerator = (ts: CompilerApi, node: Node) => string;
 export async function getGenerateFactoryCodeFunction(packageName: CompilerPackageNames): Promise<FactoryCodeGenerator> {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.3.2":
-            return (await import("../resources/factoryCode/typescript-4.3.2")).generateFactoryCode as any;
+        case "typescript-4.4.2":
+            return (await import("../resources/factoryCode/typescript-4.4.2")).generateFactoryCode as any;
+        case "typescript-4.3.5":
+            return (await import("../resources/factoryCode/typescript-4.3.5")).generateFactoryCode as any;
         case "typescript-4.2.4":
             return (await import("../resources/factoryCode/typescript-4.2.4")).generateFactoryCode as any;
         case "typescript-4.1.5":
@@ -107,8 +113,10 @@ export interface PublicApiInfo {
 export async function getPublicApiInfo(packageName: CompilerPackageNames): Promise<PublicApiInfo> {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.3.2":
-            return (await import("../resources/publicApiInfo/typescript-4.3.2"));
+        case "typescript-4.4.2":
+            return (await import("../resources/publicApiInfo/typescript-4.4.2"));
+        case "typescript-4.3.5":
+            return (await import("../resources/publicApiInfo/typescript-4.3.5"));
         case "typescript-4.2.4":
             return (await import("../resources/publicApiInfo/typescript-4.2.4"));
         case "typescript-4.1.5":
