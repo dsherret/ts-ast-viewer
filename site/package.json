@@ -28,7 +28,6 @@
     "@ts-ast-viewer/shared": "^1.0.0",
     "circular-json": "^0.5.9",
     "lz-string": "^1.4.4",
-    "monaco-editor": "^0.27.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-monaco-editor": "0.44.0",

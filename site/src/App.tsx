@@ -123,7 +123,7 @@ export function App() {
         );
     }
 
-    function codeEditorDidMount(editor: import("monaco-editor").editor.IStandaloneCodeEditor) {
+    function codeEditorDidMount(editor: Parameters<import("react-monaco-editor").EditorDidMount>[0]) {
         // For some reason a slight delay is necessary here. Otherwise it won't let the user type.
         setTimeout(() => editor.focus(), 100);
 

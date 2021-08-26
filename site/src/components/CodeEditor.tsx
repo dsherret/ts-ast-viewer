@@ -25,7 +25,7 @@ export interface CodeEditorState {
 }
 
 export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState> {
-    private editor: monacoEditorForTypes.editor.IStandaloneCodeEditor | undefined;
+    private editor: Parameters<EditorDidMount>[0] | undefined;
     private outerContainerRef = React.createRef<HTMLDivElement>();
     private disposables: monacoEditorForTypes.IDisposable[] = [];
 
@@ -156,7 +156,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         );
     }
 
-    private editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor, monaco: typeof monacoEditorForTypes) {
+    private editorDidMount(editor: Parameters<EditorDidMount>[0], monaco: Parameters<EditorDidMount>[1]) {
         this.editor = editor;
 
         // use lf newlines
