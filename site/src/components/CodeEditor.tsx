@@ -110,6 +110,10 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
             options: { className: "editorRangeHighlight" },
         }]);
 
+        if (range) {
+            this.editor.revealRangeInCenter(range)
+        }
+
         function getRange(): monacoEditorForTypes.IRange | undefined {
             if (highlight == null)
                 return undefined;

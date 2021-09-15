@@ -1,5 +1,5 @@
 import { constants, TreeMode } from "@ts-ast-viewer/shared";
-import React from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import TreeView from "react-treeview";
 import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler";
 import { getSyntaxKindName } from "../utils";
@@ -15,7 +15,12 @@ export interface TreeViewerProps {
 export function TreeViewer(props: TreeViewerProps) {
     const { sourceFile, selectedNode, onSelectNode, mode, api } = props;
     let i = 0;
-
+    useLayoutEffect(() => {
+        const selectedDom = document.querySelector(`.${constants.css.treeViewer.selectedNodeClass}`)
+        if (selectedDom) {
+            selectedDom.scrollIntoView({block: 'center', inline: 'center'})
+        }
+    }, [selectedNode])
     return (
         <div id={constants.css.treeViewer.id}>{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>
     );
