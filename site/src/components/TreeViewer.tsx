@@ -1,5 +1,5 @@
 import { constants, TreeMode } from "@ts-ast-viewer/shared";
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import TreeView from "react-treeview";
 import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler";
 import { getSyntaxKindName } from "../utils";
