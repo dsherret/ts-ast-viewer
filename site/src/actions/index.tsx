@@ -3,63 +3,63 @@ import { actions as constants } from "../constants";
 import { ApiLoadingState, OptionsState } from "../types";
 
 export interface SetCode {
-    type: constants.SET_CODE;
-    code: string;
+  type: constants.SET_CODE;
+  code: string;
 }
 
 export function setCode(code: string): SetCode {
-    return {
-        type: constants.SET_CODE,
-        code,
-    };
+  return {
+    type: constants.SET_CODE,
+    code,
+  };
 }
 
 export interface SetApiLoadingState {
-    type: constants.SET_API_LOADING_STATE;
-    loadingState: ApiLoadingState;
+  type: constants.SET_API_LOADING_STATE;
+  loadingState: ApiLoadingState;
 }
 
 export function setApiLoadingState(loadingState: ApiLoadingState): SetApiLoadingState {
-    return {
-        type: constants.SET_API_LOADING_STATE,
-        loadingState,
-    };
+  return {
+    type: constants.SET_API_LOADING_STATE,
+    loadingState,
+  };
 }
 
 export interface RefreshSourceFile {
-    type: constants.REFRESH_SOURCEFILE;
-    api: CompilerApi;
+  type: constants.REFRESH_SOURCEFILE;
+  api: CompilerApi;
 }
 
 export function refreshSourceFile(api: CompilerApi): RefreshSourceFile {
-    return {
-        type: constants.REFRESH_SOURCEFILE,
-        api,
-    };
+  return {
+    type: constants.REFRESH_SOURCEFILE,
+    api,
+  };
 }
 
 export interface SetSelectedNode {
-    type: constants.SET_SELECTED_NODE;
-    node: Node;
+  type: constants.SET_SELECTED_NODE;
+  node: Node;
 }
 
 export function setSelectedNode(node: Node): SetSelectedNode {
-    return {
-        type: constants.SET_SELECTED_NODE,
-        node,
-    };
+  return {
+    type: constants.SET_SELECTED_NODE,
+    node,
+  };
 }
 
 export interface SetOptions {
-    type: constants.SET_OPTIONS;
-    options: Partial<OptionsState>;
+  type: constants.SET_OPTIONS;
+  options: Partial<OptionsState>;
 }
 
 export function setOptions(options: Partial<OptionsState>): SetOptions {
-    return {
-        type: constants.SET_OPTIONS,
-        options,
-    };
+  return {
+    type: constants.SET_OPTIONS,
+    options,
+  };
 }
 
 export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetOptions;

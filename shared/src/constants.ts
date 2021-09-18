@@ -1,39 +1,39 @@
 export const css = {
-    options: {
-        id: "options",
-        buttonId: "optionsButton",
-        compilerVersionSelectionId: "compilerVersionSelection",
-        treeModeId: "treeMode",
-        bindingEnabledId: "bindingEnabled",
-        showFactoryCodeId: "showFactoryCode",
-        showInternalsId: "showInternals",
+  options: {
+    id: "options",
+    buttonId: "optionsButton",
+    compilerVersionSelectionId: "compilerVersionSelection",
+    treeModeId: "treeMode",
+    bindingEnabledId: "bindingEnabled",
+    showFactoryCodeId: "showFactoryCode",
+    showInternalsId: "showInternals",
+  },
+  mainCodeEditor: {
+    id: "codeEditor",
+  },
+  factoryCodeEditor: {
+    id: "factoryCodeEditor",
+  },
+  treeViewer: {
+    id: "treeViewer",
+    selectedNodeClass: "selected",
+  },
+  properties: {
+    node: {
+      id: "node",
     },
-    mainCodeEditor: {
-        id: "codeEditor",
+    type: {
+      id: "type",
     },
-    factoryCodeEditor: {
-        id: "factoryCodeEditor",
+    symbol: {
+      id: "symbol",
     },
-    treeViewer: {
-        id: "treeViewer",
-        selectedNodeClass: "selected",
+    signature: {
+      id: "signature",
     },
-    properties: {
-        node: {
-            id: "node",
-        },
-        type: {
-            id: "type",
-        },
-        symbol: {
-            id: "symbol",
-        },
-        signature: {
-            id: "signature",
-        },
-    },
+  },
 };
 
 export const general = {
-    sourceFileRefreshDelay: 150,
+  sourceFileRefreshDelay: 150,
 };

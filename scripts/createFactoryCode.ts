@@ -8,12 +8,13 @@ const versions = getCompilerVersions();
 const factoryCodeDir = "./site/src/resources/factoryCode/";
 
 glob(`${factoryCodeDir}/*.ts`, (err, filesToDelete) => {
-    for (const filePath of filesToDelete)
-        fs.unlinkSync(filePath);
+  for (const filePath of filesToDelete) {
+    fs.unlinkSync(filePath);
+  }
 
-    for (const version of versions) {
-        const code = generateCode(version.name);
-        const newFilePath = factoryCodeDir + `${version.name}.ts`;
-        fs.writeFileSync(newFilePath, `${code.replace(/\r?\n/g, "\n")}`);
-    }
+  for (const version of versions) {
+    const code = generateCode(version.name);
+    const newFilePath = factoryCodeDir + `${version.name}.ts`;
+    fs.writeFileSync(newFilePath, `${code.replace(/\r?\n/g, "\n")}`);
+  }
 });

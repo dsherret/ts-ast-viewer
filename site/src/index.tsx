@@ -6,8 +6,8 @@ import "./external/react-splitpane.css";
 import "./external/react-treeview.css";
 
 ReactDOM.render(
-    <AppContextProvider>
-        <App />
-    </AppContextProvider>,
-    document.getElementById("root") as HTMLElement,
+  <AppContextProvider>
+    <App />
+  </AppContextProvider>,
+  document.getElementById("root") as HTMLElement,
 );
