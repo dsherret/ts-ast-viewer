@@ -16,9 +16,14 @@ export function TreeViewer(props: TreeViewerProps) {
   const { sourceFile, selectedNode, onSelectNode, mode, api } = props;
   let i = 0;
   useLayoutEffect(() => {
-    const selectedDom = document.querySelector(`.${constants.css.treeViewer.selectedNodeClass}`);
-    if (selectedDom) {
-      selectedDom.scrollIntoView({ block: "center", inline: "center" });
+    const treeViewer = document.getElementById(constants.css.treeViewer.id);
+    const selectedNode = document.querySelector(`#${constants.css.treeViewer.id} .${constants.css.treeViewer.selectedNodeClass}`);
+    if (treeViewer && selectedNode) {
+      const selectedRect = selectedNode.getBoundingClientRect();
+      const treeViewerRect = treeViewer.getBoundingClientRect();
+      if (selectedRect.y < 0 || selectedRect.y + selectedRect.height > treeViewerRect.height) {
+        selectedNode.scrollIntoView({ block: "center", inline: "center" });
+      }
     }
   }, [selectedNode]);
   return <div id={constants.css.treeViewer.id}>{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>;

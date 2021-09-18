@@ -1,16 +1,11 @@
-import * as os from "os";
-import { NewLineKind, Project, StructureKind, SyntaxKind, VariableDeclarationKind } from "ts-morph";
+import { Project, StructureKind, VariableDeclarationKind } from "ts-morph";
 import { getCompilerVersions } from "./getCompilerVersions";
 
 // get versions
 const versions = getCompilerVersions();
 
 // setup
-const project = new Project({
-  manipulationSettings: {
-    newLineKind: os.EOL === "\n" ? NewLineKind.LineFeed : NewLineKind.CarriageReturnLineFeed,
-  },
-});
+const project = new Project();
 
 // update shared compiler types file
 const sharedCompilerVersionsFile = project.addSourceFileAtPath("./shared/src/compilerVersions.generated.ts");

@@ -118,7 +118,11 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     );
 
     if (range) {
-      this.editor.revealRangeInCenter(range);
+      try {
+        this.editor.revealRangeInCenterIfOutsideViewport(range);
+      } catch {
+        // ignore, for some reason this was throwing
+      }
     }
 
     function getRange(): monacoEditorForTypes.IRange | undefined {
