@@ -4,7 +4,7 @@ import { getEnumFlagNames } from "../getEnumFlagNames";
 describe("getEnumFlagNames", () => {
   it("should get the flag names", () => {
     expect(getEnumFlagNames(ts.SymbolFlags, 512)).toEqual([
-      "ValueModule",
+      "ValueModule (2 ^ 9)",
       "All",
       "ParameterExcludes",
       "Namespace",
