@@ -8,8 +8,10 @@ import { assertNever } from "../utils";
 export async function importCompilerApi(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.4.2":
-            return await import("typescript-4.4.2");
+        case "typescript-4.5.2":
+            return await import("typescript-4.5.2");
+        case "typescript-4.4.4":
+            return await import("typescript-4.4.4");
         case "typescript-4.3.5":
             return await import("typescript-4.3.5");
         case "typescript-4.2.4":
@@ -30,8 +32,6 @@ export async function importCompilerApi(packageName: CompilerPackageNames) {
             return await import("typescript-3.5.3");
         case "typescript-3.4.5":
             return await import("typescript-3.4.5");
-        case "typescript-3.3.3":
-            return await import("typescript-3.3.3");
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -40,8 +40,10 @@ export async function importCompilerApi(packageName: CompilerPackageNames) {
 export async function importLibFiles(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.4.2":
-            return await import("../resources/libFiles/typescript-4.4.2/index");
+        case "typescript-4.5.2":
+            return await import("../resources/libFiles/typescript-4.5.2/index");
+        case "typescript-4.4.4":
+            return await import("../resources/libFiles/typescript-4.4.4/index");
         case "typescript-4.3.5":
             return await import("../resources/libFiles/typescript-4.3.5/index");
         case "typescript-4.2.4":
@@ -62,8 +64,6 @@ export async function importLibFiles(packageName: CompilerPackageNames) {
             return await import("../resources/libFiles/typescript-3.5.3/index");
         case "typescript-3.4.5":
             return await import("../resources/libFiles/typescript-3.4.5/index");
-        case "typescript-3.3.3":
-            return await import("../resources/libFiles/typescript-3.3.3/index");
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -74,8 +74,10 @@ export type FactoryCodeGenerator = (ts: CompilerApi, node: Node) => string;
 export async function getGenerateFactoryCodeFunction(packageName: CompilerPackageNames): Promise<FactoryCodeGenerator> {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.4.2":
-            return (await import("../resources/factoryCode/typescript-4.4.2")).generateFactoryCode as any;
+        case "typescript-4.5.2":
+            return (await import("../resources/factoryCode/typescript-4.5.2")).generateFactoryCode as any;
+        case "typescript-4.4.4":
+            return (await import("../resources/factoryCode/typescript-4.4.4")).generateFactoryCode as any;
         case "typescript-4.3.5":
             return (await import("../resources/factoryCode/typescript-4.3.5")).generateFactoryCode as any;
         case "typescript-4.2.4":
@@ -96,8 +98,6 @@ export async function getGenerateFactoryCodeFunction(packageName: CompilerPackag
             return (await import("../resources/factoryCode/typescript-3.5.3")).generateFactoryCode as any;
         case "typescript-3.4.5":
             return (await import("../resources/factoryCode/typescript-3.4.5")).generateFactoryCode as any;
-        case "typescript-3.3.3":
-            return (await import("../resources/factoryCode/typescript-3.3.3")).generateFactoryCode as any;
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -113,8 +113,10 @@ export interface PublicApiInfo {
 export async function getPublicApiInfo(packageName: CompilerPackageNames): Promise<PublicApiInfo> {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
-        case "typescript-4.4.2":
-            return (await import("../resources/publicApiInfo/typescript-4.4.2"));
+        case "typescript-4.5.2":
+            return (await import("../resources/publicApiInfo/typescript-4.5.2"));
+        case "typescript-4.4.4":
+            return (await import("../resources/publicApiInfo/typescript-4.4.4"));
         case "typescript-4.3.5":
             return (await import("../resources/publicApiInfo/typescript-4.3.5"));
         case "typescript-4.2.4":
@@ -135,8 +137,6 @@ export async function getPublicApiInfo(packageName: CompilerPackageNames): Promi
             return (await import("../resources/publicApiInfo/typescript-3.5.3"));
         case "typescript-3.4.5":
             return (await import("../resources/publicApiInfo/typescript-3.4.5"));
-        case "typescript-3.3.3":
-            return (await import("../resources/publicApiInfo/typescript-3.3.3"));
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }

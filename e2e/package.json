@@ -8,6 +8,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:wait-run": "wait-on http-get://localhost:3000/ && npm run cypress:run",
+    "build": "echo 'ignored'",
     "test": "echo 'ignored'"
   },
   "keywords": [],
