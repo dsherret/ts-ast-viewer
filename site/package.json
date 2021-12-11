@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build",
     "preview": "vite preview",
-    "predeploy": "CI=false && cross-env NODE_OPTIONS=--max_old_space_size=4096 && npm run build",
+    "predeploy": "cross-env CI=false npm run build",
     "test": "npx jest --env=jsdom"
   },
   "dependencies": {
