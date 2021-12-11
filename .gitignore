@@ -5,5 +5,7 @@ yarn-error.log*
 *.js.map
 .vs
 shared/dist
+shared/dist-esm
 site/build
 tsconfig.tsbuildinfo
+tsconfig.esm.tsbuildinfo

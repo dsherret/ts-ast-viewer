@@ -4,12 +4,19 @@
   "version": "1.0.0",
   "author": "David Sherret",
   "main": "dist/index.js",
+  "module": "dist-esm/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "test": "echo 'Ignored'"
   },
   "devDependencies": {
     "typescript": "^4.4.2"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist-esm/index.js"
+    }
   }
 }

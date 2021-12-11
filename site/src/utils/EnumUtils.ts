@@ -26,7 +26,7 @@ export class EnumUtils {
 
     return Object.keys(values).map(key => ({
       value: parseInt(key, 10),
-      names: values[key] as string[],
+      names: (values as any)[key] as string[],
     }));
   }
 }
