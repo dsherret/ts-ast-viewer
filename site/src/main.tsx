@@ -1,7 +1,7 @@
-import { AppContextProvider } from "AppContext";
 import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "./App";
+import { AppContextProvider } from "./AppContext";
 import "./external/react-splitpane.css";
 import "./external/react-treeview.css";
 

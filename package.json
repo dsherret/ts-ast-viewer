@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "setup": "yarn install && npm run build --prefix shared",
-    "start": "npm run updateCompilerFiles && npm run start --prefix site",
+    "start": "npm run updateCompilerFiles && npm run dev --prefix site",
     "build": "yarn workspaces run build",
     "format": "dprint fmt",
     "test": "yarn workspaces run test",

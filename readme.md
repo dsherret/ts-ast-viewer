@@ -10,7 +10,7 @@ Source code for https://ts-ast-viewer.com
 # install and setup
 yarn setup
 
-# run locally, this can take a long time to boot up
+# run locally
 yarn start
 
 # run unit tests

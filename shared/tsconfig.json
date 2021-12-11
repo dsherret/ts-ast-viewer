@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "es2015",
+    "moduleResolution": "node",
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
@@ -9,8 +10,7 @@
     "removeComments": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "esModuleInterop": true
+    "noImplicitReturns": true
   },
   "include": [
     "./src"

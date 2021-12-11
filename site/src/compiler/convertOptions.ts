@@ -6,8 +6,8 @@ export function convertOptions(apiFrom: CompilerApi | undefined, apiTo: Compiler
     return options;
   }
 
-  const scriptTarget = apiTo.ScriptTarget[apiFrom.ScriptTarget[options.scriptTarget]];
-  const scriptKind = apiTo.ScriptKind[apiFrom.ScriptKind[options.scriptKind]];
+  const scriptTarget = apiTo.ScriptTarget[apiFrom.ScriptTarget[options.scriptTarget] as any];
+  const scriptKind = apiTo.ScriptKind[apiFrom.ScriptKind[options.scriptKind] as any];
 
   return {
     ...options,
