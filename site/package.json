@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "tsc && cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build && copyfiles CNAME dist",
     "preview": "vite preview",
-    "predeploy": "cross-env CI=false npm run build",
+    "predeploy": "npm run build",
     "test": "npx jest --env=jsdom"
   },
   "dependencies": {
