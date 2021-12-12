@@ -4,13 +4,9 @@
   overflow-y: visible !important;
 }
 
-.tree-view_item {
-  /* immediate child of .tree-view, for styling convenience */
-}
-
 /* style for the children nodes container */
 .tree-view_children {
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .tree-view_children-collapsed {
