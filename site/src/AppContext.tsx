@@ -1,5 +1,4 @@
 import { compilerVersionCollection, constants } from "@ts-ast-viewer/shared";
-import { AllActions } from "actions";
 import React, { useEffect, useReducer } from "react";
 import * as actions from "./actions";
 import { getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler";
@@ -17,7 +16,7 @@ console.log(
 
 export interface AppContextValue {
   state: StoreState;
-  dispatch: React.Dispatch<AllActions>;
+  dispatch: React.Dispatch<actions.AllActions>;
 }
 
 export const AppContext = React.createContext<AppContextValue | undefined>(undefined);

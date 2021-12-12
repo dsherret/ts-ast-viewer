@@ -1,7 +1,7 @@
 import { constants } from "@ts-ast-viewer/shared";
-import { useAppContext } from "AppContext";
 import SplitPane from "react-split-pane";
 import "./App.css";
+import { useAppContext } from "./AppContext";
 import { getDescendantAtRange, getStartSafe } from "./compiler";
 import * as components from "./components";
 import { ApiLoadingState } from "./types";

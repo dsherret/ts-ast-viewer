@@ -38,7 +38,7 @@ async function loadCompilerApi(packageName: CompilerPackageNames) {
 
   function getLibSourceFiles() {
     return Object.keys(libFiles)
-      .map(key => libFiles[key] as { fileName: string; text: string })
+      .map(key => (libFiles as any)[key] as { fileName: string; text: string })
       .map(libFile => api.createSourceFile(libFile.fileName, libFile.text, api.ScriptTarget.Latest, false, api.ScriptKind.TS));
   }
 }

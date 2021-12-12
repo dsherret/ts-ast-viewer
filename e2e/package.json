@@ -7,7 +7,7 @@
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "cypress:wait-run": "wait-on http-get://localhost:3000/ && npm run cypress:run",
+    "cypress:wait-run": "wait-on http-get://localhost:3001/ && npm run cypress:run",
     "build": "echo 'ignored'",
     "test": "echo 'ignored'"
   },
@@ -17,7 +17,7 @@
   "dependencies": {
     "@ts-ast-viewer/shared": "1.0.0",
     "cypress": "^8.3.0",
-    "typescript": "^4.4.2",
+    "typescript": "^4.5.3",
     "wait-on": "^6.0.0"
   }
 }
