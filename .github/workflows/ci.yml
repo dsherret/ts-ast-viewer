@@ -17,7 +17,6 @@ jobs:
         yarn install
         (cd site && yarn add typescript-next@npm:typescript@next)
         yarn updateCompilerFiles
-        (cd shared && yarn build)
         yarn test
         yarn predeploy
     # todo: re-enable in the future
