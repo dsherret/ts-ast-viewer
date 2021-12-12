@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && cross-env NODE_OPTIONS=--max_old_space_size=7168 vite build && copyfiles CNAME dist",
+    "build": "tsc && cross-env NODE_OPTIONS=--max_old_space_size=7168 vite build && copyfiles CNAME .nojekyll dist",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "test": "npx jest --env=jsdom"
