@@ -20,7 +20,7 @@ export function hasLoadedCompilerApi(packageName: CompilerPackageNames) {
 async function loadCompilerApi(packageName: CompilerPackageNames) {
   const libFilesPromise = importLibFiles(packageName);
   const compilerApiPromise = importCompilerApi(packageName);
-  const api = await compilerApiPromise as any as CompilerApi;
+  const api = { ...await compilerApiPromise as any as CompilerApi };
 
   api.tsAstViewer = {
     packageName,
