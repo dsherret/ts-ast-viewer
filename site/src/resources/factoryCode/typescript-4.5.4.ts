@@ -1,6 +1,6 @@
 import CodeBlockWriter from "code-block-writer";
 
-export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initialNode: import("typescript-4.5.3").Node) {
+export function generateFactoryCode(ts: typeof import("typescript-4.5.4"), initialNode: import("typescript-4.5.4").Node) {
     const writer = new CodeBlockWriter({ newLine: "\n", indentNumberOfSpaces: 2 });
     const syntaxKindToName = createSyntaxKindToNameMap();
 
@@ -25,524 +25,524 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
 
     return writer.toString();
 
-    function writeNodeText(node: import("typescript-4.5.3").Node) {
+    function writeNodeText(node: import("typescript-4.5.4").Node) {
         switch (node.kind) {
             case ts.SyntaxKind.NumericLiteral:
-                createNumericLiteral(node as import("typescript-4.5.3").NumericLiteral);
+                createNumericLiteral(node as import("typescript-4.5.4").NumericLiteral);
                 return;
             case ts.SyntaxKind.BigIntLiteral:
-                createBigIntLiteral(node as import("typescript-4.5.3").BigIntLiteral);
+                createBigIntLiteral(node as import("typescript-4.5.4").BigIntLiteral);
                 return;
             case ts.SyntaxKind.StringLiteral:
-                createStringLiteral(node as import("typescript-4.5.3").StringLiteral);
+                createStringLiteral(node as import("typescript-4.5.4").StringLiteral);
                 return;
             case ts.SyntaxKind.RegularExpressionLiteral:
-                createRegularExpressionLiteral(node as import("typescript-4.5.3").RegularExpressionLiteral);
+                createRegularExpressionLiteral(node as import("typescript-4.5.4").RegularExpressionLiteral);
                 return;
             case ts.SyntaxKind.Identifier:
-                createIdentifier(node as import("typescript-4.5.3").Identifier);
+                createIdentifier(node as import("typescript-4.5.4").Identifier);
                 return;
             case ts.SyntaxKind.PrivateIdentifier:
-                createPrivateIdentifier(node as import("typescript-4.5.3").PrivateIdentifier);
+                createPrivateIdentifier(node as import("typescript-4.5.4").PrivateIdentifier);
                 return;
             case ts.SyntaxKind.SuperKeyword:
-                createSuper(node as import("typescript-4.5.3").SuperExpression);
+                createSuper(node as import("typescript-4.5.4").SuperExpression);
                 return;
             case ts.SyntaxKind.ThisKeyword:
-                createThis(node as import("typescript-4.5.3").ThisExpression);
+                createThis(node as import("typescript-4.5.4").ThisExpression);
                 return;
             case ts.SyntaxKind.NullKeyword:
-                createNull(node as import("typescript-4.5.3").NullLiteral);
+                createNull(node as import("typescript-4.5.4").NullLiteral);
                 return;
             case ts.SyntaxKind.TrueKeyword:
-                createTrue(node as import("typescript-4.5.3").TrueLiteral);
+                createTrue(node as import("typescript-4.5.4").TrueLiteral);
                 return;
             case ts.SyntaxKind.FalseKeyword:
-                createFalse(node as import("typescript-4.5.3").FalseLiteral);
+                createFalse(node as import("typescript-4.5.4").FalseLiteral);
                 return;
             case ts.SyntaxKind.QualifiedName:
-                createQualifiedName(node as import("typescript-4.5.3").QualifiedName);
+                createQualifiedName(node as import("typescript-4.5.4").QualifiedName);
                 return;
             case ts.SyntaxKind.ComputedPropertyName:
-                createComputedPropertyName(node as import("typescript-4.5.3").ComputedPropertyName);
+                createComputedPropertyName(node as import("typescript-4.5.4").ComputedPropertyName);
                 return;
             case ts.SyntaxKind.TypeParameter:
-                createTypeParameterDeclaration(node as import("typescript-4.5.3").TypeParameterDeclaration);
+                createTypeParameterDeclaration(node as import("typescript-4.5.4").TypeParameterDeclaration);
                 return;
             case ts.SyntaxKind.Parameter:
-                createParameterDeclaration(node as import("typescript-4.5.3").ParameterDeclaration);
+                createParameterDeclaration(node as import("typescript-4.5.4").ParameterDeclaration);
                 return;
             case ts.SyntaxKind.Decorator:
-                createDecorator(node as import("typescript-4.5.3").Decorator);
+                createDecorator(node as import("typescript-4.5.4").Decorator);
                 return;
             case ts.SyntaxKind.PropertySignature:
-                createPropertySignature(node as import("typescript-4.5.3").PropertySignature);
+                createPropertySignature(node as import("typescript-4.5.4").PropertySignature);
                 return;
             case ts.SyntaxKind.PropertyDeclaration:
-                createPropertyDeclaration(node as import("typescript-4.5.3").PropertyDeclaration);
+                createPropertyDeclaration(node as import("typescript-4.5.4").PropertyDeclaration);
                 return;
             case ts.SyntaxKind.MethodSignature:
-                createMethodSignature(node as import("typescript-4.5.3").MethodSignature);
+                createMethodSignature(node as import("typescript-4.5.4").MethodSignature);
                 return;
             case ts.SyntaxKind.MethodDeclaration:
-                createMethodDeclaration(node as import("typescript-4.5.3").MethodDeclaration);
+                createMethodDeclaration(node as import("typescript-4.5.4").MethodDeclaration);
                 return;
             case ts.SyntaxKind.Constructor:
-                createConstructorDeclaration(node as import("typescript-4.5.3").ConstructorDeclaration);
+                createConstructorDeclaration(node as import("typescript-4.5.4").ConstructorDeclaration);
                 return;
             case ts.SyntaxKind.GetAccessor:
-                createGetAccessorDeclaration(node as import("typescript-4.5.3").GetAccessorDeclaration);
+                createGetAccessorDeclaration(node as import("typescript-4.5.4").GetAccessorDeclaration);
                 return;
             case ts.SyntaxKind.SetAccessor:
-                createSetAccessorDeclaration(node as import("typescript-4.5.3").SetAccessorDeclaration);
+                createSetAccessorDeclaration(node as import("typescript-4.5.4").SetAccessorDeclaration);
                 return;
             case ts.SyntaxKind.CallSignature:
-                createCallSignature(node as import("typescript-4.5.3").CallSignatureDeclaration);
+                createCallSignature(node as import("typescript-4.5.4").CallSignatureDeclaration);
                 return;
             case ts.SyntaxKind.ConstructSignature:
-                createConstructSignature(node as import("typescript-4.5.3").ConstructSignatureDeclaration);
+                createConstructSignature(node as import("typescript-4.5.4").ConstructSignatureDeclaration);
                 return;
             case ts.SyntaxKind.IndexSignature:
-                createIndexSignature(node as import("typescript-4.5.3").IndexSignatureDeclaration);
+                createIndexSignature(node as import("typescript-4.5.4").IndexSignatureDeclaration);
                 return;
             case ts.SyntaxKind.TemplateLiteralTypeSpan:
-                createTemplateLiteralTypeSpan(node as import("typescript-4.5.3").TemplateLiteralTypeSpan);
+                createTemplateLiteralTypeSpan(node as import("typescript-4.5.4").TemplateLiteralTypeSpan);
                 return;
             case ts.SyntaxKind.ClassStaticBlockDeclaration:
-                createClassStaticBlockDeclaration(node as import("typescript-4.5.3").ClassStaticBlockDeclaration);
+                createClassStaticBlockDeclaration(node as import("typescript-4.5.4").ClassStaticBlockDeclaration);
                 return;
             case ts.SyntaxKind.AnyKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.BooleanKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.IntrinsicKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.NeverKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.NumberKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.ObjectKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.StringKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.SymbolKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.UndefinedKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.UnknownKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.BigIntKeyword:
-                createKeywordTypeNode(node as import("typescript-4.5.3").KeywordTypeNode);
+                createKeywordTypeNode(node as import("typescript-4.5.4").KeywordTypeNode);
                 return;
             case ts.SyntaxKind.TypeReference:
-                createTypeReferenceNode(node as import("typescript-4.5.3").TypeReferenceNode);
+                createTypeReferenceNode(node as import("typescript-4.5.4").TypeReferenceNode);
                 return;
             case ts.SyntaxKind.FunctionType:
-                createFunctionTypeNode(node as import("typescript-4.5.3").FunctionTypeNode);
+                createFunctionTypeNode(node as import("typescript-4.5.4").FunctionTypeNode);
                 return;
             case ts.SyntaxKind.ConstructorType:
-                createConstructorTypeNode(node as import("typescript-4.5.3").ConstructorTypeNode);
+                createConstructorTypeNode(node as import("typescript-4.5.4").ConstructorTypeNode);
                 return;
             case ts.SyntaxKind.TypeQuery:
-                createTypeQueryNode(node as import("typescript-4.5.3").TypeQueryNode);
+                createTypeQueryNode(node as import("typescript-4.5.4").TypeQueryNode);
                 return;
             case ts.SyntaxKind.TypeLiteral:
-                createTypeLiteralNode(node as import("typescript-4.5.3").TypeLiteralNode);
+                createTypeLiteralNode(node as import("typescript-4.5.4").TypeLiteralNode);
                 return;
             case ts.SyntaxKind.ArrayType:
-                createArrayTypeNode(node as import("typescript-4.5.3").ArrayTypeNode);
+                createArrayTypeNode(node as import("typescript-4.5.4").ArrayTypeNode);
                 return;
             case ts.SyntaxKind.TupleType:
-                createTupleTypeNode(node as import("typescript-4.5.3").TupleTypeNode);
+                createTupleTypeNode(node as import("typescript-4.5.4").TupleTypeNode);
                 return;
             case ts.SyntaxKind.NamedTupleMember:
-                createNamedTupleMember(node as import("typescript-4.5.3").NamedTupleMember);
+                createNamedTupleMember(node as import("typescript-4.5.4").NamedTupleMember);
                 return;
             case ts.SyntaxKind.OptionalType:
-                createOptionalTypeNode(node as import("typescript-4.5.3").OptionalTypeNode);
+                createOptionalTypeNode(node as import("typescript-4.5.4").OptionalTypeNode);
                 return;
             case ts.SyntaxKind.RestType:
-                createRestTypeNode(node as import("typescript-4.5.3").RestTypeNode);
+                createRestTypeNode(node as import("typescript-4.5.4").RestTypeNode);
                 return;
             case ts.SyntaxKind.UnionType:
-                createUnionTypeNode(node as import("typescript-4.5.3").UnionTypeNode);
+                createUnionTypeNode(node as import("typescript-4.5.4").UnionTypeNode);
                 return;
             case ts.SyntaxKind.IntersectionType:
-                createIntersectionTypeNode(node as import("typescript-4.5.3").IntersectionTypeNode);
+                createIntersectionTypeNode(node as import("typescript-4.5.4").IntersectionTypeNode);
                 return;
             case ts.SyntaxKind.ConditionalType:
-                createConditionalTypeNode(node as import("typescript-4.5.3").ConditionalTypeNode);
+                createConditionalTypeNode(node as import("typescript-4.5.4").ConditionalTypeNode);
                 return;
             case ts.SyntaxKind.InferType:
-                createInferTypeNode(node as import("typescript-4.5.3").InferTypeNode);
+                createInferTypeNode(node as import("typescript-4.5.4").InferTypeNode);
                 return;
             case ts.SyntaxKind.ImportType:
-                createImportTypeNode(node as import("typescript-4.5.3").ImportTypeNode);
+                createImportTypeNode(node as import("typescript-4.5.4").ImportTypeNode);
                 return;
             case ts.SyntaxKind.ParenthesizedType:
-                createParenthesizedType(node as import("typescript-4.5.3").ParenthesizedTypeNode);
+                createParenthesizedType(node as import("typescript-4.5.4").ParenthesizedTypeNode);
                 return;
             case ts.SyntaxKind.ThisType:
-                createThisTypeNode(node as import("typescript-4.5.3").ThisTypeNode);
+                createThisTypeNode(node as import("typescript-4.5.4").ThisTypeNode);
                 return;
             case ts.SyntaxKind.TypeOperator:
-                createTypeOperatorNode(node as import("typescript-4.5.3").TypeOperatorNode);
+                createTypeOperatorNode(node as import("typescript-4.5.4").TypeOperatorNode);
                 return;
             case ts.SyntaxKind.IndexedAccessType:
-                createIndexedAccessTypeNode(node as import("typescript-4.5.3").IndexedAccessTypeNode);
+                createIndexedAccessTypeNode(node as import("typescript-4.5.4").IndexedAccessTypeNode);
                 return;
             case ts.SyntaxKind.MappedType:
-                createMappedTypeNode(node as import("typescript-4.5.3").MappedTypeNode);
+                createMappedTypeNode(node as import("typescript-4.5.4").MappedTypeNode);
                 return;
             case ts.SyntaxKind.LiteralType:
-                createLiteralTypeNode(node as import("typescript-4.5.3").LiteralTypeNode);
+                createLiteralTypeNode(node as import("typescript-4.5.4").LiteralTypeNode);
                 return;
             case ts.SyntaxKind.TemplateLiteralType:
-                createTemplateLiteralType(node as import("typescript-4.5.3").TemplateLiteralTypeNode);
+                createTemplateLiteralType(node as import("typescript-4.5.4").TemplateLiteralTypeNode);
                 return;
             case ts.SyntaxKind.ObjectBindingPattern:
-                createObjectBindingPattern(node as import("typescript-4.5.3").ObjectBindingPattern);
+                createObjectBindingPattern(node as import("typescript-4.5.4").ObjectBindingPattern);
                 return;
             case ts.SyntaxKind.ArrayBindingPattern:
-                createArrayBindingPattern(node as import("typescript-4.5.3").ArrayBindingPattern);
+                createArrayBindingPattern(node as import("typescript-4.5.4").ArrayBindingPattern);
                 return;
             case ts.SyntaxKind.BindingElement:
-                createBindingElement(node as import("typescript-4.5.3").BindingElement);
+                createBindingElement(node as import("typescript-4.5.4").BindingElement);
                 return;
             case ts.SyntaxKind.ArrayLiteralExpression:
-                createArrayLiteralExpression(node as import("typescript-4.5.3").ArrayLiteralExpression);
+                createArrayLiteralExpression(node as import("typescript-4.5.4").ArrayLiteralExpression);
                 return;
             case ts.SyntaxKind.ObjectLiteralExpression:
-                createObjectLiteralExpression(node as import("typescript-4.5.3").ObjectLiteralExpression);
+                createObjectLiteralExpression(node as import("typescript-4.5.4").ObjectLiteralExpression);
                 return;
             case ts.SyntaxKind.PropertyAccessExpression:
                 if (ts.isPropertyAccessChain(node)) {
-                    createPropertyAccessChain(node as import("typescript-4.5.3").PropertyAccessChain);
+                    createPropertyAccessChain(node as import("typescript-4.5.4").PropertyAccessChain);
                     return;
                 }
                 if (ts.isPropertyAccessExpression(node)) {
-                    createPropertyAccessExpression(node as import("typescript-4.5.3").PropertyAccessExpression);
+                    createPropertyAccessExpression(node as import("typescript-4.5.4").PropertyAccessExpression);
                     return;
                 }
                 throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.ElementAccessExpression:
                 if (ts.isElementAccessChain(node)) {
-                    createElementAccessChain(node as import("typescript-4.5.3").ElementAccessChain);
+                    createElementAccessChain(node as import("typescript-4.5.4").ElementAccessChain);
                     return;
                 }
                 if (ts.isElementAccessExpression(node)) {
-                    createElementAccessExpression(node as import("typescript-4.5.3").ElementAccessExpression);
+                    createElementAccessExpression(node as import("typescript-4.5.4").ElementAccessExpression);
                     return;
                 }
                 throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.CallExpression:
                 if (ts.isCallChain(node)) {
-                    createCallChain(node as import("typescript-4.5.3").CallChain);
+                    createCallChain(node as import("typescript-4.5.4").CallChain);
                     return;
                 }
                 if (ts.isCallExpression(node)) {
-                    createCallExpression(node as import("typescript-4.5.3").CallExpression);
+                    createCallExpression(node as import("typescript-4.5.4").CallExpression);
                     return;
                 }
                 throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.NewExpression:
-                createNewExpression(node as import("typescript-4.5.3").NewExpression);
+                createNewExpression(node as import("typescript-4.5.4").NewExpression);
                 return;
             case ts.SyntaxKind.TaggedTemplateExpression:
-                createTaggedTemplateExpression(node as import("typescript-4.5.3").TaggedTemplateExpression);
+                createTaggedTemplateExpression(node as import("typescript-4.5.4").TaggedTemplateExpression);
                 return;
             case ts.SyntaxKind.TypeAssertionExpression:
-                createTypeAssertion(node as import("typescript-4.5.3").TypeAssertion);
+                createTypeAssertion(node as import("typescript-4.5.4").TypeAssertion);
                 return;
             case ts.SyntaxKind.ParenthesizedExpression:
-                createParenthesizedExpression(node as import("typescript-4.5.3").ParenthesizedExpression);
+                createParenthesizedExpression(node as import("typescript-4.5.4").ParenthesizedExpression);
                 return;
             case ts.SyntaxKind.FunctionExpression:
-                createFunctionExpression(node as import("typescript-4.5.3").FunctionExpression);
+                createFunctionExpression(node as import("typescript-4.5.4").FunctionExpression);
                 return;
             case ts.SyntaxKind.ArrowFunction:
-                createArrowFunction(node as import("typescript-4.5.3").ArrowFunction);
+                createArrowFunction(node as import("typescript-4.5.4").ArrowFunction);
                 return;
             case ts.SyntaxKind.DeleteExpression:
-                createDeleteExpression(node as import("typescript-4.5.3").DeleteExpression);
+                createDeleteExpression(node as import("typescript-4.5.4").DeleteExpression);
                 return;
             case ts.SyntaxKind.TypeOfExpression:
-                createTypeOfExpression(node as import("typescript-4.5.3").TypeOfExpression);
+                createTypeOfExpression(node as import("typescript-4.5.4").TypeOfExpression);
                 return;
             case ts.SyntaxKind.VoidExpression:
-                createVoidExpression(node as import("typescript-4.5.3").VoidExpression);
+                createVoidExpression(node as import("typescript-4.5.4").VoidExpression);
                 return;
             case ts.SyntaxKind.AwaitExpression:
-                createAwaitExpression(node as import("typescript-4.5.3").AwaitExpression);
+                createAwaitExpression(node as import("typescript-4.5.4").AwaitExpression);
                 return;
             case ts.SyntaxKind.PrefixUnaryExpression:
-                createPrefixUnaryExpression(node as import("typescript-4.5.3").PrefixUnaryExpression);
+                createPrefixUnaryExpression(node as import("typescript-4.5.4").PrefixUnaryExpression);
                 return;
             case ts.SyntaxKind.PostfixUnaryExpression:
-                createPostfixUnaryExpression(node as import("typescript-4.5.3").PostfixUnaryExpression);
+                createPostfixUnaryExpression(node as import("typescript-4.5.4").PostfixUnaryExpression);
                 return;
             case ts.SyntaxKind.BinaryExpression:
-                createBinaryExpression(node as import("typescript-4.5.3").BinaryExpression);
+                createBinaryExpression(node as import("typescript-4.5.4").BinaryExpression);
                 return;
             case ts.SyntaxKind.ConditionalExpression:
-                createConditionalExpression(node as import("typescript-4.5.3").ConditionalExpression);
+                createConditionalExpression(node as import("typescript-4.5.4").ConditionalExpression);
                 return;
             case ts.SyntaxKind.TemplateExpression:
-                createTemplateExpression(node as import("typescript-4.5.3").TemplateExpression);
+                createTemplateExpression(node as import("typescript-4.5.4").TemplateExpression);
                 return;
             case ts.SyntaxKind.TemplateHead:
-                createTemplateHead(node as import("typescript-4.5.3").TemplateHead);
+                createTemplateHead(node as import("typescript-4.5.4").TemplateHead);
                 return;
             case ts.SyntaxKind.TemplateMiddle:
-                createTemplateMiddle(node as import("typescript-4.5.3").TemplateMiddle);
+                createTemplateMiddle(node as import("typescript-4.5.4").TemplateMiddle);
                 return;
             case ts.SyntaxKind.TemplateTail:
-                createTemplateTail(node as import("typescript-4.5.3").TemplateTail);
+                createTemplateTail(node as import("typescript-4.5.4").TemplateTail);
                 return;
             case ts.SyntaxKind.NoSubstitutionTemplateLiteral:
-                createNoSubstitutionTemplateLiteral(node as import("typescript-4.5.3").NoSubstitutionTemplateLiteral);
+                createNoSubstitutionTemplateLiteral(node as import("typescript-4.5.4").NoSubstitutionTemplateLiteral);
                 return;
             case ts.SyntaxKind.YieldExpression:
-                createYieldExpression(node as import("typescript-4.5.3").YieldExpression);
+                createYieldExpression(node as import("typescript-4.5.4").YieldExpression);
                 return;
             case ts.SyntaxKind.SpreadElement:
-                createSpreadElement(node as import("typescript-4.5.3").SpreadElement);
+                createSpreadElement(node as import("typescript-4.5.4").SpreadElement);
                 return;
             case ts.SyntaxKind.ClassExpression:
-                createClassExpression(node as import("typescript-4.5.3").ClassExpression);
+                createClassExpression(node as import("typescript-4.5.4").ClassExpression);
                 return;
             case ts.SyntaxKind.OmittedExpression:
-                createOmittedExpression(node as import("typescript-4.5.3").OmittedExpression);
+                createOmittedExpression(node as import("typescript-4.5.4").OmittedExpression);
                 return;
             case ts.SyntaxKind.ExpressionWithTypeArguments:
-                createExpressionWithTypeArguments(node as import("typescript-4.5.3").ExpressionWithTypeArguments);
+                createExpressionWithTypeArguments(node as import("typescript-4.5.4").ExpressionWithTypeArguments);
                 return;
             case ts.SyntaxKind.AsExpression:
-                createAsExpression(node as import("typescript-4.5.3").AsExpression);
+                createAsExpression(node as import("typescript-4.5.4").AsExpression);
                 return;
             case ts.SyntaxKind.NonNullExpression:
                 if (ts.isNonNullChain(node)) {
-                    createNonNullChain(node as import("typescript-4.5.3").NonNullChain);
+                    createNonNullChain(node as import("typescript-4.5.4").NonNullChain);
                     return;
                 }
                 if (ts.isNonNullExpression(node)) {
-                    createNonNullExpression(node as import("typescript-4.5.3").NonNullExpression);
+                    createNonNullExpression(node as import("typescript-4.5.4").NonNullExpression);
                     return;
                 }
                 throw new Error("Unhandled node: " + node.getText());
             case ts.SyntaxKind.MetaProperty:
-                createMetaProperty(node as import("typescript-4.5.3").MetaProperty);
+                createMetaProperty(node as import("typescript-4.5.4").MetaProperty);
                 return;
             case ts.SyntaxKind.TemplateSpan:
-                createTemplateSpan(node as import("typescript-4.5.3").TemplateSpan);
+                createTemplateSpan(node as import("typescript-4.5.4").TemplateSpan);
                 return;
             case ts.SyntaxKind.SemicolonClassElement:
-                createSemicolonClassElement(node as import("typescript-4.5.3").SemicolonClassElement);
+                createSemicolonClassElement(node as import("typescript-4.5.4").SemicolonClassElement);
                 return;
             case ts.SyntaxKind.Block:
-                createBlock(node as import("typescript-4.5.3").Block);
+                createBlock(node as import("typescript-4.5.4").Block);
                 return;
             case ts.SyntaxKind.VariableStatement:
-                createVariableStatement(node as import("typescript-4.5.3").VariableStatement);
+                createVariableStatement(node as import("typescript-4.5.4").VariableStatement);
                 return;
             case ts.SyntaxKind.EmptyStatement:
-                createEmptyStatement(node as import("typescript-4.5.3").EmptyStatement);
+                createEmptyStatement(node as import("typescript-4.5.4").EmptyStatement);
                 return;
             case ts.SyntaxKind.ExpressionStatement:
-                createExpressionStatement(node as import("typescript-4.5.3").ExpressionStatement);
+                createExpressionStatement(node as import("typescript-4.5.4").ExpressionStatement);
                 return;
             case ts.SyntaxKind.IfStatement:
-                createIfStatement(node as import("typescript-4.5.3").IfStatement);
+                createIfStatement(node as import("typescript-4.5.4").IfStatement);
                 return;
             case ts.SyntaxKind.DoStatement:
-                createDoStatement(node as import("typescript-4.5.3").DoStatement);
+                createDoStatement(node as import("typescript-4.5.4").DoStatement);
                 return;
             case ts.SyntaxKind.WhileStatement:
-                createWhileStatement(node as import("typescript-4.5.3").WhileStatement);
+                createWhileStatement(node as import("typescript-4.5.4").WhileStatement);
                 return;
             case ts.SyntaxKind.ForStatement:
-                createForStatement(node as import("typescript-4.5.3").ForStatement);
+                createForStatement(node as import("typescript-4.5.4").ForStatement);
                 return;
             case ts.SyntaxKind.ForInStatement:
-                createForInStatement(node as import("typescript-4.5.3").ForInStatement);
+                createForInStatement(node as import("typescript-4.5.4").ForInStatement);
                 return;
             case ts.SyntaxKind.ForOfStatement:
-                createForOfStatement(node as import("typescript-4.5.3").ForOfStatement);
+                createForOfStatement(node as import("typescript-4.5.4").ForOfStatement);
                 return;
             case ts.SyntaxKind.ContinueStatement:
-                createContinueStatement(node as import("typescript-4.5.3").ContinueStatement);
+                createContinueStatement(node as import("typescript-4.5.4").ContinueStatement);
                 return;
             case ts.SyntaxKind.BreakStatement:
-                createBreakStatement(node as import("typescript-4.5.3").BreakStatement);
+                createBreakStatement(node as import("typescript-4.5.4").BreakStatement);
                 return;
             case ts.SyntaxKind.ReturnStatement:
-                createReturnStatement(node as import("typescript-4.5.3").ReturnStatement);
+                createReturnStatement(node as import("typescript-4.5.4").ReturnStatement);
                 return;
             case ts.SyntaxKind.WithStatement:
-                createWithStatement(node as import("typescript-4.5.3").WithStatement);
+                createWithStatement(node as import("typescript-4.5.4").WithStatement);
                 return;
             case ts.SyntaxKind.SwitchStatement:
-                createSwitchStatement(node as import("typescript-4.5.3").SwitchStatement);
+                createSwitchStatement(node as import("typescript-4.5.4").SwitchStatement);
                 return;
             case ts.SyntaxKind.LabeledStatement:
-                createLabeledStatement(node as import("typescript-4.5.3").LabeledStatement);
+                createLabeledStatement(node as import("typescript-4.5.4").LabeledStatement);
                 return;
             case ts.SyntaxKind.ThrowStatement:
-                createThrowStatement(node as import("typescript-4.5.3").ThrowStatement);
+                createThrowStatement(node as import("typescript-4.5.4").ThrowStatement);
                 return;
             case ts.SyntaxKind.TryStatement:
-                createTryStatement(node as import("typescript-4.5.3").TryStatement);
+                createTryStatement(node as import("typescript-4.5.4").TryStatement);
                 return;
             case ts.SyntaxKind.DebuggerStatement:
-                createDebuggerStatement(node as import("typescript-4.5.3").DebuggerStatement);
+                createDebuggerStatement(node as import("typescript-4.5.4").DebuggerStatement);
                 return;
             case ts.SyntaxKind.VariableDeclaration:
-                createVariableDeclaration(node as import("typescript-4.5.3").VariableDeclaration);
+                createVariableDeclaration(node as import("typescript-4.5.4").VariableDeclaration);
                 return;
             case ts.SyntaxKind.VariableDeclarationList:
-                createVariableDeclarationList(node as import("typescript-4.5.3").VariableDeclarationList);
+                createVariableDeclarationList(node as import("typescript-4.5.4").VariableDeclarationList);
                 return;
             case ts.SyntaxKind.FunctionDeclaration:
-                createFunctionDeclaration(node as import("typescript-4.5.3").FunctionDeclaration);
+                createFunctionDeclaration(node as import("typescript-4.5.4").FunctionDeclaration);
                 return;
             case ts.SyntaxKind.ClassDeclaration:
-                createClassDeclaration(node as import("typescript-4.5.3").ClassDeclaration);
+                createClassDeclaration(node as import("typescript-4.5.4").ClassDeclaration);
                 return;
             case ts.SyntaxKind.InterfaceDeclaration:
-                createInterfaceDeclaration(node as import("typescript-4.5.3").InterfaceDeclaration);
+                createInterfaceDeclaration(node as import("typescript-4.5.4").InterfaceDeclaration);
                 return;
             case ts.SyntaxKind.TypeAliasDeclaration:
-                createTypeAliasDeclaration(node as import("typescript-4.5.3").TypeAliasDeclaration);
+                createTypeAliasDeclaration(node as import("typescript-4.5.4").TypeAliasDeclaration);
                 return;
             case ts.SyntaxKind.EnumDeclaration:
-                createEnumDeclaration(node as import("typescript-4.5.3").EnumDeclaration);
+                createEnumDeclaration(node as import("typescript-4.5.4").EnumDeclaration);
                 return;
             case ts.SyntaxKind.ModuleDeclaration:
-                createModuleDeclaration(node as import("typescript-4.5.3").ModuleDeclaration);
+                createModuleDeclaration(node as import("typescript-4.5.4").ModuleDeclaration);
                 return;
             case ts.SyntaxKind.ModuleBlock:
-                createModuleBlock(node as import("typescript-4.5.3").ModuleBlock);
+                createModuleBlock(node as import("typescript-4.5.4").ModuleBlock);
                 return;
             case ts.SyntaxKind.CaseBlock:
-                createCaseBlock(node as import("typescript-4.5.3").CaseBlock);
+                createCaseBlock(node as import("typescript-4.5.4").CaseBlock);
                 return;
             case ts.SyntaxKind.NamespaceExportDeclaration:
-                createNamespaceExportDeclaration(node as import("typescript-4.5.3").NamespaceExportDeclaration);
+                createNamespaceExportDeclaration(node as import("typescript-4.5.4").NamespaceExportDeclaration);
                 return;
             case ts.SyntaxKind.ImportEqualsDeclaration:
-                createImportEqualsDeclaration(node as import("typescript-4.5.3").ImportEqualsDeclaration);
+                createImportEqualsDeclaration(node as import("typescript-4.5.4").ImportEqualsDeclaration);
                 return;
             case ts.SyntaxKind.ImportDeclaration:
-                createImportDeclaration(node as import("typescript-4.5.3").ImportDeclaration);
+                createImportDeclaration(node as import("typescript-4.5.4").ImportDeclaration);
                 return;
             case ts.SyntaxKind.ImportClause:
-                createImportClause(node as import("typescript-4.5.3").ImportClause);
+                createImportClause(node as import("typescript-4.5.4").ImportClause);
                 return;
             case ts.SyntaxKind.AssertClause:
-                createAssertClause(node as import("typescript-4.5.3").AssertClause);
+                createAssertClause(node as import("typescript-4.5.4").AssertClause);
                 return;
             case ts.SyntaxKind.AssertEntry:
-                createAssertEntry(node as import("typescript-4.5.3").AssertEntry);
+                createAssertEntry(node as import("typescript-4.5.4").AssertEntry);
                 return;
             case ts.SyntaxKind.NamespaceImport:
-                createNamespaceImport(node as import("typescript-4.5.3").NamespaceImport);
+                createNamespaceImport(node as import("typescript-4.5.4").NamespaceImport);
                 return;
             case ts.SyntaxKind.NamespaceExport:
-                createNamespaceExport(node as import("typescript-4.5.3").NamespaceExport);
+                createNamespaceExport(node as import("typescript-4.5.4").NamespaceExport);
                 return;
             case ts.SyntaxKind.NamedImports:
-                createNamedImports(node as import("typescript-4.5.3").NamedImports);
+                createNamedImports(node as import("typescript-4.5.4").NamedImports);
                 return;
             case ts.SyntaxKind.ImportSpecifier:
-                createImportSpecifier(node as import("typescript-4.5.3").ImportSpecifier);
+                createImportSpecifier(node as import("typescript-4.5.4").ImportSpecifier);
                 return;
             case ts.SyntaxKind.ExportAssignment:
-                createExportAssignment(node as import("typescript-4.5.3").ExportAssignment);
+                createExportAssignment(node as import("typescript-4.5.4").ExportAssignment);
                 return;
             case ts.SyntaxKind.ExportDeclaration:
-                createExportDeclaration(node as import("typescript-4.5.3").ExportDeclaration);
+                createExportDeclaration(node as import("typescript-4.5.4").ExportDeclaration);
                 return;
             case ts.SyntaxKind.NamedExports:
-                createNamedExports(node as import("typescript-4.5.3").NamedExports);
+                createNamedExports(node as import("typescript-4.5.4").NamedExports);
                 return;
             case ts.SyntaxKind.ExportSpecifier:
-                createExportSpecifier(node as import("typescript-4.5.3").ExportSpecifier);
+                createExportSpecifier(node as import("typescript-4.5.4").ExportSpecifier);
                 return;
             case ts.SyntaxKind.ExternalModuleReference:
-                createExternalModuleReference(node as import("typescript-4.5.3").ExternalModuleReference);
+                createExternalModuleReference(node as import("typescript-4.5.4").ExternalModuleReference);
                 return;
             case ts.SyntaxKind.JsxElement:
-                createJsxElement(node as import("typescript-4.5.3").JsxElement);
+                createJsxElement(node as import("typescript-4.5.4").JsxElement);
                 return;
             case ts.SyntaxKind.JsxSelfClosingElement:
-                createJsxSelfClosingElement(node as import("typescript-4.5.3").JsxSelfClosingElement);
+                createJsxSelfClosingElement(node as import("typescript-4.5.4").JsxSelfClosingElement);
                 return;
             case ts.SyntaxKind.JsxOpeningElement:
-                createJsxOpeningElement(node as import("typescript-4.5.3").JsxOpeningElement);
+                createJsxOpeningElement(node as import("typescript-4.5.4").JsxOpeningElement);
                 return;
             case ts.SyntaxKind.JsxClosingElement:
-                createJsxClosingElement(node as import("typescript-4.5.3").JsxClosingElement);
+                createJsxClosingElement(node as import("typescript-4.5.4").JsxClosingElement);
                 return;
             case ts.SyntaxKind.JsxFragment:
-                createJsxFragment(node as import("typescript-4.5.3").JsxFragment);
+                createJsxFragment(node as import("typescript-4.5.4").JsxFragment);
                 return;
             case ts.SyntaxKind.JsxText:
-                createJsxText(node as import("typescript-4.5.3").JsxText);
+                createJsxText(node as import("typescript-4.5.4").JsxText);
                 return;
             case ts.SyntaxKind.JsxOpeningFragment:
-                createJsxOpeningFragment(node as import("typescript-4.5.3").JsxOpeningFragment);
+                createJsxOpeningFragment(node as import("typescript-4.5.4").JsxOpeningFragment);
                 return;
             case ts.SyntaxKind.JsxClosingFragment:
-                createJsxJsxClosingFragment(node as import("typescript-4.5.3").JsxClosingFragment);
+                createJsxJsxClosingFragment(node as import("typescript-4.5.4").JsxClosingFragment);
                 return;
             case ts.SyntaxKind.JsxAttribute:
-                createJsxAttribute(node as import("typescript-4.5.3").JsxAttribute);
+                createJsxAttribute(node as import("typescript-4.5.4").JsxAttribute);
                 return;
             case ts.SyntaxKind.JsxAttributes:
-                createJsxAttributes(node as import("typescript-4.5.3").JsxAttributes);
+                createJsxAttributes(node as import("typescript-4.5.4").JsxAttributes);
                 return;
             case ts.SyntaxKind.JsxSpreadAttribute:
-                createJsxSpreadAttribute(node as import("typescript-4.5.3").JsxSpreadAttribute);
+                createJsxSpreadAttribute(node as import("typescript-4.5.4").JsxSpreadAttribute);
                 return;
             case ts.SyntaxKind.JsxExpression:
-                createJsxExpression(node as import("typescript-4.5.3").JsxExpression);
+                createJsxExpression(node as import("typescript-4.5.4").JsxExpression);
                 return;
             case ts.SyntaxKind.CaseClause:
-                createCaseClause(node as import("typescript-4.5.3").CaseClause);
+                createCaseClause(node as import("typescript-4.5.4").CaseClause);
                 return;
             case ts.SyntaxKind.DefaultClause:
-                createDefaultClause(node as import("typescript-4.5.3").DefaultClause);
+                createDefaultClause(node as import("typescript-4.5.4").DefaultClause);
                 return;
             case ts.SyntaxKind.HeritageClause:
-                createHeritageClause(node as import("typescript-4.5.3").HeritageClause);
+                createHeritageClause(node as import("typescript-4.5.4").HeritageClause);
                 return;
             case ts.SyntaxKind.CatchClause:
-                createCatchClause(node as import("typescript-4.5.3").CatchClause);
+                createCatchClause(node as import("typescript-4.5.4").CatchClause);
                 return;
             case ts.SyntaxKind.PropertyAssignment:
-                createPropertyAssignment(node as import("typescript-4.5.3").PropertyAssignment);
+                createPropertyAssignment(node as import("typescript-4.5.4").PropertyAssignment);
                 return;
             case ts.SyntaxKind.ShorthandPropertyAssignment:
-                createShorthandPropertyAssignment(node as import("typescript-4.5.3").ShorthandPropertyAssignment);
+                createShorthandPropertyAssignment(node as import("typescript-4.5.4").ShorthandPropertyAssignment);
                 return;
             case ts.SyntaxKind.SpreadAssignment:
-                createSpreadAssignment(node as import("typescript-4.5.3").SpreadAssignment);
+                createSpreadAssignment(node as import("typescript-4.5.4").SpreadAssignment);
                 return;
             case ts.SyntaxKind.EnumMember:
-                createEnumMember(node as import("typescript-4.5.3").EnumMember);
+                createEnumMember(node as import("typescript-4.5.4").EnumMember);
                 return;
             case ts.SyntaxKind.CommaListExpression:
-                createCommaListExpression(node as import("typescript-4.5.3").CommaListExpression);
+                createCommaListExpression(node as import("typescript-4.5.4").CommaListExpression);
                 return;
             default:
                 if (node.kind >= ts.SyntaxKind.FirstToken && node.kind <= ts.SyntaxKind.LastToken) {
@@ -553,7 +553,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         }
     }
 
-    function writeNodeTextForTypeNode(node: import("typescript-4.5.3").TypeNode) {
+    function writeNodeTextForTypeNode(node: import("typescript-4.5.4").TypeNode) {
         if (node.kind >= ts.SyntaxKind.FirstKeyword && node.kind <= ts.SyntaxKind.LastKeyword) {
             writer.write("factory.createKeywordTypeNode(ts.SyntaxKind.").write(syntaxKindToName[node.kind]).write(")");
         }
@@ -562,68 +562,68 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         }
     }
 
-    function createNumericLiteral(node: import("typescript-4.5.3").NumericLiteral) {
+    function createNumericLiteral(node: import("typescript-4.5.4").NumericLiteral) {
         writer.write("factory.createNumericLiteral(");
         writer.quote(node.text.toString())
         writer.write(")");
     }
 
-    function createBigIntLiteral(node: import("typescript-4.5.3").BigIntLiteral) {
+    function createBigIntLiteral(node: import("typescript-4.5.4").BigIntLiteral) {
         writer.write("factory.createBigIntLiteral(");
         writer.quote(node.text.toString())
         writer.write(")");
     }
 
-    function createStringLiteral(node: import("typescript-4.5.3").StringLiteral) {
+    function createStringLiteral(node: import("typescript-4.5.4").StringLiteral) {
         writer.write("factory.createStringLiteral(");
         writer.quote(node.text.toString())
         writer.write(")");
     }
 
-    function createRegularExpressionLiteral(node: import("typescript-4.5.3").RegularExpressionLiteral) {
+    function createRegularExpressionLiteral(node: import("typescript-4.5.4").RegularExpressionLiteral) {
         writer.write("factory.createRegularExpressionLiteral(");
         writer.quote(node.text.toString())
         writer.write(")");
     }
 
-    function createIdentifier(node: import("typescript-4.5.3").Identifier) {
+    function createIdentifier(node: import("typescript-4.5.4").Identifier) {
         writer.write("factory.createIdentifier(");
         writer.quote(node.text.toString())
         writer.write(")");
     }
 
-    function createPrivateIdentifier(node: import("typescript-4.5.3").PrivateIdentifier) {
+    function createPrivateIdentifier(node: import("typescript-4.5.4").PrivateIdentifier) {
         writer.write("factory.createPrivateIdentifier(");
         writer.quote(node.text.toString())
         writer.write(")");
     }
 
-    function createSuper(node: import("typescript-4.5.3").SuperExpression) {
+    function createSuper(node: import("typescript-4.5.4").SuperExpression) {
         writer.write("factory.createSuper(");
         writer.write(")");
     }
 
-    function createThis(node: import("typescript-4.5.3").ThisExpression) {
+    function createThis(node: import("typescript-4.5.4").ThisExpression) {
         writer.write("factory.createThis(");
         writer.write(")");
     }
 
-    function createNull(node: import("typescript-4.5.3").NullLiteral) {
+    function createNull(node: import("typescript-4.5.4").NullLiteral) {
         writer.write("factory.createNull(");
         writer.write(")");
     }
 
-    function createTrue(node: import("typescript-4.5.3").TrueLiteral) {
+    function createTrue(node: import("typescript-4.5.4").TrueLiteral) {
         writer.write("factory.createTrue(");
         writer.write(")");
     }
 
-    function createFalse(node: import("typescript-4.5.3").FalseLiteral) {
+    function createFalse(node: import("typescript-4.5.4").FalseLiteral) {
         writer.write("factory.createFalse(");
         writer.write(")");
     }
 
-    function createQualifiedName(node: import("typescript-4.5.3").QualifiedName) {
+    function createQualifiedName(node: import("typescript-4.5.4").QualifiedName) {
         writer.write("factory.createQualifiedName(");
         writer.newLine();
         writer.indent(() => {
@@ -634,13 +634,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createComputedPropertyName(node: import("typescript-4.5.3").ComputedPropertyName) {
+    function createComputedPropertyName(node: import("typescript-4.5.4").ComputedPropertyName) {
         writer.write("factory.createComputedPropertyName(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createTypeParameterDeclaration(node: import("typescript-4.5.3").TypeParameterDeclaration) {
+    function createTypeParameterDeclaration(node: import("typescript-4.5.4").TypeParameterDeclaration) {
         writer.write("factory.createTypeParameterDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -661,7 +661,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createParameterDeclaration(node: import("typescript-4.5.3").ParameterDeclaration) {
+    function createParameterDeclaration(node: import("typescript-4.5.4").ParameterDeclaration) {
         writer.write("factory.createParameterDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -736,13 +736,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createDecorator(node: import("typescript-4.5.3").Decorator) {
+    function createDecorator(node: import("typescript-4.5.4").Decorator) {
         writer.write("factory.createDecorator(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createPropertySignature(node: import("typescript-4.5.3").PropertySignature) {
+    function createPropertySignature(node: import("typescript-4.5.4").PropertySignature) {
         writer.write("factory.createPropertySignature(");
         writer.newLine();
         writer.indent(() => {
@@ -784,7 +784,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createPropertyDeclaration(node: import("typescript-4.5.3").PropertyDeclaration) {
+    function createPropertyDeclaration(node: import("typescript-4.5.4").PropertyDeclaration) {
         writer.write("factory.createPropertyDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -854,7 +854,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createMethodSignature(node: import("typescript-4.5.3").MethodSignature) {
+    function createMethodSignature(node: import("typescript-4.5.4").MethodSignature) {
         writer.write("factory.createMethodSignature(");
         writer.newLine();
         writer.indent(() => {
@@ -934,7 +934,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createMethodDeclaration(node: import("typescript-4.5.3").MethodDeclaration) {
+    function createMethodDeclaration(node: import("typescript-4.5.4").MethodDeclaration) {
         writer.write("factory.createMethodDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -1047,7 +1047,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createConstructorDeclaration(node: import("typescript-4.5.3").ConstructorDeclaration) {
+    function createConstructorDeclaration(node: import("typescript-4.5.4").ConstructorDeclaration) {
         writer.write("factory.createConstructorDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -1119,7 +1119,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createGetAccessorDeclaration(node: import("typescript-4.5.3").GetAccessorDeclaration) {
+    function createGetAccessorDeclaration(node: import("typescript-4.5.4").GetAccessorDeclaration) {
         writer.write("factory.createGetAccessorDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -1199,7 +1199,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createSetAccessorDeclaration(node: import("typescript-4.5.3").SetAccessorDeclaration) {
+    function createSetAccessorDeclaration(node: import("typescript-4.5.4").SetAccessorDeclaration) {
         writer.write("factory.createSetAccessorDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -1273,7 +1273,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createCallSignature(node: import("typescript-4.5.3").CallSignatureDeclaration) {
+    function createCallSignature(node: import("typescript-4.5.4").CallSignatureDeclaration) {
         writer.write("factory.createCallSignature(");
         writer.newLine();
         writer.indent(() => {
@@ -1324,7 +1324,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createConstructSignature(node: import("typescript-4.5.3").ConstructSignatureDeclaration) {
+    function createConstructSignature(node: import("typescript-4.5.4").ConstructSignatureDeclaration) {
         writer.write("factory.createConstructSignature(");
         writer.newLine();
         writer.indent(() => {
@@ -1375,7 +1375,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createIndexSignature(node: import("typescript-4.5.3").IndexSignatureDeclaration) {
+    function createIndexSignature(node: import("typescript-4.5.4").IndexSignatureDeclaration) {
         writer.write("factory.createIndexSignature(");
         writer.newLine();
         writer.indent(() => {
@@ -1443,7 +1443,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTemplateLiteralTypeSpan(node: import("typescript-4.5.3").TemplateLiteralTypeSpan) {
+    function createTemplateLiteralTypeSpan(node: import("typescript-4.5.4").TemplateLiteralTypeSpan) {
         writer.write("factory.createTemplateLiteralTypeSpan(");
         writer.newLine();
         writer.indent(() => {
@@ -1454,7 +1454,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createClassStaticBlockDeclaration(node: import("typescript-4.5.3").ClassStaticBlockDeclaration) {
+    function createClassStaticBlockDeclaration(node: import("typescript-4.5.4").ClassStaticBlockDeclaration) {
         writer.write("factory.createClassStaticBlockDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -1505,13 +1505,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createKeywordTypeNode(node: import("typescript-4.5.3").KeywordTypeNode) {
+    function createKeywordTypeNode(node: import("typescript-4.5.4").KeywordTypeNode) {
         writer.write("factory.createKeywordTypeNode(");
         writer.write("ts.SyntaxKind.").write(syntaxKindToName[node.kind])
         writer.write(")");
     }
 
-    function createTypeReferenceNode(node: import("typescript-4.5.3").TypeReferenceNode) {
+    function createTypeReferenceNode(node: import("typescript-4.5.4").TypeReferenceNode) {
         writer.write("factory.createTypeReferenceNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1541,7 +1541,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createFunctionTypeNode(node: import("typescript-4.5.3").FunctionTypeNode) {
+    function createFunctionTypeNode(node: import("typescript-4.5.4").FunctionTypeNode) {
         writer.write("factory.createFunctionTypeNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1588,7 +1588,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createConstructorTypeNode(node: import("typescript-4.5.3").ConstructorTypeNode) {
+    function createConstructorTypeNode(node: import("typescript-4.5.4").ConstructorTypeNode) {
         writer.write("factory.createConstructorTypeNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1656,13 +1656,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTypeQueryNode(node: import("typescript-4.5.3").TypeQueryNode) {
+    function createTypeQueryNode(node: import("typescript-4.5.4").TypeQueryNode) {
         writer.write("factory.createTypeQueryNode(");
         writeNodeText(node.exprName)
         writer.write(")");
     }
 
-    function createTypeLiteralNode(node: import("typescript-4.5.3").TypeLiteralNode) {
+    function createTypeLiteralNode(node: import("typescript-4.5.4").TypeLiteralNode) {
         writer.write("factory.createTypeLiteralNode(");
         writer.write("[");
         if (node.members.length === 1) {
@@ -1683,13 +1683,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createArrayTypeNode(node: import("typescript-4.5.3").ArrayTypeNode) {
+    function createArrayTypeNode(node: import("typescript-4.5.4").ArrayTypeNode) {
         writer.write("factory.createArrayTypeNode(");
         writeNodeTextForTypeNode(node.elementType)
         writer.write(")");
     }
 
-    function createTupleTypeNode(node: import("typescript-4.5.3").TupleTypeNode) {
+    function createTupleTypeNode(node: import("typescript-4.5.4").TupleTypeNode) {
         writer.write("factory.createTupleTypeNode(");
         writer.write("[");
         if (node.elements.length === 1) {
@@ -1710,7 +1710,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createNamedTupleMember(node: import("typescript-4.5.3").NamedTupleMember) {
+    function createNamedTupleMember(node: import("typescript-4.5.4").NamedTupleMember) {
         writer.write("factory.createNamedTupleMember(");
         writer.newLine();
         writer.indent(() => {
@@ -1733,19 +1733,19 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createOptionalTypeNode(node: import("typescript-4.5.3").OptionalTypeNode) {
+    function createOptionalTypeNode(node: import("typescript-4.5.4").OptionalTypeNode) {
         writer.write("factory.createOptionalTypeNode(");
         writeNodeTextForTypeNode(node.type)
         writer.write(")");
     }
 
-    function createRestTypeNode(node: import("typescript-4.5.3").RestTypeNode) {
+    function createRestTypeNode(node: import("typescript-4.5.4").RestTypeNode) {
         writer.write("factory.createRestTypeNode(");
         writeNodeTextForTypeNode(node.type)
         writer.write(")");
     }
 
-    function createUnionTypeNode(node: import("typescript-4.5.3").UnionTypeNode) {
+    function createUnionTypeNode(node: import("typescript-4.5.4").UnionTypeNode) {
         writer.write("factory.createUnionTypeNode(");
         writer.write("[");
         if (node.types.length === 1) {
@@ -1766,7 +1766,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createIntersectionTypeNode(node: import("typescript-4.5.3").IntersectionTypeNode) {
+    function createIntersectionTypeNode(node: import("typescript-4.5.4").IntersectionTypeNode) {
         writer.write("factory.createIntersectionTypeNode(");
         writer.write("[");
         if (node.types.length === 1) {
@@ -1787,7 +1787,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createConditionalTypeNode(node: import("typescript-4.5.3").ConditionalTypeNode) {
+    function createConditionalTypeNode(node: import("typescript-4.5.4").ConditionalTypeNode) {
         writer.write("factory.createConditionalTypeNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1802,13 +1802,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createInferTypeNode(node: import("typescript-4.5.3").InferTypeNode) {
+    function createInferTypeNode(node: import("typescript-4.5.4").InferTypeNode) {
         writer.write("factory.createInferTypeNode(");
         writeNodeText(node.typeParameter)
         writer.write(")");
     }
 
-    function createImportTypeNode(node: import("typescript-4.5.3").ImportTypeNode) {
+    function createImportTypeNode(node: import("typescript-4.5.4").ImportTypeNode) {
         writer.write("factory.createImportTypeNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1846,18 +1846,18 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createParenthesizedType(node: import("typescript-4.5.3").ParenthesizedTypeNode) {
+    function createParenthesizedType(node: import("typescript-4.5.4").ParenthesizedTypeNode) {
         writer.write("factory.createParenthesizedType(");
         writeNodeTextForTypeNode(node.type)
         writer.write(")");
     }
 
-    function createThisTypeNode(node: import("typescript-4.5.3").ThisTypeNode) {
+    function createThisTypeNode(node: import("typescript-4.5.4").ThisTypeNode) {
         writer.write("factory.createThisTypeNode(");
         writer.write(")");
     }
 
-    function createTypeOperatorNode(node: import("typescript-4.5.3").TypeOperatorNode) {
+    function createTypeOperatorNode(node: import("typescript-4.5.4").TypeOperatorNode) {
         writer.write("factory.createTypeOperatorNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1868,7 +1868,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createIndexedAccessTypeNode(node: import("typescript-4.5.3").IndexedAccessTypeNode) {
+    function createIndexedAccessTypeNode(node: import("typescript-4.5.4").IndexedAccessTypeNode) {
         writer.write("factory.createIndexedAccessTypeNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1879,7 +1879,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createMappedTypeNode(node: import("typescript-4.5.3").MappedTypeNode) {
+    function createMappedTypeNode(node: import("typescript-4.5.4").MappedTypeNode) {
         writer.write("factory.createMappedTypeNode(");
         writer.newLine();
         writer.indent(() => {
@@ -1918,13 +1918,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createLiteralTypeNode(node: import("typescript-4.5.3").LiteralTypeNode) {
+    function createLiteralTypeNode(node: import("typescript-4.5.4").LiteralTypeNode) {
         writer.write("factory.createLiteralTypeNode(");
         writeNodeText(node.literal)
         writer.write(")");
     }
 
-    function createTemplateLiteralType(node: import("typescript-4.5.3").TemplateLiteralTypeNode) {
+    function createTemplateLiteralType(node: import("typescript-4.5.4").TemplateLiteralTypeNode) {
         writer.write("factory.createTemplateLiteralType(");
         writer.newLine();
         writer.indent(() => {
@@ -1950,7 +1950,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createObjectBindingPattern(node: import("typescript-4.5.3").ObjectBindingPattern) {
+    function createObjectBindingPattern(node: import("typescript-4.5.4").ObjectBindingPattern) {
         writer.write("factory.createObjectBindingPattern(");
         writer.write("[");
         if (node.elements.length === 1) {
@@ -1971,7 +1971,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createArrayBindingPattern(node: import("typescript-4.5.3").ArrayBindingPattern) {
+    function createArrayBindingPattern(node: import("typescript-4.5.4").ArrayBindingPattern) {
         writer.write("factory.createArrayBindingPattern(");
         writer.write("[");
         if (node.elements.length === 1) {
@@ -1992,7 +1992,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createBindingElement(node: import("typescript-4.5.3").BindingElement) {
+    function createBindingElement(node: import("typescript-4.5.4").BindingElement) {
         writer.write("factory.createBindingElement(");
         writer.newLine();
         writer.indent(() => {
@@ -2019,7 +2019,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createArrayLiteralExpression(node: import("typescript-4.5.3").ArrayLiteralExpression) {
+    function createArrayLiteralExpression(node: import("typescript-4.5.4").ArrayLiteralExpression) {
         writer.write("factory.createArrayLiteralExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2045,7 +2045,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createObjectLiteralExpression(node: import("typescript-4.5.3").ObjectLiteralExpression) {
+    function createObjectLiteralExpression(node: import("typescript-4.5.4").ObjectLiteralExpression) {
         writer.write("factory.createObjectLiteralExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2071,7 +2071,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createPropertyAccessExpression(node: import("typescript-4.5.3").PropertyAccessExpression) {
+    function createPropertyAccessExpression(node: import("typescript-4.5.4").PropertyAccessExpression) {
         writer.write("factory.createPropertyAccessExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2082,7 +2082,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createPropertyAccessChain(node: import("typescript-4.5.3").PropertyAccessChain) {
+    function createPropertyAccessChain(node: import("typescript-4.5.4").PropertyAccessChain) {
         writer.write("factory.createPropertyAccessChain(");
         writer.newLine();
         writer.indent(() => {
@@ -2099,7 +2099,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createElementAccessExpression(node: import("typescript-4.5.3").ElementAccessExpression) {
+    function createElementAccessExpression(node: import("typescript-4.5.4").ElementAccessExpression) {
         writer.write("factory.createElementAccessExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2110,7 +2110,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createElementAccessChain(node: import("typescript-4.5.3").ElementAccessChain) {
+    function createElementAccessChain(node: import("typescript-4.5.4").ElementAccessChain) {
         writer.write("factory.createElementAccessChain(");
         writer.newLine();
         writer.indent(() => {
@@ -2127,7 +2127,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createCallExpression(node: import("typescript-4.5.3").CallExpression) {
+    function createCallExpression(node: import("typescript-4.5.4").CallExpression) {
         writer.write("factory.createCallExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2174,7 +2174,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createCallChain(node: import("typescript-4.5.3").CallChain) {
+    function createCallChain(node: import("typescript-4.5.4").CallChain) {
         writer.write("factory.createCallChain(");
         writer.newLine();
         writer.indent(() => {
@@ -2227,7 +2227,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createNewExpression(node: import("typescript-4.5.3").NewExpression) {
+    function createNewExpression(node: import("typescript-4.5.4").NewExpression) {
         writer.write("factory.createNewExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2278,7 +2278,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTaggedTemplateExpression(node: import("typescript-4.5.3").TaggedTemplateExpression) {
+    function createTaggedTemplateExpression(node: import("typescript-4.5.4").TaggedTemplateExpression) {
         writer.write("factory.createTaggedTemplateExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2310,7 +2310,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTypeAssertion(node: import("typescript-4.5.3").TypeAssertion) {
+    function createTypeAssertion(node: import("typescript-4.5.4").TypeAssertion) {
         writer.write("factory.createTypeAssertion(");
         writer.newLine();
         writer.indent(() => {
@@ -2321,13 +2321,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createParenthesizedExpression(node: import("typescript-4.5.3").ParenthesizedExpression) {
+    function createParenthesizedExpression(node: import("typescript-4.5.4").ParenthesizedExpression) {
         writer.write("factory.createParenthesizedExpression(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createFunctionExpression(node: import("typescript-4.5.3").FunctionExpression) {
+    function createFunctionExpression(node: import("typescript-4.5.4").FunctionExpression) {
         writer.write("factory.createFunctionExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2413,7 +2413,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createArrowFunction(node: import("typescript-4.5.3").ArrowFunction) {
+    function createArrowFunction(node: import("typescript-4.5.4").ArrowFunction) {
         writer.write("factory.createArrowFunction(");
         writer.newLine();
         writer.indent(() => {
@@ -2489,31 +2489,31 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createDeleteExpression(node: import("typescript-4.5.3").DeleteExpression) {
+    function createDeleteExpression(node: import("typescript-4.5.4").DeleteExpression) {
         writer.write("factory.createDeleteExpression(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createTypeOfExpression(node: import("typescript-4.5.3").TypeOfExpression) {
+    function createTypeOfExpression(node: import("typescript-4.5.4").TypeOfExpression) {
         writer.write("factory.createTypeOfExpression(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createVoidExpression(node: import("typescript-4.5.3").VoidExpression) {
+    function createVoidExpression(node: import("typescript-4.5.4").VoidExpression) {
         writer.write("factory.createVoidExpression(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createAwaitExpression(node: import("typescript-4.5.3").AwaitExpression) {
+    function createAwaitExpression(node: import("typescript-4.5.4").AwaitExpression) {
         writer.write("factory.createAwaitExpression(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createPrefixUnaryExpression(node: import("typescript-4.5.3").PrefixUnaryExpression) {
+    function createPrefixUnaryExpression(node: import("typescript-4.5.4").PrefixUnaryExpression) {
         writer.write("factory.createPrefixUnaryExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2524,7 +2524,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createPostfixUnaryExpression(node: import("typescript-4.5.3").PostfixUnaryExpression) {
+    function createPostfixUnaryExpression(node: import("typescript-4.5.4").PostfixUnaryExpression) {
         writer.write("factory.createPostfixUnaryExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2535,7 +2535,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createBinaryExpression(node: import("typescript-4.5.3").BinaryExpression) {
+    function createBinaryExpression(node: import("typescript-4.5.4").BinaryExpression) {
         writer.write("factory.createBinaryExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2548,7 +2548,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createConditionalExpression(node: import("typescript-4.5.3").ConditionalExpression) {
+    function createConditionalExpression(node: import("typescript-4.5.4").ConditionalExpression) {
         writer.write("factory.createConditionalExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2565,7 +2565,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTemplateExpression(node: import("typescript-4.5.3").TemplateExpression) {
+    function createTemplateExpression(node: import("typescript-4.5.4").TemplateExpression) {
         writer.write("factory.createTemplateExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2591,7 +2591,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTemplateHead(node: import("typescript-4.5.3").TemplateHead) {
+    function createTemplateHead(node: import("typescript-4.5.4").TemplateHead) {
         writer.write("factory.createTemplateHead(");
         writer.newLine();
         writer.indent(() => {
@@ -2606,7 +2606,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTemplateMiddle(node: import("typescript-4.5.3").TemplateMiddle) {
+    function createTemplateMiddle(node: import("typescript-4.5.4").TemplateMiddle) {
         writer.write("factory.createTemplateMiddle(");
         writer.newLine();
         writer.indent(() => {
@@ -2621,7 +2621,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTemplateTail(node: import("typescript-4.5.3").TemplateTail) {
+    function createTemplateTail(node: import("typescript-4.5.4").TemplateTail) {
         writer.write("factory.createTemplateTail(");
         writer.newLine();
         writer.indent(() => {
@@ -2636,7 +2636,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createNoSubstitutionTemplateLiteral(node: import("typescript-4.5.3").NoSubstitutionTemplateLiteral) {
+    function createNoSubstitutionTemplateLiteral(node: import("typescript-4.5.4").NoSubstitutionTemplateLiteral) {
         writer.write("factory.createNoSubstitutionTemplateLiteral(");
         writer.newLine();
         writer.indent(() => {
@@ -2651,7 +2651,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createYieldExpression(node: import("typescript-4.5.3").YieldExpression) {
+    function createYieldExpression(node: import("typescript-4.5.4").YieldExpression) {
         writer.write("factory.createYieldExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2670,13 +2670,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createSpreadElement(node: import("typescript-4.5.3").SpreadElement) {
+    function createSpreadElement(node: import("typescript-4.5.4").SpreadElement) {
         writer.write("factory.createSpreadElement(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createClassExpression(node: import("typescript-4.5.3").ClassExpression) {
+    function createClassExpression(node: import("typescript-4.5.4").ClassExpression) {
         writer.write("factory.createClassExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2790,12 +2790,12 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createOmittedExpression(node: import("typescript-4.5.3").OmittedExpression) {
+    function createOmittedExpression(node: import("typescript-4.5.4").OmittedExpression) {
         writer.write("factory.createOmittedExpression(");
         writer.write(")");
     }
 
-    function createExpressionWithTypeArguments(node: import("typescript-4.5.3").ExpressionWithTypeArguments) {
+    function createExpressionWithTypeArguments(node: import("typescript-4.5.4").ExpressionWithTypeArguments) {
         writer.write("factory.createExpressionWithTypeArguments(");
         writer.newLine();
         writer.indent(() => {
@@ -2825,7 +2825,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createAsExpression(node: import("typescript-4.5.3").AsExpression) {
+    function createAsExpression(node: import("typescript-4.5.4").AsExpression) {
         writer.write("factory.createAsExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -2836,19 +2836,19 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createNonNullExpression(node: import("typescript-4.5.3").NonNullExpression) {
+    function createNonNullExpression(node: import("typescript-4.5.4").NonNullExpression) {
         writer.write("factory.createNonNullExpression(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createNonNullChain(node: import("typescript-4.5.3").NonNullChain) {
+    function createNonNullChain(node: import("typescript-4.5.4").NonNullChain) {
         writer.write("factory.createNonNullChain(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createMetaProperty(node: import("typescript-4.5.3").MetaProperty) {
+    function createMetaProperty(node: import("typescript-4.5.4").MetaProperty) {
         writer.write("factory.createMetaProperty(");
         writer.newLine();
         writer.indent(() => {
@@ -2859,7 +2859,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTemplateSpan(node: import("typescript-4.5.3").TemplateSpan) {
+    function createTemplateSpan(node: import("typescript-4.5.4").TemplateSpan) {
         writer.write("factory.createTemplateSpan(");
         writer.newLine();
         writer.indent(() => {
@@ -2870,12 +2870,12 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createSemicolonClassElement(node: import("typescript-4.5.3").SemicolonClassElement) {
+    function createSemicolonClassElement(node: import("typescript-4.5.4").SemicolonClassElement) {
         writer.write("factory.createSemicolonClassElement(");
         writer.write(")");
     }
 
-    function createBlock(node: import("typescript-4.5.3").Block) {
+    function createBlock(node: import("typescript-4.5.4").Block) {
         writer.write("factory.createBlock(");
         writer.newLine();
         writer.indent(() => {
@@ -2901,7 +2901,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createVariableStatement(node: import("typescript-4.5.3").VariableStatement) {
+    function createVariableStatement(node: import("typescript-4.5.4").VariableStatement) {
         writer.write("factory.createVariableStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -2931,18 +2931,18 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createEmptyStatement(node: import("typescript-4.5.3").EmptyStatement) {
+    function createEmptyStatement(node: import("typescript-4.5.4").EmptyStatement) {
         writer.write("factory.createEmptyStatement(");
         writer.write(")");
     }
 
-    function createExpressionStatement(node: import("typescript-4.5.3").ExpressionStatement) {
+    function createExpressionStatement(node: import("typescript-4.5.4").ExpressionStatement) {
         writer.write("factory.createExpressionStatement(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createIfStatement(node: import("typescript-4.5.3").IfStatement) {
+    function createIfStatement(node: import("typescript-4.5.4").IfStatement) {
         writer.write("factory.createIfStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -2959,7 +2959,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createDoStatement(node: import("typescript-4.5.3").DoStatement) {
+    function createDoStatement(node: import("typescript-4.5.4").DoStatement) {
         writer.write("factory.createDoStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -2970,7 +2970,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createWhileStatement(node: import("typescript-4.5.3").WhileStatement) {
+    function createWhileStatement(node: import("typescript-4.5.4").WhileStatement) {
         writer.write("factory.createWhileStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -2981,7 +2981,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createForStatement(node: import("typescript-4.5.3").ForStatement) {
+    function createForStatement(node: import("typescript-4.5.4").ForStatement) {
         writer.write("factory.createForStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -3008,7 +3008,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createForInStatement(node: import("typescript-4.5.3").ForInStatement) {
+    function createForInStatement(node: import("typescript-4.5.4").ForInStatement) {
         writer.write("factory.createForInStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -3021,7 +3021,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createForOfStatement(node: import("typescript-4.5.3").ForOfStatement) {
+    function createForOfStatement(node: import("typescript-4.5.4").ForOfStatement) {
         writer.write("factory.createForOfStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -3040,7 +3040,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createContinueStatement(node: import("typescript-4.5.3").ContinueStatement) {
+    function createContinueStatement(node: import("typescript-4.5.4").ContinueStatement) {
         writer.write("factory.createContinueStatement(");
         if (node.label == null)
             writer.write("undefined");
@@ -3050,7 +3050,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createBreakStatement(node: import("typescript-4.5.3").BreakStatement) {
+    function createBreakStatement(node: import("typescript-4.5.4").BreakStatement) {
         writer.write("factory.createBreakStatement(");
         if (node.label == null)
             writer.write("undefined");
@@ -3060,7 +3060,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createReturnStatement(node: import("typescript-4.5.3").ReturnStatement) {
+    function createReturnStatement(node: import("typescript-4.5.4").ReturnStatement) {
         writer.write("factory.createReturnStatement(");
         if (node.expression == null)
             writer.write("undefined");
@@ -3070,7 +3070,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createWithStatement(node: import("typescript-4.5.3").WithStatement) {
+    function createWithStatement(node: import("typescript-4.5.4").WithStatement) {
         writer.write("factory.createWithStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -3081,7 +3081,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createSwitchStatement(node: import("typescript-4.5.3").SwitchStatement) {
+    function createSwitchStatement(node: import("typescript-4.5.4").SwitchStatement) {
         writer.write("factory.createSwitchStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -3092,7 +3092,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createLabeledStatement(node: import("typescript-4.5.3").LabeledStatement) {
+    function createLabeledStatement(node: import("typescript-4.5.4").LabeledStatement) {
         writer.write("factory.createLabeledStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -3103,13 +3103,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createThrowStatement(node: import("typescript-4.5.3").ThrowStatement) {
+    function createThrowStatement(node: import("typescript-4.5.4").ThrowStatement) {
         writer.write("factory.createThrowStatement(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createTryStatement(node: import("typescript-4.5.3").TryStatement) {
+    function createTryStatement(node: import("typescript-4.5.4").TryStatement) {
         writer.write("factory.createTryStatement(");
         writer.newLine();
         writer.indent(() => {
@@ -3130,12 +3130,12 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createDebuggerStatement(node: import("typescript-4.5.3").DebuggerStatement) {
+    function createDebuggerStatement(node: import("typescript-4.5.4").DebuggerStatement) {
         writer.write("factory.createDebuggerStatement(");
         writer.write(")");
     }
 
-    function createVariableDeclaration(node: import("typescript-4.5.3").VariableDeclaration) {
+    function createVariableDeclaration(node: import("typescript-4.5.4").VariableDeclaration) {
         writer.write("factory.createVariableDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3162,7 +3162,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createVariableDeclarationList(node: import("typescript-4.5.3").VariableDeclarationList) {
+    function createVariableDeclarationList(node: import("typescript-4.5.4").VariableDeclarationList) {
         writer.write("factory.createVariableDeclarationList(");
         writer.newLine();
         writer.indent(() => {
@@ -3188,7 +3188,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createFunctionDeclaration(node: import("typescript-4.5.3").FunctionDeclaration) {
+    function createFunctionDeclaration(node: import("typescript-4.5.4").FunctionDeclaration) {
         writer.write("factory.createFunctionDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3299,7 +3299,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createClassDeclaration(node: import("typescript-4.5.3").ClassDeclaration) {
+    function createClassDeclaration(node: import("typescript-4.5.4").ClassDeclaration) {
         writer.write("factory.createClassDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3413,7 +3413,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createInterfaceDeclaration(node: import("typescript-4.5.3").InterfaceDeclaration) {
+    function createInterfaceDeclaration(node: import("typescript-4.5.4").InterfaceDeclaration) {
         writer.write("factory.createInterfaceDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3523,7 +3523,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createTypeAliasDeclaration(node: import("typescript-4.5.3").TypeAliasDeclaration) {
+    function createTypeAliasDeclaration(node: import("typescript-4.5.4").TypeAliasDeclaration) {
         writer.write("factory.createTypeAliasDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3597,7 +3597,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createEnumDeclaration(node: import("typescript-4.5.3").EnumDeclaration) {
+    function createEnumDeclaration(node: import("typescript-4.5.4").EnumDeclaration) {
         writer.write("factory.createEnumDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3665,7 +3665,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createModuleDeclaration(node: import("typescript-4.5.3").ModuleDeclaration) {
+    function createModuleDeclaration(node: import("typescript-4.5.4").ModuleDeclaration) {
         writer.write("factory.createModuleDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3724,7 +3724,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createModuleBlock(node: import("typescript-4.5.3").ModuleBlock) {
+    function createModuleBlock(node: import("typescript-4.5.4").ModuleBlock) {
         writer.write("factory.createModuleBlock(");
         writer.write("[");
         if (node.statements.length === 1) {
@@ -3745,7 +3745,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createCaseBlock(node: import("typescript-4.5.3").CaseBlock) {
+    function createCaseBlock(node: import("typescript-4.5.4").CaseBlock) {
         writer.write("factory.createCaseBlock(");
         writer.write("[");
         if (node.clauses.length === 1) {
@@ -3766,13 +3766,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createNamespaceExportDeclaration(node: import("typescript-4.5.3").NamespaceExportDeclaration) {
+    function createNamespaceExportDeclaration(node: import("typescript-4.5.4").NamespaceExportDeclaration) {
         writer.write("factory.createNamespaceExportDeclaration(");
         writeNodeText(node.name)
         writer.write(")");
     }
 
-    function createImportEqualsDeclaration(node: import("typescript-4.5.3").ImportEqualsDeclaration) {
+    function createImportEqualsDeclaration(node: import("typescript-4.5.4").ImportEqualsDeclaration) {
         writer.write("factory.createImportEqualsDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3827,7 +3827,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createImportDeclaration(node: import("typescript-4.5.3").ImportDeclaration) {
+    function createImportDeclaration(node: import("typescript-4.5.4").ImportDeclaration) {
         writer.write("factory.createImportDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -3890,7 +3890,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createImportClause(node: import("typescript-4.5.3").ImportClause) {
+    function createImportClause(node: import("typescript-4.5.4").ImportClause) {
         writer.write("factory.createImportClause(");
         writer.newLine();
         writer.indent(() => {
@@ -3911,7 +3911,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createAssertClause(node: import("typescript-4.5.3").AssertClause) {
+    function createAssertClause(node: import("typescript-4.5.4").AssertClause) {
         writer.write("factory.createAssertClause(");
         writer.newLine();
         writer.indent(() => {
@@ -3926,7 +3926,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createAssertEntry(node: import("typescript-4.5.3").AssertEntry) {
+    function createAssertEntry(node: import("typescript-4.5.4").AssertEntry) {
         writer.write("factory.createAssertEntry(");
         writer.newLine();
         writer.indent(() => {
@@ -3937,19 +3937,19 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createNamespaceImport(node: import("typescript-4.5.3").NamespaceImport) {
+    function createNamespaceImport(node: import("typescript-4.5.4").NamespaceImport) {
         writer.write("factory.createNamespaceImport(");
         writeNodeText(node.name)
         writer.write(")");
     }
 
-    function createNamespaceExport(node: import("typescript-4.5.3").NamespaceExport) {
+    function createNamespaceExport(node: import("typescript-4.5.4").NamespaceExport) {
         writer.write("factory.createNamespaceExport(");
         writeNodeText(node.name)
         writer.write(")");
     }
 
-    function createNamedImports(node: import("typescript-4.5.3").NamedImports) {
+    function createNamedImports(node: import("typescript-4.5.4").NamedImports) {
         writer.write("factory.createNamedImports(");
         writer.write("[");
         if (node.elements.length === 1) {
@@ -3970,7 +3970,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createImportSpecifier(node: import("typescript-4.5.3").ImportSpecifier) {
+    function createImportSpecifier(node: import("typescript-4.5.4").ImportSpecifier) {
         writer.write("factory.createImportSpecifier(");
         writer.newLine();
         writer.indent(() => {
@@ -3987,7 +3987,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createExportAssignment(node: import("typescript-4.5.3").ExportAssignment) {
+    function createExportAssignment(node: import("typescript-4.5.4").ExportAssignment) {
         writer.write("factory.createExportAssignment(");
         writer.newLine();
         writer.indent(() => {
@@ -4044,7 +4044,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createExportDeclaration(node: import("typescript-4.5.3").ExportDeclaration) {
+    function createExportDeclaration(node: import("typescript-4.5.4").ExportDeclaration) {
         writer.write("factory.createExportDeclaration(");
         writer.newLine();
         writer.indent(() => {
@@ -4113,7 +4113,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createNamedExports(node: import("typescript-4.5.3").NamedExports) {
+    function createNamedExports(node: import("typescript-4.5.4").NamedExports) {
         writer.write("factory.createNamedExports(");
         writer.write("[");
         if (node.elements.length === 1) {
@@ -4134,7 +4134,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createExportSpecifier(node: import("typescript-4.5.3").ExportSpecifier) {
+    function createExportSpecifier(node: import("typescript-4.5.4").ExportSpecifier) {
         writer.write("factory.createExportSpecifier(");
         writer.newLine();
         writer.indent(() => {
@@ -4151,13 +4151,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createExternalModuleReference(node: import("typescript-4.5.3").ExternalModuleReference) {
+    function createExternalModuleReference(node: import("typescript-4.5.4").ExternalModuleReference) {
         writer.write("factory.createExternalModuleReference(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createJsxElement(node: import("typescript-4.5.3").JsxElement) {
+    function createJsxElement(node: import("typescript-4.5.4").JsxElement) {
         writer.write("factory.createJsxElement(");
         writer.newLine();
         writer.indent(() => {
@@ -4185,7 +4185,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createJsxSelfClosingElement(node: import("typescript-4.5.3").JsxSelfClosingElement) {
+    function createJsxSelfClosingElement(node: import("typescript-4.5.4").JsxSelfClosingElement) {
         writer.write("factory.createJsxSelfClosingElement(");
         writer.newLine();
         writer.indent(() => {
@@ -4217,7 +4217,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createJsxOpeningElement(node: import("typescript-4.5.3").JsxOpeningElement) {
+    function createJsxOpeningElement(node: import("typescript-4.5.4").JsxOpeningElement) {
         writer.write("factory.createJsxOpeningElement(");
         writer.newLine();
         writer.indent(() => {
@@ -4249,13 +4249,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createJsxClosingElement(node: import("typescript-4.5.3").JsxClosingElement) {
+    function createJsxClosingElement(node: import("typescript-4.5.4").JsxClosingElement) {
         writer.write("factory.createJsxClosingElement(");
         writeNodeText(node.tagName)
         writer.write(")");
     }
 
-    function createJsxFragment(node: import("typescript-4.5.3").JsxFragment) {
+    function createJsxFragment(node: import("typescript-4.5.4").JsxFragment) {
         writer.write("factory.createJsxFragment(");
         writer.newLine();
         writer.indent(() => {
@@ -4283,7 +4283,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createJsxText(node: import("typescript-4.5.3").JsxText) {
+    function createJsxText(node: import("typescript-4.5.4").JsxText) {
         writer.write("factory.createJsxText(");
         writer.newLine();
         writer.indent(() => {
@@ -4294,17 +4294,17 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createJsxOpeningFragment(node: import("typescript-4.5.3").JsxOpeningFragment) {
+    function createJsxOpeningFragment(node: import("typescript-4.5.4").JsxOpeningFragment) {
         writer.write("factory.createJsxOpeningFragment(");
         writer.write(")");
     }
 
-    function createJsxJsxClosingFragment(node: import("typescript-4.5.3").JsxClosingFragment) {
+    function createJsxJsxClosingFragment(node: import("typescript-4.5.4").JsxClosingFragment) {
         writer.write("factory.createJsxJsxClosingFragment(");
         writer.write(")");
     }
 
-    function createJsxAttribute(node: import("typescript-4.5.3").JsxAttribute) {
+    function createJsxAttribute(node: import("typescript-4.5.4").JsxAttribute) {
         writer.write("factory.createJsxAttribute(");
         writer.newLine();
         writer.indent(() => {
@@ -4319,7 +4319,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createJsxAttributes(node: import("typescript-4.5.3").JsxAttributes) {
+    function createJsxAttributes(node: import("typescript-4.5.4").JsxAttributes) {
         writer.write("factory.createJsxAttributes(");
         writer.write("[");
         if (node.properties.length === 1) {
@@ -4340,13 +4340,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createJsxSpreadAttribute(node: import("typescript-4.5.3").JsxSpreadAttribute) {
+    function createJsxSpreadAttribute(node: import("typescript-4.5.4").JsxSpreadAttribute) {
         writer.write("factory.createJsxSpreadAttribute(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createJsxExpression(node: import("typescript-4.5.3").JsxExpression) {
+    function createJsxExpression(node: import("typescript-4.5.4").JsxExpression) {
         writer.write("factory.createJsxExpression(");
         writer.newLine();
         writer.indent(() => {
@@ -4365,7 +4365,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createCaseClause(node: import("typescript-4.5.3").CaseClause) {
+    function createCaseClause(node: import("typescript-4.5.4").CaseClause) {
         writer.write("factory.createCaseClause(");
         writer.newLine();
         writer.indent(() => {
@@ -4391,7 +4391,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createDefaultClause(node: import("typescript-4.5.3").DefaultClause) {
+    function createDefaultClause(node: import("typescript-4.5.4").DefaultClause) {
         writer.write("factory.createDefaultClause(");
         writer.write("[");
         if (node.statements.length === 1) {
@@ -4412,7 +4412,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createHeritageClause(node: import("typescript-4.5.3").HeritageClause) {
+    function createHeritageClause(node: import("typescript-4.5.4").HeritageClause) {
         writer.write("factory.createHeritageClause(");
         writer.newLine();
         writer.indent(() => {
@@ -4438,7 +4438,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createCatchClause(node: import("typescript-4.5.3").CatchClause) {
+    function createCatchClause(node: import("typescript-4.5.4").CatchClause) {
         writer.write("factory.createCatchClause(");
         writer.newLine();
         writer.indent(() => {
@@ -4453,7 +4453,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createPropertyAssignment(node: import("typescript-4.5.3").PropertyAssignment) {
+    function createPropertyAssignment(node: import("typescript-4.5.4").PropertyAssignment) {
         writer.write("factory.createPropertyAssignment(");
         writer.newLine();
         writer.indent(() => {
@@ -4464,7 +4464,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createShorthandPropertyAssignment(node: import("typescript-4.5.3").ShorthandPropertyAssignment) {
+    function createShorthandPropertyAssignment(node: import("typescript-4.5.4").ShorthandPropertyAssignment) {
         writer.write("factory.createShorthandPropertyAssignment(");
         writer.newLine();
         writer.indent(() => {
@@ -4479,13 +4479,13 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createSpreadAssignment(node: import("typescript-4.5.3").SpreadAssignment) {
+    function createSpreadAssignment(node: import("typescript-4.5.4").SpreadAssignment) {
         writer.write("factory.createSpreadAssignment(");
         writeNodeText(node.expression)
         writer.write(")");
     }
 
-    function createEnumMember(node: import("typescript-4.5.3").EnumMember) {
+    function createEnumMember(node: import("typescript-4.5.4").EnumMember) {
         writer.write("factory.createEnumMember(");
         writer.newLine();
         writer.indent(() => {
@@ -4500,7 +4500,7 @@ export function generateFactoryCode(ts: typeof import("typescript-4.5.3"), initi
         writer.write(")");
     }
 
-    function createCommaListExpression(node: import("typescript-4.5.3").CommaListExpression) {
+    function createCommaListExpression(node: import("typescript-4.5.4").CommaListExpression) {
         writer.write("factory.createCommaListExpression(");
         writer.write("[");
         if (node.elements.length === 1) {

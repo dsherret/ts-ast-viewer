@@ -17,7 +17,7 @@
   "dependencies": {
     "@ts-ast-viewer/shared": "1.0.0",
     "cypress": "^9.1.1",
-    "typescript": "^4.5.3",
+    "typescript": "^4.5.4",
     "wait-on": "^6.0.0"
   }
 }
