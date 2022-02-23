@@ -17,23 +17,21 @@
 
 .Resizer.horizontal {
   height: 11px;
-  margin: -5px 0;
-  border-top: 5px solid rgba(0, 0, 0, 1);
-  border-bottom: 5px solid rgba(0, 0, 0, 1);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
   cursor: row-resize;
   width: 100%;
 }
 
 .Resizer.horizontal:hover {
-  border-top: 5px solid rgba(0, 0, 0, 0.5);
-  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+  border-top: 5px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 5px solid rgba(255, 255, 255, 0.5);
 }
 
 .Resizer.vertical {
   width: 11px;
-  margin: 0 -5px;
-  border-left: 5px solid rgba(255, 255, 255, 0);
-  border-right: 5px solid rgba(255, 255, 255, 0);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
   cursor: col-resize;
 }
 
@@ -54,7 +52,4 @@
 .Resizer.disabled.horizontal:hover {
   border-top-width: 0px;
   border-bottom-width: 0px;
-}
-
-.Resizer.disabled:hover {
 }
