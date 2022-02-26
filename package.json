@@ -14,6 +14,7 @@
     "format": "dprint fmt",
     "test": "yarn workspaces run test",
     "predeploy": "npm run predeploy --prefix site",
+    "addTypeScriptVersions": "ts-node --project scripts/tsconfig.json scripts/addTypeScriptVersions.ts",
     "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode && npm run createPublicApiInfo && npm run build --prefix shared",
     "copyLibFiles": "ts-node --project scripts/tsconfig.json scripts/copyLibFiles.ts ",
     "createCompilerVersions": "ts-node --project scripts/tsconfig.json scripts/createCompilerVersions.ts",
@@ -27,9 +28,11 @@
   "devDependencies": {
     "@types/glob": "^7.2.0",
     "@types/node": "^16.11.12",
+    "@types/semver": "^7.3.9",
     "cross-env": "^7.0.3",
     "dts-minify": "^0.3.0",
     "glob": "^7.2.0",
+    "semver": "^7.3.5",
     "ts-factory-code-generator-generator": "^0.6.2",
     "ts-morph": "^13.0.2",
     "ts-node": "^10.4.0"

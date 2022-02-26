@@ -21,6 +21,15 @@ export function getCompilerVersions() {
     versions.push({ version: matches[0], name: key });
   }
 
+  // this means that it's for local development... just use the the dev dependency
+  if (versions.length === 0) {
+    const devDependencies = fileData["devDependencies"];
+    versions.push({
+      name: `typescript`,
+      version: devDependencies["typescript"],
+    });
+  }
+
   return versions.sort((a, b) => {
     if (a.version.startsWith("@next")) {
       return 1;

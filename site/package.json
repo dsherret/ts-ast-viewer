@@ -19,18 +19,7 @@
     "react-monaco-editor": "0.46.0",
     "react-spinners": "^0.11.0",
     "react-split-pane": "^0.1.92",
-    "react-treeview": "^0.4.7",
-    "typescript": "4.5.4",
-    "typescript-3.6.4": "npm:typescript@3.6.4",
-    "typescript-3.7.5": "npm:typescript@3.7.5",
-    "typescript-3.8.3": "npm:typescript@3.8.3",
-    "typescript-3.9.7": "npm:typescript@3.9.7",
-    "typescript-4.0.5": "npm:typescript@4.0.5",
-    "typescript-4.1.5": "npm:typescript@4.1.5",
-    "typescript-4.2.4": "npm:typescript@4.2.4",
-    "typescript-4.3.5": "npm:typescript@4.3.5",
-    "typescript-4.4.4": "npm:typescript@4.4.4",
-    "typescript-4.5.4": "npm:typescript@4.5.4"
+    "react-treeview": "^0.4.7"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",
@@ -46,6 +35,7 @@
     "cross-env": "^7.0.3",
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
+    "typescript": "4.5.4",
     "vite": "^2.7.3",
     "vite-plugin-monaco-editor": "^1.0.10"
   }
