@@ -13,9 +13,9 @@
     "CHANGELOG.md"
   ],
   "plugins": [
-    "https://plugins.dprint.dev/typescript-0.60.0.wasm",
-    "https://plugins.dprint.dev/json-0.13.2.wasm",
-    "https://plugins.dprint.dev/markdown-0.11.3.wasm",
-    "https://plugins.dprint.dev/prettier-0.4.0.exe-plugin@2a38bff5dff736cb53195a93d6a15a6281580205dfb0552ca0562bac8b3fc065"
+    "https://plugins.dprint.dev/typescript-0.68.2.wasm",
+    "https://plugins.dprint.dev/json-0.15.2.wasm",
+    "https://plugins.dprint.dev/markdown-0.13.2.wasm",
+    "https://plugins.dprint.dev/prettier-0.7.0.json@4e846f43b32981258cef5095b3d732522947592e090ef52333801f9d6e8adb33"
   ]
 }
