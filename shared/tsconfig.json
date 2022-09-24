@@ -10,7 +10,8 @@
     "removeComments": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "skipLibCheck": true
   },
   "include": [
     "./src"

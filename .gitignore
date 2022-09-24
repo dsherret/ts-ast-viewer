@@ -6,5 +6,5 @@ yarn-error.log*
 .vs
 shared/dist
 shared/dist-esm
-tsconfig.tsbuildinfo
-tsconfig.esm.tsbuildinfo
+shared/tsconfig.tsbuildinfo
+shared/tsconfig.esm.tsbuildinfo
