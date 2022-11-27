@@ -21,7 +21,7 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
   const apiTo = getCompilerApi(ScriptKindTo, ScriptTargetTo);
 
   expect(convertOptions(apiFrom, apiTo, {
-    compilerPackageName: "typescript-4.2.4",
+    compilerPackageName: "typescript",
     scriptKind: fromKind,
     scriptTarget: fromTarget,
     treeMode: 0,
@@ -29,7 +29,7 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
     showFactoryCode: true,
     showInternals: false,
   })).toEqual({
-    compilerPackageName: "typescript-4.2.4",
+    compilerPackageName: "typescript",
     scriptKind: expectedKind,
     scriptTarget: expectedTarget,
     treeMode: 0,
