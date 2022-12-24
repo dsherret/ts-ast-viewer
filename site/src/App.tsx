@@ -1,5 +1,7 @@
 import { constants } from "@ts-ast-viewer/shared";
-import SplitPane from "react-split-pane";
+import SplitPaneImport from "react-split-pane";
+// waiting on https://github.com/tomkp/react-split-pane/pull/818
+const SplitPane: any = SplitPaneImport;
 import "./App.css";
 import { useAppContext } from "./AppContext";
 import { getDescendantAtRange, getStartSafe } from "./compiler";

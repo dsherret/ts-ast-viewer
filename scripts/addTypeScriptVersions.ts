@@ -38,8 +38,8 @@ function getTypeScriptVersionsToInstall() {
     }
   }
   const finalVersions = semver.sort(Object.values(highestMinors));
-  // select the most recent 10 versions
-  return finalVersions.slice(-10).map(v => v.format());
+  // select the most recent 9 versions
+  return finalVersions.slice(-9).map(v => v.format());
 }
 
 function getAllTypeScriptVersions() {

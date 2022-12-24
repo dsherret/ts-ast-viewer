@@ -14,7 +14,7 @@ export interface ErrorBoundaryState {
 /**
  * From: https://reactjs.org/docs/error-boundaries.html
  */
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<React.PropsWithChildren<ErrorBoundaryProps>, ErrorBoundaryState> {
   private lastResetHash: string | undefined;
 
   constructor(props: ErrorBoundaryProps) {
