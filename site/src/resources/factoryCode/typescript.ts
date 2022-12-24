@@ -343,6 +343,9 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             case ts.SyntaxKind.MetaProperty:
                 createMetaProperty(node as import("typescript").MetaProperty);
                 return;
+            case ts.SyntaxKind.SatisfiesExpression:
+                createSatisfiesExpression(node as import("typescript").SatisfiesExpression);
+                return;
             case ts.SyntaxKind.TemplateSpan:
                 createTemplateSpan(node as import("typescript").TemplateSpan);
                 return;
@@ -453,6 +456,9 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 return;
             case ts.SyntaxKind.AssertEntry:
                 createAssertEntry(node as import("typescript").AssertEntry);
+                return;
+            case ts.SyntaxKind.ImportTypeAssertionContainer:
+                createImportTypeAssertionContainer(node as import("typescript").ImportTypeAssertionContainer);
                 return;
             case ts.SyntaxKind.NamespaceImport:
                 createNamespaceImport(node as import("typescript").NamespaceImport);
@@ -644,6 +650,27 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createTypeParameterDeclaration(");
         writer.newLine();
         writer.indent(() => {
+            if (node.modifiers == null)
+                writer.write("undefined");
+            else {
+                writer.write("[");
+                if (node.modifiers.length === 1) {
+                    const item = node.modifiers![0];
+                    writeNodeText(item)
+                }
+                else if (node.modifiers.length > 1) {
+                    writer.indent(() => {
+                        for (let i = 0; i < node.modifiers!.length; i++) {
+                            const item = node.modifiers![i];
+                            if (i > 0)
+                                writer.write(",").newLine();
+                            writeNodeText(item)
+                        }
+                    });
+                }
+                writer.write("]");
+            }
+            writer.write(",").newLine();
             writeNodeText(node.name)
             writer.write(",").newLine();
             if (node.constraint == null)
@@ -665,34 +692,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createParameterDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -700,7 +706,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -752,7 +758,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -760,7 +766,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -788,34 +794,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createPropertyDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -823,7 +808,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -864,7 +849,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -872,7 +857,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -938,34 +923,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createMethodDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -973,7 +937,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -1051,34 +1015,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createConstructorDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -1086,7 +1029,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -1123,34 +1066,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createGetAccessorDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -1158,7 +1080,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -1203,34 +1125,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createSetAccessorDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -1238,7 +1139,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -1379,34 +1280,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createIndexSignature(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -1414,7 +1294,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -1456,52 +1336,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
 
     function createClassStaticBlockDeclaration(node: import("typescript").ClassStaticBlockDeclaration) {
         writer.write("factory.createClassStaticBlockDeclaration(");
-        writer.newLine();
-        writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
-            if (node.modifiers == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.modifiers.length === 1) {
-                    const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
-                }
-                else if (node.modifiers.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.modifiers!.length; i++) {
-                            const item = node.modifiers![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
-            writeNodeText(node.body)
-        });
+        writeNodeText(node.body)
         writer.write(")");
     }
 
@@ -1598,7 +1433,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -1606,7 +1441,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -1658,7 +1493,31 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
 
     function createTypeQueryNode(node: import("typescript").TypeQueryNode) {
         writer.write("factory.createTypeQueryNode(");
-        writeNodeText(node.exprName)
+        writer.newLine();
+        writer.indent(() => {
+            writeNodeText(node.exprName)
+            writer.write(",").newLine();
+            if (node.typeArguments == null)
+                writer.write("undefined");
+            else {
+                writer.write("[");
+                if (node.typeArguments.length === 1) {
+                    const item = node.typeArguments![0];
+                    writeNodeTextForTypeNode(item)
+                }
+                else if (node.typeArguments.length > 1) {
+                    writer.indent(() => {
+                        for (let i = 0; i < node.typeArguments!.length; i++) {
+                            const item = node.typeArguments![i];
+                            if (i > 0)
+                                writer.write(",").newLine();
+                            writeNodeTextForTypeNode(item)
+                        }
+                    });
+                }
+                writer.write("]");
+            }
+        });
         writer.write(")");
     }
 
@@ -1813,6 +1672,12 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.newLine();
         writer.indent(() => {
             writeNodeTextForTypeNode(node.argument)
+            writer.write(",").newLine();
+            if (node.assertions == null)
+                writer.write("undefined");
+            else {
+                writeNodeText(node.assertions)
+            }
             writer.write(",").newLine();
             if (node.qualifier == null)
                 writer.write("undefined");
@@ -2337,7 +2202,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -2345,7 +2210,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -2423,7 +2288,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -2431,7 +2296,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -2680,34 +2545,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createClassExpression(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -2715,7 +2559,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -2859,6 +2703,17 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write(")");
     }
 
+    function createSatisfiesExpression(node: import("typescript").SatisfiesExpression) {
+        writer.write("factory.createSatisfiesExpression(");
+        writer.newLine();
+        writer.indent(() => {
+            writeNodeText(node.expression)
+            writer.write(",").newLine();
+            writeNodeTextForTypeNode(node.type)
+        });
+        writer.write(")");
+    }
+
     function createTemplateSpan(node: import("typescript").TemplateSpan) {
         writer.write("factory.createTemplateSpan(");
         writer.newLine();
@@ -2911,7 +2766,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -2919,7 +2774,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3192,34 +3047,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createFunctionDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3227,7 +3061,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3303,34 +3137,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createClassDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3338,7 +3151,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3417,34 +3230,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createInterfaceDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3452,7 +3244,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3527,34 +3319,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createTypeAliasDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3562,7 +3333,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3601,34 +3372,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createEnumDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3636,7 +3386,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3669,34 +3419,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createModuleDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3704,7 +3433,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3776,34 +3505,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createImportEqualsDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3811,7 +3519,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3831,34 +3539,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createImportDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -3866,7 +3553,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -3937,6 +3624,21 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write(")");
     }
 
+    function createImportTypeAssertionContainer(node: import("typescript").ImportTypeAssertionContainer) {
+        writer.write("factory.createImportTypeAssertionContainer(");
+        writer.newLine();
+        writer.indent(() => {
+            writeNodeText(node.assertClause)
+            writer.write(",").newLine();
+            if (node.multiLine == null)
+                writer.write("undefined");
+            else {
+                writer.write(node.multiLine.toString())
+            }
+        });
+        writer.write(")");
+    }
+
     function createNamespaceImport(node: import("typescript").NamespaceImport) {
         writer.write("factory.createNamespaceImport(");
         writeNodeText(node.name)
@@ -3991,34 +3693,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createExportAssignment(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -4026,7 +3707,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }
@@ -4048,34 +3729,13 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
         writer.write("factory.createExportDeclaration(");
         writer.newLine();
         writer.indent(() => {
-            if (node.decorators == null)
-                writer.write("undefined");
-            else {
-                writer.write("[");
-                if (node.decorators.length === 1) {
-                    const item = node.decorators![0];
-                    writeNodeText(item)
-                }
-                else if (node.decorators.length > 1) {
-                    writer.indent(() => {
-                        for (let i = 0; i < node.decorators!.length; i++) {
-                            const item = node.decorators![i];
-                            if (i > 0)
-                                writer.write(",").newLine();
-                            writeNodeText(item)
-                        }
-                    });
-                }
-                writer.write("]");
-            }
-            writer.write(",").newLine();
             if (node.modifiers == null)
                 writer.write("undefined");
             else {
                 writer.write("[");
                 if (node.modifiers.length === 1) {
                     const item = node.modifiers![0];
-                    writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                    writeNodeText(item)
                 }
                 else if (node.modifiers.length > 1) {
                     writer.indent(() => {
@@ -4083,7 +3743,7 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
                             const item = node.modifiers![i];
                             if (i > 0)
                                 writer.write(",").newLine();
-                            writer.write("factory.createModifier(ts.SyntaxKind." + syntaxKindToName[item.kind] + ")");
+                            writeNodeText(item)
                         }
                     });
                 }

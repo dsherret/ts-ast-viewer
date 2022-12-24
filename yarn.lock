@@ -919,16 +919,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@ts-morph/common@~0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@ts-morph/common/-/common-0.13.0.tgz#77dea1565baaf002d1bc2c20e05d1fb3349008a9"
-  integrity sha512-fEJ6j7Cu8yiWjA4UmybOBH9Efgb/64ZTWuvCF4KysGu4xz8ettfyaqFt8WZ1btCxXsGZJjZ2/3svOF6rL+UFdQ==
-  dependencies:
-    fast-glob "^3.2.11"
-    minimatch "^5.0.1"
-    mkdirp "^1.0.4"
-    path-browserify "^1.0.1"
-
 "@ts-morph/common@~0.18.0":
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/@ts-morph/common/-/common-0.18.0.tgz#8102c18ce9112548203c4d154a282a9100dcde53"
@@ -1587,13 +1577,6 @@ co@^4.6.0:
   resolved "https://registry.npmjs.org/co/-/co-4.6.0.tgz"
   integrity sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=
 
-code-block-writer@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.npmjs.org/code-block-writer/-/code-block-writer-11.0.0.tgz"
-  integrity sha512-GEqWvEWWsOvER+g9keO4ohFoD3ymwyCnqY3hoTr7GZipYFwEhMHJw+TtV0rfgRhNImM6QWZGO2XYjlJVyYT62w==
-  dependencies:
-    tslib "2.3.1"
-
 code-block-writer@^11.0.3:
   version "11.0.3"
   resolved "https://registry.yarnpkg.com/code-block-writer/-/code-block-writer-11.0.3.tgz#9eec2993edfb79bfae845fbc093758c0a0b73b76"
@@ -2107,17 +2090,6 @@ extsprintf@^1.2.0:
   version "1.4.1"
   resolved "https://registry.npmjs.org/extsprintf/-/extsprintf-1.4.1.tgz"
   integrity sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==
-
-fast-glob@^3.2.11:
-  version "3.2.11"
-  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
-  integrity sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==
-  dependencies:
-    "@nodelib/fs.stat" "^2.0.2"
-    "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.2"
-    merge2 "^1.3.0"
-    micromatch "^4.0.4"
 
 fast-glob@^3.2.12:
   version "3.2.12"
@@ -3937,13 +3909,13 @@ tough-cookie@~2.5.0:
     psl "^1.1.28"
     punycode "^2.1.1"
 
-ts-factory-code-generator-generator@^0.6.4:
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/ts-factory-code-generator-generator/-/ts-factory-code-generator-generator-0.6.4.tgz#67a39e1159cdf159fb4626b833284ffca448b86c"
-  integrity sha512-G0jfub0JwfwuXc0f83+CT1x3T8hn7UO/UYZyh61xnV1mPDXz3QB6AAJv4nNZDvk0CXvIehdfqPnpeD0rgFaafw==
+ts-factory-code-generator-generator@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ts-factory-code-generator-generator/-/ts-factory-code-generator-generator-0.7.0.tgz#c26fc70c1899a1635859a45c5acb0188770428a6"
+  integrity sha512-JZONNK+ejg8blx6il9ZO+sV6+hWTJNCA6vuctIeO+2HOnrjeEVLIMCs9muE7W+5PiwKjON9FpoHWev7ZMQLlXw==
   dependencies:
     string-similarity "^4.0.4"
-    ts-morph "^14.0.0"
+    ts-morph "^17.0.1"
 
 ts-jest@^29.0.3:
   version "29.0.3"
@@ -3958,14 +3930,6 @@ ts-jest@^29.0.3:
     make-error "1.x"
     semver "7.x"
     yargs-parser "^21.0.1"
-
-ts-morph@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-14.0.0.tgz#6bffb7e4584cf6a9aebce2066bf4258e1d03f9fa"
-  integrity sha512-tO8YQ1dP41fw8GVmeQAdNsD8roZi1JMqB7YwZrqU856DvmG5/710e41q2XauzTYrygH9XmMryaFeLo+kdCziyA==
-  dependencies:
-    "@ts-morph/common" "~0.13.0"
-    code-block-writer "^11.0.0"
 
 ts-morph@^17.0.1:
   version "17.0.1"

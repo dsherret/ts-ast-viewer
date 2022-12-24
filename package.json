@@ -33,7 +33,7 @@
     "dts-minify": "^0.3.0",
     "glob": "^8.0.3",
     "semver": "^7.3.8",
-    "ts-factory-code-generator-generator": "^0.6.4",
+    "ts-factory-code-generator-generator": "^0.7.0",
     "ts-morph": "^17.0.1",
     "ts-node": "^10.9.1"
   }
