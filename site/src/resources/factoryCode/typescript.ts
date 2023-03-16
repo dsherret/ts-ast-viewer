@@ -144,6 +144,9 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
             case ts.SyntaxKind.BigIntKeyword:
                 createKeywordTypeNode(node as import("typescript").KeywordTypeNode);
                 return;
+            case ts.SyntaxKind.TypePredicate:
+                createTypePredicateNode(node as import("typescript").TypePredicateNode);
+                return;
             case ts.SyntaxKind.TypeReference:
                 createTypeReferenceNode(node as import("typescript").TypeReferenceNode);
                 return;
@@ -1343,6 +1346,27 @@ export function generateFactoryCode(ts: typeof import("typescript"), initialNode
     function createKeywordTypeNode(node: import("typescript").KeywordTypeNode) {
         writer.write("factory.createKeywordTypeNode(");
         writer.write("ts.SyntaxKind.").write(syntaxKindToName[node.kind])
+        writer.write(")");
+    }
+
+    function createTypePredicateNode(node: import("typescript").TypePredicateNode) {
+        writer.write("factory.createTypePredicateNode(");
+        writer.newLine();
+        writer.indent(() => {
+            if (node.assertsModifier == null)
+                writer.write("undefined");
+            else {
+                writeNodeText(node.assertsModifier)
+            }
+            writer.write(",").newLine();
+            writeNodeText(node.parameterName)
+            writer.write(",").newLine();
+            if (node.type == null)
+                writer.write("undefined");
+            else {
+                writeNodeTextForTypeNode(node.type)
+            }
+        });
         writer.write(")");
     }
 

@@ -30,7 +30,7 @@ glob("./site/src/resources/libFiles/**/*.ts", (err, filesToDelete) => {
           `const fileData = {\n`
             + `    fileName: \`/${path.basename(filePath)}\`,\n`
             + `    // File text is copyright Microsoft Corporation and is distributed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)\n`
-            + `    text: \`${minifier.minify(fileText).replace(/\r?\n/g, "\\n").replace(/`/g, "\\`")}\`\n`
+            + `    text: \"${minifier.minify(fileText).replace(/\r?\n/g, "\\n").replace(/"/g, "\\\"")}\"\n`
             + `};\n\n`
             + `export default fileData;`,
           { encoding: "utf8" },
