@@ -9,7 +9,6 @@ import {
   getStartSafe,
   Node,
   PublicApiInfo,
-  ReadonlyMap,
   Signature,
   SourceFile,
   Symbol,
@@ -271,8 +270,8 @@ function getArrayDiv(context: Context, key: string, value: unknown[]) {
   }
 }
 
-function getMapDiv(context: Context, key: string, value: ReadonlyMap<unknown>) {
-  const entries = ArrayUtils.from(value.entries());
+function getMapDiv(context: Context, key: string, value: ReadonlyMap<string, unknown>) {
+  const entries = Array.from(value.entries());
   if (entries.length === 0) {
     return getTextDiv(key, "{}");
   } else {
@@ -469,7 +468,7 @@ function getKeyPermission(context: Context, obj: any, key: string): true | false
   }
 }
 
-function isMap(value: any): value is ReadonlyMap<unknown> {
+function isMap(value: any): value is ReadonlyMap<string, unknown> {
   return typeof value.keys === "function"
     && typeof value.values === "function";
 }

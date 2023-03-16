@@ -40,7 +40,5 @@ export type SymbolFlags = ts.SymbolFlags;
 export type TypeFlags = ts.TypeFlags;
 export type SyntaxKind = ts.SyntaxKind;
 export type CompilerHost = ts.CompilerHost;
-export type ReadonlyMap<T> = ts.ReadonlyMap<T>;
-export type Iterator<T> = ts.Iterator<T>;
 export type CommentRange = ts.CommentRange;
 export type FlowNode = ts.FlowNode;
