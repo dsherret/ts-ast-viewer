@@ -324,6 +324,10 @@ function getCustomValueDiv(context: Context, key: string, value: any, parent: an
     if (isTsSymbol(parent) && key === "flags") {
       return getEnumFlagElement(context.api.SymbolFlags, value);
     }
+    // TS pre-5.0 puts this on the symbol, TS 5.0 puts it on a plain "links" object
+    if (key === "checkFlags" && typeof value === "number") {
+      return getEnumFlagElement(context.api.CheckFlags, value);
+    }
     if (isFlowNode(parent) && key === "flags") {
       return getEnumFlagElement(context.api.FlowFlags, value);
     }
