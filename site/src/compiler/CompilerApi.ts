@@ -15,6 +15,8 @@ export interface CompilerApi {
   SymbolFlags: typeof ts.SymbolFlags;
   TypeFlags: typeof ts.TypeFlags;
   FlowFlags: typeof ts.FlowFlags;
+  // Internal enum
+  CheckFlags: {};
   tsAstViewer: {
     packageName: CompilerPackageNames;
     cachedSourceFiles: { [name: string]: SourceFile | undefined };

@@ -269,3 +269,7 @@ a:visited {
 .propertiesViewer .array > .value {
   padding-left: 7px;
 }
+
+.treeViewLabel {
+  cursor: pointer;
+}
