@@ -97,6 +97,7 @@ a:visited {
   border: 1px solid white;
   background: #202020;
   padding: 10px;
+  min-width: 250px;
   font-family: Consolas, "Courier New", monospace;
   z-index: 1;
 }

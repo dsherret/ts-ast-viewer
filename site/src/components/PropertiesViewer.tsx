@@ -16,7 +16,7 @@ import {
   TypeChecker,
 } from "../compiler";
 import { BindingTools, CompilerState } from "../types";
-import { ArrayUtils, getEnumFlagNames, getSyntaxKindName } from "../utils";
+import { getEnumFlagNames, getSyntaxKindName } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 import { Spinner } from "./Spinner";
 import { ToolTippedText } from "./ToolTippedText";
@@ -108,9 +108,9 @@ function getForSelectedNode(context: Context, selectedNode: Node) {
       <>
         {getProperties(context, selectedNode)}
         {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
-        {getMethodElement("getFullStart()", selectedNode.getFullStart())}
-        {getMethodElement("getStart()", selectedNode.getStart(sourceFile))}
-        {getMethodElement("getStart(sourceFile, true)", getStartSafe(selectedNode, sourceFile))}
+        {getMethodElement("getFullStart()", getPositionElement(sourceFile, selectedNode.getFullStart()))}
+        {getMethodElement("getStart()", getPositionElement(sourceFile, selectedNode.getStart(sourceFile)))}
+        {getMethodElement("getStart(sourceFile, true)", getPositionElement(sourceFile, getStartSafe(selectedNode, sourceFile)))}
         {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
         {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
         {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
@@ -130,8 +130,8 @@ function getForSelectedNode(context: Context, selectedNode: Node) {
     );
   }
 
-  function getMethodElement(name: string, result: string | number) {
-    return getTextDiv(name, typeof result === "string" ? result : JSON.stringify(result));
+  function getMethodElement(name: string, result: string | number | JSX.Element) {
+    return getTextDiv(name, typeof result === "number" ? JSON.stringify(result) : result);
   }
 
   function getForCommentRanges(name: string, commentRanges: CommentRange[] | undefined) {
@@ -313,6 +313,9 @@ function getCustomValueDiv(context: Context, key: string, value: any, parent: an
           return `${value} (SyntaxKind.${getSyntaxKindName(context.api, value)})`;
         case "flags":
           return getEnumFlagElement(context.api.NodeFlags, value);
+        case "pos":
+        case "end":
+          return getPositionElement(context.sourceFile, value);
       }
     }
     if (isTsType(parent) && key === "objectFlags") {
@@ -344,7 +347,7 @@ function getNodeDiv(context: Context, key: string, value: Node) {
   );
 }
 
-function getTextDiv(key: string | undefined, value: string) {
+function getTextDiv(key: string | undefined, value: string | JSX.Element) {
   return (
     <div className="text" key={key} data-name={key}>
       {key == null ? undefined : <div className="key">{key}:</div>}
@@ -512,4 +515,14 @@ function getEnumFlagElement(enumObj: any, value: number) {
   function getNames() {
     return <ul>{names.map((name, i) => <li key={i}>{name}</li>)}</ul>;
   }
+}
+
+function getPositionElement(sourceFile: SourceFile, pos: number) {
+  const { line, character } = sourceFile.getLineAndCharacterOfPosition(pos);
+  return <ToolTippedText text={pos.toString()}>
+    <ul>
+      <li>Line {line + 1}</li>
+      <li>Column {character + 1}</li>
+    </ul>
+  </ToolTippedText>
 }
