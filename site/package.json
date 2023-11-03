@@ -13,10 +13,10 @@
     "@ts-ast-viewer/shared": "^1.0.0",
     "circular-json": "^0.5.9",
     "lz-string": "^1.4.4",
-    "monaco-editor": "^0.34.1",
+    "monaco-editor": "^0.37.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-monaco-editor": "0.51.0",
+    "react-monaco-editor": "0.52.0",
     "react-spinners": "^0.13.6",
     "react-split-pane": "^0.1.92",
     "react-treeview": "^0.4.7"
