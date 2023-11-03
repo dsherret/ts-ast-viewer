@@ -1,5 +1,8 @@
 export class ArrayUtils {
-  static binarySearch<T>(items: ReadonlyArray<T>, compareTo: (value: T) => number) {
+  static binarySearch<T>(
+    items: ReadonlyArray<T>,
+    compareTo: (value: T) => number
+  ) {
     let top = items.length - 1;
     let bottom = 0;
 
@@ -18,6 +21,23 @@ export class ArrayUtils {
     return -1;
   }
 
-  private constructor() {
+  static partition<T>(
+    items: ReadonlyArray<T>,
+    predicate: (value: T) => boolean
+  ): [T[], T[]] {
+    const trueItems: T[] = [];
+    const falseItems: T[] = [];
+
+    for (let i = 0; i < items.length; i++) {
+      if (predicate(items[i])) {
+        trueItems.push(items[i]);
+      } else {
+        falseItems.push(items[i]);
+      }
+    }
+
+    return [trueItems, falseItems];
   }
+
+  private constructor() {}
 }
