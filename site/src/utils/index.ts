@@ -3,7 +3,6 @@ export * from "./assertNever";
 export * from "./Box";
 export * from "./createHashSet";
 export * from "./EnumUtils";
-export * from "./getEnumFlagNames";
 export * from "./getSyntaxKindName";
 export * from "./LineAndColumnComputer";
 export * from "./sleep";
