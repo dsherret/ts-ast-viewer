@@ -16,7 +16,7 @@ import {
   TypeChecker,
 } from "../compiler";
 import { BindingTools, CompilerState } from "../types";
-import { ArrayUtils, getEnumFlagNames, getSyntaxKindName } from "../utils";
+import { ArrayUtils, EnumUtils, getSyntaxKindName } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 import { Spinner } from "./Spinner";
 import { ToolTippedText } from "./ToolTippedText";
@@ -502,14 +502,21 @@ function isFlowNode(value: any): value is FlowNode {
 }
 
 function getEnumFlagElement(enumObj: any, value: number) {
-  const names = getEnumFlagNames(enumObj, value);
+  const names = EnumUtils.getNamesForValues(enumObj).filter(entry => entry.value & value);
   if (names.length === 0) {
     return <>{value}</>;
   }
 
-  return <ToolTippedText text={value.toString()}>{getNames()}</ToolTippedText>;
+  const [powersOfTwo, others] = ArrayUtils.partition(names, ({ value }) => Number.isInteger(Math.log2(value)));
 
-  function getNames() {
-    return <ul>{names.map((name, i) => <li key={i}>{name}</li>)}</ul>;
-  }
+  const elements = [...powersOfTwo, ...others].flatMap(({ value, names }) => {
+    const power = Math.log2(value);
+    return names.map(name => <li key={name}>{Number.isInteger(power) ? `${name} (2 ^ ${power})` : name}</li>);
+  });
+
+  return (
+    <ToolTippedText text={value.toString()}>
+      <ul>{elements}</ul>
+    </ToolTippedText>
+  );
 }
