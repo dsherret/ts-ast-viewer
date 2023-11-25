@@ -13,7 +13,7 @@ export function App() {
   const compiler = state.compiler;
 
   return (
-    <div className="App">
+    <div className="App" data-theme={state.options.theme}>
       <SplitPane split="horizontal" defaultSize={50} allowResize={false}>
         <header className="AppHeader clearfix">
           <h2 id="title">TypeScript AST Viewer</h2>
@@ -88,6 +88,7 @@ export function App() {
             );
             dispatch({ type: "SET_SELECTED_NODE", node: descendant });
           }}
+          theme={state.options.theme}
           text={state.code}
           highlight={getCodeHighlightRange()}
           showInfo={true}

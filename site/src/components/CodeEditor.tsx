@@ -1,3 +1,4 @@
+import { Theme } from "@ts-ast-viewer/shared";
 import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
 import type ReactMonacoEditorForTypes from "react-monaco-editor";
@@ -9,6 +10,7 @@ export interface CodeEditorProps {
   id?: string;
   onChange?: (text: string) => void;
   onClick?: (range: [number, number]) => void;
+  theme: Theme;
   text: string;
   highlight?: { start: number; end: number } | undefined;
   showInfo?: boolean;
@@ -155,7 +157,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         width="100%"
         height="100%"
         value={this.props.text}
-        theme="vs-dark"
+        theme={this.props.theme == Theme.Dark ? "vs-dark" : "vs"}
         language="typescript"
         onChange={text => this.props.onChange && this.props.onChange(text)}
         editorDidMount={this.editorDidMount}
@@ -199,7 +201,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
 
       // Sometimes e.target.range will be the column right before if clicked to the left enough,
       // but the cursor position will still be at the next column. For that reason, always
-      // use the editor posiion.
+      // use the editor position.
       const pos = editor.getPosition();
       if (pos != null) {
         const start = this.lineAndColumnComputer.getPosFromLineAndColumn(pos.lineNumber, pos.column);

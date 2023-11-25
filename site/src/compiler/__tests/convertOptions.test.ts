@@ -1,3 +1,4 @@
+import { Theme } from "@ts-ast-viewer/shared";
 import { CompilerApi } from "../CompilerApi";
 import { convertOptions } from "../convertOptions";
 
@@ -28,6 +29,7 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
     bindingEnabled: true,
     showFactoryCode: true,
     showInternals: false,
+    theme: Theme.Dark,
   })).toEqual({
     compilerPackageName: "typescript-4.4.4" as any,
     scriptKind: expectedKind,
@@ -36,6 +38,7 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
     bindingEnabled: true,
     showFactoryCode: true,
     showInternals: false,
+    theme: Theme.Dark,
   });
 }
 

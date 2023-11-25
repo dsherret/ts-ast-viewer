@@ -526,10 +526,12 @@ function getEnumFlagElement(enumObj: any, value: number) {
 
 function getPositionElement(sourceFile: SourceFile, pos: number) {
   const { line, character } = sourceFile.getLineAndCharacterOfPosition(pos);
-  return <ToolTippedText text={pos.toString()}>
-    <ul>
-      <li>Line {line + 1}</li>
-      <li>Column {character + 1}</li>
-    </ul>
-  </ToolTippedText>
+  return (
+    <ToolTippedText text={pos.toString()}>
+      <ul>
+        <li>Line {line + 1}</li>
+        <li>Column {character + 1}</li>
+      </ul>
+    </ToolTippedText>
+  );
 }

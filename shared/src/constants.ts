@@ -7,6 +7,7 @@ export const css = {
     bindingEnabledId: "bindingEnabled",
     showFactoryCodeId: "showFactoryCode",
     showInternalsId: "showInternals",
+    themeSelectionId: "theme",
   },
   mainCodeEditor: {
     id: "codeEditor",

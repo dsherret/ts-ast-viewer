@@ -1,4 +1,4 @@
-import { CompilerPackageNames, compilerVersionCollection, constants, TreeMode } from "@ts-ast-viewer/shared";
+import { CompilerPackageNames, compilerVersionCollection, constants, Theme, TreeMode } from "@ts-ast-viewer/shared";
 import React, { useRef, useState } from "react";
 import { CompilerApi, ScriptKind, ScriptTarget } from "../compiler";
 import { useOnClickOutside } from "../hooks";
@@ -32,6 +32,7 @@ export function Options(props: OptionsProps) {
         {getBindingEnabled()}
         {getShowFactoryCode()}
         {getShowInternals()}
+        {getTheme()}
         <div className="bottomLinks">
           <ExternalLink text="About" url="https://github.com/dsherret/ts-ast-viewer/tree/main/docs/about.md" />
           <span>&nbsp;|&nbsp;</span>
@@ -116,6 +117,20 @@ export function Options(props: OptionsProps) {
       </div>
     );
     return <Option name={"Factory code"} value={selection} />;
+  }
+
+  function getTheme() {
+    const selection = (
+      <select
+        id={constants.css.options.themeSelectionId}
+        value={props.options.theme}
+        onChange={event => onChange({ theme: event.target.value as Theme })}
+      >
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    );
+    return <Option name="Theme" value={selection} />;
   }
 
   function getShowInternals() {

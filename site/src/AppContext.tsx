@@ -33,6 +33,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       bindingEnabled: true,
       showFactoryCode: stateSaver.get().showFactoryCode,
       showInternals: stateSaver.get().showInternals,
+      theme: stateSaver.get().theme,
     },
     compiler: undefined,
   });
@@ -81,8 +82,9 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     savedState.treeMode = state.options.treeMode;
     savedState.showFactoryCode = state.options.showFactoryCode;
     savedState.showInternals = state.options.showInternals;
+    savedState.theme = state.options.theme;
     stateSaver.set(savedState);
-  }, [state.options.treeMode, state.options.showFactoryCode, state.options.showInternals]);
+  }, [state.options.treeMode, state.options.showFactoryCode, state.options.showInternals, state.options.theme]);
 
   useEffect(() => {
     if (state.compiler == null || state.compiler.selectedNode == null) {

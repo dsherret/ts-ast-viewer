@@ -1,13 +1,14 @@
-import { TreeMode } from "@ts-ast-viewer/shared";
+import { Theme, TreeMode } from "@ts-ast-viewer/shared";
 
 export interface VersionedState {
-  version: 1 | 2 | 3;
+  version: 1 | 2 | 3 | 4;
 }
 
 export interface SavedState extends VersionedState {
   treeMode: TreeMode;
   showFactoryCode: boolean;
   showInternals: boolean;
+  theme: Theme;
 }
 
 export interface LocalStorage {
@@ -22,12 +23,13 @@ export class StateSaver {
   constructor(private readonly localStorage: LocalStorage = window.localStorage) {
   }
 
-  private get defaultState() {
+  private get defaultState(): SavedState {
     return {
-      version: 3 as 3,
+      version: 4 as const,
       treeMode: TreeMode.forEachChild,
       showFactoryCode: true,
       showInternals: false,
+      theme: Theme.Dark,
     };
   }
 
@@ -57,7 +59,10 @@ export class StateSaver {
         return;
       }
 
-      this.localStorage.setItem(StateSaver._stateKey, JSON.stringify(sessionState));
+      this.localStorage.setItem(
+        StateSaver._stateKey,
+        JSON.stringify(sessionState),
+      );
       this._cachedState = sessionState;
     } catch (err) {
       console.error("Problem saving state: " + err);
@@ -66,16 +71,22 @@ export class StateSaver {
 
   private verifyData(data: SavedState): data is SavedState {
     // better to have some schema transforms in the future, but for now it's simple
-    if (data.version !== 3) {
+    if (data.version !== 4) {
       return false;
     }
-    if (data.treeMode !== TreeMode.forEachChild && data.treeMode !== TreeMode.getChildren) {
+    if (
+      data.treeMode !== TreeMode.forEachChild
+      && data.treeMode !== TreeMode.getChildren
+    ) {
       return false;
     }
     if (typeof data.showFactoryCode !== "boolean") {
       return false;
     }
     if (typeof data.showInternals !== "boolean") {
+      return false;
+    }
+    if (data.theme !== Theme.Dark && data.theme !== Theme.Light) {
       return false;
     }
     return true;
@@ -87,6 +98,7 @@ export class StateSaver {
 function transform(data: SavedState) {
   transformToVersion2(data);
   transformToVersion3(data);
+  transformToVersion4(data);
   return data;
 }
 
@@ -104,4 +116,12 @@ function transformToVersion3(data: VersionedState) {
   }
   (data as any).showInternals = false;
   data.version = 3;
+}
+
+function transformToVersion4(data: VersionedState) {
+  if (data.version !== 3) {
+    return;
+  }
+  (data as any).theme = "dark";
+  data.version = 4;
 }
