@@ -1,4 +1,4 @@
-import { TreeMode } from "@ts-ast-viewer/shared";
+import { Theme, TreeMode } from "@ts-ast-viewer/shared";
 import { EnumUtils } from "../EnumUtils";
 import { StateSaver } from "../StateSaver";
 
@@ -29,10 +29,11 @@ describe("StateSaver", () => {
   it("should get the default state when nothing set", () => {
     const { saver } = setup();
     expect(saver.get()).toEqual({
-      version: 3,
+      version: 4,
       treeMode: TreeMode.forEachChild,
       showFactoryCode: true,
       showInternals: false,
+      theme: Theme.Dark,
     });
   });
 
@@ -45,10 +46,11 @@ describe("StateSaver", () => {
 
     const saver2 = new StateSaver(localStorage);
     expect(saver2.get()).toEqual({
-      version: 3,
+      version: 4,
       treeMode: TreeMode.getChildren,
       showFactoryCode: true,
       showInternals: false,
+      theme: Theme.Dark,
     });
   });
 
@@ -61,10 +63,11 @@ describe("StateSaver", () => {
     saver.set(state);
 
     expect(saver.get()).toEqual({
-      version: 3,
+      version: 4,
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: true,
+      theme: Theme.Dark,
     });
   });
 
@@ -76,10 +79,11 @@ describe("StateSaver", () => {
       saver.set(state);
 
       expect(saver.get()).toEqual({
-        version: 3,
+        version: 4,
         treeMode,
         showFactoryCode: true,
         showInternals: false,
+        theme: Theme.Dark,
       });
     }
   });
@@ -95,10 +99,11 @@ describe("StateSaver", () => {
     );
 
     expect(saver.get()).toEqual({
-      version: 3,
+      version: 4,
       treeMode: TreeMode.getChildren,
       showFactoryCode: true,
       showInternals: false,
+      theme: Theme.Dark,
     });
   });
 
@@ -110,14 +115,37 @@ describe("StateSaver", () => {
         version: 2,
         treeMode: TreeMode.getChildren,
         showFactoryCode: false,
+        theme: Theme.Dark,
       }),
     );
 
     expect(saver.get()).toEqual({
-      version: 3,
+      version: 4,
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: false,
+      theme: Theme.Dark,
+    });
+  });
+
+  it("should upgrade from version 3", () => {
+    const { saver, localStorage } = setup();
+    localStorage.setItem(
+      StateSaver._stateKey,
+      JSON.stringify({
+        version: 3,
+        treeMode: TreeMode.getChildren,
+        showFactoryCode: false,
+        showInternals: false,
+      }),
+    );
+
+    expect(saver.get()).toEqual({
+      version: 4,
+      treeMode: TreeMode.getChildren,
+      showFactoryCode: false,
+      showInternals: false,
+      theme: Theme.Dark,
     });
   });
 });
