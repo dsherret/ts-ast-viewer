@@ -62,4 +62,14 @@ export function setOptions(options: Partial<OptionsState>): SetOptions {
   };
 }
 
-export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetOptions;
+export interface OsThemeChange {
+  type: constants.OS_THEME_CHANGE;
+}
+
+export function osThemeChange(): OsThemeChange {
+  return {
+    type: constants.OS_THEME_CHANGE,
+  };
+}
+
+export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetOptions | OsThemeChange;

@@ -4,6 +4,7 @@ export enum TreeMode {
 }
 
 export enum Theme {
+  OS = "os",
   Dark = "dark",
   Light = "light",
 }

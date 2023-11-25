@@ -1,4 +1,4 @@
-import { constants } from "@ts-ast-viewer/shared";
+import { constants, Theme } from "@ts-ast-viewer/shared";
 import SplitPaneImport from "react-split-pane";
 // waiting on https://github.com/tomkp/react-split-pane/pull/818
 const SplitPane: any = SplitPaneImport;
@@ -13,7 +13,7 @@ export function App() {
   const compiler = state.compiler;
 
   return (
-    <div className="App" data-theme={state.options.theme}>
+    <div className="App" data-theme={state.editorTheme}>
       <SplitPane split="horizontal" defaultSize={50} allowResize={false}>
         <header className="AppHeader clearfix">
           <h2 id="title">TypeScript AST Viewer</h2>
@@ -66,7 +66,7 @@ export function App() {
 
       return (
         <components.ErrorBoundary getResetHash={() => state.code}>
-          <components.FactoryCodeEditor compiler={compiler} />
+          <components.FactoryCodeEditor compiler={compiler} theme={state.editorTheme} />
         </components.ErrorBoundary>
       );
     }
@@ -88,7 +88,7 @@ export function App() {
             );
             dispatch({ type: "SET_SELECTED_NODE", node: descendant });
           }}
-          theme={state.options.theme}
+          theme={state.editorTheme}
           text={state.code}
           highlight={getCodeHighlightRange()}
           showInfo={true}
@@ -145,5 +145,16 @@ export function App() {
         text,
       }]);
     };
+  }
+
+  function getEditorTheme(): "light" | "dark" {
+    switch (state.options.theme) {
+      case Theme.OS:
+      case Theme.Dark:
+        return "dark";
+      case Theme.Light:
+        return "light";
+    }
+    return "dark";
   }
 }

@@ -17,3 +17,7 @@ export type SET_SELECTED_NODE = typeof SET_SELECTED_NODE;
 export const SET_OPTIONS = "SET_OPTIONS";
 // eslint-disable-next-line
 export type SET_OPTIONS = typeof SET_OPTIONS;
+
+export const OS_THEME_CHANGE = "OS_THEME_CHANGE";
+// eslint-disable-next-line
+export type OS_THEME_CHANGE = typeof OS_THEME_CHANGE;

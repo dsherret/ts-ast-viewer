@@ -29,7 +29,7 @@ export class StateSaver {
       treeMode: TreeMode.forEachChild,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.Dark,
+      theme: Theme.OS,
     };
   }
 
@@ -86,7 +86,7 @@ export class StateSaver {
     if (typeof data.showInternals !== "boolean") {
       return false;
     }
-    if (data.theme !== Theme.Dark && data.theme !== Theme.Light) {
+    if (![Theme.OS, Theme.Dark, Theme.Light].includes(data.theme)) {
       return false;
     }
     return true;
@@ -122,6 +122,6 @@ function transformToVersion4(data: VersionedState) {
   if (data.version !== 3) {
     return;
   }
-  (data as any).theme = "dark";
+  (data as any).theme = Theme.OS;
   data.version = 4;
 }

@@ -1,4 +1,3 @@
-import { Theme } from "@ts-ast-viewer/shared";
 import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
 import type ReactMonacoEditorForTypes from "react-monaco-editor";
@@ -6,11 +5,14 @@ import type { EditorDidMount } from "react-monaco-editor";
 import { LineAndColumnComputer } from "../utils";
 import { Spinner } from "./Spinner";
 
+// Conversion of OS to light or dark is handled at the AppContext level.
+export type CodeEditorTheme = "light" | "dark";
+
 export interface CodeEditorProps {
   id?: string;
   onChange?: (text: string) => void;
   onClick?: (range: [number, number]) => void;
-  theme: Theme;
+  theme: CodeEditorTheme;
   text: string;
   highlight?: { start: number; end: number } | undefined;
   showInfo?: boolean;
@@ -157,7 +159,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         width="100%"
         height="100%"
         value={this.props.text}
-        theme={this.props.theme == Theme.Dark ? "vs-dark" : "vs"}
+        theme={this.props.theme == "dark" ? "vs-dark" : "vs"}
         language="typescript"
         onChange={text => this.props.onChange && this.props.onChange(text)}
         editorDidMount={this.editorDidMount}

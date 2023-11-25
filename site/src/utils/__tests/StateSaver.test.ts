@@ -33,7 +33,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.forEachChild,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.Dark,
+      theme: Theme.OS,
     });
   });
 
@@ -50,7 +50,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.Dark,
+      theme: Theme.OS,
     });
   });
 
@@ -67,7 +67,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: true,
-      theme: Theme.Dark,
+      theme: Theme.OS,
     });
   });
 
@@ -83,7 +83,7 @@ describe("StateSaver", () => {
         treeMode,
         showFactoryCode: true,
         showInternals: false,
-        theme: Theme.Dark,
+        theme: Theme.OS,
       });
     }
   });
@@ -103,7 +103,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.Dark,
+      theme: Theme.OS,
     });
   });
 
@@ -115,7 +115,7 @@ describe("StateSaver", () => {
         version: 2,
         treeMode: TreeMode.getChildren,
         showFactoryCode: false,
-        theme: Theme.Dark,
+        theme: Theme.OS,
       }),
     );
 
@@ -124,7 +124,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: false,
-      theme: Theme.Dark,
+      theme: Theme.OS,
     });
   });
 
@@ -145,7 +145,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: false,
-      theme: Theme.Dark,
+      theme: Theme.OS,
     });
   });
 });
