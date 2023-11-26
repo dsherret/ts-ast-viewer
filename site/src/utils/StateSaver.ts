@@ -29,7 +29,7 @@ export class StateSaver {
       treeMode: TreeMode.forEachChild,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.OS,
+      theme: Theme.Dark,
     };
   }
 
@@ -122,6 +122,6 @@ function transformToVersion4(data: VersionedState) {
   if (data.version !== 3) {
     return;
   }
-  (data as any).theme = Theme.OS;
+  (data as any).theme = Theme.Dark;
   data.version = 4;
 }

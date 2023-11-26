@@ -33,7 +33,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.forEachChild,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.OS,
+      theme: Theme.Dark,
     });
   });
 
@@ -50,7 +50,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.OS,
+      theme: Theme.Dark,
     });
   });
 
@@ -67,7 +67,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: true,
-      theme: Theme.OS,
+      theme: Theme.Dark,
     });
   });
 
@@ -83,7 +83,24 @@ describe("StateSaver", () => {
         treeMode,
         showFactoryCode: true,
         showInternals: false,
-        theme: Theme.OS,
+        theme: Theme.Dark,
+      });
+    }
+  });
+
+  it("should work for every theme", () => {
+    for (const theme of [Theme.OS, Theme.Dark, Theme.Light]) {
+      const { saver } = setup();
+      const state = saver.get();
+      state.theme = theme;
+      saver.set(state);
+
+      expect(saver.get()).toEqual({
+        version: 4,
+        treeMode: TreeMode.forEachChild,
+        showFactoryCode: true,
+        showInternals: false,
+        theme,
       });
     }
   });
@@ -103,7 +120,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: true,
       showInternals: false,
-      theme: Theme.OS,
+      theme: Theme.Dark,
     });
   });
 
@@ -115,7 +132,7 @@ describe("StateSaver", () => {
         version: 2,
         treeMode: TreeMode.getChildren,
         showFactoryCode: false,
-        theme: Theme.OS,
+        theme: Theme.Dark,
       }),
     );
 
@@ -124,7 +141,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: false,
-      theme: Theme.OS,
+      theme: Theme.Dark,
     });
   });
 
@@ -145,7 +162,7 @@ describe("StateSaver", () => {
       treeMode: TreeMode.getChildren,
       showFactoryCode: false,
       showInternals: false,
-      theme: Theme.OS,
+      theme: Theme.Dark,
     });
   });
 });
