@@ -1,7 +1,7 @@
 export class ArrayUtils {
   static binarySearch<T>(
     items: ReadonlyArray<T>,
-    compareTo: (value: T) => number
+    compareTo: (value: T) => number,
   ) {
     let top = items.length - 1;
     let bottom = 0;
@@ -23,7 +23,7 @@ export class ArrayUtils {
 
   static partition<T>(
     items: ReadonlyArray<T>,
-    predicate: (value: T) => boolean
+    predicate: (value: T) => boolean,
   ): [T[], T[]] {
     const trueItems: T[] = [];
     const falseItems: T[] = [];

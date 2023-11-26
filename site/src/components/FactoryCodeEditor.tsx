@@ -1,4 +1,4 @@
-import { constants } from "@ts-ast-viewer/shared";
+import { constants, Theme } from "@ts-ast-viewer/shared";
 import type * as monacoEditorForTypes from "monaco-editor";
 import React, { useEffect, useState } from "react";
 import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler";
@@ -11,6 +11,7 @@ import { Spinner } from "./Spinner";
 
 export interface FactoryCodeEditorProps {
   compiler: CompilerState;
+  theme: "light" | "dark";
 }
 
 export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
@@ -40,6 +41,7 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
       editorDidMount={editorDidMount}
       text={getText()}
       readOnly={true}
+      theme={props.theme}
     />
   );
 

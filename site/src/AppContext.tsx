@@ -2,7 +2,8 @@ import { compilerVersionCollection, constants } from "@ts-ast-viewer/shared";
 import React, { useEffect, useReducer } from "react";
 import * as actions from "./actions";
 import { getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler";
-import { appReducer } from "./reducers";
+import { CodeEditorTheme } from "./components";
+import { appReducer, deriveEditorTheme } from "./reducers";
 import { ApiLoadingState, StoreState } from "./types";
 import { sleep, StateSaver, UrlSaver } from "./utils";
 
@@ -15,7 +16,7 @@ console.log(
 );
 
 export interface AppContextValue {
-  state: StoreState;
+  state: StoreState & { editorTheme: CodeEditorTheme };
   dispatch: React.Dispatch<actions.AllActions>;
 }
 
@@ -33,8 +34,14 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       bindingEnabled: true,
       showFactoryCode: stateSaver.get().showFactoryCode,
       showInternals: stateSaver.get().showInternals,
+      theme: stateSaver.get().theme,
     },
     compiler: undefined,
+    editorTheme: deriveEditorTheme(stateSaver.get().theme),
+  });
+
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    dispatch(actions.osThemeChange());
   });
 
   const value = { state, dispatch };
@@ -81,8 +88,9 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     savedState.treeMode = state.options.treeMode;
     savedState.showFactoryCode = state.options.showFactoryCode;
     savedState.showInternals = state.options.showInternals;
+    savedState.theme = state.options.theme;
     stateSaver.set(savedState);
-  }, [state.options.treeMode, state.options.showFactoryCode, state.options.showInternals]);
+  }, [state.options.treeMode, state.options.showFactoryCode, state.options.showInternals, state.options.theme]);
 
   useEffect(() => {
     if (state.compiler == null || state.compiler.selectedNode == null) {

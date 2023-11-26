@@ -22,16 +22,41 @@ body,
 
 .App {
   text-align: left;
+  color-scheme: var(--color-scheme);
+}
+.App[data-theme="dark"] {
+  --color-scheme: dark;
+  --text-color: #fff;
+  --resizer-border: rgba(255, 255, 255, 0.5);
+  --pane-background: #272822;
+  --header-background: #222;
+  --tooltip-background: #202020;
+  --range-highlight: #4b4d43;
+  --node-selected: #a6e22e;
+
+  --vscode-background: #1e1e1e;
+}
+.App[data-theme="light"] {
+  --color-scheme: light;
+  --text-color: #000;
+  --resizer-border: rgba(0, 0, 0, 0.5);
+  --pane-background: #f8f8f8;
+  --header-background: #ececec;
+  --tooltip-background: #f1f1f1;
+  --range-highlight: #d1d1d1;
+  --node-selected: #93c72b;
+
+  --vscode-background: #fffffe;
 }
 
 .SplitPane {
-  background-color: #272822;
-  color: #fff;
+  background-color: var(--pane-background);
+  color: var(--text-color);
 }
 
 .AppHeader {
-  background-color: #222;
-  color: white;
+  background-color: var(--header-background);
+  color: var(--text-color);
   padding: 10px;
   width: 100%;
 }
@@ -50,7 +75,7 @@ h3 {
 
 a,
 a:visited {
-  color: #fff;
+  color: var(--text-color);
 }
 
 #title {
@@ -94,8 +119,8 @@ a:visited {
 .toolTippedText .tooltipText {
   position: absolute;
   top: 18px;
-  border: 1px solid white;
-  background: #202020;
+  border: 1px solid var(--text-color);
+  background: var(--tooltip-background);
   padding: 10px;
   min-width: 250px;
   font-family: Consolas, "Courier New", monospace;
@@ -118,9 +143,9 @@ a:visited {
   line-height: 28px;
   width: 80px;
   text-align: center;
-  color: #fff;
-  background-color: #202020;
-  border: 1px solid #fff;
+  color: var(--text-color);
+  background-color: var(--tooltip-background);
+  border: 1px solid var(--text-color);
   font-size: 16px;
   cursor: pointer;
 }
@@ -130,8 +155,8 @@ a:visited {
   width: 364px;
   margin-left: -284px;
   margin-top: -1px;
-  background: #202020;
-  border: 1px solid #fff;
+  background: var(--tooltip-background);
+  border: 1px solid var(--text-color);
   z-index: 100;
   padding: 10px;
   font-size: 16px;
@@ -156,7 +181,7 @@ a:visited {
 
 #options .menuLine {
   position: absolute;
-  background: #202020;
+  background: var(--tooltip-background);
   height: 1px;
   width: 78px;
   margin-top: -1px;
@@ -191,12 +216,13 @@ a:visited {
   position: absolute;
   bottom: 0px;
   background-color: #007acc;
+  color: #fff;
   padding: 2px 4px;
   width: 100%;
 }
 
 .codeEditor .editorRangeHighlight {
-  background: #6f7163;
+  background: var(--range-highlight);
 }
 
 /* Factory Code Editor */
@@ -206,7 +232,7 @@ a:visited {
   width: 100%;
   height: 100%;
   /* vscode color */
-  background: #1e1e1e;
+  background: var(--vscode-background);
 }
 
 /* Tree Viewer */
@@ -224,7 +250,7 @@ a:visited {
 }
 
 #treeViewer .nodeText.selected {
-  color: #a6e22e;
+  color: var(--node-selected);
 }
 
 #treeViewer .endNode {

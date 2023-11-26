@@ -1,13 +1,14 @@
-import { CompilerPackageNames } from "@ts-ast-viewer/shared";
+import { CompilerPackageNames, Theme } from "@ts-ast-viewer/shared";
 import { AllActions } from "../actions";
 import { CompilerApi, convertOptions, createSourceFile } from "../compiler";
+import { CodeEditorTheme } from "../components";
 import { actions as actionNames } from "./../constants";
 import { OptionsState, StoreState } from "../types";
 import { UrlSaver } from "../utils";
 
 const urlSaver = new UrlSaver();
 
-export function appReducer(state: StoreState, action: AllActions): StoreState {
+export function appReducer(state: StoreState & { editorTheme: CodeEditorTheme }, action: AllActions): StoreState & { editorTheme: CodeEditorTheme } {
   switch (action.type) {
     case actionNames.SET_SELECTED_NODE: {
       if (state.compiler == null) {
@@ -47,6 +48,13 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
           ...state.options,
           ...action.options,
         },
+        editorTheme: deriveEditorTheme(action.options.theme || state.options.theme),
+      };
+    }
+    case actionNames.OS_THEME_CHANGE: {
+      return {
+        ...state,
+        editorTheme: deriveEditorTheme(state.options.theme),
       };
     }
     default: {
@@ -54,6 +62,17 @@ export function appReducer(state: StoreState, action: AllActions): StoreState {
       const assertNever: never = action;
       return state;
     }
+  }
+}
+
+export function deriveEditorTheme(theme: Theme): CodeEditorTheme {
+  switch (theme) {
+    case Theme.OS:
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    case Theme.Dark:
+      return "dark";
+    case Theme.Light:
+      return "light";
   }
 }
 
