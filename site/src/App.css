@@ -33,8 +33,10 @@ body,
   --tooltip-background: #202020;
   --range-highlight: #4b4d43;
   --node-selected: #a6e22e;
+  --internal-prop: red;
 
   --vscode-background: #1e1e1e;
+  --spinner-foreground: #fefefe;
 }
 .App[data-theme="light"] {
   --color-scheme: light;
@@ -44,9 +46,11 @@ body,
   --header-background: #ececec;
   --tooltip-background: #f1f1f1;
   --range-highlight: #d1d1d1;
-  --node-selected: #93c72b;
+  --node-selected: #84b327;
+  --internal-prop: #cf1111;
 
   --vscode-background: #fffffe;
+  --spinner-foreground: #1e1e1e;
 }
 
 .SplitPane {
@@ -274,7 +278,7 @@ a:visited {
 }
 
 .propertiesViewer .internal > div > .key {
-  color: red;
+  color: var(--internal-prop);
 }
 
 .propertiesViewer .text .key {

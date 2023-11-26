@@ -53,7 +53,7 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
   };
 
   if (publicApiInfo == null) {
-    return <Spinner backgroundColor="#1e1e1e" />;
+    return <Spinner />;
   }
 
   return (

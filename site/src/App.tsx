@@ -146,15 +146,4 @@ export function App() {
       }]);
     };
   }
-
-  function getEditorTheme(): "light" | "dark" {
-    switch (state.options.theme) {
-      case Theme.OS:
-      case Theme.Dark:
-        return "dark";
-      case Theme.Light:
-        return "light";
-    }
-    return "dark";
-  }
 }

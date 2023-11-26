@@ -148,7 +148,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
 
   private getEditor() {
     if (this.state.editorComponent == null) {
-      return <Spinner backgroundColor="#1e1e1e" />;
+      return <Spinner />;
     }
     if (this.state.editorComponent === false) {
       return <div className={"errorMessage"}>Error loading code editor. Please refresh the page to try again.</div>;
