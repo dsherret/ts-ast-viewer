@@ -28,7 +28,7 @@ export function TreeViewer(props: TreeViewerProps) {
   }, [selectedNode]);
   return <div id={constants.css.treeViewer.id}>{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>;
 
-  function renderNode(node: Node, getChildren: (node: Node) => (Node[])): JSX.Element {
+  function renderNode(node: Node, getChildren: (node: Node) => Node[]): JSX.Element {
     const children = getChildren(node);
     const className = "nodeText" + (node === selectedNode ? " " + constants.css.treeViewer.selectedNodeClass : "");
     const kindName = getSyntaxKindName(api, node.kind);
