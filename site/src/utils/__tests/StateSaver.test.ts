@@ -88,6 +88,23 @@ describe("StateSaver", () => {
     }
   });
 
+  it("should work for every theme", () => {
+    for (const theme of [Theme.OS, Theme.Dark, Theme.Light]) {
+      const { saver } = setup();
+      const state = saver.get();
+      state.theme = theme;
+      saver.set(state);
+
+      expect(saver.get()).toEqual({
+        version: 4,
+        treeMode: TreeMode.forEachChild,
+        showFactoryCode: true,
+        showInternals: false,
+        theme,
+      });
+    }
+  });
+
   it("should upgrade from version 1", () => {
     const { saver, localStorage } = setup();
     localStorage.setItem(
