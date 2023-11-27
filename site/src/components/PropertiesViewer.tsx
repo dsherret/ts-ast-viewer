@@ -310,12 +310,17 @@ function getCustomValueDiv(context: Context, key: string, value: any, parent: an
     if (isTsNode(parent)) {
       switch (key) {
         case "kind":
+        case "token": // HeritageClause
           return `${value} (SyntaxKind.${getSyntaxKindName(context.api, value)})`;
         case "flags":
           return getEnumFlagElement(context.api.NodeFlags, value);
         case "pos":
         case "end":
           return getPositionElement(context.sourceFile, value);
+        case "transformFlags":
+          return getEnumFlagElement(context.api.TransformFlags, value);
+        case "modifierFlagsCache":
+          return getEnumFlagElement(context.api.ModifierFlags, value);
       }
     }
     if (isTsType(parent) && key === "objectFlags") {

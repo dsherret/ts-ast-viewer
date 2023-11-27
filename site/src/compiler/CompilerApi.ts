@@ -9,6 +9,7 @@ export interface CompilerApi {
   ScriptTarget: typeof ts.ScriptTarget;
   ScriptKind: typeof ts.ScriptKind;
   SyntaxKind: typeof ts.SyntaxKind;
+  ModifierFlags: typeof ts.ModifierFlags;
   ModuleKind: typeof ts.ModuleKind;
   NodeFlags: typeof ts.NodeFlags;
   ObjectFlags: typeof ts.ObjectFlags;
@@ -17,6 +18,8 @@ export interface CompilerApi {
   FlowFlags: typeof ts.FlowFlags;
   // Internal enum
   CheckFlags: {};
+  // Internal enum
+  TransformFlags: {};
   tsAstViewer: {
     packageName: CompilerPackageNames;
     cachedSourceFiles: { [name: string]: SourceFile | undefined };
