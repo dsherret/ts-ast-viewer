@@ -201,7 +201,7 @@ function quoted(txt: string): string {
   return JSON.stringify(txt).slice(1, -1);
 }
 
-function getDotForFlowGraph(node: FlowNode) {
+function getDotForFlowGraph(context: Context, node: FlowNode) {
   let nextId = 0;
   const getNextId = () => nextId++;
   const nodeIds = new Map<FlowNode, string>();
@@ -234,7 +234,9 @@ function getDotForFlowGraph(node: FlowNode) {
       nodeText = fn.node.getText();
     }
 
-    nodeLines.push(`${id} [shape=record label="{${nodeText ? quoted(nodeText) : 'n/a'}|flags=${fn.flags}}"];`);
+    const flagLines = getEnumFlagLines(context.api.FlowFlags, fn.flags).join(",");
+
+    nodeLines.push(`${id} [shape=record label="{${nodeText ? quoted(nodeText) : 'n/a'}|flags=${flagLines}}"];`);
     const antecedents = 'antecedent' in fn ? [fn.antecedent] : ('antecedents' in fn && fn.antecedents) ? fn.antecedents : [];
     for (const antecedent of antecedents) {
       fringe.push(antecedent);
@@ -250,8 +252,8 @@ ${edgeLines.map(line => '  ' + line).join('\n')}
 }`;
 }
 
-function DotGraph({flowNode}: {flowNode: FlowNode}) {
-  const dot = React.useMemo(() => getDotForFlowGraph(flowNode), [flowNode]);
+function DotGraph({flowNode, context}: {flowNode: FlowNode, context: Context}) {
+  const dot = React.useMemo(() => getDotForFlowGraph(context, flowNode), [flowNode]);
   return <textarea rows={10} cols={40}>{dot}</textarea>;
 }
 
@@ -265,7 +267,7 @@ function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) 
 
   return (
     <>
-      <DotGraph flowNode={flowNode} />
+      <DotGraph flowNode={flowNode} context={context} />
       {getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode")}
     </>
   );
@@ -575,7 +577,22 @@ function isFlowNode(value: any): value is FlowNode {
   return value.antecedents != null || value.antecedent != null;
 }
 
+function getEnumFlagLines(enumObj: any, value: number): string[] {
+  const names = EnumUtils.getNamesForValues(enumObj).filter(entry => entry.value & value);
+  if (names.length === 0) {
+    return [String(value)];
+  }
+
+  const [powersOfTwo, others] = ArrayUtils.partition(names, ({ value }) => Number.isInteger(Math.log2(value)));
+
+  return [...powersOfTwo, ...others].flatMap(({ value, names }) => {
+    const power = Math.log2(value);
+    return names.map(name => Number.isInteger(power) ? `${name} (2 ^ ${power})` : name);
+  });
+}
+
 function getEnumFlagElement(enumObj: any, value: number) {
+  // TODO: call getEnumFlagLines here
   const names = EnumUtils.getNamesForValues(enumObj).filter(entry => entry.value & value);
   if (names.length === 0) {
     return <>{value}</>;
