@@ -20,6 +20,7 @@ import { ArrayUtils, EnumUtils, getSyntaxKindName } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 import { Spinner } from "./Spinner";
 import { ToolTippedText } from "./ToolTippedText";
+import { FlowArrayMutation, FlowAssignment, FlowCondition, FlowFlags } from "typescript";
 
 export interface PropertiesViewerProps {
   compiler: CompilerState;
@@ -196,15 +197,75 @@ function getForSignature(context: Context, node: Node, typeChecker: TypeChecker)
   return getTreeView(context, signature, "Signature");
 }
 
+function quoted(txt: string): string {
+  return JSON.stringify(txt).slice(1, -1);
+}
+
+function getDotForFlowGraph(node: FlowNode) {
+  let nextId = 0;
+  const getNextId = () => nextId++;
+  const nodeIds = new Map<FlowNode, string>();
+  const idForNode = (n: FlowNode) => {
+    let id = nodeIds.get(n);
+    if (id !== undefined) {
+      return id;
+    }
+    id = 'n' + getNextId();
+    nodeIds.set(n, id);
+    return id;
+  };
+
+  const nodeLines = [];
+  const edgeLines = [];
+
+  const seen = new Set<FlowNode>();
+  let fringe = [node];
+  while (fringe.length) {
+    const fn = fringe[0];
+    fringe = fringe.slice(1);
+    if (seen.has(fn)) {
+      continue;
+    }
+    seen.add(fn);
+    const id = idForNode(fn);
+
+    let nodeText = null;
+    if ('node' in fn && fn.node) {
+      nodeText = fn.node.getText();
+    }
+
+    nodeLines.push(`${id} [shape=record label="{${nodeText ? quoted(nodeText) : 'n/a'}|flags=${fn.flags}}"];`);
+    const antecedents = 'antecedent' in fn ? [fn.antecedent] : ('antecedents' in fn && fn.antecedents) ? fn.antecedents : [];
+    for (const antecedent of antecedents) {
+      fringe.push(antecedent);
+      const antId = idForNode(antecedent);
+      edgeLines.push(`${id} -> ${antId};`);
+    }
+  }
+
+  return `digraph {
+  rankdir="BT";
+${nodeLines.map(line => '  ' + line).join('\n')}
+${edgeLines.map(line => '  ' + line).join('\n')}
+}`;
+}
+
+function DotGraph({flowNode}: {flowNode: FlowNode}) {
+  const dot = React.useMemo(() => getDotForFlowGraph(flowNode), [flowNode]);
+  return <textarea rows={10} cols={40}>{dot}</textarea>;
+}
+
 function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) {
   const nodeWithFlowNode = node as Node & { flowNode?: FlowNode };
   if (nodeWithFlowNode.flowNode == null) {
     return <>[None]</>;
   }
 
+  const flowNode = nodeWithFlowNode.flowNode;
+
   return (
     <>
-      <h2>Dan is here</h2>
+      <DotGraph flowNode={flowNode} />
       {getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode")}
     </>
   );
