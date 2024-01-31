@@ -202,7 +202,12 @@ function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) 
     return <>[None]</>;
   }
 
-  return getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode");
+  return (
+    <>
+      <h2>Dan is here</h2>
+      {getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode")}
+    </>
+  );
 }
 
 function getOrReturnError<T>(getFunc: () => T): T | string {
