@@ -201,6 +201,23 @@ function quoted(txt: string): string {
   return JSON.stringify(txt).slice(1, -1);
 }
 
+function getFlagText(context: Context, flags: FlowFlags) {
+  // These are optimizations, not semantic flags.
+  flags = flags & ~(FlowFlags.Shared | FlowFlags.Referenced);
+  switch (flags) {
+    case FlowFlags.TrueCondition:
+    case FlowFlags.FalseCondition:
+    case FlowFlags.Start:
+    case FlowFlags.Assignment:
+    case FlowFlags.BranchLabel:
+    case FlowFlags.LoopLabel:
+    case FlowFlags.Call:
+      return EnumUtils.getNamesForValues(context.api.FlowFlags).find(e => e.value === flags)!.names[0];
+  }
+  const flagLines = getEnumFlagLines(context.api.FlowFlags, flags).join("\\n");
+  return `flags=${flagLines.length > 1 ? '\\n' : ''}${flagLines}`;
+}
+
 function getDotForFlowGraph(context: Context, node: FlowNode) {
   let nextId = 0;
   const getNextId = () => nextId++;
@@ -234,9 +251,13 @@ function getDotForFlowGraph(context: Context, node: FlowNode) {
       nodeText = fn.node.getText();
     }
 
-    const flagLines = getEnumFlagLines(context.api.FlowFlags, fn.flags).join(",");
-
-    nodeLines.push(`${id} [shape=record label="{${nodeText ? quoted(nodeText) : 'n/a'}|flags=${flagLines}}"];`);
+    const flagText = getFlagText(context, fn.flags);
+    const parts = [];
+    if (nodeText) {
+      parts.push(quoted(nodeText));
+    }
+    parts.push(flagText);
+    nodeLines.push(`${id} [shape=record label="{${parts.join("|")}}"];`);
     const antecedents = 'antecedent' in fn ? [fn.antecedent] : ('antecedents' in fn && fn.antecedents) ? fn.antecedents : [];
     for (const antecedent of antecedents) {
       fringe.push(antecedent);
