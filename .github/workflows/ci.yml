@@ -31,3 +31,4 @@ jobs:
       with:
         branch: gh-pages
         folder: site/dist
+        single-commit: true
