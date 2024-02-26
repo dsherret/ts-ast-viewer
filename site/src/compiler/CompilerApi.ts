@@ -20,6 +20,8 @@ export interface CompilerApi {
   CheckFlags: {};
   // Internal enum
   TransformFlags: {};
+  // Internal enum
+  TypeMapKind: {};
   tsAstViewer: {
     packageName: CompilerPackageNames;
     cachedSourceFiles: { [name: string]: SourceFile | undefined };
