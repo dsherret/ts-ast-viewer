@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { CompilerApi, ScriptKind, ScriptTarget } from "../compiler";
 import { useOnClickOutside } from "../hooks";
 import { OptionsState } from "../types";
-import { EnumUtils } from "../utils";
+import { enumUtils } from "../utils";
 import { ExternalLink } from "./ExternalLink";
 
 export interface OptionsProps {
@@ -151,7 +151,7 @@ export function Options(props: OptionsProps) {
   function getEnumOption(name: string, prefix: string, e: any, currentValue: number, onChange: (value: number) => void) {
     const selection = (
       <select value={currentValue} onChange={event => onChange(parseInt(event.target.value, 10))}>
-        {EnumUtils.getNamesForValues(e).map(namesForValue => getOption(namesForValue.value, namesForValue.names))}
+        {enumUtils.getNamesForValues(e).map(namesForValue => getOption(namesForValue.value, namesForValue.names))}
       </select>
     );
     return <Option name={name} value={selection} />;

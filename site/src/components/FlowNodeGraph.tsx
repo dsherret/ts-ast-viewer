@@ -1,9 +1,9 @@
-import React from "react";
 import { instance as vizJsInstance, Viz } from "@viz-js/viz";
+import React from "react";
 
 import { FlowFlags, FlowNode } from "typescript";
-import { EnumUtils, flagUtils } from "../utils";
 import { CompilerApi } from "../compiler";
+import { enumUtils } from "../utils";
 
 export interface FlowNodeGraphProps {
   api: CompilerApi;
@@ -25,11 +25,11 @@ function getFlagText(api: CompilerApi, flags: FlowFlags) {
     case FlowFlags.BranchLabel:
     case FlowFlags.LoopLabel:
     case FlowFlags.Call:
-      return EnumUtils.getNamesForValues(api.FlowFlags).find(e => e.value === flags)!.names[0];
+      return enumUtils.getNamesForValues(api.FlowFlags).find(e => e.value === flags)!.names[0];
   }
-  const flagElements = flagUtils.getEnumFlagLines(api.FlowFlags, flags);
+  const flagElements = enumUtils.getEnumFlagLines(api.FlowFlags, flags);
   const flagLines = flagElements ? flagElements.join("\\n") : String(flags);
-  return `flags=${flagLines.length > 1 ? '\\n' : ''}${flagLines}`;
+  return `flags=${flagLines.length > 1 ? "\\n" : ""}${flagLines}`;
 }
 
 function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
@@ -41,7 +41,7 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
     if (id !== undefined) {
       return id;
     }
-    id = 'n' + getNextId();
+    id = "n" + getNextId();
     nodeIds.set(n, id);
     return id;
   };
@@ -61,10 +61,10 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
     const id = idForNode(fn);
 
     let nodeText = null;
-    if ('node' in fn && fn.node) {
+    if ("node" in fn && fn.node) {
       nodeText = fn.node.getText();
       if (nodeText.length > 50) {
-        nodeText = nodeText.slice(0, 45) + '…';
+        nodeText = nodeText.slice(0, 45) + "…";
       }
     }
 
@@ -75,7 +75,7 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
     }
     parts.push(flagText);
     nodeLines.push(`${id} [shape=record label="{${parts.join("|")}}"];`);
-    const antecedents = 'antecedent' in fn ? [fn.antecedent] : ('antecedents' in fn && fn.antecedents) ? fn.antecedents : [];
+    const antecedents = "antecedent" in fn ? [fn.antecedent] : ("antecedents" in fn && fn.antecedents) ? fn.antecedents : [];
     for (const antecedent of antecedents) {
       fringe.push(antecedent);
       const antId = idForNode(antecedent);
@@ -86,8 +86,8 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
   return `digraph {
     bgcolor=transparent
     rankdir="BT";
-${nodeLines.map(line => '  ' + line).join('\n')}
-${edgeLines.map(line => '  ' + line).join('\n')}
+${nodeLines.map(line => "  " + line).join("\n")}
+${edgeLines.map(line => "  " + line).join("\n")}
 }`;
 }
 
@@ -95,7 +95,7 @@ interface DotVizProps {
   dot: string;
 }
 
-function DotViz({dot}: DotVizProps) {
+function DotViz({ dot }: DotVizProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [vizJs, setVizJs] = React.useState<Viz | null>(null);
   React.useEffect(() => {
@@ -108,16 +108,14 @@ function DotViz({dot}: DotVizProps) {
     if (!div || !vizJs) {
       return;
     }
-    div.innerHTML = '';
+    div.innerHTML = "";
     div.appendChild(vizJs?.renderSVGElement(dot));
   }, [ref, dot, vizJs]);
 
-  return (
-    <div className="flowNodeGraph" ref={ref} />
-  )
+  return <div className="flowNodeGraph" ref={ref} />;
 }
 
-export function FlowNodeGraph({flowNode, api}: FlowNodeGraphProps) {
+export function FlowNodeGraph({ flowNode, api }: FlowNodeGraphProps) {
   const dot = React.useMemo(() => getDotForFlowGraph(api, flowNode), [flowNode]);
   // return <textarea rows={10} cols={40}>{dot}</textarea>;
   return <DotViz dot={dot} />;

@@ -8,11 +8,11 @@
     "e2e"
   ],
   "scripts": {
-    "setup": "yarn install && npm run build --prefix shared",
+    "setup": "npm install && npm run build --prefix shared",
     "start": "npm run dev --prefix site",
-    "build": "yarn workspaces run build",
+    "build": "npm run build",
     "format": "dprint fmt",
-    "test": "yarn workspaces run test",
+    "test": "npm run test",
     "predeploy": "npm run predeploy --prefix site",
     "addTypeScriptVersions": "ts-node --project scripts/tsconfig.json scripts/addTypeScriptVersions.ts",
     "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode && npm run createPublicApiInfo && npm run build --prefix shared",
