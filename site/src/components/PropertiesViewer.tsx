@@ -16,11 +16,11 @@ import {
   TypeChecker,
 } from "../compiler";
 import { BindingTools, CompilerState } from "../types";
-import { ArrayUtils, EnumUtils, getSyntaxKindName } from "../utils";
+import { flagUtils, getSyntaxKindName } from "../utils";
 import { LazyTreeView } from "./LazyTreeView";
 import { Spinner } from "./Spinner";
 import { ToolTippedText } from "./ToolTippedText";
-import { FlowArrayMutation, FlowAssignment, FlowCondition, FlowFlags } from "typescript";
+import { DotGraph } from "./FlowNodeGraph";
 
 export interface PropertiesViewerProps {
   compiler: CompilerState;
@@ -197,87 +197,6 @@ function getForSignature(context: Context, node: Node, typeChecker: TypeChecker)
   return getTreeView(context, signature, "Signature");
 }
 
-function quoted(txt: string): string {
-  return JSON.stringify(txt).slice(1, -1);
-}
-
-function getFlagText(context: Context, flags: FlowFlags) {
-  // These are optimizations, not semantic flags.
-  flags = flags & ~(FlowFlags.Shared | FlowFlags.Referenced);
-  switch (flags) {
-    case FlowFlags.TrueCondition:
-    case FlowFlags.FalseCondition:
-    case FlowFlags.Start:
-    case FlowFlags.Assignment:
-    case FlowFlags.BranchLabel:
-    case FlowFlags.LoopLabel:
-    case FlowFlags.Call:
-      return EnumUtils.getNamesForValues(context.api.FlowFlags).find(e => e.value === flags)!.names[0];
-  }
-  const flagLines = getEnumFlagLines(context.api.FlowFlags, flags).join("\\n");
-  return `flags=${flagLines.length > 1 ? '\\n' : ''}${flagLines}`;
-}
-
-function getDotForFlowGraph(context: Context, node: FlowNode) {
-  let nextId = 0;
-  const getNextId = () => nextId++;
-  const nodeIds = new Map<FlowNode, string>();
-  const idForNode = (n: FlowNode) => {
-    let id = nodeIds.get(n);
-    if (id !== undefined) {
-      return id;
-    }
-    id = 'n' + getNextId();
-    nodeIds.set(n, id);
-    return id;
-  };
-
-  const nodeLines = [];
-  const edgeLines = [];
-
-  const seen = new Set<FlowNode>();
-  let fringe = [node];
-  while (fringe.length) {
-    const fn = fringe[0];
-    fringe = fringe.slice(1);
-    if (seen.has(fn)) {
-      continue;
-    }
-    seen.add(fn);
-    const id = idForNode(fn);
-
-    let nodeText = null;
-    if ('node' in fn && fn.node) {
-      nodeText = fn.node.getText();
-    }
-
-    const flagText = getFlagText(context, fn.flags);
-    const parts = [];
-    if (nodeText) {
-      parts.push(quoted(nodeText));
-    }
-    parts.push(flagText);
-    nodeLines.push(`${id} [shape=record label="{${parts.join("|")}}"];`);
-    const antecedents = 'antecedent' in fn ? [fn.antecedent] : ('antecedents' in fn && fn.antecedents) ? fn.antecedents : [];
-    for (const antecedent of antecedents) {
-      fringe.push(antecedent);
-      const antId = idForNode(antecedent);
-      edgeLines.push(`${id} -> ${antId};`);
-    }
-  }
-
-  return `digraph {
-  rankdir="BT";
-${nodeLines.map(line => '  ' + line).join('\n')}
-${edgeLines.map(line => '  ' + line).join('\n')}
-}`;
-}
-
-function DotGraph({flowNode, context}: {flowNode: FlowNode, context: Context}) {
-  const dot = React.useMemo(() => getDotForFlowGraph(context, flowNode), [flowNode]);
-  return <textarea rows={10} cols={40}>{dot}</textarea>;
-}
-
 function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) {
   const nodeWithFlowNode = node as Node & { flowNode?: FlowNode };
   if (nodeWithFlowNode.flowNode == null) {
@@ -288,7 +207,7 @@ function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) 
 
   return (
     <>
-      <DotGraph flowNode={flowNode} context={context} />
+      <DotGraph flowNode={flowNode} api={context.api} />
       {getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode")}
     </>
   );
@@ -598,33 +517,11 @@ function isFlowNode(value: any): value is FlowNode {
   return value.antecedents != null || value.antecedent != null;
 }
 
-function getEnumFlagLines(enumObj: any, value: number): string[] {
-  const names = EnumUtils.getNamesForValues(enumObj).filter(entry => entry.value & value);
-  if (names.length === 0) {
-    return [String(value)];
-  }
-
-  const [powersOfTwo, others] = ArrayUtils.partition(names, ({ value }) => Number.isInteger(Math.log2(value)));
-
-  return [...powersOfTwo, ...others].flatMap(({ value, names }) => {
-    const power = Math.log2(value);
-    return names.map(name => Number.isInteger(power) ? `${name} (2 ^ ${power})` : name);
-  });
-}
-
 function getEnumFlagElement(enumObj: any, value: number) {
-  // TODO: call getEnumFlagLines here
-  const names = EnumUtils.getNamesForValues(enumObj).filter(entry => entry.value & value);
-  if (names.length === 0) {
+  const elements = flagUtils.getEnumFlagLines(enumObj, value);
+  if (!elements) {
     return <>{value}</>;
   }
-
-  const [powersOfTwo, others] = ArrayUtils.partition(names, ({ value }) => Number.isInteger(Math.log2(value)));
-
-  const elements = [...powersOfTwo, ...others].flatMap(({ value, names }) => {
-    const power = Math.log2(value);
-    return names.map(name => <li key={name}>{Number.isInteger(power) ? `${name} (2 ^ ${power})` : name}</li>);
-  });
 
   return (
     <ToolTippedText text={value.toString()}>
