@@ -16,7 +16,8 @@ import {
   TypeChecker,
 } from "../compiler";
 import { BindingTools, CompilerState } from "../types";
-import { ArrayUtils, EnumUtils, getSyntaxKindName } from "../utils";
+import { flagUtils, getSyntaxKindName } from "../utils";
+import { FlowNodeGraph } from "./FlowNodeGraph";
 import { LazyTreeView } from "./LazyTreeView";
 import { Spinner } from "./Spinner";
 import { ToolTippedText } from "./ToolTippedText";
@@ -202,7 +203,14 @@ function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) 
     return <>[None]</>;
   }
 
-  return getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode");
+  const flowNode = nodeWithFlowNode.flowNode;
+
+  return (
+    <>
+      <FlowNodeGraph flowNode={flowNode} api={context.api} />
+      {getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode")}
+    </>
+  );
 }
 
 function getOrReturnError<T>(getFunc: () => T): T | string {
@@ -513,21 +521,14 @@ function isFlowNode(value: any): value is FlowNode {
 }
 
 function getEnumFlagElement(enumObj: any, value: number) {
-  const names = EnumUtils.getNamesForValues(enumObj).filter(entry => entry.value & value);
-  if (names.length === 0) {
+  const elements = flagUtils.getEnumFlagLines(enumObj, value);
+  if (!elements) {
     return <>{value}</>;
   }
 
-  const [powersOfTwo, others] = ArrayUtils.partition(names, ({ value }) => Number.isInteger(Math.log2(value)));
-
-  const elements = [...powersOfTwo, ...others].flatMap(({ value, names }) => {
-    const power = Math.log2(value);
-    return names.map(name => <li key={name}>{Number.isInteger(power) ? `${name} (2 ^ ${power})` : name}</li>);
-  });
-
   return (
     <ToolTippedText text={value.toString()}>
-      <ul>{elements}</ul>
+      <ul>{elements.map((el, i) => <li key={i}>{el}</li>)}</ul>
     </ToolTippedText>
   );
 }
