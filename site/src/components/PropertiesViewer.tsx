@@ -17,10 +17,10 @@ import {
 } from "../compiler";
 import { BindingTools, CompilerState } from "../types";
 import { flagUtils, getSyntaxKindName } from "../utils";
+import { FlowNodeGraph } from "./FlowNodeGraph";
 import { LazyTreeView } from "./LazyTreeView";
 import { Spinner } from "./Spinner";
 import { ToolTippedText } from "./ToolTippedText";
-import { DotGraph } from "./FlowNodeGraph";
 
 export interface PropertiesViewerProps {
   compiler: CompilerState;
@@ -207,7 +207,7 @@ function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) 
 
   return (
     <>
-      <DotGraph flowNode={flowNode} api={context.api} />
+      <FlowNodeGraph flowNode={flowNode} api={context.api} />
       {getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode")}
     </>
   );
@@ -525,7 +525,7 @@ function getEnumFlagElement(enumObj: any, value: number) {
 
   return (
     <ToolTippedText text={value.toString()}>
-      <ul>{elements}</ul>
+      <ul>{elements.map((el, i) => <li key={i}>{el}</li>)}</ul>
     </ToolTippedText>
   );
 }

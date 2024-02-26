@@ -1,10 +1,11 @@
 import React from "react";
+import { instance as vizJsInstance, Viz } from "@viz-js/viz";
 
 import { FlowFlags, FlowNode } from "typescript";
 import { EnumUtils, flagUtils } from "../utils";
 import { CompilerApi } from "../compiler";
 
-export interface DotGraphProps {
+export interface FlowNodeGraphProps {
   api: CompilerApi;
   flowNode: FlowNode;
 }
@@ -62,6 +63,9 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
     let nodeText = null;
     if ('node' in fn && fn.node) {
       nodeText = fn.node.getText();
+      if (nodeText.length > 50) {
+        nodeText = nodeText.slice(0, 45) + '…';
+      }
     }
 
     const flagText = getFlagText(api, fn.flags);
@@ -80,13 +84,41 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
   }
 
   return `digraph {
-  rankdir="BT";
+    bgcolor=transparent
+    rankdir="BT";
 ${nodeLines.map(line => '  ' + line).join('\n')}
 ${edgeLines.map(line => '  ' + line).join('\n')}
 }`;
 }
 
-export function DotGraph({flowNode, api}: DotGraphProps) {
+interface DotVizProps {
+  dot: string;
+}
+
+function DotViz({dot}: DotVizProps) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [vizJs, setVizJs] = React.useState<Viz | null>(null);
+  React.useEffect(() => {
+    (async () => {
+      setVizJs(await vizJsInstance());
+    })();
+  }, []);
+  React.useEffect(() => {
+    const div = ref.current;
+    if (!div || !vizJs) {
+      return;
+    }
+    div.innerHTML = '';
+    div.appendChild(vizJs?.renderSVGElement(dot));
+  }, [ref, dot, vizJs]);
+
+  return (
+    <div className="flowNodeGraph" ref={ref} />
+  )
+}
+
+export function FlowNodeGraph({flowNode, api}: FlowNodeGraphProps) {
   const dot = React.useMemo(() => getDotForFlowGraph(api, flowNode), [flowNode]);
-  return <textarea rows={10} cols={40}>{dot}</textarea>;
+  // return <textarea rows={10} cols={40}>{dot}</textarea>;
+  return <DotViz dot={dot} />;
 }
