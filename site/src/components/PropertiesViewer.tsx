@@ -336,6 +336,9 @@ function getCustomValueDiv(context: Context, key: string, value: any, parent: an
     if (key === "checkFlags" && typeof value === "number") {
       return getEnumFlagElement(context.api.CheckFlags, value);
     }
+    if (key === "kind" && typeof value === "number") {
+      return getEnumFlagElement(context.api.TypeMapKind, value);
+    }
     if (isFlowNode(parent) && key === "flags") {
       return getEnumFlagElement(context.api.FlowFlags, value);
     }
@@ -486,7 +489,7 @@ function isMap(value: any): value is ReadonlyMap<string, unknown> {
 }
 
 function isTsNode(value: any): value is Node {
-  return typeof (value as Node).kind === "number";
+  return typeof (value as Node).kind === "number" && typeof (value as Node).flags === "number";
 }
 
 function isTsType(value: any): value is Type {
