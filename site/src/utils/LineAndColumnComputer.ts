@@ -1,4 +1,4 @@
-import { ArrayUtils } from "./ArrayUtils";
+import * as arrayUtils from "./arrayUtils";
 import { createLineNumberAndColumns, LineNumberAndColumn } from "./createLineNumberAndColumns";
 
 /** An efficient way to compute the line and column of a position in a string. */
@@ -14,7 +14,7 @@ export class LineAndColumnComputer {
       return { lineNumber: 1, column: 1 };
     }
 
-    const index = ArrayUtils.binarySearch(this.lineInfos, info => {
+    const index = arrayUtils.binarySearch(this.lineInfos, info => {
       if (pos < info.pos) {
         return -1;
       }

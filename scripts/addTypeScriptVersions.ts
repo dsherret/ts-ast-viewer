@@ -5,13 +5,13 @@ import * as semver from "semver";
 const versions = getTypeScriptVersionsToInstall();
 
 for (const version of versions) {
-  yarnInstallTypeScriptVersion(version);
+  npmInstallTypeScriptVersion(version);
 }
-yarnInstallTypeScriptVersion("next");
+npmInstallTypeScriptVersion("next");
 
-function yarnInstallTypeScriptVersion(version: string) {
+function npmInstallTypeScriptVersion(version: string) {
   console.log(`Installing Typescript ${version}...`);
-  const command = `yarn add typescript-${version}@npm:typescript@${version}`;
+  const command = `npm add typescript-${version}@npm:typescript@${version}`;
   cp.execSync(command, {
     encoding: "utf8",
     cwd: path.resolve(__dirname, "../site"),

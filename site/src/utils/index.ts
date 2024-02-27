@@ -1,9 +1,8 @@
-export * from "./ArrayUtils";
+export * as arrayUtils from "./arrayUtils";
 export * from "./assertNever";
 export * from "./Box";
 export * from "./createHashSet";
-export * from "./EnumUtils";
-export * as flagUtils from "./flags";
+export * as enumUtils from "./enumUtils";
 export * from "./getSyntaxKindName";
 export * from "./LineAndColumnComputer";
 export * from "./sleep";

@@ -16,7 +16,8 @@ import {
   TypeChecker,
 } from "../compiler";
 import { BindingTools, CompilerState } from "../types";
-import { flagUtils, getSyntaxKindName } from "../utils";
+import { enumUtils, getSyntaxKindName } from "../utils";
+import { ErrorBoundary } from "./ErrorBoundary";
 import { FlowNodeGraph } from "./FlowNodeGraph";
 import { LazyTreeView } from "./LazyTreeView";
 import { Spinner } from "./Spinner";
@@ -207,7 +208,9 @@ function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) 
 
   return (
     <>
-      <FlowNodeGraph flowNode={flowNode} api={context.api} />
+      <ErrorBoundary getResetHash={() => nodeWithFlowNode.flowNode?.id?.toString() ?? ""}>
+        <FlowNodeGraph flowNode={flowNode} api={context.api} />
+      </ErrorBoundary>
       {getTreeView(context, nodeWithFlowNode.flowNode, "FlowNode")}
     </>
   );
@@ -521,7 +524,7 @@ function isFlowNode(value: any): value is FlowNode {
 }
 
 function getEnumFlagElement(enumObj: any, value: number) {
-  const elements = flagUtils.getEnumFlagLines(enumObj, value);
+  const elements = enumUtils.getEnumFlagLines(enumObj, value);
   if (!elements) {
     return <>{value}</>;
   }

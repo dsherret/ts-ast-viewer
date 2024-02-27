@@ -8,16 +8,16 @@ Source code for https://ts-ast-viewer.com
 
 ```
 # install and setup
-yarn setup
+npm run setup
 
 # run locally
-yarn start
+npm run start
 
 # run unit tests
-yarn test
+npm run test
 
 # run cypress
-yarn cypress
+npm run cypress
 ```
 
 ### Factory Code Generation
