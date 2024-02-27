@@ -14,7 +14,7 @@ function npmInstallTypeScriptVersion(version: string) {
   const command = `npm add typescript-${version}@npm:typescript@${version}`;
   cp.execSync(command, {
     encoding: "utf8",
-    cwd: path.resolve(__dirname, "../site"),
+    cwd: path.resolve(import.meta.dirname, "../site"),
     stdio: "inherit",
   });
 }
