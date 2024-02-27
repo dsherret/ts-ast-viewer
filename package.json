@@ -14,12 +14,12 @@
     "format": "dprint fmt",
     "test": "npm run test --workspaces",
     "predeploy": "npm run predeploy --prefix site",
-    "addTypeScriptVersions": "ts-node --project scripts/tsconfig.json scripts/addTypeScriptVersions.ts",
+    "addTypeScriptVersions": "deno run -A scripts/addTypeScriptVersions.ts",
     "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode && npm run createPublicApiInfo && npm run build --prefix shared",
-    "copyLibFiles": "ts-node --project scripts/tsconfig.json scripts/copyLibFiles.ts ",
-    "createCompilerVersions": "ts-node --project scripts/tsconfig.json scripts/createCompilerVersions.ts",
-    "createFactoryCode": "ts-node --project scripts/tsconfig.json scripts/createFactoryCode.ts",
-    "createPublicApiInfo": "ts-node --project scripts/tsconfig.json scripts/createPublicApiInfo.ts"
+    "copyLibFiles": "deno run -A scripts/copyLibFiles.ts",
+    "createCompilerVersions": "deno run -A scripts/createCompilerVersions.ts",
+    "createFactoryCode": "deno run -A scripts/createFactoryCode.ts",
+    "createPublicApiInfo": "deno run -A scripts/createPublicApiInfo.ts"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
@@ -30,7 +30,6 @@
     "glob": "^10.3.10",
     "semver": "^7.6.0",
     "ts-factory-code-generator-generator": "^0.7.0",
-    "ts-morph": "^21.0.1",
-    "ts-node": "^10.9.2"
+    "ts-morph": "^21.0.1"
   }
 }

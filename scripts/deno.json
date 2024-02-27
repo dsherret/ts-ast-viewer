@@ -1,0 +1,7 @@
+{
+  "unstable": [
+    "byonm",
+    "bare-node-builtins",
+    "sloppy-imports"
+  ]
+}
