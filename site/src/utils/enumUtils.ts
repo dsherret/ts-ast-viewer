@@ -1,4 +1,4 @@
-import { partition } from "./arrayUtils2";
+import { partition } from "./arrayUtils";
 
 export function getNames(e: any) {
   return Object.keys(e)

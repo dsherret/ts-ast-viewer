@@ -1,4 +1,4 @@
-import * as arrayUtils from "./arrayUtils2";
+import * as arrayUtils from "./arrayUtils";
 import { createLineNumberAndColumns, LineNumberAndColumn } from "./createLineNumberAndColumns";
 
 /** An efficient way to compute the line and column of a position in a string. */

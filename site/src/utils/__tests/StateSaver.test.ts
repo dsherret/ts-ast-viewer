@@ -1,5 +1,5 @@
 import { Theme, TreeMode } from "@ts-ast-viewer/shared";
-import * as enumUtils from "../enumUtils2";
+import * as enumUtils from "../enumUtils";
 import { StateSaver } from "../StateSaver";
 
 describe("StateSaver", () => {

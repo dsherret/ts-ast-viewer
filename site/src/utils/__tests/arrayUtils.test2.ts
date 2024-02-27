@@ -1,4 +1,4 @@
-import * as arrayUtils from "../arrayUtils2";
+import * as arrayUtils from "../arrayUtils";
 
 describe("arrayUtils", () => {
   describe("#binarySearch", () => {

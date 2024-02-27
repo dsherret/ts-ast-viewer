@@ -1,4 +1,4 @@
-import * as enumUtils from "../enumUtils2";
+import * as enumUtils from "../enumUtils";
 
 describe("enumUtils", () => {
   enum MyEnum {
