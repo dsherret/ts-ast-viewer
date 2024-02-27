@@ -4,6 +4,7 @@ import React from "react";
 import { FlowFlags, FlowNode } from "typescript";
 import { CompilerApi } from "../compiler";
 import { enumUtils } from "../utils";
+import { useDarkMode } from "../utils/useDarkMode";
 
 export interface FlowNodeGraphProps {
   api: CompilerApi;
@@ -11,7 +12,7 @@ export interface FlowNodeGraphProps {
 }
 
 function quoted(txt: string): string {
-  return JSON.stringify(txt).slice(1, -1);
+  return JSON.stringify(txt).slice(1, -1).replace('{', '\\{');
 }
 
 function getFlagText(api: CompilerApi, flags: FlowFlags) {
@@ -25,6 +26,7 @@ function getFlagText(api: CompilerApi, flags: FlowFlags) {
     case FlowFlags.BranchLabel:
     case FlowFlags.LoopLabel:
     case FlowFlags.Call:
+    case FlowFlags.SwitchClause:
       return enumUtils.getNamesForValues(api.FlowFlags).find(e => e.value === flags)!.names[0];
   }
   const flagElements = enumUtils.getEnumFlagLines(api.FlowFlags, flags);
@@ -32,7 +34,7 @@ function getFlagText(api: CompilerApi, flags: FlowFlags) {
   return `flags=${flagLines.length > 1 ? "\\n" : ""}${flagLines}`;
 }
 
-function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
+function getDotForFlowGraph(api: CompilerApi, node: FlowNode, darkMode: boolean) {
   let nextId = 0;
   const getNextId = () => nextId++;
   const nodeIds = new Map<FlowNode, string>();
@@ -48,6 +50,9 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
 
   const nodeLines = [];
   const edgeLines = [];
+
+  const nodeProps = darkMode ? 'color="white" fontcolor="white"' : '';
+  const edgeProps = darkMode ? 'color="white"' : '';
 
   const seen = new Set<FlowNode>();
   let fringe = [node];
@@ -74,12 +79,12 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode) {
       parts.push(quoted(nodeText));
     }
     parts.push(flagText);
-    nodeLines.push(`${id} [shape=record label="{${parts.join("|")}}"];`);
+    nodeLines.push(`${id} [shape=record ${nodeProps} label="{${parts.join("|")}}"];`);
     const antecedents = "antecedent" in fn ? [fn.antecedent] : ("antecedents" in fn && fn.antecedents) ? fn.antecedents : [];
     for (const antecedent of antecedents) {
       fringe.push(antecedent);
       const antId = idForNode(antecedent);
-      edgeLines.push(`${id} -> ${antId};`);
+      edgeLines.push(`${id} -> ${antId} [${edgeProps}];`);
     }
   }
 
@@ -116,7 +121,13 @@ function DotViz({ dot }: DotVizProps) {
 }
 
 export function FlowNodeGraph({ flowNode, api }: FlowNodeGraphProps) {
-  const dot = React.useMemo(() => getDotForFlowGraph(api, flowNode), [flowNode]);
-  // return <textarea rows={10} cols={40}>{dot}</textarea>;
-  return <DotViz dot={dot} />;
+  const darkMode = useDarkMode();
+  const dot = React.useMemo(() => getDotForFlowGraph(api, flowNode, darkMode), [flowNode, darkMode]);
+  const url = 'https://dreampuf.github.io/GraphvizOnline/#' + encodeURI(dot);
+  return (
+    <>
+      <DotViz dot={dot} />
+      <div className="graphLink"><a href={url} target="_blank" rel="noopener">View Graph</a></div>
+    </>
+  );
 }
