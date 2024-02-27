@@ -1,5 +1,5 @@
 import { Project, StructureKind, VariableDeclarationKind } from "ts-morph";
-import { getCompilerVersions } from "./getCompilerVersions";
+import { getCompilerVersions } from "./getCompilerVersions.js";
 
 // get versions
 const versions = getCompilerVersions();
@@ -69,7 +69,7 @@ compilerVersionsFile.addStatements([writer => {
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["assertNever"],
-  moduleSpecifier: "../utils",
+  moduleSpecifier: "../utils/index.js",
 }, {
   kind: StructureKind.Function,
   isExported: true,

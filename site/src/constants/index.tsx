@@ -1,3 +1,3 @@
-import * as actions from "./actions";
+import * as actions from "./actions/index.js";
 
 export { actions };

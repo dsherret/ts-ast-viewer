@@ -3,10 +3,10 @@ import SplitPaneImport from "react-split-pane";
 // waiting on https://github.com/tomkp/react-split-pane/pull/818
 const SplitPane: any = SplitPaneImport;
 import "./App.css";
-import { useAppContext } from "./AppContext";
-import { getDescendantAtRange, getStartSafe } from "./compiler";
-import * as components from "./components";
-import { ApiLoadingState } from "./types";
+import { useAppContext } from "./AppContext.js";
+import { getDescendantAtRange, getStartSafe } from "./compiler/index.js";
+import * as components from "./components/index.js";
+import { ApiLoadingState } from "./types/index.js";
 
 export function App() {
   const { state, dispatch } = useAppContext();

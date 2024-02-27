@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { globSync } from "glob";
 import * as path from "path";
 import * as ts from "typescript";
-import { getCompilerVersions } from "./getCompilerVersions";
+import { getCompilerVersions } from "./getCompilerVersions.js";
 
 const versions = getCompilerVersions();
 const minifier = createMinifier(ts);
@@ -41,7 +41,7 @@ for (const version of versions) {
     libVersionDir + "index.ts",
     filePaths
       .map(p => path.basename(p, ".d.ts"))
-      .map((p, i) => "export { default as export" + i + " } from \"./" + p + "\";").join("\n") + "\n",
+      .map((p, i) => "export { default as export" + i + " } from \"./" + p + ".js\";").join("\n") + "\n",
     { encoding: "utf8" },
   );
 }

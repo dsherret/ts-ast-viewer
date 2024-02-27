@@ -1,11 +1,11 @@
 import { constants, Theme } from "@ts-ast-viewer/shared";
 import type * as monacoEditorForTypes from "monaco-editor";
 import React, { useEffect, useState } from "react";
-import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler";
-import { CompilerState } from "../types";
-import { Box } from "../utils";
-import { CodeEditor } from "./CodeEditor";
-import { Spinner } from "./Spinner";
+import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler/index.js";
+import { CompilerState } from "../types/index.js";
+import { Box } from "../utils/index.js";
+import { CodeEditor } from "./CodeEditor.js";
+import { Spinner } from "./Spinner.js";
 
 // todo: Move out getting the code generation function from this class (need to start loading it sooner than what's done here)
 

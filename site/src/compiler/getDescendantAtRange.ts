@@ -1,7 +1,7 @@
 import { TreeMode } from "@ts-ast-viewer/shared";
-import { CompilerApi, Node, SourceFile } from "./CompilerApi";
-import { getChildrenFunction } from "./getChildrenFunction";
-import { getStartSafe } from "./getStartSafe";
+import { CompilerApi, Node, SourceFile } from "./CompilerApi.js";
+import { getChildrenFunction } from "./getChildrenFunction.js";
+import { getStartSafe } from "./getStartSafe.js";
 
 export function getDescendantAtRange(mode: TreeMode, sourceFile: SourceFile, range: [number, number], compilerApi: CompilerApi) {
   const getChildren = getChildrenFunction(mode, sourceFile);

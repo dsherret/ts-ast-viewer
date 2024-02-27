@@ -1,3 +1,3 @@
-export * from "./compilerVersions.generated";
-export * as constants from "./constants";
-export * from "./types";
+export * from "./compilerVersions.generated.js";
+export * as constants from "./constants.js";
+export * from "./types.js";

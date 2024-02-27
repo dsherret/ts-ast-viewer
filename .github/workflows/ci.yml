@@ -19,12 +19,6 @@ jobs:
         npm run updateCompilerFiles
         npm run test
         npm run predeploy
-    # todo: re-enable in the future
-    # - name: Test
-    #   run: |
-    #     - npm run cypress:ci
-    #     # kill anything running in the background
-    #     - kill $(jobs -p) || true
     - name: Deploy
       if: github.ref == 'refs/heads/main'
       uses: JamesIves/github-pages-deploy-action@4.1.1

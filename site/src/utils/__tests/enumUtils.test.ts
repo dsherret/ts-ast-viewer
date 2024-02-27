@@ -1,4 +1,4 @@
-import * as enumUtils from "../enumUtils";
+import * as enumUtils from "../enumUtils.js";
 
 describe("enumUtils", () => {
   enum MyEnum {

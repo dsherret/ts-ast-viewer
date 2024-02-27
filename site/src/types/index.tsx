@@ -1,5 +1,5 @@
 import { CompilerPackageNames, Theme, TreeMode } from "@ts-ast-viewer/shared";
-import { CompilerApi, Node, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "../compiler";
+import { CompilerApi, Node, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "../compiler/index.js";
 
 export interface StoreState {
   code: string;

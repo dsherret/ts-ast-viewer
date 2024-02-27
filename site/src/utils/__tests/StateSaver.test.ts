@@ -1,6 +1,6 @@
 import { Theme, TreeMode } from "@ts-ast-viewer/shared";
-import * as enumUtils from "../enumUtils";
-import { StateSaver } from "../StateSaver";
+import * as enumUtils from "../enumUtils.js";
+import { StateSaver } from "../StateSaver.js";
 
 describe("StateSaver", () => {
   function getLocalStorage() {

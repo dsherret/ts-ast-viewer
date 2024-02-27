@@ -1,4 +1,4 @@
-import { LineAndColumnComputer } from "../LineAndColumnComputer";
+import { LineAndColumnComputer } from "../LineAndColumnComputer.js";
 
 describe("LineAndColumnComputer", () => {
   describe("#getNumberAndColumnFromPos", () => {

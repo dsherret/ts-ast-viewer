@@ -1,10 +1,10 @@
 import { CompilerPackageNames, compilerVersionCollection, constants, Theme, TreeMode } from "@ts-ast-viewer/shared";
 import React, { useRef, useState } from "react";
-import { CompilerApi, ScriptKind, ScriptTarget } from "../compiler";
-import { useOnClickOutside } from "../hooks";
-import { OptionsState } from "../types";
-import { enumUtils } from "../utils";
-import { ExternalLink } from "./ExternalLink";
+import { CompilerApi, ScriptKind, ScriptTarget } from "../compiler/index.js";
+import { useOnClickOutside } from "../hooks/index.js";
+import { OptionsState } from "../types/index.js";
+import { enumUtils } from "../utils/index.js";
+import { ExternalLink } from "./ExternalLink.js";
 
 export interface OptionsProps {
   api: CompilerApi | undefined;

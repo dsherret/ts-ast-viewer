@@ -1,8 +1,8 @@
 import { constants, TreeMode } from "@ts-ast-viewer/shared";
 import React, { useLayoutEffect } from "react";
 import TreeView from "react-treeview";
-import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler";
-import { getSyntaxKindName } from "../utils";
+import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler/index.js";
+import { getSyntaxKindName } from "../utils/index.js";
 
 export interface TreeViewerProps {
   api: CompilerApi;

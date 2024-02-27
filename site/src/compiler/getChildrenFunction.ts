@@ -1,6 +1,6 @@
 import { TreeMode } from "@ts-ast-viewer/shared";
-import { assertNever } from "../utils";
-import { Node, SourceFile } from "./CompilerApi";
+import { assertNever } from "../utils/index.js";
+import { Node, SourceFile } from "./CompilerApi.js";
 
 export function getChildrenFunction(mode: TreeMode, sourceFile: SourceFile) {
   switch (mode) {

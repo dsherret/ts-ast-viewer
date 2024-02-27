@@ -1,11 +1,11 @@
 import { compilerVersionCollection, constants } from "@ts-ast-viewer/shared";
 import React, { useEffect, useReducer } from "react";
-import * as actions from "./actions";
-import { getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler";
-import { CodeEditorTheme } from "./components";
-import { appReducer, deriveEditorTheme } from "./reducers";
-import { ApiLoadingState, StoreState } from "./types";
-import { sleep, StateSaver, UrlSaver } from "./utils";
+import * as actions from "./actions/index.js";
+import { getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler/index.js";
+import { CodeEditorTheme } from "./components/index.js";
+import { appReducer, deriveEditorTheme } from "./reducers/index.js";
+import { ApiLoadingState, StoreState } from "./types/index.js";
+import { sleep, StateSaver, UrlSaver } from "./utils/index.js";
 
 const initialScriptTarget: ScriptTarget = 99 /* Latest */;
 const initialScriptKind: ScriptKind = 4 /* TSX */;
