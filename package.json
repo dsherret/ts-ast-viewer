@@ -10,9 +10,9 @@
   "scripts": {
     "setup": "npm install && npm run build --prefix shared",
     "start": "npm run dev --prefix site",
-    "build": "npm run build",
+    "build": "npm run build --workspaces",
     "format": "dprint fmt",
-    "test": "npm run test",
+    "test": "npm run test --workspaces",
     "predeploy": "npm run predeploy --prefix site",
     "addTypeScriptVersions": "ts-node --project scripts/tsconfig.json scripts/addTypeScriptVersions.ts",
     "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode && npm run createPublicApiInfo && npm run build --prefix shared",

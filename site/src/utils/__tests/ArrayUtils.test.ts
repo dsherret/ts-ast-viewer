@@ -1,9 +1,9 @@
-import { ArrayUtils } from "../ArrayUtils";
+import * as arrayUtils from "../arrayUtils2";
 
-describe("ArrayUtils", () => {
+describe("arrayUtils", () => {
   describe("#binarySearch", () => {
     function doTest(items: number[], value: number, expectedValue: number) {
-      const result = ArrayUtils.binarySearch(items, v => {
+      const result = arrayUtils.binarySearch(items, v => {
         if (v > value) {
           return -1;
         } else if (v === value) {

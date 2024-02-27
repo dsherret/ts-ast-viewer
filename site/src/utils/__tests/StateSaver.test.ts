@@ -1,5 +1,5 @@
 import { Theme, TreeMode } from "@ts-ast-viewer/shared";
-import { EnumUtils } from "../EnumUtils";
+import * as enumUtils from "../enumUtils2";
 import { StateSaver } from "../StateSaver";
 
 describe("StateSaver", () => {
@@ -72,7 +72,7 @@ describe("StateSaver", () => {
   });
 
   it("should work for every tree mode", () => {
-    for (const treeMode of EnumUtils.getValues<TreeMode>(TreeMode)) {
+    for (const treeMode of enumUtils.getValues<TreeMode>(TreeMode)) {
       const { saver } = setup();
       const state = saver.get();
       state.treeMode = treeMode;
