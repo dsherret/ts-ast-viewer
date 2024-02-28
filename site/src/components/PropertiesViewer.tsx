@@ -95,7 +95,7 @@ function getBindingSection(context: Context, selectedNode: Node, typeChecker: Ty
       </div>
       <h2>FlowNode</h2>
       <div>
-        {getForFlowNode(context, selectedNode, typeChecker)}
+        {getForFlowNode(context, selectedNode)}
       </div>
     </>
   );
@@ -198,7 +198,7 @@ function getForSignature(context: Context, node: Node, typeChecker: TypeChecker)
   return getTreeView(context, signature, "Signature");
 }
 
-function getForFlowNode(context: Context, node: Node, typeChecker: TypeChecker) {
+function getForFlowNode(context: Context, node: Node) {
   const nodeWithFlowNode = node as Node & { flowNode?: FlowNode };
   if (nodeWithFlowNode.flowNode == null) {
     return <>[None]</>;
