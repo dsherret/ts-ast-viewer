@@ -124,13 +124,7 @@ export function FlowNodeGraph({ flowNode, api }: FlowNodeGraphProps) {
   const { state } = useAppContext();
   const darkMode = state.editorTheme === "dark";
   const dot = React.useMemo(() => getDotForFlowGraph(api, flowNode, darkMode), [flowNode, darkMode]);
-  const url = "https://dreampuf.github.io/GraphvizOnline/#" + encodeURI(dot);
-  return (
-    <>
-      <DotViz dot={dot} />
-      <div className="graphLink">
-        <a href={url} target="_blank" rel="noopener">View Graph</a>
-      </div>
-    </>
-  );
+  // todo: make this work with dark mode
+  // const url = "https://dreampuf.github.io/GraphvizOnline/#" + encodeURI(dot);
+  return <DotViz dot={dot} />;
 }
