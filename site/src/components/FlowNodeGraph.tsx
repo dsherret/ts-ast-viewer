@@ -2,9 +2,9 @@ import { instance as vizJsInstance, Viz } from "@viz-js/viz";
 import React from "react";
 
 import { FlowFlags, FlowNode } from "typescript";
+import { useAppContext } from "../AppContext";
 import { CompilerApi } from "../compiler";
 import { enumUtils } from "../utils";
-import { useDarkMode } from "../utils/useDarkMode";
 
 export interface FlowNodeGraphProps {
   api: CompilerApi;
@@ -12,7 +12,7 @@ export interface FlowNodeGraphProps {
 }
 
 function quoted(txt: string): string {
-  return JSON.stringify(txt).slice(1, -1).replace('{', '\\{');
+  return JSON.stringify(txt).slice(1, -1).replace("{", "\\{");
 }
 
 function getFlagText(api: CompilerApi, flags: FlowFlags) {
@@ -51,8 +51,8 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode, darkMode: boolean)
   const nodeLines = [];
   const edgeLines = [];
 
-  const nodeProps = darkMode ? 'color="white" fontcolor="white"' : '';
-  const edgeProps = darkMode ? 'color="white"' : '';
+  const nodeProps = darkMode ? "color=\"white\" fontcolor=\"white\"" : "";
+  const edgeProps = darkMode ? "color=\"white\"" : "";
 
   const seen = new Set<FlowNode>();
   let fringe = [node];
@@ -121,13 +121,16 @@ function DotViz({ dot }: DotVizProps) {
 }
 
 export function FlowNodeGraph({ flowNode, api }: FlowNodeGraphProps) {
-  const darkMode = useDarkMode();
+  const { state } = useAppContext();
+  const darkMode = state.editorTheme === "dark";
   const dot = React.useMemo(() => getDotForFlowGraph(api, flowNode, darkMode), [flowNode, darkMode]);
-  const url = 'https://dreampuf.github.io/GraphvizOnline/#' + encodeURI(dot);
+  const url = "https://dreampuf.github.io/GraphvizOnline/#" + encodeURI(dot);
   return (
     <>
       <DotViz dot={dot} />
-      <div className="graphLink"><a href={url} target="_blank" rel="noopener">View Graph</a></div>
+      <div className="graphLink">
+        <a href={url} target="_blank" rel="noopener">View Graph</a>
+      </div>
     </>
   );
 }
