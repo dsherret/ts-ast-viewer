@@ -1,7 +1,7 @@
 import { Allotment } from "allotment";
 import "./App.css";
 import "allotment/dist/style.css";
-import { useAppContext } from "./AppContext";
+import { useAppContext } from "./AppContext.js";
 import { getDescendantAtRange, getStartSafe } from "./compiler/index.js";
 import * as components from "./components/index.js";
 import { ApiLoadingState } from "./types/index.js";

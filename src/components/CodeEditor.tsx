@@ -1,6 +1,6 @@
 import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
-import type ReactMonacoEditorForTypes from "react-monaco-editor";
+import * as ReactMonacoEditorForTypes from "react-monaco-editor";
 import type { EditorDidMount } from "react-monaco-editor";
 import { LineAndColumnComputer } from "../utils/index.js";
 import { Spinner } from "./Spinner.js";
@@ -25,7 +25,7 @@ export interface CodeEditorState {
   position: number;
   lineNumber: number;
   column: number;
-  editorComponent: (typeof ReactMonacoEditorForTypes) | undefined | false;
+  editorComponent: (typeof ReactMonacoEditorForTypes.default.default) | undefined | false;
 }
 
 export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState> {
@@ -51,7 +51,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
       });
 
       reactMonacoEditorPromise.then(editor => {
-        this.setState({ editorComponent: editor.default });
+        this.setState({ editorComponent: editor.default.default });
       }).catch(err => {
         console.error(err);
         this.setState({ editorComponent: false });

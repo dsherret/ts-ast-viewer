@@ -103,7 +103,7 @@ compilerTypesFile.addStatements([writer => {
       for (const version of versions) {
         writer.writeLine(`case "${version.name}":`);
         writer.indent(() => {
-          writer.writeLine(`return await import("../resources/libFiles/${version.name}/index");`);
+          writer.writeLine(`return await import("../resources/libFiles/${version.name}/index.js");`);
         });
       }
       writer.writeLine(`default:`);
@@ -130,7 +130,7 @@ compilerTypesFile.addStatements([writer => {
       for (const version of versions) {
         writer.writeLine(`case "${version.name}":`);
         writer.indent(() => {
-          writer.writeLine(`return (await import("../resources/factoryCode/${version.name}")).generateFactoryCode as any;`);
+          writer.writeLine(`return (await import("../resources/factoryCode/${version.name}.js")).generateFactoryCode as any;`);
         });
       }
       writer.writeLine(`default:`);
@@ -169,7 +169,7 @@ compilerTypesFile.addStatements([writer => {
       for (const version of versions) {
         writer.writeLine(`case "${version.name}":`);
         writer.indent(() => {
-          writer.writeLine(`return (await import("../resources/publicApiInfo/${version.name}"));`);
+          writer.writeLine(`return (await import("../resources/publicApiInfo/${version.name}.js"));`);
         });
       }
       writer.writeLine(`default:`);

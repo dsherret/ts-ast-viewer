@@ -2,6 +2,7 @@
   "name": "ts-ast-viewer",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "author": "David Sherret",
   "license": "MIT",
   "scripts": {
