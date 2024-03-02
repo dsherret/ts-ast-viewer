@@ -1,0 +1,330 @@
+/* todo: use some preprocessor to allow variables and such */
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+html,
+body,
+#App,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+#App {
+  text-align: left;
+  color-scheme: var(--color-scheme);
+}
+#App[data-theme="dark"] {
+  --color-scheme: dark;
+  --text-color: #fff;
+  --resizer-border: rgba(255, 255, 255, 0.5);
+  --pane-background: #272822;
+  --header-background: #222;
+  --tooltip-background: #202020;
+  --range-highlight: #4b4d43;
+  --node-selected: #a6e22e;
+  --internal-prop: red;
+
+  --vscode-background: #1e1e1e;
+  --spinner-foreground: #fefefe;
+}
+#App[data-theme="light"] {
+  --color-scheme: light;
+  --text-color: #000;
+  --resizer-border: rgba(0, 0, 0, 0.5);
+  --pane-background: #f8f8f8;
+  --header-background: #ececec;
+  --tooltip-background: #f1f1f1;
+  --range-highlight: #d1d1d1;
+  --node-selected: #007acc;
+  --internal-prop: #ed1111;
+
+  --vscode-background: #fffffe;
+  --spinner-foreground: #1e1e1e;
+}
+
+#App {
+  display: flex;
+  flex-direction: column;
+}
+
+#AppHeader {
+  background-color: var(--header-background);
+  color: var(--text-color);
+  padding: 10px;
+  width: 100%;
+  height: 50px;
+}
+
+#AppBody {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.split-view {
+  background-color: var(--pane-background);
+  color: var(--text-color);
+}
+
+h2 {
+  margin: 0px 0px 5px 0px;
+  padding: 0;
+}
+h2:not(:first-child) {
+  margin-top: 10px;
+}
+h3 {
+  margin: 15px 0px 0px 0px;
+  padding: 0;
+}
+
+a,
+a:visited {
+  color: var(--text-color);
+}
+
+#title {
+  float: left;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.verticallyCenter {
+  display: flex;
+  align-items: center;
+}
+
+.horizontallyCenter {
+  justify-content: center;
+}
+
+.fillHeight {
+  height: 100%;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 1.5em;
+}
+
+/* Tool-tipped Text */
+.toolTippedText {
+  position: relative;
+}
+
+.toolTippedText .titleText {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.toolTippedText .tooltipText {
+  position: absolute;
+  top: 18px;
+  border: 1px solid var(--text-color);
+  background: var(--tooltip-background);
+  padding: 10px;
+  min-width: 250px;
+  font-family: Consolas, "Courier New", monospace;
+  z-index: 1;
+}
+
+.toolTippedText .tooltipText ul {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 1.5em;
+}
+
+/* Options */
+
+#options {
+  float: right;
+}
+
+#options #optionsButton {
+  line-height: 28px;
+  width: 80px;
+  text-align: center;
+  color: var(--text-color);
+  background-color: var(--tooltip-background);
+  border: 1px solid var(--text-color);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#options .menu {
+  position: absolute;
+  width: 364px;
+  margin-left: -284px;
+  margin-top: -1px;
+  background: var(--tooltip-background);
+  border: 1px solid var(--text-color);
+  z-index: 100;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#options .menu .option:not(:first-child) {
+  margin-top: 10px;
+}
+
+#options .menu .optionName {
+  display: inline-block;
+  margin-right: 6px;
+  width: 114px;
+  text-align: right;
+}
+#options .menu .optionValue {
+  display: inline-block;
+}
+#options .menu .optionValue select {
+  width: 220px;
+}
+
+#options .menuLine {
+  position: absolute;
+  background: var(--tooltip-background);
+  height: 1px;
+  width: 78px;
+  margin-top: -1px;
+  z-index: 101;
+  margin-left: 1px;
+}
+
+#options .bottomLinks {
+  text-align: right;
+  margin-top: 5px;
+  margin-right: 8px;
+}
+
+/* Code Editor */
+
+.codeEditor {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.codeEditor .editorContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.codeEditor.hasInfo .editorContainer {
+  padding-bottom: 22px;
+}
+
+.codeEditor .editorInfo {
+  position: absolute;
+  bottom: 0px;
+  background-color: #007acc;
+  color: #fff;
+  padding: 2px 4px;
+  width: 100%;
+}
+
+.codeEditor .editorRangeHighlight {
+  background: var(--range-highlight);
+}
+
+/* Factory Code Editor */
+
+#factoryCodeEditor {
+  padding-top: 10px;
+  width: 100%;
+  height: 100%;
+  /* vscode color */
+  background: var(--vscode-background);
+}
+
+/* Tree Viewer */
+
+#treeViewer {
+  overflow: auto;
+  height: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+#treeViewer .nodeText {
+  cursor: pointer;
+  display: inline-block;
+}
+
+#treeViewer .nodeText.selected {
+  color: var(--node-selected);
+}
+
+#treeViewer .endNode {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 14px;
+}
+
+/* Properties Viewer */
+
+.propertiesViewer {
+  overflow: auto;
+  height: 100%;
+  margin-left: 4px;
+  padding-bottom: 5px;
+}
+
+.propertiesViewer > .container > div > :first-child:not(.tree-view) {
+  margin-top: 6px;
+  margin-left: 6px;
+}
+
+.propertiesViewer .internal > div > .key {
+  color: var(--internal-prop);
+}
+
+.propertiesViewer .text .key {
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.propertiesViewer .text .value {
+  display: inline-block;
+}
+
+.propertiesViewer .object {
+  display: flex;
+}
+.propertiesViewer .object > .value {
+  padding-left: 3px;
+}
+
+.propertiesViewer .array > .value {
+  padding-left: 7px;
+}
+
+.treeViewLabel {
+  cursor: pointer;
+}
+
+a[target="_blank"]::after {
+  content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+  margin: 0 3px 0 5px;
+}
+
+.App[data-theme="dark"] a[target="_blank"]::after {
+  filter: brightness(0) invert(1);
+}
+
+.graphLink {
+  font-size: small;
+}

@@ -9,12 +9,12 @@ import { getCompilerVersions } from "./getCompilerVersions";
 const versions = getCompilerVersions();
 const minifier = createMinifier(ts);
 
-const filesToDelete = globSync("./site/src/resources/libFiles/**/*.ts");
+const filesToDelete = globSync("./src/resources/libFiles/**/*.ts");
 for (const filePath of filesToDelete) {
   fs.unlinkSync(filePath);
 }
 
-const libFilesDir = "./site/src/resources/libFiles/";
+const libFilesDir = "./src/resources/libFiles/";
 for (const version of versions) {
   const filePaths = globSync(`./node_modules/${version.name}/lib/lib*.d.ts`);
   const libVersionDir = libFilesDir + version.name + "/";

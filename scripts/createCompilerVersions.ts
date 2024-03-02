@@ -7,13 +7,13 @@ const versions = getCompilerVersions();
 // setup
 const project = new Project();
 
-// update shared compiler types file
-const sharedCompilerVersionsFile = project.addSourceFileAtPath("./shared/src/compilerVersions.generated.ts");
-sharedCompilerVersionsFile.removeText();
+// update shared compiler versions file
+const compilerVersionsFile = project.addSourceFileAtPath("./src/compiler/compilerVersions.generated.ts");
+compilerVersionsFile.removeText();
 
-sharedCompilerVersionsFile.addStatements([writer => {
+compilerVersionsFile.addStatements([writer => {
   writer.writeLine("// dprint-ignore-file")
-    .writeLine("/* Automatically maintained from sites/package.json. Do not edit! */")
+    .writeLine("/* Automatically maintained from package.json. Do not edit! */")
     .blankLine();
 }, {
   kind: StructureKind.TypeAlias,
@@ -48,20 +48,20 @@ sharedCompilerVersionsFile.addStatements([writer => {
     type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]",
   }],
 }]);
-sharedCompilerVersionsFile.saveSync();
+compilerVersionsFile.saveSync();
 
 // update compiler types file
-const compilerVersionsFile = project.addSourceFileAtPath("./site/src/compiler/compilerVersions.generated.ts");
-compilerVersionsFile.removeText();
+const compilerTypesFile = project.addSourceFileAtPath("./src/compiler/compiler.generated.ts");
+compilerTypesFile.removeText();
 
-compilerVersionsFile.addStatements([writer => {
+compilerTypesFile.addStatements([writer => {
   writer.writeLine("// dprint-ignore-file")
     .writeLine("/* Automatically maintained from package.json. Do not edit! */")
     .blankLine();
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["CompilerPackageNames", "CompilerVersions"],
-  moduleSpecifier: "@ts-ast-viewer/shared",
+  moduleSpecifier: "./compilerVersions.generated",
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["Node", "CompilerApi"],
@@ -180,4 +180,4 @@ compilerVersionsFile.addStatements([writer => {
   },
 }]);
 
-compilerVersionsFile.saveSync();
+compilerTypesFile.saveSync();

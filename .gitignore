@@ -2,7 +2,7 @@ node_modules
 npm-debug.log*
 *.js.map
 .vs
-shared/dist
-shared/dist-esm
-shared/tsconfig.tsbuildinfo
-shared/tsconfig.esm.tsbuildinfo
+.vscode
+.DS_Store
+dist
+*.local
