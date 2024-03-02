@@ -3,9 +3,7 @@
   "author": "David Sherret",
   "license": "MIT",
   "workspaces": [
-    "shared",
-    "site",
-    "e2e"
+    "site"
   ],
   "scripts": {
     "setup": "npm install && npm run build --prefix shared",

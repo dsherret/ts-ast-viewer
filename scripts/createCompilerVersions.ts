@@ -7,11 +7,11 @@ const versions = getCompilerVersions();
 // setup
 const project = new Project();
 
-// update shared compiler types file
-const sharedCompilerVersionsFile = project.addSourceFileAtPath("./shared/src/compilerVersions.generated.ts");
-sharedCompilerVersionsFile.removeText();
+// update shared compiler versions file
+const compilerVersionsFile = project.addSourceFileAtPath("./site/src/compiler/compilerVersions.generated.ts");
+compilerVersionsFile.removeText();
 
-sharedCompilerVersionsFile.addStatements([writer => {
+compilerVersionsFile.addStatements([writer => {
   writer.writeLine("// dprint-ignore-file")
     .writeLine("/* Automatically maintained from sites/package.json. Do not edit! */")
     .blankLine();
@@ -48,13 +48,13 @@ sharedCompilerVersionsFile.addStatements([writer => {
     type: "{ version: CompilerVersions; packageName: CompilerPackageNames; }[]",
   }],
 }]);
-sharedCompilerVersionsFile.saveSync();
+compilerVersionsFile.saveSync();
 
 // update compiler types file
-const compilerVersionsFile = project.addSourceFileAtPath("./site/src/compiler/compilerVersions.generated.ts");
-compilerVersionsFile.removeText();
+const compilerTypesFile = project.addSourceFileAtPath("./site/src/compiler/compiler.generated.ts");
+compilerTypesFile.removeText();
 
-compilerVersionsFile.addStatements([writer => {
+compilerTypesFile.addStatements([writer => {
   writer.writeLine("// dprint-ignore-file")
     .writeLine("/* Automatically maintained from package.json. Do not edit! */")
     .blankLine();
@@ -180,4 +180,4 @@ compilerVersionsFile.addStatements([writer => {
   },
 }]);
 
-compilerVersionsFile.saveSync();
+compilerTypesFile.saveSync();

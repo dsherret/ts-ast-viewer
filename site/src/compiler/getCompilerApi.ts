@@ -1,6 +1,6 @@
 import { CompilerPackageNames } from "@ts-ast-viewer/shared";
+import { importCompilerApi, importLibFiles } from "./compiler.generated";
 import { CompilerApi } from "./CompilerApi";
-import { importCompilerApi, importLibFiles } from "./compilerVersions.generated";
 
 const compilerTypes: { [name: string]: Promise<CompilerApi> } = {};
 const compilerTypesLoaded: { [name: string]: true } = {};

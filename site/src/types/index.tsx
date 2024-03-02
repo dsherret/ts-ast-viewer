@@ -1,4 +1,4 @@
-import { CompilerPackageNames, Theme, TreeMode } from "@ts-ast-viewer/shared";
+import { CompilerPackageNames } from "@ts-ast-viewer/shared";
 import { CompilerApi, Node, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "../compiler";
 
 export interface StoreState {
@@ -37,4 +37,15 @@ export enum ApiLoadingState {
   Loading,
   Loaded,
   Error,
+}
+
+export enum TreeMode {
+  forEachChild,
+  getChildren,
+}
+
+export enum Theme {
+  OS = "os",
+  Dark = "dark",
+  Light = "light",
 }

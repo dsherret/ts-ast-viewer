@@ -60,7 +60,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
         if (changeLoadingState) {
           dispatch(actions.setApiLoadingState(ApiLoadingState.Loading));
         } else {
-          await sleep(constants.general.sourceFileRefreshDelay); // debounce
+          await sleep(150); // debounce
         }
 
         if (abortSignal.aborted) {
