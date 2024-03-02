@@ -61,7 +61,7 @@ compilerTypesFile.addStatements([writer => {
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["CompilerPackageNames", "CompilerVersions"],
-  moduleSpecifier: "compilerVersions.generated",
+  moduleSpecifier: "./compilerVersions.generated",
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["Node", "CompilerApi"],

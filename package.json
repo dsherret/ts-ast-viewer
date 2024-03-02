@@ -5,7 +5,6 @@
   "author": "David Sherret",
   "license": "MIT",
   "scripts": {
-    "setup": "npm install && npm run build --prefix shared",
     "dev": "vite",
     "build": "tsc && cross-env NODE_OPTIONS=--max_old_space_size=8192 vite build && copyfiles CNAME .nojekyll dist",
     "format": "dprint fmt",
@@ -13,7 +12,7 @@
     "predeploy": "npm run build",
     "preview": "vite preview",
     "addTypeScriptVersions": "ts-node --project scripts/tsconfig.json scripts/addTypeScriptVersions.ts",
-    "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode && npm run createPublicApiInfo && npm run build --prefix shared",
+    "updateCompilerFiles": "npm run copyLibFiles && npm run createCompilerVersions && npm run createFactoryCode && npm run createPublicApiInfo",
     "copyLibFiles": "ts-node --project scripts/tsconfig.json scripts/copyLibFiles.ts ",
     "createCompilerVersions": "ts-node --project scripts/tsconfig.json scripts/createCompilerVersions.ts",
     "createFactoryCode": "ts-node --project scripts/tsconfig.json scripts/createFactoryCode.ts",

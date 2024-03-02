@@ -7,8 +7,8 @@ Source code for https://ts-ast-viewer.com
 ## Developing
 
 ```
-# install and setup
-npm run setup
+# install
+npm install
 
 # run locally
 npm run start
