@@ -2,9 +2,9 @@ import { Allotment } from "allotment";
 import "./App.css";
 import "allotment/dist/style.css";
 import { useAppContext } from "./AppContext";
-import { getDescendantAtRange, getStartSafe } from "./compiler";
-import * as components from "./components";
-import { ApiLoadingState } from "./types";
+import { getDescendantAtRange, getStartSafe } from "./compiler/index.js";
+import * as components from "./components/index.js";
+import { ApiLoadingState } from "./types/index.js";
 
 export function App() {
   const { state, dispatch } = useAppContext();

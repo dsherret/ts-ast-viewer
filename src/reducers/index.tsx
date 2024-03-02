@@ -1,10 +1,10 @@
-import { AllActions } from "../actions";
-import { CompilerApi, CompilerPackageNames, convertOptions, createSourceFile } from "../compiler";
-import { CodeEditorTheme } from "../components";
-import { actions as actionNames } from "./../constants";
-import { Theme } from "../types";
-import { OptionsState, StoreState } from "../types";
-import { UrlSaver } from "../utils";
+import { AllActions } from "../actions/index.js";
+import { CompilerApi, CompilerPackageNames, convertOptions, createSourceFile } from "../compiler/index.js";
+import { CodeEditorTheme } from "../components/index.js";
+import { actions as actionNames } from "./../constants/index.js";
+import { OptionsState, StoreState } from "../types/index.js";
+import { Theme } from "../types/index.js";
+import { UrlSaver } from "../utils/index.js";
 
 const urlSaver = new UrlSaver();
 

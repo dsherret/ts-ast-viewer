@@ -61,15 +61,15 @@ compilerTypesFile.addStatements([writer => {
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["CompilerPackageNames", "CompilerVersions"],
-  moduleSpecifier: "./compilerVersions.generated",
+  moduleSpecifier: "./compilerVersions.generated.js",
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["Node", "CompilerApi"],
-  moduleSpecifier: "./CompilerApi",
+  moduleSpecifier: "./CompilerApi.js",
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["assertNever"],
-  moduleSpecifier: "../utils",
+  moduleSpecifier: "../utils/index.js",
 }, {
   kind: StructureKind.Function,
   isExported: true,

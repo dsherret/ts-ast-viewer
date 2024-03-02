@@ -1,9 +1,9 @@
 // dprint-ignore-file
 /* Automatically maintained from package.json. Do not edit! */
 
-import { CompilerPackageNames } from "./compilerVersions.generated";
-import { Node, CompilerApi } from "./CompilerApi";
-import { assertNever } from "../utils";
+import { CompilerPackageNames } from "./compilerVersions.generated.js";
+import { Node, CompilerApi } from "./CompilerApi.js";
+import { assertNever } from "../utils/index.js";
 
 export async function importCompilerApi(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules

@@ -1,6 +1,6 @@
-import { Theme } from "../../types";
-import { CompilerApi } from "../CompilerApi";
-import { convertOptions } from "../convertOptions";
+import { Theme } from "../../types/index.js";
+import { CompilerApi } from "../CompilerApi.js";
+import { convertOptions } from "../convertOptions.js";
 
 function getCompilerApi(scriptKind: any, scriptTarget: any) {
   return {

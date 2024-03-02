@@ -2,8 +2,8 @@ import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
 import type ReactMonacoEditorForTypes from "react-monaco-editor";
 import type { EditorDidMount } from "react-monaco-editor";
-import { LineAndColumnComputer } from "../utils";
-import { Spinner } from "./Spinner";
+import { LineAndColumnComputer } from "../utils/index.js";
+import { Spinner } from "./Spinner.js";
 
 // Conversion of OS to light or dark is handled at the AppContext level.
 export type CodeEditorTheme = "light" | "dark";

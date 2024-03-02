@@ -1,5 +1,5 @@
-import { assertNever } from "../utils";
-import { CompilerApi, CompilerHost, CompilerOptions, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "./CompilerApi";
+import { assertNever } from "../utils/index.js";
+import { CompilerApi, CompilerHost, CompilerOptions, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "./CompilerApi.js";
 
 export function createSourceFile(api: CompilerApi, code: string, scriptTarget: ScriptTarget, scriptKind: ScriptKind) {
   const filePath = `/ts-ast-viewer${getExtension(api, scriptKind)}`;

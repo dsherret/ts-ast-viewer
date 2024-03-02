@@ -1,4 +1,4 @@
-import { createLineNumberAndColumns, LineNumberAndColumn } from "../createLineNumberAndColumns";
+import { createLineNumberAndColumns, LineNumberAndColumn } from "../createLineNumberAndColumns.js";
 
 describe("createLineNumberAndColumns", () => {
   function doTest(text: string, expected: LineNumberAndColumn[]) {

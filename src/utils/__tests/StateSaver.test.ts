@@ -1,6 +1,6 @@
-import { Theme, TreeMode } from "../../types";
-import * as enumUtils from "../enumUtils";
-import { StateSaver } from "../StateSaver";
+import { Theme, TreeMode } from "../../types/index.js";
+import * as enumUtils from "../enumUtils.js";
+import { StateSaver } from "../StateSaver.js";
 
 describe("StateSaver", () => {
   function getLocalStorage() {

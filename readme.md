@@ -11,7 +11,7 @@ Source code for https://ts-ast-viewer.com
 npm install
 
 # run locally
-npm run start
+npm run dev
 
 # run unit tests
 npm run test

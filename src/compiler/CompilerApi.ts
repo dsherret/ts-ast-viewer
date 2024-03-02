@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import { CompilerPackageNames } from "./compilerVersions.generated";
+import { CompilerPackageNames } from "./compilerVersions.generated.js";
 
 export interface CompilerApi {
   createSourceFile: typeof ts.createSourceFile;
