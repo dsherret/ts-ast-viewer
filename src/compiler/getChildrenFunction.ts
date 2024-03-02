@@ -1,4 +1,4 @@
-import { TreeMode } from "@ts-ast-viewer/shared";
+import { TreeMode } from "../types";
 import { assertNever } from "../utils";
 import { Node, SourceFile } from "./CompilerApi";
 

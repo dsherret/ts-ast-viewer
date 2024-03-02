@@ -16,8 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["./src"],
-  "references": [
-    { "path": "../shared" }
-  ]
+  "include": ["./src"]
 }

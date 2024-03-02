@@ -5,11 +5,8 @@
   "excludes": [
     "**/node_modules",
     "**/*-lock.json",
-    "public/vs",
-    "shared/dist",
-    "site/dist",
-    "site/src/resources",
-    "CHANGELOG.md"
+    "dist",
+    "src/resources"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.89.3.wasm",

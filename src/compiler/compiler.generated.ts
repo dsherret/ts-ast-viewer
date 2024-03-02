@@ -1,7 +1,7 @@
 // dprint-ignore-file
 /* Automatically maintained from package.json. Do not edit! */
 
-import { CompilerPackageNames, CompilerVersions } from "@ts-ast-viewer/shared";
+import { CompilerPackageNames } from "./compilerVersions.generated";
 import { Node, CompilerApi } from "./CompilerApi";
 import { assertNever } from "../utils";
 

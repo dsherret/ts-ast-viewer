@@ -1,7 +1,6 @@
-import { compilerVersionCollection, constants } from "@ts-ast-viewer/shared";
 import React, { useEffect, useReducer } from "react";
 import * as actions from "./actions";
-import { getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler";
+import { compilerVersionCollection, getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler";
 import { CodeEditorTheme } from "./components";
 import { appReducer, deriveEditorTheme } from "./reducers";
 import { ApiLoadingState, StoreState } from "./types";

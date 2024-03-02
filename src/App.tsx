@@ -1,8 +1,6 @@
-import { constants, Theme } from "@ts-ast-viewer/shared";
-import SplitPaneImport from "react-split-pane";
-// waiting on https://github.com/tomkp/react-split-pane/pull/818
-const SplitPane: any = SplitPaneImport;
+import { Allotment } from "allotment";
 import "./App.css";
+import "allotment/dist/style.css";
 import { useAppContext } from "./AppContext";
 import { getDescendantAtRange, getStartSafe } from "./compiler";
 import * as components from "./components";
@@ -14,24 +12,28 @@ export function App() {
 
   return (
     <div className="App" data-theme={state.editorTheme}>
-      <SplitPane split="horizontal" defaultSize={50} allowResize={false}>
-        <header className="AppHeader clearfix">
-          <h2 id="title">TypeScript AST Viewer</h2>
-          <components.Options
-            api={compiler == null ? undefined : compiler.api}
-            options={state.options}
-            onChange={options =>
-              dispatch({
-                type: "SET_OPTIONS",
-                options,
-              })}
-          />
-        </header>
-        <SplitPane split="vertical" minSize={50} defaultSize="33%">
-          {getCodeEditorArea()}
+      <Allotment>
+        <Allotment.Pane minSize={50} maxSize={50}>
+          <header className="AppHeader clearfix">
+            <h2 id="title">TypeScript AST Viewer</h2>
+            <components.Options
+              api={compiler == null ? undefined : compiler.api}
+              options={state.options}
+              onChange={options =>
+                dispatch({
+                  type: "SET_OPTIONS",
+                  options,
+                })}
+            />
+          </header>
+        </Allotment.Pane>
+        <Allotment vertical={true} minSize={50}>
+          <Allotment.Pane preferredSize={"33%"}>
+            {getCodeEditorArea()}
+          </Allotment.Pane>
           {getCompilerDependentPanes()}
-        </SplitPane>
-      </SplitPane>
+        </Allotment>
+      </Allotment>
     </div>
   );
 
@@ -50,10 +52,12 @@ export function App() {
   function getCodeEditorArea() {
     if (state.options.showFactoryCode) {
       return (
-        <SplitPane split="horizontal" defaultSize={window.innerHeight * 0.70}>
-          {getCodeEditor()}
+        <Allotment>
+          <Allotment.Pane preferredSize={"70%"}>
+            {getCodeEditor()}
+          </Allotment.Pane>
           {getFactoryCodeEditor()}
-        </SplitPane>
+        </Allotment>
       );
     } else {
       return getCodeEditor();
@@ -107,25 +111,31 @@ export function App() {
     }
 
     return (
-      <components.ErrorBoundary>
-        <SplitPane split="vertical" minSize={50} defaultSize="50%">
-          <components.TreeViewer
-            api={compiler.api}
-            selectedNode={compiler.selectedNode}
-            sourceFile={compiler.sourceFile}
-            onSelectNode={node => dispatch({ type: "SET_SELECTED_NODE", node })}
-            mode={state.options.treeMode}
-          />
-          <components.PropertiesViewer
-            compiler={compiler}
-            selectedNode={compiler.selectedNode}
-            sourceFile={compiler.sourceFile}
-            bindingTools={compiler.bindingTools}
-            bindingEnabled={state.options.bindingEnabled}
-            showInternals={state.options.showInternals}
-          />
-        </SplitPane>
-      </components.ErrorBoundary>
+      <>
+        <Allotment.Pane minSize={50} preferredSize="33%">
+          <components.ErrorBoundary>
+            <components.TreeViewer
+              api={compiler.api}
+              selectedNode={compiler.selectedNode}
+              sourceFile={compiler.sourceFile}
+              onSelectNode={node => dispatch({ type: "SET_SELECTED_NODE", node })}
+              mode={state.options.treeMode}
+            />
+          </components.ErrorBoundary>
+        </Allotment.Pane>
+        <Allotment.Pane minSize={50} preferredSize="33%">
+          <components.ErrorBoundary>
+            <components.PropertiesViewer
+              compiler={compiler}
+              selectedNode={compiler.selectedNode}
+              sourceFile={compiler.sourceFile}
+              bindingTools={compiler.bindingTools}
+              bindingEnabled={state.options.bindingEnabled}
+              showInternals={state.options.showInternals}
+            />
+          </components.ErrorBoundary>
+        </Allotment.Pane>
+      </>
     );
   }
 

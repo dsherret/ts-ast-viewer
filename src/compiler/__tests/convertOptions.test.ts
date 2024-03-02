@@ -1,4 +1,4 @@
-import { Theme } from "@ts-ast-viewer/shared";
+import { Theme } from "../../types";
 import { CompilerApi } from "../CompilerApi";
 import { convertOptions } from "../convertOptions";
 

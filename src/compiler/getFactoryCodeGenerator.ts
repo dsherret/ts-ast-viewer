@@ -1,5 +1,5 @@
-import { CompilerPackageNames } from "@ts-ast-viewer/shared";
 import { FactoryCodeGenerator, getGenerateFactoryCodeFunction } from "./compiler.generated";
+import { CompilerPackageNames } from "./compilerVersions.generated";
 
 const cache: { [packageName: string]: Promise<FactoryCodeGenerator> } = {};
 const hasLoadedVersion: { [packageName: string]: true } = {};

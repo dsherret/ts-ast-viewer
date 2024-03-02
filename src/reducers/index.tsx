@@ -1,8 +1,8 @@
-import { CompilerPackageNames, Theme } from "@ts-ast-viewer/shared";
 import { AllActions } from "../actions";
-import { CompilerApi, convertOptions, createSourceFile } from "../compiler";
+import { CompilerApi, CompilerPackageNames, convertOptions, createSourceFile } from "../compiler";
 import { CodeEditorTheme } from "../components";
 import { actions as actionNames } from "./../constants";
+import { Theme } from "../types";
 import { OptionsState, StoreState } from "../types";
 import { UrlSaver } from "../utils";
 

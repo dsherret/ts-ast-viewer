@@ -1,5 +1,6 @@
 export * from "./compiler.generated";
 export * from "./CompilerApi";
+export * from "./compilerVersions.generated";
 export * from "./convertOptions";
 export * from "./createSourceFile";
 export * from "./getChildrenFunction";

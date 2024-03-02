@@ -8,7 +8,7 @@ const versions = getCompilerVersions();
 const project = new Project();
 
 // update shared compiler versions file
-const compilerVersionsFile = project.addSourceFileAtPath("./site/src/compiler/compilerVersions.generated.ts");
+const compilerVersionsFile = project.addSourceFileAtPath("./src/compiler/compilerVersions.generated.ts");
 compilerVersionsFile.removeText();
 
 compilerVersionsFile.addStatements([writer => {
@@ -51,7 +51,7 @@ compilerVersionsFile.addStatements([writer => {
 compilerVersionsFile.saveSync();
 
 // update compiler types file
-const compilerTypesFile = project.addSourceFileAtPath("./site/src/compiler/compiler.generated.ts");
+const compilerTypesFile = project.addSourceFileAtPath("./src/compiler/compiler.generated.ts");
 compilerTypesFile.removeText();
 
 compilerTypesFile.addStatements([writer => {
@@ -61,7 +61,7 @@ compilerTypesFile.addStatements([writer => {
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["CompilerPackageNames", "CompilerVersions"],
-  moduleSpecifier: "@ts-ast-viewer/shared",
+  moduleSpecifier: "compilerVersions.generated",
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["Node", "CompilerApi"],

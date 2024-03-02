@@ -1,4 +1,3 @@
-import { constants } from "@ts-ast-viewer/shared";
 import CircularJson from "circular-json";
 import React, { useEffect, useState } from "react";
 import {

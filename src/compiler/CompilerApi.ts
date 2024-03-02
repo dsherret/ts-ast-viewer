@@ -1,5 +1,5 @@
-import { CompilerPackageNames } from "@ts-ast-viewer/shared";
 import * as ts from "typescript";
+import { CompilerPackageNames } from "./compilerVersions.generated";
 
 export interface CompilerApi {
   createSourceFile: typeof ts.createSourceFile;

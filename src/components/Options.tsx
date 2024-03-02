@@ -1,7 +1,7 @@
-import { CompilerPackageNames, compilerVersionCollection, constants, Theme, TreeMode } from "@ts-ast-viewer/shared";
 import React, { useRef, useState } from "react";
-import { CompilerApi, ScriptKind, ScriptTarget } from "../compiler";
+import { CompilerApi, CompilerPackageNames, compilerVersionCollection, ScriptKind, ScriptTarget } from "../compiler";
 import { useOnClickOutside } from "../hooks";
+import { Theme, TreeMode } from "../types";
 import { OptionsState } from "../types";
 import { enumUtils } from "../utils";
 import { ExternalLink } from "./ExternalLink";

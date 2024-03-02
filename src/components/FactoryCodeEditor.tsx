@@ -1,4 +1,3 @@
-import { constants, Theme } from "@ts-ast-viewer/shared";
 import type * as monacoEditorForTypes from "monaco-editor";
 import React, { useEffect, useState } from "react";
 import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler";
