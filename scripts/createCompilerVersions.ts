@@ -13,7 +13,7 @@ compilerVersionsFile.removeText();
 
 compilerVersionsFile.addStatements([writer => {
   writer.writeLine("// dprint-ignore-file")
-    .writeLine("/* Automatically maintained from sites/package.json. Do not edit! */")
+    .writeLine("/* Automatically maintained from package.json. Do not edit! */")
     .blankLine();
 }, {
   kind: StructureKind.TypeAlias,

@@ -1,5 +1,5 @@
 // dprint-ignore-file
-/* Automatically maintained from sites/package.json. Do not edit! */
+/* Automatically maintained from package.json. Do not edit! */
 
 export type CompilerPackageNames = "typescript";
 export type CompilerVersions = "5.0.2";
