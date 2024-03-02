@@ -14,6 +14,6 @@ for (const filePath of filesToDelete) {
 
 for (const version of versions) {
   const code = generateCode(version.name);
-  const newFilePath = factoryCodeDir + `${version.name}.ts`;
+  const newFilePath = factoryCodeDir + `${version.name}.generated.ts`;
   fs.writeFileSync(newFilePath, `${code.replace(/\r?\n/g, "\n")}`);
 }

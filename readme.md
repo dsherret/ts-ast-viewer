@@ -7,14 +7,14 @@ Source code for https://ts-ast-viewer.com
 ## Developing
 
 ```
-# install
+# install packages
 npm install
 
 # run locally
-npm run dev
+deno task dev
 
 # run unit tests
-npm run test
+deno task test
 ```
 
 ### Factory Code Generation

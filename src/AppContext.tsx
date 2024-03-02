@@ -39,7 +39,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     editorTheme: deriveEditorTheme(stateSaver.get().theme),
   });
 
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  globalThis.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     dispatch(actions.osThemeChange());
   });
 

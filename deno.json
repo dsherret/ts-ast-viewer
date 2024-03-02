@@ -9,5 +9,23 @@
     "lib": ["deno.ns", "dom"],
     "jsx": "react-jsx"
   },
-  "imports": { "@std/expect": "jsr:@std/expect@^0.218.2" }
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    },
+    "exclude": [
+      "**/*.generated.ts"
+    ]
+  },
+  "fmt": {
+    "exclude": [
+      "**/*.generated.ts"
+    ]
+  },
+  "imports": {
+    "@std/expect": "jsr:@std/expect@^0.218.2"
+  },
+  "exclude": [
+    "dist"
+  ]
 }

@@ -15,7 +15,7 @@ for (const filePath of filesToDelete) {
 
 for (const version of versions) {
   const code = getCode(version.name);
-  const newFilePath = publicApiInfoDir + `${version.name}.ts`;
+  const newFilePath = publicApiInfoDir + `${version.name}.generated.ts`;
   fs.writeFileSync(newFilePath, code);
 }
 

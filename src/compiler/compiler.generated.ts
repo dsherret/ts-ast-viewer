@@ -31,7 +31,7 @@ export async function getGenerateFactoryCodeFunction(packageName: CompilerPackag
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
-            return (await import("../resources/factoryCode/typescript.js")).generateFactoryCode as any;
+            return (await import("../resources/factoryCode/typescript.generated.ts")).generateFactoryCode as any;
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -48,7 +48,7 @@ export async function getPublicApiInfo(packageName: CompilerPackageNames): Promi
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
-            return (await import("../resources/publicApiInfo/typescript.js"));
+            return (await import("../resources/publicApiInfo/typescript.generated.js"));
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
