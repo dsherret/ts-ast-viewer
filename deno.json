@@ -1,0 +1,13 @@
+{
+  "unstable": [
+    "byonm",
+    "sloppy-imports",
+    "bare-node-builtins",
+    "unsafe-proto"
+  ],
+  "compilerOptions": {
+    "lib": ["deno.ns", "dom"],
+    "jsx": "react-jsx"
+  },
+  "imports": { "@std/expect": "jsr:@std/expect@^0.218.2" }
+}

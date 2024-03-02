@@ -68,7 +68,7 @@ export function appReducer(state: StoreState & { editorTheme: CodeEditorTheme },
 export function deriveEditorTheme(theme: Theme): CodeEditorTheme {
   switch (theme) {
     case Theme.OS:
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      return globalThis.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     case Theme.Dark:
       return "dark";
     case Theme.Light:

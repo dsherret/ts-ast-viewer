@@ -1,5 +1,5 @@
 import { Project, StructureKind, VariableDeclarationKind } from "ts-morph";
-import { getCompilerVersions } from "./getCompilerVersions";
+import { getCompilerVersions } from "./getCompilerVersions.js";
 
 // get versions
 const versions = getCompilerVersions();

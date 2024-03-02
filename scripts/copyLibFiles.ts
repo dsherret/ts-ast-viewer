@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { globSync } from "glob";
 import * as path from "path";
 import * as ts from "typescript";
-import { getCompilerVersions } from "./getCompilerVersions";
+import { getCompilerVersions } from "./getCompilerVersions.js";
 
 const versions = getCompilerVersions();
 const minifier = createMinifier(ts);

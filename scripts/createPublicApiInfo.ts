@@ -2,8 +2,8 @@
 import * as fs from "fs";
 import { globSync } from "glob";
 import { CodeBlockWriter } from "ts-morph";
-import { TsAnalyzer } from "./analyzers";
-import { getCompilerVersions } from "./getCompilerVersions";
+import { TsAnalyzer } from "./analyzers/index.js";
+import { getCompilerVersions } from "./getCompilerVersions.js";
 
 const versions = getCompilerVersions();
 const publicApiInfoDir = "./src/resources/publicApiInfo/";

@@ -1,6 +1,7 @@
-import { Theme } from "../../types/index.js";
-import { CompilerApi } from "../CompilerApi.js";
-import { convertOptions } from "../convertOptions.js";
+import { expect } from "@std/expect";
+import { Theme } from "../types/index.js";
+import { CompilerApi } from "./CompilerApi.js";
+import { convertOptions } from "./convertOptions.js";
 
 function getCompilerApi(scriptKind: any, scriptTarget: any) {
   return {
@@ -42,10 +43,10 @@ function doTest(fromKind: number, fromTarget: number, expectedKind: number, expe
   });
 }
 
-it("should convert between the options when they all exist", () => {
+Deno.test("should convert between the options when they all exist", () => {
   doTest(0, 0, 1, 1);
 });
 
-it("should convert between the options when they don't exist", () => {
+Deno.test("should convert between the options when they don't exist", () => {
   doTest(2, 2, 1, 0);
 });
