@@ -11,29 +11,27 @@ export function App() {
   const compiler = state.compiler;
 
   return (
-    <div className="App" data-theme={state.editorTheme}>
-      <Allotment>
-        <Allotment.Pane minSize={50} maxSize={50}>
-          <header className="AppHeader clearfix">
-            <h2 id="title">TypeScript AST Viewer</h2>
-            <components.Options
-              api={compiler == null ? undefined : compiler.api}
-              options={state.options}
-              onChange={options =>
-                dispatch({
-                  type: "SET_OPTIONS",
-                  options,
-                })}
-            />
-          </header>
-        </Allotment.Pane>
-        <Allotment vertical={true} minSize={50}>
+    <div id="App" data-theme={state.editorTheme}>
+      <header id="AppHeader" className="clearfix">
+        <h2 id="title">TypeScript AST Viewer</h2>
+        <components.Options
+          api={compiler == null ? undefined : compiler.api}
+          options={state.options}
+          onChange={options =>
+            dispatch({
+              type: "SET_OPTIONS",
+              options,
+            })}
+        />
+      </header>
+      <div id="AppBody">
+        <Allotment minSize={50}>
           <Allotment.Pane preferredSize={"33%"}>
             {getCodeEditorArea()}
           </Allotment.Pane>
           {getCompilerDependentPanes()}
         </Allotment>
-      </Allotment>
+      </div>
     </div>
   );
 
@@ -52,7 +50,7 @@ export function App() {
   function getCodeEditorArea() {
     if (state.options.showFactoryCode) {
       return (
-        <Allotment>
+        <Allotment vertical={true}>
           <Allotment.Pane preferredSize={"70%"}>
             {getCodeEditor()}
           </Allotment.Pane>
@@ -111,8 +109,8 @@ export function App() {
     }
 
     return (
-      <>
-        <Allotment.Pane minSize={50} preferredSize="33%">
+      <Allotment>
+        <Allotment.Pane minSize={50} preferredSize="50%">
           <components.ErrorBoundary>
             <components.TreeViewer
               api={compiler.api}
@@ -123,7 +121,7 @@ export function App() {
             />
           </components.ErrorBoundary>
         </Allotment.Pane>
-        <Allotment.Pane minSize={50} preferredSize="33%">
+        <Allotment.Pane minSize={50} preferredSize="50%">
           <components.ErrorBoundary>
             <components.PropertiesViewer
               compiler={compiler}
@@ -135,7 +133,7 @@ export function App() {
             />
           </components.ErrorBoundary>
         </Allotment.Pane>
-      </>
+      </Allotment>
     );
   }
 

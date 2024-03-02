@@ -14,17 +14,17 @@ body {
 
 html,
 body,
-.App,
+#App,
 #root {
   width: 100%;
   height: 100%;
 }
 
-.App {
+#App {
   text-align: left;
   color-scheme: var(--color-scheme);
 }
-.App[data-theme="dark"] {
+#App[data-theme="dark"] {
   --color-scheme: dark;
   --text-color: #fff;
   --resizer-border: rgba(255, 255, 255, 0.5);
@@ -38,7 +38,7 @@ body,
   --vscode-background: #1e1e1e;
   --spinner-foreground: #fefefe;
 }
-.App[data-theme="light"] {
+#App[data-theme="light"] {
   --color-scheme: light;
   --text-color: #000;
   --resizer-border: rgba(0, 0, 0, 0.5);
@@ -53,16 +53,27 @@ body,
   --spinner-foreground: #1e1e1e;
 }
 
-.SplitPane {
-  background-color: var(--pane-background);
-  color: var(--text-color);
+#App {
+  display: flex;
+  flex-direction: column;
 }
 
-.AppHeader {
+#AppHeader {
   background-color: var(--header-background);
   color: var(--text-color);
   padding: 10px;
   width: 100%;
+  height: 50px;
+}
+
+#AppBody {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.split-view {
+  background-color: var(--pane-background);
+  color: var(--text-color);
 }
 
 h2 {
