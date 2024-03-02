@@ -21,7 +21,7 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
     const files: { [name: string]: SourceFile | undefined } = { [filePath]: sourceFile, ...api.tsAstViewer.cachedSourceFiles };
 
     const compilerHost: CompilerHost = {
-      getSourceFile: (fileName: string, languageVersion: ScriptTarget, onError?: (message: string) => void) => {
+      getSourceFile: (fileName: string, _languageVersion: ScriptTarget, _onError?: (message: string) => void) => {
         return files[fileName];
       },
       // getSourceFileByPath: (...) => {}, // not providing these will force it to use the file name as the file path
@@ -31,7 +31,7 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
         // do nothing
       },
       getCurrentDirectory: () => "/",
-      getDirectories: (path: string) => [],
+      getDirectories: (_path: string) => [],
       fileExists: (fileName: string) => files[fileName] != null,
       readFile: (fileName: string) => files[fileName] != null ? files[fileName]!.getFullText() : undefined,
       getCanonicalFileName: (fileName: string) => fileName,
