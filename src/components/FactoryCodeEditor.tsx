@@ -36,7 +36,7 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
 
   return (
     <CodeEditor
-      id={constants.css.factoryCodeEditor.id}
+      id="factoryCodeEditor"
       text={getText()}
       readOnly={true}
       theme={props.theme}

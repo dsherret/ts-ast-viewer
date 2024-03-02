@@ -19,8 +19,8 @@ export function Options(props: OptionsProps) {
   useOnClickOutside(containerRef, () => setShowOptionsMenu(false));
 
   return (
-    <div id={constants.css.options.id} ref={containerRef}>
-      <div id={constants.css.options.buttonId} onClick={() => setShowOptionsMenu(!showOptionsMenu)} role="button">
+    <div id="options" ref={containerRef}>
+      <div id="optionsButton" onClick={() => setShowOptionsMenu(!showOptionsMenu)} role="button">
         Options
       </div>
       <div className="menuLine" hidden={!showOptionsMenu} />
@@ -45,7 +45,7 @@ export function Options(props: OptionsProps) {
   function getCompilerVersions() {
     const selection = (
       <select
-        id={constants.css.options.compilerVersionSelectionId}
+        id="compilerVersionSelection"
         value={props.options.compilerPackageName}
         onChange={event => onChange({ compilerPackageName: event.target.value as CompilerPackageNames })}
       >
@@ -58,7 +58,7 @@ export function Options(props: OptionsProps) {
   function getTreeMode() {
     const selection = (
       <select
-        id={constants.css.options.treeModeId}
+        id="treeMode"
         value={props.options.treeMode}
         onChange={event => onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}
       >
@@ -95,7 +95,7 @@ export function Options(props: OptionsProps) {
     const selection = (
       <div>
         <input
-          id={constants.css.options.bindingEnabledId}
+          id="bindingEnabled"
           type="checkbox"
           checked={props.options.bindingEnabled}
           onChange={event => onChange({ bindingEnabled: !!event.target.checked })}
@@ -109,7 +109,7 @@ export function Options(props: OptionsProps) {
     const selection = (
       <div>
         <input
-          id={constants.css.options.showFactoryCodeId}
+          id="showFactoryCode"
           type="checkbox"
           checked={props.options.showFactoryCode}
           onChange={event => onChange({ showFactoryCode: !!event.target.checked })}
@@ -122,7 +122,7 @@ export function Options(props: OptionsProps) {
   function getTheme() {
     const selection = (
       <select
-        id={constants.css.options.themeSelectionId}
+        id="theme"
         value={props.options.theme}
         onChange={event => onChange({ theme: event.target.value as Theme })}
       >
@@ -138,7 +138,7 @@ export function Options(props: OptionsProps) {
     const selection = (
       <div>
         <input
-          id={constants.css.options.showInternalsId}
+          id="showInternals"
           type="checkbox"
           checked={props.options.showInternals}
           onChange={event => onChange({ showInternals: !!event.target.checked })}

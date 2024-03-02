@@ -61,7 +61,7 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
     <div className="propertiesViewer">
       <div className="container">
         <h2>Node</h2>
-        <div id={constants.css.properties.node.id}>
+        <div id="node">
           {getForSelectedNode(context, selectedNode)}
         </div>
         {bindingEnabled && getBindingSection(context, selectedNode, bindingTools().typeChecker)}
@@ -81,15 +81,15 @@ function getBindingSection(context: Context, selectedNode: Node, typeChecker: Ty
   return (
     <>
       <h2>Type</h2>
-      <div id={constants.css.properties.type.id}>
+      <div id="type">
         {getForType(context, selectedNode, typeChecker)}
       </div>
       <h2>Symbol</h2>
-      <div id={constants.css.properties.symbol.id}>
+      <div id="symbol">
         {getForSymbol(context, selectedNode, typeChecker)}
       </div>
       <h2>Signature</h2>
-      <div id={constants.css.properties.signature.id}>
+      <div id="signature">
         {getForSignature(context, selectedNode, typeChecker)}
       </div>
       <h2>FlowNode</h2>

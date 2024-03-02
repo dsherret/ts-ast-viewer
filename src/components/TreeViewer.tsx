@@ -15,9 +15,10 @@ export interface TreeViewerProps {
 export function TreeViewer(props: TreeViewerProps) {
   const { sourceFile, selectedNode, onSelectNode, mode, api } = props;
   let i = 0;
+  // todo: refactor to use refs
   useLayoutEffect(() => {
-    const treeViewer = document.getElementById(constants.css.treeViewer.id);
-    const selectedNode = document.querySelector(`#${constants.css.treeViewer.id} .${constants.css.treeViewer.selectedNodeClass}`);
+    const treeViewer = document.getElementById("treeViewer");
+    const selectedNode = document.querySelector(`#treeViewer .selected`);
     if (treeViewer && selectedNode) {
       const selectedRect = selectedNode.getBoundingClientRect();
       const treeViewerRect = treeViewer.getBoundingClientRect();
@@ -26,11 +27,11 @@ export function TreeViewer(props: TreeViewerProps) {
       }
     }
   }, [selectedNode]);
-  return <div id={constants.css.treeViewer.id}>{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>;
+  return <div id="treeViewer">{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>;
 
   function renderNode(node: Node, getChildren: (node: Node) => Node[]): JSX.Element {
     const children = getChildren(node);
-    const className = "nodeText" + (node === selectedNode ? " " + constants.css.treeViewer.selectedNodeClass : "");
+    const className = "nodeText" + (node === selectedNode ? " selected" : "");
     const kindName = getSyntaxKindName(api, node.kind);
     const label = <div onClick={() => onSelectNode(node)} className={className}>{kindName}</div>;
     if (children.length === 0) {

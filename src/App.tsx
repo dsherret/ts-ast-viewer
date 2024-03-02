@@ -78,7 +78,7 @@ export function App() {
     function getCodeEditor() {
       return (
         <components.CodeEditor
-          id={constants.css.mainCodeEditor.id}
+          id="codeEditor"
           onChange={code => dispatch({ type: "SET_CODE", code })}
           onClick={range => {
             if (compiler == null) {
