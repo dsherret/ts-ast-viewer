@@ -1,6 +1,6 @@
 /* Copies the lib.d.ts files from node_modules into the src directory of the library for easy access */
-import * as fs from "fs";
 import { globSync } from "glob";
+import * as fs from "node:fs";
 import { CodeBlockWriter } from "ts-morph";
 import { TsAnalyzer } from "./analyzers/index.js";
 import { getCompilerVersions } from "./getCompilerVersions.js";
