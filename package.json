@@ -19,11 +19,7 @@
     "copyLibFiles": "ts-node --project scripts/tsconfig.json scripts/copyLibFiles.ts ",
     "createCompilerVersions": "ts-node --project scripts/tsconfig.json scripts/createCompilerVersions.ts",
     "createFactoryCode": "ts-node --project scripts/tsconfig.json scripts/createFactoryCode.ts",
-    "createPublicApiInfo": "ts-node --project scripts/tsconfig.json scripts/createPublicApiInfo.ts",
-    "cypress:run": "npm run --prefix e2e cypress:wait-run",
-    "cypress": "start npm run start && start npm run cypress:run",
-    "cypress:ci": "npm run start & npm run cypress:run",
-    "cypress:open": "npm run --prefix e2e cypress:open"
+    "createPublicApiInfo": "ts-node --project scripts/tsconfig.json scripts/createPublicApiInfo.ts"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",

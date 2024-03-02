@@ -38,7 +38,6 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
   return (
     <CodeEditor
       id={constants.css.factoryCodeEditor.id}
-      editorDidMount={editorDidMount}
       text={getText()}
       readOnly={true}
       theme={props.theme}
@@ -52,9 +51,4 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
 
     return factoryCodeGenerator.value(props.compiler.api, props.compiler.selectedNode);
   }
-}
-
-function editorDidMount(editor: monacoEditorForTypes.editor.IStandaloneCodeEditor) {
-  // global method for cypress
-  (window as any).getFactoryCodeEditorText = () => editor.getValue();
 }

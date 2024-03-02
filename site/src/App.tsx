@@ -132,18 +132,5 @@ export function App() {
   function codeEditorDidMount(editor: Parameters<import("react-monaco-editor").EditorDidMount>[0]) {
     // For some reason a slight delay is necessary here. Otherwise it won't let the user type.
     setTimeout(() => editor.focus(), 100);
-
-    // global method for cypress
-    (window as any).setMonacoEditorText = (text: string) => {
-      const editorModel = editor.getModel();
-      if (editorModel == null) {
-        return;
-      }
-
-      editor.executeEdits("my-source", [{
-        range: editorModel.getFullModelRange(),
-        text,
-      }]);
-    };
   }
 }
