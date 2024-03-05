@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
-import { CompilerApi, CompilerPackageNames, compilerVersionCollection, ScriptKind, ScriptTarget } from "../compiler";
-import { useOnClickOutside } from "../hooks";
-import { Theme, TreeMode } from "../types";
-import { OptionsState } from "../types";
-import { enumUtils } from "../utils";
-import { ExternalLink } from "./ExternalLink";
+import { CompilerApi, CompilerPackageNames, compilerVersionCollection, ScriptKind, ScriptTarget } from "../compiler/index.js";
+import { useOnClickOutside } from "../hooks/index.js";
+import { OptionsState } from "../types/index.js";
+import { Theme, TreeMode } from "../types/index.js";
+import { enumUtils } from "../utils/index.js";
+import { ExternalLink } from "./ExternalLink.js";
 
 export interface OptionsProps {
   api: CompilerApi | undefined;

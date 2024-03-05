@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import { CompilerPackageNames } from "./compilerVersions.generated";
+import { CompilerPackageNames } from "./compilerVersions.generated.js";
 
 export interface CompilerApi {
   createSourceFile: typeof ts.createSourceFile;
@@ -17,11 +17,11 @@ export interface CompilerApi {
   TypeFlags: typeof ts.TypeFlags;
   FlowFlags: typeof ts.FlowFlags;
   // Internal enum
-  CheckFlags: {};
+  CheckFlags: object;
   // Internal enum
-  TransformFlags: {};
+  TransformFlags: object;
   // Internal enum
-  TypeMapKind: {};
+  TypeMapKind: object;
   tsAstViewer: {
     packageName: CompilerPackageNames;
     cachedSourceFiles: { [name: string]: SourceFile | undefined };

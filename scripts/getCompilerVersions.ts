@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 export function getCompilerVersions() {
   const fileData = JSON.parse(fs.readFileSync("./package.json", "utf-8"));

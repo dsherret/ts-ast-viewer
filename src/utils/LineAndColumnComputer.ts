@@ -1,5 +1,5 @@
-import * as arrayUtils from "./arrayUtils";
-import { createLineNumberAndColumns, LineNumberAndColumn } from "./createLineNumberAndColumns";
+import * as arrayUtils from "./arrayUtils.js";
+import { createLineNumberAndColumns, LineNumberAndColumn } from "./createLineNumberAndColumns.js";
 
 /** An efficient way to compute the line and column of a position in a string. */
 export class LineAndColumnComputer {

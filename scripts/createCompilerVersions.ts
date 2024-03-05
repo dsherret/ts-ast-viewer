@@ -1,5 +1,5 @@
 import { Project, StructureKind, VariableDeclarationKind } from "ts-morph";
-import { getCompilerVersions } from "./getCompilerVersions";
+import { getCompilerVersions } from "./getCompilerVersions.js";
 
 // get versions
 const versions = getCompilerVersions();
@@ -61,15 +61,15 @@ compilerTypesFile.addStatements([writer => {
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["CompilerPackageNames", "CompilerVersions"],
-  moduleSpecifier: "./compilerVersions.generated",
+  moduleSpecifier: "./compilerVersions.generated.js",
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["Node", "CompilerApi"],
-  moduleSpecifier: "./CompilerApi",
+  moduleSpecifier: "./CompilerApi.js",
 }, {
   kind: StructureKind.ImportDeclaration,
   namedImports: ["assertNever"],
-  moduleSpecifier: "../utils",
+  moduleSpecifier: "../utils/index.js",
 }, {
   kind: StructureKind.Function,
   isExported: true,
@@ -103,7 +103,7 @@ compilerTypesFile.addStatements([writer => {
       for (const version of versions) {
         writer.writeLine(`case "${version.name}":`);
         writer.indent(() => {
-          writer.writeLine(`return await import("../resources/libFiles/${version.name}/index");`);
+          writer.writeLine(`return await import("../resources/libFiles/${version.name}/index.js");`);
         });
       }
       writer.writeLine(`default:`);
@@ -130,7 +130,7 @@ compilerTypesFile.addStatements([writer => {
       for (const version of versions) {
         writer.writeLine(`case "${version.name}":`);
         writer.indent(() => {
-          writer.writeLine(`return (await import("../resources/factoryCode/${version.name}")).generateFactoryCode as any;`);
+          writer.writeLine(`return (await import("../resources/factoryCode/${version.name}.generated.js")).generateFactoryCode as any;`);
         });
       }
       writer.writeLine(`default:`);
@@ -169,7 +169,7 @@ compilerTypesFile.addStatements([writer => {
       for (const version of versions) {
         writer.writeLine(`case "${version.name}":`);
         writer.indent(() => {
-          writer.writeLine(`return (await import("../resources/publicApiInfo/${version.name}"));`);
+          writer.writeLine(`return (await import("../resources/publicApiInfo/${version.name}.generated.js"));`);
         });
       }
       writer.writeLine(`default:`);

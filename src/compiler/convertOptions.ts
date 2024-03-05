@@ -1,5 +1,5 @@
-import { OptionsState } from "../types";
-import { CompilerApi, ScriptKind, ScriptTarget } from "./CompilerApi";
+import { OptionsState } from "../types/index.js";
+import { CompilerApi, ScriptKind, ScriptTarget } from "./CompilerApi.js";
 
 export function convertOptions(apiFrom: CompilerApi | undefined, apiTo: CompilerApi, options: OptionsState) {
   if (apiFrom == null || apiFrom === apiTo) {

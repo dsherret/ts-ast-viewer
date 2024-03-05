@@ -1,9 +1,9 @@
 /* Copies the lib.d.ts files from node_modules into the src directory of the library for easy access */
-import * as fs from "fs";
 import { globSync } from "glob";
+import * as fs from "node:fs";
 import { CodeBlockWriter } from "ts-morph";
-import { TsAnalyzer } from "./analyzers";
-import { getCompilerVersions } from "./getCompilerVersions";
+import { TsAnalyzer } from "./analyzers/index.js";
+import { getCompilerVersions } from "./getCompilerVersions.js";
 
 const versions = getCompilerVersions();
 const publicApiInfoDir = "./src/resources/publicApiInfo/";
@@ -15,7 +15,7 @@ for (const filePath of filesToDelete) {
 
 for (const version of versions) {
   const code = getCode(version.name);
-  const newFilePath = publicApiInfoDir + `${version.name}.ts`;
+  const newFilePath = publicApiInfoDir + `${version.name}.generated.ts`;
   fs.writeFileSync(newFilePath, code);
 }
 

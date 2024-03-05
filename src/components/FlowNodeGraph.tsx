@@ -2,9 +2,9 @@ import { instance as vizJsInstance, Viz } from "@viz-js/viz";
 import React from "react";
 
 import { FlowFlags, FlowNode } from "typescript";
-import { useAppContext } from "../AppContext";
-import { CompilerApi } from "../compiler";
-import { enumUtils } from "../utils";
+import { useAppContext } from "../AppContext.js";
+import { CompilerApi } from "../compiler/index.js";
+import { enumUtils } from "../utils/index.js";
 
 export interface FlowNodeGraphProps {
   api: CompilerApi;

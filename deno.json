@@ -1,0 +1,31 @@
+{
+  "unstable": [
+    "byonm",
+    "sloppy-imports",
+    "bare-node-builtins",
+    "unsafe-proto"
+  ],
+  "compilerOptions": {
+    "lib": ["deno.ns", "dom"],
+    "jsx": "react-jsx"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    },
+    "exclude": [
+      "**/*.generated.ts"
+    ]
+  },
+  "fmt": {
+    "exclude": [
+      "**/*.generated.ts"
+    ]
+  },
+  "imports": {
+    "@std/expect": "jsr:@std/expect@^0.218.2"
+  },
+  "exclude": [
+    "dist"
+  ]
+}
