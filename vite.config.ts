@@ -5,6 +5,6 @@ import * as monacoEditorPlugin from "vite-plugin-monaco-editor";
 export default defineConfig({
   plugins: [
     react(),
-    monacoEditorPlugin.default({}),
+    (monacoEditorPlugin as any).default.default({}),
   ],
 });
