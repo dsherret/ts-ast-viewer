@@ -11,17 +11,20 @@ jobs:
     name: test ubuntu-latest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
       - name: Build
         run: |
           npm ci
-          npm run addTypeScriptVersions
-          npm run updateCompilerFiles
-          npm run test
-          npm run predeploy
+          deno task addTypeScriptVersions
+          deno task updateCompilerFiles
+          deno task test
+          deno task predeploy
       - name: Deploy
         if: github.ref == 'refs/heads/main'
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           branch: gh-pages
           folder: dist

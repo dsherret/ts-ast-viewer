@@ -23,6 +23,7 @@
     ]
   },
   "imports": {
+    "@david/dax": "jsr:@david/dax@^0.39.2",
     "@std/expect": "jsr:@std/expect@^0.218.2"
   },
   "exclude": [
