@@ -1,7 +1,7 @@
 // dprint-ignore-file
 /* Automatically maintained from package.json. Do not edit! */
 
-import { CompilerPackageNames } from "./compilerVersions.generated.js";
+import { CompilerPackageNames, CompilerVersions } from "./compilerVersions.generated.js";
 import { Node, CompilerApi } from "./CompilerApi.js";
 import { assertNever } from "../utils/index.js";
 
@@ -31,7 +31,7 @@ export async function getGenerateFactoryCodeFunction(packageName: CompilerPackag
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
-            return (await import("../resources/factoryCode/typescript.generated.ts")).generateFactoryCode as any;
+            return (await import("../resources/factoryCode/typescript.generated.js")).generateFactoryCode as any;
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
