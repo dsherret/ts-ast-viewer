@@ -15,9 +15,14 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
+      - name: npm install
+        run: npm ci
+      - name: Lint
+        run: deno lint
+      - name: Format
+        run: dprint check
       - name: Build
         run: |
-          npm ci
           deno task addTypeScriptVersions
           deno task updateCompilerFiles
           deno task test

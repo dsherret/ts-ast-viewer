@@ -1,5 +1,5 @@
 /* Copies the lib.d.ts files from node_modules into the src directory of the library for easy access */
-import { createMinifier } from "dts-minify";
+import { createMinifier } from "@david/dts-minify";
 import { globSync } from "glob";
 import * as fs from "node:fs";
 import * as path from "node:path";
