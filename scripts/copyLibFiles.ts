@@ -3,7 +3,7 @@ import { createMinifier } from "dts-minify";
 import { globSync } from "glob";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import * as ts from "typescript";
+import ts from "typescript";
 import { getCompilerVersions } from "./getCompilerVersions.js";
 
 const versions = getCompilerVersions();
@@ -17,6 +17,7 @@ for (const filePath of filesToDelete) {
 const libFilesDir = "./src/resources/libFiles/";
 for (const version of versions) {
   const filePaths = globSync(`./node_modules/${version.name}/lib/lib*.d.ts`);
+  filePaths.sort();
   const libVersionDir = libFilesDir + version.name + "/";
   if (!fs.existsSync(libVersionDir)) {
     fs.mkdirSync(libVersionDir);

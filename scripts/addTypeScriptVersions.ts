@@ -5,18 +5,14 @@ import * as semver from "semver";
 const versions = await getTypeScriptVersionsToInstall();
 
 for (const version of versions) {
-  npmInstallTypeScriptVersion(version);
+  await npmInstallTypeScriptVersion(version);
 }
-npmInstallTypeScriptVersion("next");
+await npmInstallTypeScriptVersion("next");
 
-function npmInstallTypeScriptVersion(version: string) {
+async function npmInstallTypeScriptVersion(version: string) {
   console.log(`Installing Typescript ${version}...`);
-  const command = `npm add typescript-${version}@npm:typescript@${version}`;
-  cp.execSync(command, {
-    encoding: "utf8",
-    cwd: path.resolve(import.meta.dirname, "../"),
-    stdio: "inherit",
-  });
+  await $`npm add typescript-${version}@npm:typescript@${version}`
+    .cwd(path.resolve(import.meta.dirname, "../"));
 }
 
 async function getTypeScriptVersionsToInstall() {
