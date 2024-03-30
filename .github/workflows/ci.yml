@@ -19,8 +19,7 @@ jobs:
         run: npm ci
       - name: Lint
         run: deno lint
-      - name: Format
-        run: dprint check
+      - uses: dprint/check@v2.2
       - name: Build
         run: |
           deno task addTypeScriptVersions
