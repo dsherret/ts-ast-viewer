@@ -29,7 +29,8 @@
     "react-dom": "^18.2.0",
     "react-monaco-editor": "0.55.0",
     "react-spinners": "^0.13.6",
-    "react-treeview": "^0.4.7"
+    "react-treeview": "^0.4.7",
+    "ts-morph": "^22.0.0"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",

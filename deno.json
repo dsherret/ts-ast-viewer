@@ -25,8 +25,7 @@
   "imports": {
     "@david/dax": "jsr:@david/dax@^0.39.2",
     "@david/dts-minify": "jsr:@david/dts-minify@^0.3.3",
-    "@std/expect": "jsr:@std/expect@^0.218.2",
-    "ts-morph": "npm:ts-morph@^22.0.0"
+    "@std/expect": "jsr:@std/expect@^0.218.2"
   },
   "exclude": [
     "dist"
