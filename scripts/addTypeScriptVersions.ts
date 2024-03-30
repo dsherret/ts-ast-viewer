@@ -1,6 +1,6 @@
 import $ from "@david/dax";
+import * as semver from "@std/semver";
 import * as path from "node:path";
-import * as semver from "semver";
 
 const versions = await getTypeScriptVersionsToInstall();
 
@@ -19,8 +19,7 @@ async function getTypeScriptVersionsToInstall() {
   const versions = await getAllTypeScriptVersions();
   const highestMinors: { [minor: string]: semver.SemVer } = {};
   // get the highest version for each minor
-  for (const strVersion of versions) {
-    const version = semver.parse(strVersion);
+  for (const version of versions) {
     if (
       version == null
       || version.prerelease.length > 0
@@ -29,18 +28,18 @@ async function getTypeScriptVersionsToInstall() {
       continue;
     }
     const majorMinor = version.major + "." + version.minor;
-    if (highestMinors[majorMinor] == null || highestMinors[majorMinor].compare(version) < 0) {
+    if (highestMinors[majorMinor] == null || semver.compare(highestMinors[majorMinor], version) < 0) {
       highestMinors[majorMinor] = version;
     }
   }
-  const finalVersions = semver.sort(Object.values(highestMinors));
+  const finalVersions = Object.values(highestMinors).sort(semver.compare);
   // select the most recent 9 versions
-  return finalVersions.slice(-9).map(v => v.format());
+  return finalVersions.slice(-9).map(v => semver.format(v));
 }
 
 async function getAllTypeScriptVersions() {
   // { "x.x.x": "time", ... }
   const data = await $`npm show typescript time --json`.json();
   const versions = Object.keys(data);
-  return semver.sort(versions.filter(v => semver.valid(v)));
+  return versions.filter(v => semver.canParse(v)).map(v => semver.parse(v)).sort(semver.compare);
 }

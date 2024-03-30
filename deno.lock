@@ -15,6 +15,7 @@
       "jsr:@std/io@^0.213.0": "jsr:@std/io@0.213.0",
       "jsr:@std/path@0.213.0": "jsr:@std/path@0.213.0",
       "jsr:@std/path@^0.213.0": "jsr:@std/path@0.213.0",
+      "jsr:@std/semver@^0.221.0": "jsr:@std/semver@0.221.0",
       "jsr:@std/streams@0.213.0": "jsr:@std/streams@0.213.0"
     },
     "jsr": {
@@ -74,6 +75,9 @@
           "jsr:@std/assert@^0.213.0"
         ]
       },
+      "@std/semver@0.221.0": {
+        "integrity": "836a446cd1d054d08c7498c243199ddf0b604740d72dec56df96e2833413f039"
+      },
       "@std/streams@0.213.0": {
         "integrity": "14519c7ce5f4c88de2e365f4bf1b8371c942a9fe0e1f9a0b9e10a56e3c3e3877",
         "dependencies": [
@@ -86,7 +90,9 @@
   "workspace": {
     "dependencies": [
       "jsr:@david/dax@^0.39.2",
-      "jsr:@std/expect@^0.218.2"
+      "jsr:@david/dts-minify@^0.3.3",
+      "jsr:@std/expect@^0.218.2",
+      "jsr:@std/semver@^0.221.0"
     ],
     "packageJson": {
       "dependencies": [
@@ -97,13 +103,11 @@
         "npm:@types/react-dom@^18.0.9",
         "npm:@types/react-treeview@^0.4.3",
         "npm:@types/react@^18.0.25",
-        "npm:@types/semver@^7.5.8",
         "npm:@vitejs/plugin-react@^2.2.0",
         "npm:@viz-js/viz@^3.3.1",
         "npm:allotment@^1.20.0",
         "npm:circular-json@^0.5.9",
         "npm:copyfiles@^2.4.1",
-        "npm:dts-minify@^0.3.2",
         "npm:glob@^10.3.10",
         "npm:lz-string@^1.4.4",
         "npm:monaco-editor@^0.44.0",
@@ -112,9 +116,8 @@
         "npm:react-spinners@^0.13.6",
         "npm:react-treeview@^0.4.7",
         "npm:react@^18.2.0",
-        "npm:semver@^7.6.0",
         "npm:ts-factory-code-generator-generator@^0.7.0",
-        "npm:ts-morph@^21.0.1",
+        "npm:ts-morph@^22.0.0",
         "npm:typescript@5.0.2",
         "npm:vite-plugin-monaco-editor@^1.1.0",
         "npm:vite@^3.2.4"

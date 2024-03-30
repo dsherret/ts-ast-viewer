@@ -25,7 +25,8 @@
   "imports": {
     "@david/dax": "jsr:@david/dax@^0.39.2",
     "@david/dts-minify": "jsr:@david/dts-minify@^0.3.3",
-    "@std/expect": "jsr:@std/expect@^0.218.2"
+    "@std/expect": "jsr:@std/expect@^0.218.2",
+    "@std/semver": "jsr:@std/semver@^0.221.0"
   },
   "exclude": [
     "dist"
