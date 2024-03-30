@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "DENO_V8_FLAGS=--max_old_space_size=8192 vite build && copyfiles CNAME .nojekyll dist",
+    "build": "DENO_V8_FLAGS=--max_old_space_size=8192 vite build && cp CNAME .nojekyll dist/",
     "format": "dprint fmt",
     "test": "deno test",
     "predeploy": "deno task build",
@@ -41,7 +41,6 @@
     "@types/react-dom": "^18.0.9",
     "@types/react-treeview": "^0.4.3",
     "@vitejs/plugin-react": "^2.2.0",
-    "copyfiles": "^2.4.1",
     "glob": "^10.3.10",
     "ts-factory-code-generator-generator": "^0.7.0",
     "typescript": "5.0.2",
