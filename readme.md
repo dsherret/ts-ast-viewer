@@ -6,6 +6,8 @@ Source code for https://ts-ast-viewer.com
 
 ## Developing
 
+Install [Deno](https://deno.com) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+
 ```
 # install packages
 npm install

@@ -1,7 +1,5 @@
 {
-  "incremental": true,
   "lineWidth": 160,
-  "indentWidth": 2,
   "excludes": [
     "**/node_modules",
     "**/*-lock.json",
