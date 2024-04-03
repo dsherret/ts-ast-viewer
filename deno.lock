@@ -107,7 +107,6 @@
         "npm:@viz-js/viz@^3.3.1",
         "npm:allotment@^1.20.0",
         "npm:circular-json@^0.5.9",
-        "npm:copyfiles@^2.4.1",
         "npm:glob@^10.3.10",
         "npm:lz-string@^1.4.4",
         "npm:monaco-editor@^0.44.0",

@@ -12,6 +12,7 @@
     "test": "deno test",
     "predeploy": "deno task build",
     "preview": "vite preview",
+    "postinstall": "deno run --allow-read=. --allow-write=. scripts/patchPackage.ts",
     "addTypeScriptVersions": "deno run -A scripts/addTypeScriptVersions.ts",
     "updateCompilerFiles": "deno task copyLibFiles && deno task createCompilerVersions && deno task createFactoryCode && deno task createPublicApiInfo",
     "copyLibFiles": "deno run -A scripts/copyLibFiles.ts ",
