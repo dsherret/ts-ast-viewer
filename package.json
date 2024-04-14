@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "DENO_V8_FLAGS=--max_old_space_size=8192 vite build && cp CNAME .nojekyll dist/",
+    "build": "DENO_V8_FLAGS=--max_old_space_size=10240 vite build && cp CNAME .nojekyll dist/",
     "format": "dprint fmt",
     "test": "deno test",
     "predeploy": "deno task build",
