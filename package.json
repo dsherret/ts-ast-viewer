@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "DENO_V8_FLAGS=--max_old_space_size=10240 vite build && cp CNAME .nojekyll dist/",
     "format": "dprint fmt",
-    "check": "deno check src/main.tsx",
+    "check": "DENO_DISABLE_PEDANTIC_NODE_WARNINGS=1 deno check src/main.tsx",
     "test": "deno test",
     "predeploy": "deno task build",
     "preview": "vite preview",
