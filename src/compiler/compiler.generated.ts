@@ -1,9 +1,9 @@
 // dprint-ignore-file
 /* Automatically maintained from package.json. Do not edit! */
 
-import { CompilerPackageNames } from "./compilerVersions.generated";
-import { Node, CompilerApi } from "./CompilerApi";
-import { assertNever } from "../utils";
+import { CompilerPackageNames, CompilerVersions } from "./compilerVersions.generated.js";
+import { Node, CompilerApi } from "./CompilerApi.js";
+import { assertNever } from "../utils/index.js";
 
 export async function importCompilerApi(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
@@ -19,7 +19,7 @@ export async function importLibFiles(packageName: CompilerPackageNames) {
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
-            return await import("../resources/libFiles/typescript/index");
+            return await import("../resources/libFiles/typescript/index.js");
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -31,7 +31,7 @@ export async function getGenerateFactoryCodeFunction(packageName: CompilerPackag
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
-            return (await import("../resources/factoryCode/typescript")).generateFactoryCode as any;
+            return (await import("../resources/factoryCode/typescript.generated.js")).generateFactoryCode as any;
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }
@@ -48,7 +48,7 @@ export async function getPublicApiInfo(packageName: CompilerPackageNames): Promi
     // these explicit import statements are required to get webpack to include these modules
     switch (packageName) {
         case "typescript":
-            return (await import("../resources/publicApiInfo/typescript"));
+            return (await import("../resources/publicApiInfo/typescript.generated.js"));
         default:
             return assertNever(packageName, `Not implemented version: ${packageName}`);
     }

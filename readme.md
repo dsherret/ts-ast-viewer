@@ -6,15 +6,17 @@ Source code for https://ts-ast-viewer.com
 
 ## Developing
 
+Install [Deno](https://deno.com) (this currently requires `canary`—run `deno upgrade --canary`) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+
 ```
-# install
+# install packages
 npm install
 
 # run locally
-npm run dev
+deno task dev
 
 # run unit tests
-npm run test
+deno task test
 ```
 
 ### Factory Code Generation

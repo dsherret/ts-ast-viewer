@@ -1,4 +1,4 @@
-import { Theme, TreeMode } from "../types";
+import { Theme, TreeMode } from "../types/index.js";
 
 export interface VersionedState {
   version: 1 | 2 | 3 | 4;
@@ -20,7 +20,7 @@ export class StateSaver {
   static _stateKey = "tsSimpleAst_savedState"; // accidentally used name... oh well..
   private _cachedState: SavedState | undefined = undefined;
 
-  constructor(private readonly localStorage: LocalStorage = window.localStorage) {
+  constructor(private readonly localStorage: LocalStorage = globalThis.localStorage) {
   }
 
   private get defaultState(): SavedState {

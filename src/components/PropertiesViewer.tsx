@@ -13,14 +13,14 @@ import {
   Symbol,
   Type,
   TypeChecker,
-} from "../compiler";
-import { BindingTools, CompilerState } from "../types";
-import { enumUtils, getSyntaxKindName } from "../utils";
-import { ErrorBoundary } from "./ErrorBoundary";
-import { FlowNodeGraph } from "./FlowNodeGraph";
-import { LazyTreeView } from "./LazyTreeView";
-import { Spinner } from "./Spinner";
-import { ToolTippedText } from "./ToolTippedText";
+} from "../compiler/index.js";
+import { BindingTools, CompilerState } from "../types/index.js";
+import { enumUtils, getSyntaxKindName } from "../utils/index.js";
+import { ErrorBoundary } from "./ErrorBoundary.js";
+import { FlowNodeGraph } from "./FlowNodeGraph.js";
+import { LazyTreeView } from "./LazyTreeView.js";
+import { Spinner } from "./Spinner.js";
+import { ToolTippedText } from "./ToolTippedText.js";
 
 export interface PropertiesViewerProps {
   compiler: CompilerState;
