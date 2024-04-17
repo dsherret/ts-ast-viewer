@@ -12,7 +12,11 @@ export function LazyTreeView(props: LazyTreeViewProps) {
 
   const label = <span className="treeViewLabel" onClick={toggleState}>{props.nodeLabel}</span>;
 
-  return <TreeView nodeLabel={label} collapsed={isCollapsed} onClick={toggleState}>{isCollapsed ? undefined : props.getChildren()}</TreeView>;
+  return (
+    <TreeView nodeLabel={label} collapsed={isCollapsed} onClick={toggleState}>
+      {isCollapsed ? undefined : props.getChildren()}
+    </TreeView>
+  );
 
   function toggleState() {
     setIsCollapsed(!isCollapsed);

@@ -40,7 +40,7 @@ export function TreeViewer(props: TreeViewerProps) {
       return (
         <div data-name={kindName} key={i++}>
           <TreeView nodeLabel={label}>
-            {children.map(n => renderNode(n, getChildren))}
+            {children.map((n) => renderNode(n, getChildren))}
           </TreeView>
         </div>
       );

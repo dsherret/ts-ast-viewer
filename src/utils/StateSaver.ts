@@ -75,8 +75,8 @@ export class StateSaver {
       return false;
     }
     if (
-      data.treeMode !== TreeMode.forEachChild
-      && data.treeMode !== TreeMode.getChildren
+      data.treeMode !== TreeMode.forEachChild &&
+      data.treeMode !== TreeMode.getChildren
     ) {
       return false;
     }

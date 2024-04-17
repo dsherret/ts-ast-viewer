@@ -12,7 +12,9 @@
     ]
   },
   "fmt": {
+    "lineWidth": 120,
     "exclude": [
+      "src/resources",
       "**/*.generated.ts"
     ]
   },

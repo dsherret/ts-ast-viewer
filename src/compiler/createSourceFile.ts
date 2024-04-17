@@ -1,5 +1,14 @@
 import { assertNever } from "../utils/index.js";
-import { CompilerApi, CompilerHost, CompilerOptions, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "./CompilerApi.js";
+import {
+  CompilerApi,
+  CompilerHost,
+  CompilerOptions,
+  Program,
+  ScriptKind,
+  ScriptTarget,
+  SourceFile,
+  TypeChecker,
+} from "./CompilerApi.js";
 
 export function createSourceFile(api: CompilerApi, code: string, scriptTarget: ScriptTarget, scriptKind: ScriptKind) {
   const filePath = `/ts-ast-viewer${getExtension(api, scriptKind)}`;
@@ -17,8 +26,16 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
   }
 
   function getBindingResult() {
-    const options: CompilerOptions = { strict: true, target: scriptTarget, allowJs: true, module: api.ModuleKind.ES2015 };
-    const files: { [name: string]: SourceFile | undefined } = { [filePath]: sourceFile, ...api.tsAstViewer.cachedSourceFiles };
+    const options: CompilerOptions = {
+      strict: true,
+      target: scriptTarget,
+      allowJs: true,
+      module: api.ModuleKind.ES2015,
+    };
+    const files: { [name: string]: SourceFile | undefined } = {
+      [filePath]: sourceFile,
+      ...api.tsAstViewer.cachedSourceFiles,
+    };
 
     const compilerHost: CompilerHost = {
       getSourceFile: (fileName: string, _languageVersion: ScriptTarget, _onError?: (message: string) => void) => {

@@ -44,20 +44,20 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     this.editorDidMount = this.editorDidMount.bind(this);
 
     const reactMonacoEditorPromise = import("react-monaco-editor");
-    import("monaco-editor").then(monacoEditor => {
+    import("monaco-editor").then((monacoEditor) => {
       monacoEditor.languages.typescript.typescriptDefaults.setCompilerOptions({
         target: monacoEditor.languages.typescript.ScriptTarget.ESNext,
         allowNonTsExtensions: true,
       });
 
-      reactMonacoEditorPromise.then(editor => {
+      reactMonacoEditorPromise.then((editor) => {
         // types are wrong for this package
         this.setState({ editorComponent: (editor.default as any) });
-      }).catch(err => {
+      }).catch((err) => {
         console.error(err);
         this.setState({ editorComponent: false });
       });
-    }).catch(err => {
+    }).catch((err) => {
       console.error(err);
       this.setState({ editorComponent: false });
     });
@@ -162,7 +162,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         value={this.props.text}
         theme={this.props.theme == "dark" ? "vs-dark" : "vs"}
         language="typescript"
-        onChange={text => this.props.onChange && this.props.onChange(text)}
+        onChange={(text) => this.props.onChange && this.props.onChange(text)}
         editorDidMount={this.editorDidMount}
         options={{
           automaticLayout: false,
@@ -185,7 +185,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     // use lf newlines
     editor.getModel()?.setEOL(monaco.editor.EndOfLineSequence.LF);
 
-    this.disposables.push(editor.onDidChangeCursorPosition(e => {
+    this.disposables.push(editor.onDidChangeCursorPosition((e) => {
       const editorModel = editor.getModel();
       if (editorModel == null) {
         return;
@@ -197,7 +197,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         column: e.position.column,
       });
     }));
-    this.disposables.push(editor.onMouseDown(e => {
+    this.disposables.push(editor.onMouseDown((e) => {
       if (e.target == null || e.target.range == null || this.props.onClick == null) {
         return;
       }

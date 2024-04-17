@@ -14,7 +14,7 @@ export class LineAndColumnComputer {
       return { lineNumber: 1, column: 1 };
     }
 
-    const index = arrayUtils.binarySearch(this.lineInfos, info => {
+    const index = arrayUtils.binarySearch(this.lineInfos, (info) => {
       if (pos < info.pos) {
         return -1;
       }

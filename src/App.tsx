@@ -17,7 +17,7 @@ export function App() {
         <components.Options
           api={compiler == null ? undefined : compiler.api}
           options={state.options}
-          onChange={options =>
+          onChange={(options) =>
             dispatch({
               type: "SET_OPTIONS",
               options,
@@ -77,8 +77,8 @@ export function App() {
       return (
         <components.CodeEditor
           id="codeEditor"
-          onChange={code => dispatch({ type: "SET_CODE", code })}
-          onClick={range => {
+          onChange={(code) => dispatch({ type: "SET_CODE", code })}
+          onClick={(range) => {
             if (compiler == null) {
               return;
             }
@@ -116,7 +116,7 @@ export function App() {
               api={compiler.api}
               selectedNode={compiler.selectedNode}
               sourceFile={compiler.sourceFile}
-              onSelectNode={node => dispatch({ type: "SET_SELECTED_NODE", node })}
+              onSelectNode={(node) => dispatch({ type: "SET_SELECTED_NODE", node })}
               mode={state.options.treeMode}
             />
           </components.ErrorBoundary>

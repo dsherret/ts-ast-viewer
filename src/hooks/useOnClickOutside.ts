@@ -1,6 +1,9 @@
 import { useCallback, useEffect } from "react";
 
-export function useOnClickOutside(ref: React.RefObject<HTMLElement>, handler: (event: MouseEvent | TouchEvent) => void) {
+export function useOnClickOutside(
+  ref: React.RefObject<HTMLElement>,
+  handler: (event: MouseEvent | TouchEvent) => void,
+) {
   const memoizedHandler = useCallback(handler, [handler]);
 
   useEffect(() => {

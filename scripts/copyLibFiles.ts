@@ -28,12 +28,12 @@ for (const version of versions) {
     const fileText = fs.readFileSync(filePath).toString("utf8");
     fs.writeFileSync(
       newFilePath,
-      `const fileData = {\n`
-        + `    fileName: \`/${path.basename(filePath)}\`,\n`
-        + `    // File text is copyright Microsoft Corporation and is distributed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)\n`
-        + `    text: \"${minifier.minify(fileText).replace(/\r?\n/g, "\\n").replace(/"/g, "\\\"")}\"\n`
-        + `};\n\n`
-        + `export default fileData;`,
+      `const fileData = {\n` +
+        `    fileName: \`/${path.basename(filePath)}\`,\n` +
+        `    // File text is copyright Microsoft Corporation and is distributed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)\n` +
+        `    text: \"${minifier.minify(fileText).replace(/\r?\n/g, "\\n").replace(/"/g, '\\"')}\"\n` +
+        `};\n\n` +
+        `export default fileData;`,
       { encoding: "utf8" },
     );
   }
@@ -41,8 +41,8 @@ for (const version of versions) {
   fs.writeFileSync(
     libVersionDir + "index.ts",
     filePaths
-      .map(p => path.basename(p, ".d.ts"))
-      .map((p, i) => "export { default as export" + i + " } from \"./" + p + ".js\";").join("\n") + "\n",
+      .map((p) => path.basename(p, ".d.ts"))
+      .map((p, i) => "export { default as export" + i + ' } from "./' + p + '.js";').join("\n") + "\n",
     { encoding: "utf8" },
   );
 }

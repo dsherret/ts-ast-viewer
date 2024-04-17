@@ -1,6 +1,12 @@
 import React, { useEffect, useReducer } from "react";
 import * as actions from "./actions/index.js";
-import { compilerVersionCollection, getCompilerApi, hasLoadedCompilerApi, ScriptKind, ScriptTarget } from "./compiler/index.js";
+import {
+  compilerVersionCollection,
+  getCompilerApi,
+  hasLoadedCompilerApi,
+  ScriptKind,
+  ScriptTarget,
+} from "./compiler/index.js";
 import { CodeEditorTheme } from "./components/index.js";
 import { appReducer, deriveEditorTheme } from "./reducers/index.js";
 import { ApiLoadingState, StoreState } from "./types/index.js";
@@ -80,7 +86,13 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
         }
       }
     }
-  }, [state.code, state.options.scriptKind, state.options.scriptTarget, state.options.compilerPackageName, state.options.bindingEnabled]);
+  }, [
+    state.code,
+    state.options.scriptKind,
+    state.options.scriptTarget,
+    state.options.compilerPackageName,
+    state.options.bindingEnabled,
+  ]);
 
   useEffect(() => {
     const savedState = stateSaver.get();
@@ -109,7 +121,9 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       windowAny.typeChecker = bindingTools.typeChecker;
       windowAny.program = bindingTools.program;
       windowAny.type = tryGet(() => bindingTools.typeChecker.getTypeAtLocation(selectedNode));
-      windowAny.symbol = tryGet(() => (selectedNode as any).symbol || bindingTools.typeChecker.getSymbolAtLocation(selectedNode));
+      windowAny.symbol = tryGet(() =>
+        (selectedNode as any).symbol || bindingTools.typeChecker.getSymbolAtLocation(selectedNode)
+      );
       windowAny.signature = tryGet(() => bindingTools.typeChecker.getSignatureFromDeclaration(selectedNode as any));
     } else {
       windowAny.checker = undefined;

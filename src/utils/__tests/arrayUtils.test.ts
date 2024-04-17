@@ -3,7 +3,7 @@ import * as arrayUtils from "../arrayUtils.js";
 
 Deno.test("arrayUtils#binarySearch", async (t) => {
   function doTest(items: number[], value: number, expectedValue: number) {
-    const result = arrayUtils.binarySearch(items, v => {
+    const result = arrayUtils.binarySearch(items, (v) => {
       if (v > value) {
         return -1;
       } else if (v === value) {

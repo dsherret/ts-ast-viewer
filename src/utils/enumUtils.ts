@@ -2,13 +2,13 @@ import { partition } from "./arrayUtils.js";
 
 export function getNames(e: any) {
   return Object.keys(e)
-    .filter(k => typeof e[k] === "number") as string[];
+    .filter((k) => typeof e[k] === "number") as string[];
 }
 
 export function getValues<T extends number>(e: any) {
   return Object.keys(e)
-    .map(k => e[k])
-    .filter(v => typeof v === "number") as T[];
+    .map((k) => e[k])
+    .filter((v) => typeof v === "number") as T[];
 }
 
 export function getNamesForValues(e: any) {
@@ -22,14 +22,14 @@ export function getNamesForValues(e: any) {
     values[value].push(name);
   }
 
-  return Object.keys(values).map(key => ({
+  return Object.keys(values).map((key) => ({
     value: parseInt(key, 10),
     names: (values as any)[key] as string[],
   }));
 }
 
 export function getEnumFlagLines(enumObj: any, value: number): string[] | null {
-  const names = getNamesForValues(enumObj).filter(entry => entry.value & value);
+  const names = getNamesForValues(enumObj).filter((entry) => entry.value & value);
   if (names.length === 0) {
     return null;
   }
@@ -38,6 +38,6 @@ export function getEnumFlagLines(enumObj: any, value: number): string[] | null {
 
   return [...powersOfTwo, ...others].flatMap(({ value, names }) => {
     const power = Math.log2(value);
-    return names.map(name => Number.isInteger(power) ? `${name} (2 ^ ${power})` : name);
+    return names.map((name) => Number.isInteger(power) ? `${name} (2 ^ ${power})` : name);
   });
 }

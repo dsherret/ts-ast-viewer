@@ -27,7 +27,7 @@ function getFlagText(api: CompilerApi, flags: FlowFlags) {
     case FlowFlags.LoopLabel:
     case FlowFlags.Call:
     case FlowFlags.SwitchClause:
-      return enumUtils.getNamesForValues(api.FlowFlags).find(e => e.value === flags)!.names[0];
+      return enumUtils.getNamesForValues(api.FlowFlags).find((e) => e.value === flags)!.names[0];
   }
   const flagElements = enumUtils.getEnumFlagLines(api.FlowFlags, flags);
   const flagLines = flagElements ? flagElements.join("\\n") : String(flags);
@@ -51,8 +51,8 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode, darkMode: boolean)
   const nodeLines = [];
   const edgeLines = [];
 
-  const nodeProps = darkMode ? "color=\"white\" fontcolor=\"white\"" : "";
-  const edgeProps = darkMode ? "color=\"white\"" : "";
+  const nodeProps = darkMode ? 'color="white" fontcolor="white"' : "";
+  const edgeProps = darkMode ? 'color="white"' : "";
 
   const seen = new Set<FlowNode>();
   let fringe = [node];
@@ -80,7 +80,11 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode, darkMode: boolean)
     }
     parts.push(flagText);
     nodeLines.push(`${id} [shape=record ${nodeProps} label="{${parts.join("|")}}"];`);
-    const antecedents = "antecedent" in fn ? [fn.antecedent] : ("antecedents" in fn && fn.antecedents) ? fn.antecedents : [];
+    const antecedents = "antecedent" in fn
+      ? [fn.antecedent]
+      : ("antecedents" in fn && fn.antecedents)
+      ? fn.antecedents
+      : [];
     for (const antecedent of antecedents) {
       fringe.push(antecedent);
       const antId = idForNode(antecedent);
@@ -91,8 +95,8 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode, darkMode: boolean)
   return `digraph {
     bgcolor=transparent
     rankdir="BT";
-${nodeLines.map(line => "  " + line).join("\n")}
-${edgeLines.map(line => "  " + line).join("\n")}
+${nodeLines.map((line) => "  " + line).join("\n")}
+${edgeLines.map((line) => "  " + line).join("\n")}
 }`;
 }
 
