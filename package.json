@@ -5,6 +5,9 @@
   "type": "module",
   "author": "David Sherret",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "deno run --allow-read=. --allow-write=. scripts/patchPackage.ts"
+  },
   "dependencies": {
     "@viz-js/viz": "^3.3.1",
     "allotment": "^1.20.0",
