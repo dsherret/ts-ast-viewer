@@ -21,9 +21,9 @@ async function getTypeScriptVersionsToInstall() {
   // get the highest version for each minor
   for (const version of versions) {
     if (
-      version == null
-      || version.prerelease.length > 0
-      || version.build.length > 0
+      version == null ||
+      version.prerelease.length > 0 ||
+      version.build.length > 0
     ) {
       continue;
     }
@@ -34,12 +34,12 @@ async function getTypeScriptVersionsToInstall() {
   }
   const finalVersions = Object.values(highestMinors).sort(semver.compare);
   // select the most recent 9 versions
-  return finalVersions.slice(-9).map(v => semver.format(v));
+  return finalVersions.slice(-9).map((v) => semver.format(v));
 }
 
 async function getAllTypeScriptVersions() {
   // { "x.x.x": "time", ... }
   const data = await $`npm show typescript time --json`.json();
   const versions = Object.keys(data);
-  return versions.filter(v => semver.canParse(v)).map(v => semver.parse(v)).sort(semver.compare);
+  return versions.filter((v) => semver.canParse(v)).map((v) => semver.parse(v)).sort(semver.compare);
 }

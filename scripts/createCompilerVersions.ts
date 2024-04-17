@@ -14,7 +14,7 @@ const compilerVersionsFile = project.addSourceFileAtPath(
 compilerVersionsFile.removeText();
 
 compilerVersionsFile.addStatements([(writer) => {
-  writer.writeLine("// deno-ignore-file")
+  writer.writeLine("// deno-fmt-ignore-file")
     .writeLine("/* Automatically maintained from package.json. Do not edit! */")
     .blankLine();
 }, {
@@ -61,7 +61,7 @@ const compilerTypesFile = project.addSourceFileAtPath(
 compilerTypesFile.removeText();
 
 compilerTypesFile.addStatements([(writer) => {
-  writer.writeLine("// deno-ignore-file")
+  writer.writeLine("// deno-fmt-ignore-file")
     .writeLine("/* Automatically maintained from package.json. Do not edit! */")
     .blankLine();
 }, {

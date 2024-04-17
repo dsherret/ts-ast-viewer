@@ -18,9 +18,9 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
   useEffect(() => {
     setFactoryCodeGenerator(undefined);
 
-    getFactoryCodeGenerator(props.compiler.packageName).then(factoryCodeGenerator => {
+    getFactoryCodeGenerator(props.compiler.packageName).then((factoryCodeGenerator) => {
       setFactoryCodeGenerator(new Box(factoryCodeGenerator));
-    }).catch(err => {
+    }).catch((err) => {
       console.error(err);
       setFactoryCodeGenerator(false);
     });

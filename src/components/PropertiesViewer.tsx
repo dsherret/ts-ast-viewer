@@ -37,9 +37,9 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
   useEffect(() => {
     setPublicApiInfo(undefined);
 
-    getPublicApiInfo(props.compiler.packageName).then(publicApiInfo => {
+    getPublicApiInfo(props.compiler.packageName).then((publicApiInfo) => {
       setPublicApiInfo(publicApiInfo);
-    }).catch(err => {
+    }).catch((err) => {
       console.error(err);
       setPublicApiInfo(false);
     });
@@ -101,7 +101,13 @@ function getBindingSection(context: Context, selectedNode: Node, typeChecker: Ty
 }
 
 function getForSelectedNode(context: Context, selectedNode: Node) {
-  return <LazyTreeView nodeLabel={getSyntaxKindName(context.api, selectedNode.kind)} defaultCollapsed={false} getChildren={getChildren} />;
+  return (
+    <LazyTreeView
+      nodeLabel={getSyntaxKindName(context.api, selectedNode.kind)}
+      defaultCollapsed={false}
+      getChildren={getChildren}
+    />
+  );
 
   function getChildren() {
     const { sourceFile } = context;
@@ -111,13 +117,19 @@ function getForSelectedNode(context: Context, selectedNode: Node) {
         {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
         {getMethodElement("getFullStart()", getPositionElement(sourceFile, selectedNode.getFullStart()))}
         {getMethodElement("getStart()", getPositionElement(sourceFile, selectedNode.getStart(sourceFile)))}
-        {getMethodElement("getStart(sourceFile, true)", getPositionElement(sourceFile, getStartSafe(selectedNode, sourceFile)))}
+        {getMethodElement(
+          "getStart(sourceFile, true)",
+          getPositionElement(sourceFile, getStartSafe(selectedNode, sourceFile)),
+        )}
         {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
         {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
         {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
         {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
         {/* Need to do this because internally typescript doesn't pass the sourceFile to getStart() in TokenOrIdentifierObject (bug in ts I need to report...) */}
-        {getMethodElement("getText()", sourceFile.text.substring(selectedNode.getStart(context.sourceFile), selectedNode.getEnd()))}
+        {getMethodElement(
+          "getText()",
+          sourceFile.text.substring(selectedNode.getStart(context.sourceFile), selectedNode.getEnd()),
+        )}
         {/* comments */}
         {getForCommentRanges(
           `ts.getLeadingCommentRanges(fileFullText, ${selectedNode.getFullStart()})`,
@@ -169,7 +181,9 @@ function getForType(context: Context, node: Node, typeChecker: TypeChecker) {
 }
 
 function getForSymbol(context: Context, node: Node, typeChecker: TypeChecker) {
-  const symbol = getOrReturnError(() => ((node as any).symbol as Symbol | undefined) || typeChecker.getSymbolAtLocation(node));
+  const symbol = getOrReturnError(() =>
+    ((node as any).symbol as Symbol | undefined) || typeChecker.getSymbolAtLocation(node)
+  );
   if (symbol == null) {
     return <>[None]</>;
   }
@@ -232,7 +246,7 @@ function getProperties(context: Context, obj: any) {
 
   const values = (
     <>
-      {keyInfo.map(info => {
+      {keyInfo.map((info) => {
         const element = getNodeKeyValue(info.key, info.value, obj);
         if (info.permission === "internal") {
           return (
@@ -387,7 +401,14 @@ function getTreeNode(context: Context, value: any, key?: string, index?: number)
   if (typeof value === "boolean") {
     return getTextDiv(key, value.toString());
   }
-  return <LazyTreeView nodeLabel={key} key={index} defaultCollapsed={true} getChildren={() => getProperties(context, value)} />;
+  return (
+    <LazyTreeView
+      nodeLabel={key}
+      key={index}
+      defaultCollapsed={true}
+      getChildren={() => getProperties(context, value)}
+    />
+  );
 
   function getKey() {
     if (key == null) {
@@ -447,12 +468,12 @@ function getObjectKeyInfo(context: Context, obj: any) {
     return [];
   }
   return Object.keys(obj)
-    .map(key => ({
+    .map((key) => ({
       key,
       permission: getKeyPermission(context, obj, key),
       value: obj[key],
     }))
-    .filter(kv => {
+    .filter((kv) => {
       if (kv.permission === false) {
         return false;
       }
@@ -494,8 +515,8 @@ function getKeyPermission(context: Context, obj: any, key: string): true | false
 }
 
 function isMap(value: any): value is ReadonlyMap<string, unknown> {
-  return typeof value.keys === "function"
-    && typeof value.values === "function";
+  return typeof value.keys === "function" &&
+    typeof value.values === "function";
 }
 
 function isTsNode(value: any): value is Node {

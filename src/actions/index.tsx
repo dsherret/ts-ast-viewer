@@ -72,4 +72,10 @@ export function osThemeChange(): OsThemeChange {
   };
 }
 
-export type AllActions = SetCode | SetApiLoadingState | RefreshSourceFile | SetSelectedNode | SetOptions | OsThemeChange;
+export type AllActions =
+  | SetCode
+  | SetApiLoadingState
+  | RefreshSourceFile
+  | SetSelectedNode
+  | SetOptions
+  | OsThemeChange;

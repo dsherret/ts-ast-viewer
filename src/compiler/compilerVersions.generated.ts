@@ -1,4 +1,4 @@
-// deno-ignore-file
+// deno-fmt-ignore-file
 /* Automatically maintained from package.json. Do not edit! */
 
 export type CompilerPackageNames = "typescript";

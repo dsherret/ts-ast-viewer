@@ -18,7 +18,7 @@ export function getChildrenFunction(mode: TreeMode, sourceFile: SourceFile) {
 
   function forEachChild(node: Node) {
     const nodes: Node[] = [];
-    node.forEachChild(child => {
+    node.forEachChild((child) => {
       nodes.push(child);
       return undefined;
     });

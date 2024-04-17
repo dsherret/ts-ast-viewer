@@ -1,4 +1,13 @@
-import { CompilerApi, CompilerPackageNames, Node, Program, ScriptKind, ScriptTarget, SourceFile, TypeChecker } from "../compiler/index.js";
+import {
+  CompilerApi,
+  CompilerPackageNames,
+  Node,
+  Program,
+  ScriptKind,
+  ScriptTarget,
+  SourceFile,
+  TypeChecker,
+} from "../compiler/index.js";
 
 export interface StoreState {
   code: string;

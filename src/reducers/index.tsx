@@ -8,7 +8,10 @@ import { UrlSaver } from "../utils/index.js";
 
 const urlSaver = new UrlSaver();
 
-export function appReducer(state: StoreState & { editorTheme: CodeEditorTheme }, action: AllActions): StoreState & { editorTheme: CodeEditorTheme } {
+export function appReducer(
+  state: StoreState & { editorTheme: CodeEditorTheme },
+  action: AllActions,
+): StoreState & { editorTheme: CodeEditorTheme } {
   switch (action.type) {
     case actionNames.SET_SELECTED_NODE: {
       if (state.compiler == null) {
@@ -76,7 +79,13 @@ export function deriveEditorTheme(theme: Theme): CodeEditorTheme {
   }
 }
 
-function fillNewSourceFileState(compilerPackageName: CompilerPackageNames, api: CompilerApi, state: StoreState, code: string, options: OptionsState) {
+function fillNewSourceFileState(
+  compilerPackageName: CompilerPackageNames,
+  api: CompilerApi,
+  state: StoreState,
+  code: string,
+  options: OptionsState,
+) {
   const { sourceFile, bindingTools } = createSourceFile(api, code, options.scriptTarget, options.scriptKind);
   state.compiler = {
     packageName: compilerPackageName,

@@ -6,7 +6,8 @@ Source code for https://ts-ast-viewer.com
 
 ## Developing
 
-Install [Deno](https://deno.com) (this currently requires `canary`—run `deno upgrade --canary`) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+Install [Deno](https://deno.com) (this currently requires `canary`—run `deno upgrade --canary`) and
+[npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 ```
 # install packages
@@ -21,4 +22,5 @@ deno task test
 
 ### Factory Code Generation
 
-The code that code generates the factory code is automatically maintained by [ts-factory-code-generator-generator](https://github.com/dsherret/ts-factory-code-generator-generator/).
+The code that code generates the factory code is automatically maintained by
+[ts-factory-code-generator-generator](https://github.com/dsherret/ts-factory-code-generator-generator/).
