@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "DENO_V8_FLAGS=--max_old_space_size=10240 vite build && cp CNAME .nojekyll dist/",
     "format": "dprint fmt",
-    "check": "DENO_DISABLE_PEDANTIC_NODE_WARNINGS=1 deno check src/main.tsx",
+    "check": "DENO_DISABLE_PEDANTIC_NODE_WARNINGS=1 deno check src/main.tsx vite.config.ts",
     "test": "deno test",
     "predeploy": "deno task build",
     "preview": "vite preview",
@@ -42,11 +42,11 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "@types/react-treeview": "^0.4.3",
-    "@vitejs/plugin-react": "^2.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "glob": "^10.3.10",
     "ts-factory-code-generator-generator": "^0.7.0",
     "typescript": "5.0.2",
-    "vite": "^3.2.4",
+    "vite": "^5.2.9",
     "vite-plugin-monaco-editor": "^1.1.0"
   }
 }
