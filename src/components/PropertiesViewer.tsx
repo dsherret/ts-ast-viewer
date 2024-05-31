@@ -457,7 +457,7 @@ function getLabelName(context: Context, obj: any) {
         return name.getText();
       }
       return undefined;
-    } catch (err) {
+    } catch (_err) {
       return undefined;
     }
   }

@@ -137,7 +137,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     function tryGet<T>(getValue: () => T) {
       try {
         return getValue();
-      } catch (err) {
+      } catch (_err) {
         return undefined;
       }
     }

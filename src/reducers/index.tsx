@@ -61,8 +61,7 @@ export function appReducer(
       };
     }
     default: {
-      // eslint-disable-next-line
-      const assertNever: never = action;
+      const _assertNever: never = action;
       return state;
     }
   }
