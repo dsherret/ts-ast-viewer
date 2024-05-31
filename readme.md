@@ -6,12 +6,14 @@ Source code for https://ts-ast-viewer.com
 
 ## Developing
 
-Install [Deno](https://deno.com) (this currently requires `canary`—run `deno upgrade --canary`) and
-[npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+Install [Deno](https://deno.com) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 ```
+# setup your environment for the upcoming Deno 2.0
+export DENO_FUTURE=1
+
 # install packages
-npm install
+deno install
 
 # run locally
 deno task dev
