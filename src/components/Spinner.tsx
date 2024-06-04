@@ -1,8 +1,7 @@
 import React from "react";
 import { BeatLoader } from "react-spinners";
 
-export function Spinner(props: { backgroundColor?: string }) {
-  const { backgroundColor } = props;
+export function Spinner() {
   return (
     <div
       className={"verticallyCenter horizontallyCenter fillHeight"}
