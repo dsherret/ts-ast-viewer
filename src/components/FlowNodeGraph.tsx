@@ -81,7 +81,7 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode, darkMode: boolean)
     parts.push(flagText);
     nodeLines.push(`${id} [shape=record ${nodeProps} label="{${parts.join("|")}}"];`);
     const antecedents = "antecedent" in fn && fn.antecedent != null
-      ? [fn.antecedent]
+      ? Array.isArray(fn.antecedent) ? fn.antecedent : [fn.antecedent]
       : ("antecedents" in fn && fn.antecedents)
       ? fn.antecedents
       : [];
