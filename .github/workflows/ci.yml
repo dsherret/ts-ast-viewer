@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  DENO_FUTURE: 1
+
 on:
   push:
   pull_request:
@@ -15,8 +18,8 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: canary
-      - name: npm install
-        run: npm ci
+      - name: Install packages
+        run: deno install
       - name: Lint
         run: deno lint
       - uses: dprint/check@v2.2
