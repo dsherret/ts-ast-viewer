@@ -11,7 +11,7 @@ await npmInstallTypeScriptVersion("next");
 
 async function npmInstallTypeScriptVersion(version: string) {
   console.log(`Installing Typescript ${version}...`);
-  await $`deno install typescript-${version}@npm:typescript@${version}`
+  await $`npm add typescript-${version}@npm:typescript@${version}`
     .cwd(path.resolve(import.meta.dirname, "../"));
 }
 

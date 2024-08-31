@@ -15,8 +15,8 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: canary
-      - name: Install packages
-        run: deno install
+      - name: npm install
+        run: npm ci
       - name: Lint
         run: deno lint
       - uses: dprint/check@v2.2
