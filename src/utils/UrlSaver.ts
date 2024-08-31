@@ -22,7 +22,7 @@ export class UrlSaver {
     }
 
     function updateLocationHash(locationHash: string) {
-      window.history.replaceState(undefined, "", `#${locationHash}`);
+      history.replaceState(undefined, "", `#${locationHash}`);
     }
   }
 }
