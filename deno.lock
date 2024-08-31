@@ -5,15 +5,17 @@
     "jsr:@david/dts-minify@~0.3.3": "0.3.3",
     "jsr:@david/which@0.3": "0.3.0",
     "jsr:@std/assert@0.221": "0.221.0",
+    "jsr:@std/assert@^1.0.3": "1.0.3",
     "jsr:@std/bytes@0.221": "0.221.0",
-    "jsr:@std/expect@0.221": "0.221.0",
+    "jsr:@std/expect@1": "1.0.1",
     "jsr:@std/fmt@0.221": "0.221.0",
     "jsr:@std/fs@0.221.0": "0.221.0",
+    "jsr:@std/internal@^1.0.2": "1.0.2",
     "jsr:@std/io@0.221": "0.221.0",
     "jsr:@std/io@0.221.0": "0.221.0",
     "jsr:@std/path@0.221": "0.221.0",
     "jsr:@std/path@0.221.0": "0.221.0",
-    "jsr:@std/semver@0.221": "0.221.0",
+    "jsr:@std/semver@1": "1.0.2",
     "jsr:@std/streams@0.221.0": "0.221.0",
     "npm:@types/circular-json@0.4": "0.4.0",
     "npm:@types/inline-style-prefixer@5": "5.0.3",
@@ -65,14 +67,20 @@
         "jsr:@std/fmt"
       ]
     },
+    "@std/assert@1.0.3": {
+      "integrity": "b0d03ce1ced880df67132eea140623010d415848df66f6aa5df76507ca7c26d8",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
     "@std/bytes@0.221.0": {
       "integrity": "64a047011cf833890a4a2ab7293ac55a1b4f5a050624ebc6a0159c357de91966"
     },
-    "@std/expect@0.221.0": {
-      "integrity": "9b157d134c56cda134d7a5b054279a6b2204eb37875c83bdb5d8a8ba327a7a48",
+    "@std/expect@1.0.1": {
+      "integrity": "44075d9c2cb701ddfc4d5a260da2fb26ba3cfd94c45d3a0359f63cabbf85a058",
       "dependencies": [
-        "jsr:@std/assert",
-        "jsr:@std/fmt"
+        "jsr:@std/assert@^1.0.3",
+        "jsr:@std/internal"
       ]
     },
     "@std/fmt@0.221.0": {
@@ -81,25 +89,28 @@
     "@std/fs@0.221.0": {
       "integrity": "028044450299de8ed5a716ade4e6d524399f035513b85913794f4e81f07da286",
       "dependencies": [
-        "jsr:@std/assert",
+        "jsr:@std/assert@0.221",
         "jsr:@std/path@0.221"
       ]
+    },
+    "@std/internal@1.0.2": {
+      "integrity": "f4cabe2021352e8bfc24e6569700df87bf070914fc38d4b23eddd20108ac4495"
     },
     "@std/io@0.221.0": {
       "integrity": "faf7f8700d46ab527fa05cc6167f4b97701a06c413024431c6b4d207caa010da",
       "dependencies": [
-        "jsr:@std/assert",
+        "jsr:@std/assert@0.221",
         "jsr:@std/bytes"
       ]
     },
     "@std/path@0.221.0": {
       "integrity": "0a36f6b17314ef653a3a1649740cc8db51b25a133ecfe838f20b79a56ebe0095",
       "dependencies": [
-        "jsr:@std/assert"
+        "jsr:@std/assert@0.221"
       ]
     },
-    "@std/semver@0.221.0": {
-      "integrity": "836a446cd1d054d08c7498c243199ddf0b604740d72dec56df96e2833413f039"
+    "@std/semver@1.0.2": {
+      "integrity": "1e5fd337c687ca64c0809253eca4d4815874ced59b04f0882da5ff9a302f8129"
     },
     "@std/streams@0.221.0": {
       "integrity": "47f2f74634b47449277c0ee79fe878da4424b66bd8975c032e3afdca88986e61",
@@ -1169,8 +1180,8 @@
     "dependencies": [
       "jsr:@david/dax@0.40",
       "jsr:@david/dts-minify@~0.3.3",
-      "jsr:@std/expect@0.221",
-      "jsr:@std/semver@0.221"
+      "jsr:@std/expect@1",
+      "jsr:@std/semver@1"
     ],
     "packageJson": {
       "dependencies": [
