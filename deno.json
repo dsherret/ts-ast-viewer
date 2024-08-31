@@ -43,7 +43,6 @@
     "dist"
   ],
   "unstable": [
-    "byonm",
     "sloppy-imports",
     "bare-node-builtins",
     "unsafe-proto"
