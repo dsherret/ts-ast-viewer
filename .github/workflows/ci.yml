@@ -1,8 +1,5 @@
 name: CI
 
-env:
-  DENO_FUTURE: 1
-
 on:
   push:
   pull_request:

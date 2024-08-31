@@ -9,9 +9,6 @@ Source code for https://ts-ast-viewer.com
 Install [Deno](https://deno.com) canary (`deno upgrade --canary`).
 
 ```
-# setup your environment for the upcoming Deno 2.0
-export DENO_FUTURE=1
-
 # install packages
 deno install
 
