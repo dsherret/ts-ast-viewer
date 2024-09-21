@@ -22,7 +22,7 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren<Error
     this.state = { hasError: false };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
+  override componentDidCatch(error: any, errorInfo: any) {
     this.setState({ hasError: true, error, errorInfo });
     console.error(error);
     if (this.props.getResetHash != null) {
@@ -30,7 +30,7 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren<Error
     }
   }
 
-  render() {
+  override render() {
     if (this.getHasError()) {
       return (
         <div>

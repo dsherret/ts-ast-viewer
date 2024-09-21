@@ -63,7 +63,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     });
   }
 
-  render() {
+  override render() {
     this.updateHighlight();
 
     return (
@@ -84,7 +84,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     for (const disposable of this.disposables) {
       disposable.dispose();
     }
