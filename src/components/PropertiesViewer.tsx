@@ -1,5 +1,5 @@
 import CircularJson from "circular-json";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CommentRange,
   CompilerApi,
