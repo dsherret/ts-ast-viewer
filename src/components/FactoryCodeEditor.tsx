@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler/index.js";
 import { CompilerState } from "../types/index.js";
 import { Box } from "../utils/index.js";

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import TreeView from "react-treeview";
 import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler/index.js";
 import { TreeMode } from "../types/index.js";
