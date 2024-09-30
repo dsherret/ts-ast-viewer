@@ -66,7 +66,7 @@ function getDotForFlowGraph(api: CompilerApi, node: FlowNode, darkMode: boolean)
     const id = idForNode(fn);
 
     let nodeText = null;
-    if ("node" in fn && fn.node) {
+    if ("node" in fn && fn.node && typeof fn.node?.getText === "function") {
       nodeText = fn.node.getText();
       if (nodeText.length > 50) {
         nodeText = nodeText.slice(0, 45) + "…";
