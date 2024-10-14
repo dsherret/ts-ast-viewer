@@ -6,7 +6,7 @@ Source code for https://ts-ast-viewer.com
 
 ## Developing
 
-Install [Deno](https://deno.com) canary (`deno upgrade --canary`).
+Install [Deno](https://deno.com).
 
 ```
 # install packages
