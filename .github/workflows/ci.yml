@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: canary
-      - name: npm install
-        run: npm ci
+          deno-version: 2.x
+      - name: Install packages
+        run: deno install
       - name: Lint
         run: deno lint
       - uses: dprint/check@v2.2
