@@ -1,7 +1,7 @@
 import { useLayoutEffect } from "react";
 import TreeView from "react-treeview";
-import { CompilerApi, getChildrenFunction, Node, SourceFile } from "../compiler/index.js";
-import { TreeMode } from "../types/index.js";
+import { type CompilerApi, getChildrenFunction, type Node, type SourceFile } from "../compiler/index.js";
+import type { TreeMode } from "../types/index.js";
 import { getSyntaxKindName } from "../utils/index.js";
 
 export interface TreeViewerProps {
@@ -29,7 +29,7 @@ export function TreeViewer(props: TreeViewerProps) {
   }, [selectedNode]);
   return <div id="treeViewer">{renderNode(sourceFile, getChildrenFunction(mode, sourceFile))}</div>;
 
-  function renderNode(node: Node, getChildren: (node: Node) => Node[]): JSX.Element {
+  function renderNode(node: Node, getChildren: (node: Node) => readonly Node[]): JSX.Element {
     const children = getChildren(node);
     const className = "nodeText" + (node === selectedNode ? " selected" : "");
     const kindName = getSyntaxKindName(api, node.kind);

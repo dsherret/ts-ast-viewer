@@ -1,4 +1,4 @@
-import { Node, SourceFile } from "./CompilerApi.js";
+import type { Node, SourceFile } from "./CompilerApi.js";
 
 export function getStartSafe(node: Node, sourceFile: SourceFile) {
   // workaround for compiler api bug with getStart(sourceFile, true) (see PR #35029 in typescript repo)

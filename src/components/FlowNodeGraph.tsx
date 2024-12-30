@@ -1,9 +1,8 @@
-import { instance as vizJsInstance, Viz } from "@viz-js/viz";
+import { instance as vizJsInstance, type Viz } from "@viz-js/viz";
 import React from "react";
 
-import { FlowFlags, FlowNode } from "typescript";
 import { useAppContext } from "../AppContext.js";
-import { CompilerApi } from "../compiler/index.js";
+import type { CompilerApi, FlowFlags, FlowNode } from "../compiler/index.js";
 import { enumUtils } from "../utils/index.js";
 
 export interface FlowNodeGraphProps {
@@ -16,6 +15,7 @@ function quoted(txt: string): string {
 }
 
 function getFlagText(api: CompilerApi, flags: FlowFlags) {
+  const { FlowFlags } = api;
   // These are optimizations, not semantic flags.
   flags = flags & ~(FlowFlags.Shared | FlowFlags.Referenced);
   switch (flags) {

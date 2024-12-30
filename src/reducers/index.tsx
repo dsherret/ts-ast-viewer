@@ -1,8 +1,8 @@
-import { AllActions } from "../actions/index.js";
-import { CompilerApi, CompilerPackageNames, convertOptions, createSourceFile } from "../compiler/index.js";
-import { CodeEditorTheme } from "../components/index.js";
+import type { AllActions } from "../actions/index.js";
+import { type CompilerApi, type CompilerPackageNames, convertOptions, createSourceFile } from "../compiler/index.js";
+import type { CodeEditorTheme } from "../components/index.js";
 import { actions as actionNames } from "./../constants/index.js";
-import { OptionsState, StoreState } from "../types/index.js";
+import type { OptionsState, StoreState } from "../types/index.js";
 import { Theme } from "../types/index.js";
 import { UrlSaver } from "../utils/index.js";
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler/index.js";
-import { CompilerState } from "../types/index.js";
+import { type FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler/index.js";
+import type { CompilerState } from "../types/index.js";
 import { Box } from "../utils/index.js";
 import { CodeEditor } from "./CodeEditor.js";
 import { Spinner } from "./Spinner.js";

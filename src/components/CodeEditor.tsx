@@ -1,6 +1,6 @@
 import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
-import * as ReactMonacoEditorForTypes from "react-monaco-editor";
+import type * as ReactMonacoEditorForTypes from "react-monaco-editor";
 import type { EditorDidMount } from "react-monaco-editor";
 import { LineAndColumnComputer } from "../utils/index.js";
 import { Spinner } from "./Spinner.js";
@@ -170,7 +170,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
           minimap: { enabled: false },
           readOnly: this.props.readOnly,
           quickSuggestions: false,
-          occurrencesHighlight: false,
+          occurrencesHighlight: "off",
           selectionHighlight: false,
           codeLens: false,
           suggestOnTriggerCharacters: false,

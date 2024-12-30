@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react";
+import type React from "react";
+import { useRef, useState } from "react";
 import {
-  CompilerApi,
-  CompilerPackageNames,
+  type CompilerApi,
+  type CompilerPackageNames,
   compilerVersionCollection,
-  ScriptKind,
-  ScriptTarget,
+  type ScriptKind,
+  type ScriptTarget,
 } from "../compiler/index.js";
 import { useOnClickOutside } from "../hooks/index.js";
-import { OptionsState } from "../types/index.js";
-import { Theme, TreeMode } from "../types/index.js";
+import type { OptionsState } from "../types/index.js";
+import { type Theme, TreeMode } from "../types/index.js";
 import { enumUtils } from "../utils/index.js";
 import { ExternalLink } from "./ExternalLink.js";
 

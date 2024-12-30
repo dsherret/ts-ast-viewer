@@ -4,12 +4,12 @@ import {
   compilerVersionCollection,
   getCompilerApi,
   hasLoadedCompilerApi,
-  ScriptKind,
-  ScriptTarget,
+  type ScriptKind,
+  type ScriptTarget,
 } from "./compiler/index.js";
-import { CodeEditorTheme } from "./components/index.js";
+import type { CodeEditorTheme } from "./components/index.js";
 import { appReducer, deriveEditorTheme } from "./reducers/index.js";
-import { ApiLoadingState, StoreState } from "./types/index.js";
+import { ApiLoadingState, type StoreState } from "./types/index.js";
 import { sleep, StateSaver, UrlSaver } from "./utils/index.js";
 
 const initialScriptTarget: ScriptTarget = 99 /* Latest */;
