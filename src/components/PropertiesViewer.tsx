@@ -1,20 +1,20 @@
 import CircularJson from "circular-json";
 import { useEffect, useState } from "react";
 import {
-  CommentRange,
-  CompilerApi,
-  FlowNode,
+  type CommentRange,
+  type CompilerApi,
+  type FlowNode,
   getPublicApiInfo,
   getStartSafe,
-  Node,
-  PublicApiInfo,
-  Signature,
-  SourceFile,
-  Symbol,
-  Type,
-  TypeChecker,
+  type Node,
+  type PublicApiInfo,
+  type Signature,
+  type SourceFile,
+  type Symbol,
+  type Type,
+  type TypeChecker,
 } from "../compiler/index.js";
-import { BindingTools, CompilerState } from "../types/index.js";
+import type { BindingTools, CompilerState } from "../types/index.js";
 import { enumUtils, getSyntaxKindName } from "../utils/index.js";
 import { ErrorBoundary } from "./ErrorBoundary.js";
 import { FlowNodeGraph } from "./FlowNodeGraph.js";

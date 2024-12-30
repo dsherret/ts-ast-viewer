@@ -1,6 +1,6 @@
 import { importCompilerApi, importLibFiles } from "./compiler.generated.js";
-import { CompilerApi } from "./CompilerApi.js";
-import { CompilerPackageNames } from "./compilerVersions.generated.js";
+import type { CompilerApi } from "./CompilerApi.js";
+import type { CompilerPackageNames } from "./compilerVersions.generated.js";
 
 const compilerTypes: { [name: string]: Promise<CompilerApi> } = {};
 const compilerTypesLoaded: { [name: string]: true } = {};

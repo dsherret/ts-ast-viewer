@@ -1,5 +1,5 @@
 import { expect } from "@std/expect";
-import { createLineNumberAndColumns, LineNumberAndColumn } from "../createLineNumberAndColumns.js";
+import { createLineNumberAndColumns, type LineNumberAndColumn } from "../createLineNumberAndColumns.js";
 
 Deno.test("createLineNumberAndColumns", async (t) => {
   function doTest(text: string, expected: LineNumberAndColumn[]) {

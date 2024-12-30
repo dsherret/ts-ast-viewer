@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import { CompilerPackageNames } from "./compilerVersions.generated.js";
+import type * as ts from "typescript";
+import type { CompilerPackageNames } from "./compilerVersions.generated.js";
 
 export declare enum FlowFlags {
   TrueCondition,

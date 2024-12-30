@@ -1,6 +1,6 @@
 import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
-import * as ReactMonacoEditorForTypes from "react-monaco-editor";
+import type * as ReactMonacoEditorForTypes from "react-monaco-editor";
 import type { EditorDidMount } from "react-monaco-editor";
 import { LineAndColumnComputer } from "../utils/index.js";
 import { Spinner } from "./Spinner.js";

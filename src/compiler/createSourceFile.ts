@@ -1,5 +1,5 @@
 import { assertNever } from "../utils/index.js";
-import {
+import type {
   CompilerApi,
   CompilerHost,
   CompilerOptions,

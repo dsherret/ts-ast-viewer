@@ -1,4 +1,4 @@
-import { CompilerApi, SyntaxKind } from "../compiler/index.js";
+import type { CompilerApi, SyntaxKind } from "../compiler/index.js";
 
 export function getSyntaxKindName(api: CompilerApi, kind: SyntaxKind) {
   return getKindCacheForApi(api)[kind];

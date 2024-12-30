@@ -1,8 +1,8 @@
-import { instance as vizJsInstance, Viz } from "@viz-js/viz";
+import { instance as vizJsInstance, type Viz } from "@viz-js/viz";
 import React from "react";
 
 import { useAppContext } from "../AppContext.js";
-import { CompilerApi, FlowFlags, FlowNode } from "../compiler/index.js";
+import type { CompilerApi, FlowFlags, FlowNode } from "../compiler/index.js";
 import { enumUtils } from "../utils/index.js";
 
 export interface FlowNodeGraphProps {

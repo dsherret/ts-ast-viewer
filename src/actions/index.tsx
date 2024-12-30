@@ -1,6 +1,6 @@
-import { CompilerApi, Node } from "../compiler/index.js";
+import type { CompilerApi, Node } from "../compiler/index.js";
 import { actions as constants } from "../constants/index.js";
-import { ApiLoadingState, OptionsState } from "../types/index.js";
+import type { ApiLoadingState, OptionsState } from "../types/index.js";
 
 export interface SetCode {
   type: constants.SET_CODE;

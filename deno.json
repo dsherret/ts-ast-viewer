@@ -20,6 +20,7 @@
   },
   "lint": {
     "rules": {
+      "include": ["verbatim-module-syntax"],
       "exclude": ["no-explicit-any", "no-sloppy-imports"]
     },
     "exclude": [

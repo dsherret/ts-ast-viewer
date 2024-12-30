@@ -1,6 +1,6 @@
 import { expect } from "@std/expect";
 import { Theme } from "../types/index.js";
-import { CompilerApi } from "./CompilerApi.js";
+import type { CompilerApi } from "./CompilerApi.js";
 import { convertOptions } from "./convertOptions.js";
 
 function getCompilerApi(scriptKind: any, scriptTarget: any) {
