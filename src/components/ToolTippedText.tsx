@@ -1,4 +1,5 @@
-import type React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 
 export interface ToolTippedTextProps {
   text: string;
