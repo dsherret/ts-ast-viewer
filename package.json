@@ -12,15 +12,15 @@
     "@viz-js/viz": "^3.3.1",
     "allotment": "^1.20.0",
     "circular-json": "^0.5.9",
-    "code-block-writer": "^13.0.2",
+    "code-block-writer": "^13.0.3",
     "lz-string": "^1.4.4",
-    "monaco-editor": "^0.44.0",
+    "monaco-editor": "^0.52.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-monaco-editor": "0.55.0",
+    "react-monaco-editor": "0.56.2",
     "react-spinners": "^0.13.6",
     "react-treeview": "^0.4.7",
-    "ts-morph": "^23.0.0"
+    "ts-morph": "^25.0.0"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",
@@ -32,7 +32,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "glob": "^10.3.10",
     "ts-factory-code-generator-generator": "^0.7.0",
-    "typescript": "5.0.2",
+    "typescript": "5.7.2",
     "vite": "^5.2.9",
     "vite-plugin-monaco-editor": "^1.1.0"
   }

@@ -1,6 +1,19 @@
 import * as ts from "typescript";
 import { CompilerPackageNames } from "./compilerVersions.generated.js";
 
+export declare enum FlowFlags {
+  TrueCondition,
+  FalseCondition,
+  Start,
+  Assignment,
+  BranchLabel,
+  LoopLabel,
+  Call,
+  SwitchClause,
+  Shared,
+  Referenced,
+}
+
 export interface CompilerApi {
   createSourceFile: typeof ts.createSourceFile;
   createProgram: typeof ts.createProgram;
@@ -15,7 +28,7 @@ export interface CompilerApi {
   ObjectFlags: typeof ts.ObjectFlags;
   SymbolFlags: typeof ts.SymbolFlags;
   TypeFlags: typeof ts.TypeFlags;
-  FlowFlags: typeof ts.FlowFlags;
+  FlowFlags: typeof FlowFlags;
   // Internal enum
   CheckFlags: object;
   // Internal enum
@@ -48,4 +61,13 @@ export type TypeFlags = ts.TypeFlags;
 export type SyntaxKind = ts.SyntaxKind;
 export type CompilerHost = ts.CompilerHost;
 export type CommentRange = ts.CommentRange;
-export type FlowNode = ts.FlowNode;
+
+export interface FlowNode {
+  id?: object;
+  node?: {
+    getText(): string;
+  };
+  antecedents: FlowNode[];
+  flags: FlowFlags;
+  getText(): string;
+}
