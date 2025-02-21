@@ -69,7 +69,7 @@ export function Options(props: OptionsProps) {
         value={props.options.treeMode}
         onChange={(event) => onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}
       >
-        <option value={TreeMode.forEachChild}>node.forEachChild(child ={">"} ...)</option>
+        <option value={TreeMode.forEachChild}>node.forEachChild(child =&gt; ...)</option>
         <option value={TreeMode.getChildren}>node.getChildren()</option>
       </select>
     );
@@ -115,7 +115,7 @@ export function Options(props: OptionsProps) {
         />
       </div>
     );
-    return <Option name={"Binding"} value={selection} />;
+    return <Option name="Binding" value={selection} />;
   }
 
   function getShowFactoryCode() {
@@ -129,7 +129,7 @@ export function Options(props: OptionsProps) {
         />
       </div>
     );
-    return <Option name={"Factory code"} value={selection} />;
+    return <Option name="Factory code" value={selection} />;
   }
 
   function getTheme() {
@@ -158,7 +158,7 @@ export function Options(props: OptionsProps) {
         />
       </div>
     );
-    return <Option name={"Show internals"} value={selection} />;
+    return <Option name="Show internals" value={selection} />;
   }
 
   function getEnumOption(
