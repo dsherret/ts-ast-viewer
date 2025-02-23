@@ -30,14 +30,14 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
     return <Spinner />;
   }
   if (factoryCodeGenerator === false) {
-    return <div className={"errorMessage"}>Error loading factory code. Please refresh the page to try again.</div>;
+    return <div className="errorMessage">Error loading factory code. Please refresh the page to try again.</div>;
   }
 
   return (
     <CodeEditor
       id="factoryCodeEditor"
       text={getText()}
-      readOnly={true}
+      readOnly
       theme={props.theme}
     />
   );

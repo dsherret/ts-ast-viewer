@@ -405,7 +405,7 @@ function getTreeNode(context: Context, value: any, key?: string, index?: number)
     <LazyTreeView
       nodeLabel={key}
       key={index}
-      defaultCollapsed={true}
+      defaultCollapsed
       getChildren={() => getProperties(context, value)}
     />
   );

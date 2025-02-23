@@ -68,7 +68,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
 
     return (
       <div id={this.props.id} ref={this.outerContainerRef} className={getClassNames(this.props.showInfo)}>
-        <div className={"editorContainer"}>
+        <div className="editorContainer">
           {this.getEditor()}
         </div>
         {this.props.showInfo && this.getInfo()}
@@ -93,7 +93,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
 
   private getInfo() {
     return (
-      <div className={"editorInfo"}>
+      <div className="editorInfo">
         Pos {this.state.position}, Ln {this.state.lineNumber}, Col {this.state.column}
       </div>
     );
@@ -152,7 +152,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
       return <Spinner />;
     }
     if (this.state.editorComponent === false) {
-      return <div className={"errorMessage"}>Error loading code editor. Please refresh the page to try again.</div>;
+      return <div className="errorMessage">Error loading code editor. Please refresh the page to try again.</div>;
     }
 
     return (

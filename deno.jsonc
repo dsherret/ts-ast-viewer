@@ -21,7 +21,12 @@
   "lint": {
     "rules": {
       "include": ["verbatim-module-syntax"],
-      "exclude": ["no-explicit-any", "no-sloppy-imports"]
+      "exclude": [
+        "no-explicit-any",
+        "no-sloppy-imports",
+        // todo: https://github.com/denoland/deno/issues/28225
+        "jsx-curly-braces"
+      ]
     },
     "exclude": [
       "**/*.generated.ts"

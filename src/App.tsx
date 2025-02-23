@@ -26,7 +26,7 @@ export function App() {
       </header>
       <div id="AppBody">
         <Allotment minSize={50}>
-          <Allotment.Pane preferredSize={"33%"}>
+          <Allotment.Pane preferredSize="33%">
             {getCodeEditorArea()}
           </Allotment.Pane>
           {getCompilerDependentPanes()}
@@ -50,8 +50,8 @@ export function App() {
   function getCodeEditorArea() {
     if (state.options.showFactoryCode) {
       return (
-        <Allotment vertical={true}>
-          <Allotment.Pane preferredSize={"70%"}>
+        <Allotment vertical>
+          <Allotment.Pane preferredSize="70%">
             {getCodeEditor()}
           </Allotment.Pane>
           {getFactoryCodeEditor()}
@@ -93,8 +93,8 @@ export function App() {
           theme={state.editorTheme}
           text={state.code}
           highlight={getCodeHighlightRange()}
-          showInfo={true}
-          renderWhiteSpace={true}
+          showInfo
+          renderWhiteSpace
           editorDidMount={codeEditorDidMount}
         />
       );
@@ -105,7 +105,7 @@ export function App() {
     if (compiler == null || state.apiLoadingState === ApiLoadingState.Loading) {
       return <components.Spinner />;
     } else if (state.apiLoadingState === ApiLoadingState.Error) {
-      return <div className={"errorMessage"}>Error loading compiler API. Please refresh the page to try again.</div>;
+      return <div className="errorMessage">Error loading compiler API. Please refresh the page to try again.</div>;
     }
 
     return (
