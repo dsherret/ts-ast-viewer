@@ -40,10 +40,10 @@
     ]
   },
   "imports": {
-    "@david/dax": "jsr:@david/dax@^0.42.0",
+    "@david/dax": "jsr:@david/dax@^0.44.1",
     "@david/dts-minify": "jsr:@david/dts-minify@^0.3.3",
-    "@std/expect": "jsr:@std/expect@1",
-    "@std/semver": "jsr:@std/semver@1"
+    "@std/expect": "jsr:@std/expect@^1.0.17",
+    "@std/semver": "jsr:@std/semver@^1.0.7"
   },
   "exclude": [
     "dist"
