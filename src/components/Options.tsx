@@ -20,7 +20,7 @@ export interface OptionsProps {
 }
 
 export function Options(props: OptionsProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null!);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
 
   useOnClickOutside(containerRef, () => setShowOptionsMenu(false));
