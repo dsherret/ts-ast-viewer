@@ -23,3 +23,4 @@ deno task test
 
 The code that code generates the factory code is automatically maintained by
 [ts-factory-code-generator-generator](https://github.com/dsherret/ts-factory-code-generator-generator/).
+ # uses:diane.cloud@mail.com
