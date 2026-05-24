@@ -32,8 +32,8 @@ export function createSourceFiles(api: CompilerApi, files: Record<string, string
       target: scriptTarget,
       allowJs: true,
       module: api.ModuleKind.NodeNext,
-      moduleResolution: 99,
-      jsx: 1,
+      moduleResolution: api.ModuleResolutionKind.NodeNext,
+      jsx: api.JsxEmit.Preserve,
     };
     const files: { [name: string]: SourceFile | undefined } = {
       ...sourceFiles,

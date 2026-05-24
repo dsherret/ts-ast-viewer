@@ -38,11 +38,11 @@ export class UrlSaver {
   }
 
   updateUrl(files: Record<string, string>) {
-    const hash = JSON.stringify(files);
-    if (hash.length === 2) {
+    const serializedFiles = JSON.stringify(files);
+    if (serializedFiles.length === 2) {
       updateLocationHash("");
     } else {
-      updateLocationHash(`files/${compressToEncodedURIComponent(hash)}`);
+      updateLocationHash(`files/${compressToEncodedURIComponent(serializedFiles)}`);
     }
 
     function updateLocationHash(locationHash: string) {

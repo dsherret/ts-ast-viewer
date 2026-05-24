@@ -23,6 +23,8 @@ export interface CompilerApi {
   SyntaxKind: typeof ts.SyntaxKind;
   ModifierFlags: typeof ts.ModifierFlags;
   ModuleKind: typeof ts.ModuleKind;
+  ModuleResolutionKind: typeof ts.ModuleResolutionKind;
+  JsxEmit: typeof ts.JsxEmit;
   NodeFlags: typeof ts.NodeFlags;
   ObjectFlags: typeof ts.ObjectFlags;
   SymbolFlags: typeof ts.SymbolFlags;
