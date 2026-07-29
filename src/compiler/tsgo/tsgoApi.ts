@@ -1,13 +1,14 @@
-// Starts an in-browser tsgo API session: boots tsgo.wasm (bootTsgoWasm.ts) and drives
-// it through the vendored native-preview async client over a JSON-RPC connection
-// (tsgoConnection.ts). The returned `API` is the full client surface, backed by the wasm.
-import { API } from "./vendor/native-preview/api/async/api.ts";
+// Starts an in-browser tsgo API session: boots a build's wasm (bootTsgoWasm.ts) and
+// drives it through the native-preview async client vendored alongside it over a
+// JSON-RPC connection (tsgoConnection.ts). The returned api is the full client surface,
+// backed by the wasm.
 import { bootTsgoWasm } from "./bootTsgoWasm.ts";
 import { createStdioConnection } from "./tsgoConnection.ts";
-
-export { API };
+import type { TsgoApi, TsgoVendor } from "./tsgoVendor.ts";
 
 export interface TsgoApiOptions {
+  /** The client vendored from the same commit as `wasmModule` (see tsgoVendor.ts). */
+  vendor: TsgoVendor;
   wasmModule: WebAssembly.Module;
   /** Virtual files exposed to the compiler, keyed by absolute path. */
   files?: Record<string, string>;
@@ -16,7 +17,7 @@ export interface TsgoApiOptions {
 }
 
 export interface TsgoApiHandle {
-  api: API;
+  api: TsgoApi;
   /** Update/add a file in the compiler's in-memory filesystem (see BootedTsgo.setFile). */
   setFile(path: string, content: string): boolean;
   /** Remove a file from the compiler's in-memory filesystem (see BootedTsgo.removeFile). */
@@ -37,7 +38,7 @@ export async function createTsgoApi(options: TsgoApiOptions): Promise<TsgoApiHan
     onReceive: (handler) => receive = handler,
   });
 
-  const api = new API({ connection, cwd: options.cwd ?? "/" });
+  const api = new options.vendor.API({ connection, cwd: options.cwd ?? "/" });
 
   // The wasm server normally runs forever. If it exits (clean or crash), dispose the
   // connection so in-flight JSON-RPC requests reject instead of hanging — and so a

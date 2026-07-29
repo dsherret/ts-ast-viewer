@@ -1,62 +1,133 @@
-// Builds the tsgo WebAssembly module (public/tsgo.wasm) and vendors its matching JS
-// client (src/compiler/tsgo/vendor/native-preview) from one typescript-go commit, so
-// the client and wasm server can't drift out of protocol sync. Defaults to the latest
-// `main` (the nightly); set TSGO_REF to pin a release. Needs Go + git on PATH;
-// `--skip-wasm` re-vendors only the JS client (fast, no Go).
+// Builds a tsgo WebAssembly module per selectable TypeScript 7.0+ version
+// (public/tsgo-<id>.wasm) and vendors each one's matching JS client
+// (src/compiler/tsgo/vendor/<id>/native-preview) from the single typescript-go commit it
+// was built from, so a client and its wasm server can't drift out of protocol sync.
+// Two builds: the latest `main` (the nightly) and the most recent stable release. Needs
+// Go + git on PATH; `--skip-wasm` re-vendors only the JS clients (fast, no Go) and
+// `--wasm-only=<id>` builds just one of the wasms (both clients are always vendored,
+// because the app imports both).
 import $ from "@david/dax";
+import * as semver from "@std/semver";
 import * as path from "node:path";
 
-// typescript-go ref to build from. Defaults to the latest `main` (the nightly).
-const TSGO_REF = Deno.env.get("TSGO_REF") ?? "main";
 const REPO = "https://github.com/microsoft/typescript-go.git";
 
 const root = path.resolve(import.meta.dirname!, "..");
 const wasmOutDir = path.join(root, "public");
-const vendorOutDir = path.join(root, "src/compiler/tsgo/vendor/native-preview");
+const vendorRootDir = path.join(root, "src/compiler/tsgo/vendor");
 const workDir = path.join(root, ".tsgo-build");
 const skipWasm = Deno.args.includes("--skip-wasm");
+const wasmOnly = Deno.args.map((arg) => /^--wasm-only=(.+)$/.exec(arg)?.[1]).find((id) => id != null);
+
+interface BuildResult {
+  id: string;
+  ref: string;
+  commit: string;
+  commitDate: string;
+  /** The version the app displays: the npm release for a tag, else the commit date. */
+  version: string;
+}
 
 await $`git --version`.quiet();
 if (!skipWasm) await $`go version`.quiet();
 
-const { repoDir, commit, commitDate } = await checkoutTsgo();
-await vendorClient(repoDir, commit);
-await writeBuildInfo(commit, commitDate);
-if (!skipWasm) await buildWasm(repoDir);
+// The typescript-go refs each selectable version is built from. `nightly` tracks main;
+// `stable` is the most recent release, matched to its npm package version (see
+// getLatestReleaseRef). Override either to pin a build.
+const refs = {
+  nightly: Deno.env.get("TSGO_NIGHTLY_REF") ?? "main",
+  stable: Deno.env.get("TSGO_STABLE_REF") ?? await getLatestReleaseRef(),
+};
 
-/** Sparse-clone typescript-go at TSGO_REF and return the resolved commit. */
-async function checkoutTsgo(): Promise<{ repoDir: string; commit: string; commitDate: string }> {
+if (wasmOnly != null && !(wasmOnly in refs)) {
+  throw new Error(`Unknown --wasm-only build: ${wasmOnly}. Expected one of ${Object.keys(refs).join(", ")}.`);
+}
+
+// vendored clients are always rebuilt as a set, so nothing from an older layout survives
+await $.path(vendorRootDir).remove({ recursive: true }).catch(() => {});
+
+const builds: BuildResult[] = [];
+for (const [id, ref] of Object.entries(refs)) {
+  builds.push(await buildVersion(id, ref));
+}
+await writeBuildInfo(builds);
+
+/** Vendor one version's client and (unless skipped) build its wasm. */
+async function buildVersion(id: string, ref: string): Promise<BuildResult> {
+  const { repoDir, commit, commitDate } = await checkoutTsgo(ref);
+  await vendorClient(id, repoDir, commit);
+  if (!skipWasm && (wasmOnly == null || wasmOnly === id)) {
+    await buildWasm(id, repoDir);
+  }
+  return { id, ref, commit, commitDate, version: getVersionFromRef(ref) ?? commitDate };
+}
+
+/**
+ * The typescript-go ref of the most recent stable TypeScript 7.0+ release. Every
+ * `@typescript/native-preview` npm release is tagged in typescript-go as
+ * `typescript/vX.Y.Z`, so the highest such tag is both the newest release the app can
+ * build and the npm version to label it with.
+ */
+async function getLatestReleaseRef(): Promise<string> {
+  const output = await $`git ls-remote --tags ${REPO}`.text();
+  const versions: semver.SemVer[] = [];
+  for (const line of output.split("\n")) {
+    const tagged = /refs\/tags\/typescript\/v(\S+)$/.exec(line.trim())?.[1];
+    const version = tagged == null ? undefined : semver.tryParse(tagged);
+    if (version != null && (version.prerelease?.length ?? 0) === 0) {
+      versions.push(version);
+    }
+  }
+  versions.sort(semver.compare);
+  const latest = versions.at(-1);
+  if (latest == null) {
+    throw new Error("Found no `typescript/vX.Y.Z` release tag in typescript-go.");
+  }
+  return `typescript/v${semver.format(latest)}`;
+}
+
+/** The release version a ref names (`typescript/v7.0.2` → `7.0.2`), if it names one. */
+function getVersionFromRef(ref: string): string | undefined {
+  return /\/v(\d+\.\d+\.\d+)$/.exec(ref)?.[1];
+}
+
+/** Sparse-clone typescript-go at `ref` and return the resolved commit. */
+async function checkoutTsgo(ref: string): Promise<{ repoDir: string; commit: string; commitDate: string }> {
   const repoDir = path.join(workDir, "typescript-go");
   if (!(await $.path(repoDir).exists())) {
-    $.logStep("Cloning", `typescript-go @ ${TSGO_REF}`);
+    $.logStep("Cloning", "typescript-go");
     await $`git clone --filter=blob:none --no-checkout ${REPO} ${repoDir}`;
     await $`git sparse-checkout init --no-cone`.cwd(repoDir);
     // everything except the huge conformance fixtures
     await $.path(path.join(repoDir, ".git/info/sparse-checkout"))
       .writeText("/*\n!/internal/testdata/\n!/testdata/\n!/_submodules/\n");
   }
-  await $`git fetch --depth 1 origin ${TSGO_REF}`.cwd(repoDir).quiet();
-  await $`git checkout FETCH_HEAD`.cwd(repoDir);
+  await $`git fetch --depth 1 origin ${ref}`.cwd(repoDir).quiet();
+  // forced, because building a previous ref left the inline-handler patch in the tree
+  await $`git checkout -f FETCH_HEAD`.cwd(repoDir);
   const commit = (await $`git rev-parse HEAD`.cwd(repoDir).text()).trim();
-  // the commit's date (yyyy-mm-dd) is what the app shows as the tsgo "version"
+  // the commit's date (yyyy-mm-dd) is what the app shows as the nightly's version
   const commitDate = (await $`git log -1 --format=%cs`.cwd(repoDir).text()).trim();
-  $.log(`typescript-go ${TSGO_REF} → ${commit.slice(0, 8)} (${commitDate})`);
+  $.log(`typescript-go ${ref} → ${commit.slice(0, 8)} (${commitDate})`);
   return { repoDir, commit, commitDate };
 }
 
-/** Record which typescript-go commit this build came from, for the app to display. */
-async function writeBuildInfo(commit: string, commitDate: string) {
+/** Record which typescript-go commit each build came from, for the app to display. */
+async function writeBuildInfo(builds: BuildResult[]) {
   const outPath = path.join(root, "src/compiler/tsgo/tsgoBuildInfo.generated.ts");
+  const entries = builds.map((result) => {
+    const info = { ref: result.ref, commit: result.commit, commitDate: result.commitDate, version: result.version };
+    return `  ${result.id}: ${JSON.stringify(info)},\n`;
+  });
   await $.path(outPath).writeText(
     `// Generated by scripts/buildTsgo.ts — do not edit.\n` +
-      `export const TSGO_COMMIT = ${JSON.stringify(commit)};\n` +
-      `export const TSGO_COMMIT_DATE = ${JSON.stringify(commitDate)};\n`,
+      `export const TSGO_BUILDS = {\n${entries.join("")}} as const;\n`,
   );
   $.logStep("Wrote", path.relative(root, outPath));
 }
 
 /**
- * Vendor the native-preview JS client (`_packages/native-preview/src`) into the
+ * Vendor one build's native-preview JS client (`_packages/native-preview/src`) into the
  * repo, rewriting the handful of Node-only imports so it runs in the browser:
  *  - `#enums/x`      → the relative `.enum.ts` (a real TS enum: values + types),
  *  - `#getExePath`   → a stub (only the unused spawn path needs it),
@@ -64,10 +135,10 @@ async function writeBuildInfo(commit: string, commitDate: string) {
  *  - the async transport `client.ts` → our browser/JSPI version (see below).
  * The sync channel and Node client are skipped entirely.
  */
-async function vendorClient(repoDir: string, commit: string) {
+async function vendorClient(id: string, repoDir: string, commit: string) {
   const srcRoot = path.join(repoDir, "_packages/native-preview/src");
+  const vendorOutDir = path.join(vendorRootDir, id, "native-preview");
   $.logStep("Vendoring", `native-preview client → ${path.relative(root, vendorOutDir)}`);
-  await $.path(vendorOutDir).remove({ recursive: true }).catch(() => {});
   await $.path(vendorOutDir).ensureDir();
 
   const enumsDir = path.join(vendorOutDir, "enums");
@@ -85,6 +156,31 @@ async function vendorClient(repoDir: string, commit: string) {
   await $.path(path.join(vendorOutDir, "api/async/client.ts")).writeText(browserClientSource());
   await $.path(path.join(vendorOutDir, "GENERATED.md")).writeText(attribution(commit));
   await $.path(path.join(vendorOutDir, "..", "tsgo.commit")).writeText(commit + "\n");
+  await $.path(path.join(vendorOutDir, "..", "mod.ts")).writeText(vendorModSource());
+}
+
+/**
+ * The one entry point the app loads a vendored client through (see tsgoVendor.ts). Each
+ * build has its own copy of these modules, so keeping the surface in one file is what
+ * lets the app swap between them with a single dynamic import.
+ */
+function vendorModSource() {
+  return `// Generated by scripts/buildTsgo.ts — the vendored client surface the app uses.
+export { API } from "./native-preview/api/async/api.ts";
+export {
+  ModifierFlags,
+  NodeFlags,
+  ScriptKind,
+  ScriptTarget,
+  SyntaxKind,
+} from "./native-preview/ast/index.ts";
+export type { SourceFile } from "./native-preview/ast/index.ts";
+export { ElementFlags } from "./native-preview/enums/elementFlags.enum.ts";
+export { ObjectFlags } from "./native-preview/enums/objectFlags.enum.ts";
+export { SignatureKind } from "./native-preview/enums/signatureKind.enum.ts";
+export { SymbolFlags } from "./native-preview/enums/symbolFlags.enum.ts";
+export { TypeFlags } from "./native-preview/enums/typeFlags.enum.ts";
+`;
 }
 
 /** Apply the per-file import rewrites that make a vendored source browser-safe. */
@@ -143,11 +239,11 @@ async function* walkTs(dir: string): AsyncGenerator<string> {
   }
 }
 
-async function buildWasm(repoDir: string) {
+async function buildWasm(id: string, repoDir: string) {
   await applyInlineHandlerPatch(path.join(repoDir, "internal/api/conn_async.go"));
-  $.logStep("Building", "tsgo.wasm (GOOS=wasip1 GOARCH=wasm) — this takes a few minutes");
+  $.logStep("Building", `tsgo-${id}.wasm (GOOS=wasip1 GOARCH=wasm) — this takes a few minutes`);
   await $.path(wasmOutDir).ensureDir();
-  const outFile = path.join(wasmOutDir, "tsgo.wasm");
+  const outFile = path.join(wasmOutDir, `tsgo-${id}.wasm`);
   await $`go build -o ${outFile} ./cmd/tsgo`
     .cwd(repoDir)
     .env({ GOOS: "wasip1", GOARCH: "wasm", GOTOOLCHAIN: "auto" });
@@ -200,7 +296,7 @@ browser-safe) and api/async/client.ts, which is our JSPI transport.
 }
 
 // Our replacement for native-preview's Node client (which spawns a child process
-// and talks over its stdio). Here the tsgo server runs as tsgo.wasm in-process and
+// and talks over its stdio). Here the tsgo server runs as a wasm module in-process and
 // the app injects a JSON-RPC connection over its stdin/stdout (see bootTsgoWasm.ts).
 // Source files reach the compiler through the wasm's in-memory filesystem, so no
 // server→client FS callbacks are registered. The public surface matches the pieces
@@ -229,7 +325,7 @@ export type { ClientOptions, ClientSocketOptions, ClientSpawnOptions };
 
 /**
  * Communicates with a tsgo \`--api --async\` server over an injected JSON-RPC
- * connection. In the browser the server is tsgo.wasm and the connection is built
+ * connection. In the browser the server is the build's wasm and the connection is built
  * on top of its JSPI stdio; the connection is supplied via \`options.connection\`.
  */
 export class Client {

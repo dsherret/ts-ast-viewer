@@ -50,7 +50,7 @@ export function Options(props: OptionsProps) {
         value={props.options.compilerPackageName}
         onChange={(event) => onChange({ compilerPackageName: event.target.value as AnyCompilerPackageName })}
       >
-        {appCompilerVersions.map((v) => <option value={v.packageName} key={v.packageName}>{v.version}</option>)}
+        {appCompilerVersions.map((v) => <option value={v.packageName} key={v.packageName}>{v.label}</option>)}
       </select>
     );
     return <Option name="Version" value={selection} />;

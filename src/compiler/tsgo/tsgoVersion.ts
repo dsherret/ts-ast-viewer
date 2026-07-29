@@ -1,34 +1,74 @@
 // Lightweight tsgo identity for the app's static module graph (version selector,
 // options, reducer). Must stay free of heavy imports (no wasm/vendored client) so
-// selecting another version never pulls in the tsgo wasm — those load dynamically
-// only when tsgo is chosen. TypeScript 7.0+ is the Go port, built here from main.
+// selecting another version never pulls in a tsgo wasm — those load dynamically only
+// when a tsgo version is chosen. TypeScript 7.0+ is the Go port, built here from
+// typescript-go: one build from the latest `main` (the nightly) and one from the most
+// recent stable release (see scripts/buildTsgo.ts).
 import { type CompilerPackageNames, compilerVersionCollection } from "../compilerVersions.generated.js";
-import { TSGO_COMMIT_DATE } from "./tsgoBuildInfo.generated.js";
+import { TSGO_BUILDS } from "./tsgoBuildInfo.generated.js";
+import { toVendorLoader, type TsgoVendor } from "./tsgoVendor.js";
 
-// Internal key for the tsgo compiler (not an npm package name). This matches the
-// identity the typescript-go source uses; the app keys everything by it.
-export const TSGO_PACKAGE_NAME = "@typescript/native-preview";
-// typescript-go publishes no version to select, so identify the build by the date of the
-// typescript-go commit on main it was built from (see scripts/buildTsgo.ts).
-export const TSGO_VERSION = TSGO_COMMIT_DATE;
+// Internal key prefix for the tsgo compilers (not an npm package name, though the
+// release build's key matches the npm package it was built from). The app keys
+// everything — loaded APIs, syntax kind names, the selector — by these.
+const TSGO_PACKAGE_PREFIX = "@typescript/native-preview@";
 
-export type TsgoPackageName = typeof TSGO_PACKAGE_NAME;
+export type TsgoPackageName = `${typeof TSGO_PACKAGE_PREFIX}${string}`;
 
-/** Any selectable compiler, including tsgo which isn't an npm package. */
+/** Any selectable compiler, including the tsgo builds which aren't npm packages. */
 export type AnyCompilerPackageName = CompilerPackageNames | TsgoPackageName;
+
+/** One selectable TypeScript 7.0+ build: a wasm plus the client vendored alongside it. */
+export interface TsgoBuild {
+  /** Identifies the build across its generated files (`nightly`, `stable`). */
+  id: keyof typeof TSGO_BUILDS;
+  packageName: TsgoPackageName;
+  /** The npm release version, or the typescript-go commit date for the nightly. */
+  version: string;
+  /** How the version selector names this build. */
+  label: string;
+  /** This build's wasm in `public/` (see scripts/buildTsgo.ts). */
+  wasmFileName: string;
+  /** Loads the client vendored from the same commit as `wasmFileName`. */
+  importVendor: () => Promise<TsgoVendor>;
+}
+
+export const tsgoBuilds: TsgoBuild[] = [
+  {
+    id: "stable",
+    packageName: `${TSGO_PACKAGE_PREFIX}${TSGO_BUILDS.stable.version}`,
+    version: TSGO_BUILDS.stable.version,
+    label: TSGO_BUILDS.stable.version,
+    wasmFileName: "tsgo-stable.wasm",
+    importVendor: toVendorLoader(() => import("./vendor/stable/mod.ts")),
+  },
+  {
+    id: "nightly",
+    packageName: `${TSGO_PACKAGE_PREFIX}nightly`,
+    // the nightly has no release version, so it's identified by the date of the
+    // typescript-go commit on main it was built from
+    version: TSGO_BUILDS.nightly.commitDate,
+    label: `nightly (${TSGO_BUILDS.nightly.commitDate})`,
+    wasmFileName: "tsgo-nightly.wasm",
+    importVendor: toVendorLoader(() => import("./vendor/nightly/mod.ts")),
+  },
+];
+
+/** The version selector's full list: the npm-installed versions plus the tsgo builds. */
+export const appCompilerVersions: { packageName: AnyCompilerPackageName; label: string }[] = [
+  ...compilerVersionCollection.map((v) => ({ packageName: v.packageName, label: v.version })),
+  ...tsgoBuilds.map((build) => ({ packageName: build.packageName, label: build.label })),
+];
 
 /** Whether this compiler runs via the tsgo/wasm infrastructure (vs the npm typescript). */
 export function isTsgo(packageName: AnyCompilerPackageName): packageName is TsgoPackageName {
-  return packageName === TSGO_PACKAGE_NAME;
+  return packageName.startsWith(TSGO_PACKAGE_PREFIX);
 }
 
-export const tsgoVersionEntry: { version: string; packageName: TsgoPackageName } = {
-  version: TSGO_VERSION,
-  packageName: TSGO_PACKAGE_NAME,
-};
-
-/** The version selector's full list: the npm-installed versions plus the tsgo nightly. */
-export const appCompilerVersions: { version: string; packageName: AnyCompilerPackageName }[] = [
-  ...compilerVersionCollection,
-  tsgoVersionEntry,
-];
+export function getTsgoBuild(packageName: TsgoPackageName): TsgoBuild {
+  const build = tsgoBuilds.find((build) => build.packageName === packageName);
+  if (build == null) {
+    throw new Error(`Unknown tsgo build: ${packageName}`);
+  }
+  return build;
+}
