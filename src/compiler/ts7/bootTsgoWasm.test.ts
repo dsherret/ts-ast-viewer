@@ -6,7 +6,7 @@ import { expect } from "@std/expect";
 import * as path from "node:path";
 import { bootTsgoWasm, jspiAvailable } from "./bootTsgoWasm.ts";
 
-const wasmPath = path.resolve(import.meta.dirname!, "../../resources/tsgo/tsgo.wasm");
+const wasmPath = path.resolve(import.meta.dirname!, "../../../public/tsgo.wasm");
 
 Deno.test("tsgo.wasm serves a stateful JSON-RPC session", async () => {
   if (!(await exists(wasmPath))) {

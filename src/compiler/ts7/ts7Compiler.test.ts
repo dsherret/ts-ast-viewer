@@ -10,7 +10,7 @@ import * as path from "node:path";
 import { getSyntaxKindName } from "../../utils/getSyntaxKindName.js";
 import { Ts7Session } from "./ts7Compiler.ts";
 
-const wasmPath = path.resolve(import.meta.dirname!, "../../resources/tsgo/tsgo.wasm");
+const wasmPath = path.resolve(import.meta.dirname!, "../../../public/tsgo.wasm");
 
 Deno.test("TS7 resident session walks the tree and re-parses edits without rebooting", async () => {
   if (!(await exists(wasmPath))) {

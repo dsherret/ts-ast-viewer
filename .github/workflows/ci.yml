@@ -22,6 +22,14 @@ jobs:
       - uses: dprint/check@v2.2
       - name: Check
         run: deno task check
+      # tsgo (TypeScript 7.0+) runs from a WebAssembly build of typescript-go, built
+      # from the latest main (the nightly). Built on every run so PRs verify it too.
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Build tsgo wasm (nightly, from typescript-go main)
+        run: deno task buildTsgo
       - name: Build
         run: |
           deno task addTypeScriptVersions

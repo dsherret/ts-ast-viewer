@@ -7,7 +7,7 @@ import { expect } from "@std/expect";
 import * as path from "node:path";
 import { createTsgoApi } from "./tsgoApi.ts";
 
-const wasmPath = path.resolve(import.meta.dirname!, "../../resources/tsgo/tsgo.wasm");
+const wasmPath = path.resolve(import.meta.dirname!, "../../../public/tsgo.wasm");
 
 Deno.test("vendored TS7 API materializes an AST and resolves a type", async () => {
   if (!(await exists(wasmPath))) {

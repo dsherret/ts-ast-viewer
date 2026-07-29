@@ -7,6 +7,6 @@ npm-debug.log*
 dist
 *.local
 
-# built by `deno task buildTsgoWasm` (large; not committed)
+# built by `deno task buildTsgo` (large; not committed)
 .tsgo-build
-src/resources/tsgo/tsgo.wasm
+public/tsgo.wasm

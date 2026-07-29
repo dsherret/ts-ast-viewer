@@ -1,15 +1,17 @@
-// Builds everything the app needs to run TypeScript 7.0 (the native `tsgo` port)
-// entirely in the browser, from a single pinned typescript-go commit:
+// Builds everything the app needs to run TypeScript's native `tsgo` port entirely
+// in the browser, from a single typescript-go commit:
 //
-//   1. the compiler itself as a WebAssembly module (src/resources/tsgo/tsgo.wasm), and
+//   1. the compiler itself as a WebAssembly module (public/tsgo.wasm), and
 //   2. the JS AST/decoder/async-API client, vendored from the SAME commit into
 //      src/compiler/ts7/vendor/native-preview (so the client and the wasm server
 //      can never drift out of protocol sync).
 //
+// The nightly is the latest typescript-go `main` — TypeScript >= 7.0 is the Go port,
+// so the "@next" build tracks main. Set TSGO_REF to a tag/commit to pin a release.
+//
 // This deliberately does NOT use the published npm @typescript/native-preview
-// package: that pins a stale dev build unrelated to our wasm, and pulls per-platform
-// native binaries we don't use. Building both artifacts from one commit is the whole
-// point — bump TSGO_COMMIT and re-run to move to a newer nightly.
+// package (which pulls per-platform native binaries we don't use); we build both the
+// wasm and the JS client ourselves from the same commit.
 //
 // tsgo has no wasm target upstream, so we build one ourselves and apply a one-line
 // patch so the `--api` server handles requests inline (see PATCH below) — required
@@ -22,12 +24,12 @@
 import $ from "@david/dax";
 import * as path from "node:path";
 
-// Pinned typescript-go commit both artifacts are built from.
-const TSGO_COMMIT = "d35cc5f485640a41fbbf5a2267e9b11c7a7db4dc";
+// typescript-go ref to build from. Defaults to the latest `main` (the nightly).
+const TSGO_REF = Deno.env.get("TSGO_REF") ?? "main";
 const REPO = "https://github.com/microsoft/typescript-go.git";
 
 const root = path.resolve(import.meta.dirname!, "..");
-const wasmOutDir = path.join(root, "src/resources/tsgo");
+const wasmOutDir = path.join(root, "public");
 const vendorOutDir = path.join(root, "src/compiler/ts7/vendor/native-preview");
 const workDir = path.join(root, ".tsgo-build");
 const skipWasm = Deno.args.includes("--skip-wasm");
@@ -35,24 +37,26 @@ const skipWasm = Deno.args.includes("--skip-wasm");
 await $`git --version`.quiet();
 if (!skipWasm) await $`go version`.quiet();
 
-const repoDir = await checkoutTsgo();
-await vendorClient(repoDir);
+const { repoDir, commit } = await checkoutTsgo();
+await vendorClient(repoDir, commit);
 if (!skipWasm) await buildWasm(repoDir);
 
-/** Sparse-clone typescript-go at the pinned commit (reused across runs). */
-async function checkoutTsgo(): Promise<string> {
+/** Sparse-clone typescript-go at TSGO_REF and return the resolved commit. */
+async function checkoutTsgo(): Promise<{ repoDir: string; commit: string }> {
   const repoDir = path.join(workDir, "typescript-go");
   if (!(await $.path(repoDir).exists())) {
-    $.logStep("Cloning", `typescript-go @ ${TSGO_COMMIT.slice(0, 8)}`);
+    $.logStep("Cloning", `typescript-go @ ${TSGO_REF}`);
     await $`git clone --filter=blob:none --no-checkout ${REPO} ${repoDir}`;
     await $`git sparse-checkout init --no-cone`.cwd(repoDir);
     // everything except the huge conformance fixtures
     await $.path(path.join(repoDir, ".git/info/sparse-checkout"))
       .writeText("/*\n!/internal/testdata/\n!/testdata/\n!/_submodules/\n");
   }
-  await $`git fetch --depth 1 origin ${TSGO_COMMIT}`.cwd(repoDir).quiet();
-  await $`git checkout ${TSGO_COMMIT}`.cwd(repoDir);
-  return repoDir;
+  await $`git fetch --depth 1 origin ${TSGO_REF}`.cwd(repoDir).quiet();
+  await $`git checkout FETCH_HEAD`.cwd(repoDir);
+  const commit = (await $`git rev-parse HEAD`.cwd(repoDir).text()).trim();
+  $.log(`typescript-go ${TSGO_REF} → ${commit.slice(0, 8)}`);
+  return { repoDir, commit };
 }
 
 /**
@@ -64,7 +68,7 @@ async function checkoutTsgo(): Promise<string> {
  *  - the async transport `client.ts` → our browser/JSPI version (see below).
  * The sync channel and Node client are skipped entirely.
  */
-async function vendorClient(repoDir: string) {
+async function vendorClient(repoDir: string, commit: string) {
   const srcRoot = path.join(repoDir, "_packages/native-preview/src");
   $.logStep("Vendoring", `native-preview client → ${path.relative(root, vendorOutDir)}`);
   await $.path(vendorOutDir).remove({ recursive: true }).catch(() => {});
@@ -83,8 +87,8 @@ async function vendorClient(repoDir: string) {
   }
 
   await $.path(path.join(vendorOutDir, "api/async/client.ts")).writeText(browserClientSource());
-  await $.path(path.join(vendorOutDir, "GENERATED.md")).writeText(attribution());
-  await $.path(path.join(vendorOutDir, "..", "tsgo.commit")).writeText(TSGO_COMMIT + "\n");
+  await $.path(path.join(vendorOutDir, "GENERATED.md")).writeText(attribution(commit));
+  await $.path(path.join(vendorOutDir, "..", "tsgo.commit")).writeText(commit + "\n");
 }
 
 /** Apply the per-file import rewrites that make a vendored source browser-safe. */
@@ -177,18 +181,21 @@ async function applyInlineHandlerPatch(file: string) {
 			c.handleNotification(ctx, msg)
 		}`;
   if (!text.includes(original)) {
-    throw new Error(`Could not find the dispatch block to patch in ${file}. The pinned commit may have changed.`);
+    throw new Error(
+      `Could not find the dispatch block to patch in ${file}. typescript-go may have refactored it; ` +
+        `the inline-handler patch in scripts/buildTsgo.ts needs updating.`,
+    );
   }
   text = text.replace(original, patched);
   await p.writeText(text);
   $.logStep("Patched", "internal/api/conn_async.go (inline api handler)");
 }
 
-function attribution() {
+function attribution(commit: string) {
   return `# Vendored from microsoft/typescript-go
 
 These files are generated by \`deno task buildTsgo\` from
-\`_packages/native-preview/src\` at commit ${TSGO_COMMIT} (Apache-2.0, © Microsoft).
+\`_packages/native-preview/src\` at commit ${commit} (Apache-2.0, © Microsoft).
 
 Do not edit by hand — re-run the task to update. The only local changes are the
 import rewrites documented in scripts/buildTsgo.ts (Node-only imports made
