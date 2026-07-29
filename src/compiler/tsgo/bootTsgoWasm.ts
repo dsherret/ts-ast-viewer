@@ -43,7 +43,7 @@ export function jspiAvailable(): boolean {
 
 export async function bootTsgoWasm(options: BootTsgoOptions): Promise<BootedTsgo> {
   if (!jspiAvailable()) {
-    throw new Error("WebAssembly JSPI is not available in this environment (required for TypeScript 7.0 support).");
+    throw new Error("WebAssembly JSPI is not available in this environment (required for tsgo support).");
   }
 
   const rootEntries = new Map<string, File>();

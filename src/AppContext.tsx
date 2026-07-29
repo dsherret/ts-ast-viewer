@@ -162,7 +162,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   );
 }
 
-// Builds a TypeScript 7.0 source file by booting the wasm (lazy-loaded here) and
+// Builds a tsgo source file by booting the wasm (lazy-loaded here) and
 // materializing the AST + async checker off the main static bundle.
 async function buildTsgoSourceFile(
   api: { version: string },
@@ -174,7 +174,7 @@ async function buildTsgoSourceFile(
   return {
     sourceFile: result.sourceFile as any,
     bindingTools: () => {
-      throw new Error("TypeScript 7.0's checker is async — use asyncBinding.");
+      throw new Error("tsgo's checker is async — use asyncBinding.");
     },
     asyncBinding: result.asyncBinding,
   };

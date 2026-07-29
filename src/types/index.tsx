@@ -16,9 +16,9 @@ export interface CompilerState {
   selectedNode: Node;
   // this is deferred because binding may be disabled
   bindingTools: () => BindingTools;
-  // present for TypeScript 7.0, whose checker is async and out-of-process (wasm)
+  // present for tsgo, whose checker is async and out-of-process (wasm)
   asyncBinding?: AsyncBinding;
-  // tears down the backing wasm session (TypeScript 7.0 only)
+  // tears down the backing wasm session (tsgo only)
   dispose?: () => void;
 }
 
@@ -28,7 +28,7 @@ export interface BindingTools {
 }
 
 /**
- * Async, out-of-process compiler binding for TypeScript 7.0. The Type/Symbol are
+ * Async, out-of-process compiler binding for tsgo. The Type/Symbol are
  * remote handle-based proxies: their scalar fields are readable synchronously once
  * fetched, while collections (properties, members, base types, …) are lazy async
  * calls on the proxy or the `checker`.

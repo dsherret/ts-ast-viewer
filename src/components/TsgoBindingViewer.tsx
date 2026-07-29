@@ -1,4 +1,4 @@
-// Renders the Type and Symbol for the selected node when using TypeScript 7.0.
+// Renders the Type and Symbol for the selected node when using tsgo.
 // Unlike classic TS (whose checker is in-process), TSGO's Type/Symbol are remote
 // handle-based proxies: scalar fields read synchronously once the object is
 // fetched, but collections (properties, members, base types, signatures, …) are

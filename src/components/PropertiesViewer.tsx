@@ -39,7 +39,7 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
   useEffect(() => {
     setPublicApiInfo(undefined);
 
-    // TypeScript 7.0 has no generated publicApiInfo yet; render properties without it
+    // tsgo has no generated publicApiInfo yet; render properties without it
     if (isTsgo(props.compiler.packageName)) {
       setPublicApiInfo(false);
       return;
@@ -521,7 +521,7 @@ const nodeDisallowedKeys = new Set(["parent", "_children", "symbol"]);
 const typeDisallowedKeys = new Set(["checker", "symbol"]);
 function getKeyPermission(context: Context, obj: any, key: string): true | false | "internal" {
   const { publicApiInfo } = context;
-  // TypeScript 7.0 has no publicApiInfo; treat underscore-prefixed keys as internal
+  // tsgo has no publicApiInfo; treat underscore-prefixed keys as internal
   if (!publicApiInfo && key.startsWith("_")) {
     return "internal";
   }

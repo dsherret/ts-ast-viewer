@@ -13,7 +13,7 @@ export function getChildrenFunction(mode: TreeMode, sourceFile: SourceFile) {
   }
 
   function getAllChildren(node: Node) {
-    // TypeScript 7.0 nodes have no getChildren(); fall back to forEachChild there
+    // tsgo nodes have no getChildren(); fall back to forEachChild there
     // (its token-inclusive tree isn't available yet for the native port).
     if (typeof node.getChildren !== "function") {
       return forEachChild(node);

@@ -49,7 +49,7 @@ export function App() {
   }
 
   function getCodeEditorArea() {
-    // factory code generation isn't available for TypeScript 7.0, so don't show the pane
+    // factory code generation isn't available for tsgo, so don't show the pane
     if (state.options.showFactoryCode && !isTsgo(state.options.compilerPackageName)) {
       return (
         <Allotment vertical>

@@ -1,4 +1,4 @@
-// Starts an in-browser TypeScript 7.0 (tsgo) API session: boots tsgo.wasm as a
+// Starts an in-browser tsgo API session: boots tsgo.wasm as a
 // resident `--api --async` server (see bootTsgoWasm.ts) and drives it through the
 // vendored native-preview async client over a JSON-RPC connection (tsgoConnection.ts).
 // The returned `API` is the full native-preview surface — updateSnapshot, projects,

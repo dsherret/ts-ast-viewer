@@ -1,4 +1,4 @@
-// Adapts the TypeScript 7.0 (tsgo) API to the shape the rest of the app expects
+// Adapts the tsgo API to the shape the rest of the app expects
 // from a compiler version: a `CompilerApi` (mainly `SyntaxKind` + enums for the
 // tree/properties UI) and a materialized, synchronously-walkable `SourceFile`.
 //

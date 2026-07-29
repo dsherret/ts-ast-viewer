@@ -99,7 +99,7 @@ export function Options(props: OptionsProps) {
   }
 
   function getShowFactoryCode() {
-    // factory code generation isn't available for TypeScript 7.0
+    // factory code generation isn't available for tsgo
     if (isTsgo(props.options.compilerPackageName)) {
       return undefined;
     }

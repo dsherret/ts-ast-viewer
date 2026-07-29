@@ -21,7 +21,7 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
     setFactoryCodeGenerator(undefined);
 
     if (isTsgo(packageName)) {
-      return; // factory code generation isn't available for TypeScript 7.0 yet
+      return; // factory code generation isn't available for tsgo yet
     }
 
     getFactoryCodeGenerator(packageName).then((factoryCodeGenerator) => {
@@ -33,7 +33,7 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
   }, [packageName]);
 
   if (isTsgo(packageName)) {
-    return undefined; // the factory code pane isn't shown for TypeScript 7.0 (see App.tsx)
+    return undefined; // the factory code pane isn't shown for tsgo (see App.tsx)
   }
   if (factoryCodeGenerator == null) {
     return <Spinner />;

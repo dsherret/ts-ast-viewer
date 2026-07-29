@@ -27,7 +27,7 @@ export function installBrowserRal(): Promise<unknown> {
 async function compile(): Promise<WebAssembly.Module> {
   if (!jspiAvailable()) {
     throw new Error(
-      "TypeScript 7.0 needs WebAssembly JSPI, which this browser doesn't support. " +
+      "tsgo needs WebAssembly JSPI, which this browser doesn't support. " +
         "Try a recent Chromium-based browser.",
     );
   }

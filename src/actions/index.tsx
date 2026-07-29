@@ -38,7 +38,7 @@ export function setApiLoadingState(loadingState: ApiLoadingState): SetApiLoading
 export interface RefreshSourceFile {
   type: constants.REFRESH_SOURCEFILE;
   api: CompilerApi;
-  // pre-built source file for async compilers (TypeScript 7.0); sync compilers
+  // pre-built source file for async compilers (tsgo); sync compilers
   // build it in the reducer instead
   prebuilt?: PrebuiltSourceFile;
 }
