@@ -177,21 +177,26 @@ a:visited {
   font-size: 16px;
 }
 
+#options .menu .option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 #options .menu .option:not(:first-child) {
   margin-top: 10px;
 }
 
 #options .menu .optionName {
-  display: inline-block;
-  margin-right: 6px;
-  width: 135px;
+  flex: 0 0 135px;
   text-align: right;
+  white-space: nowrap;
 }
 #options .menu .optionValue {
-  display: inline-block;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 #options .menu .optionValue select {
-  width: 220px;
+  width: 100%;
 }
 
 #options .menuLine {
