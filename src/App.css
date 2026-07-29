@@ -275,6 +275,8 @@ a:visited {
   height: 100%;
   padding-top: 2px;
   padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 #treeViewer .nodeText {
@@ -298,6 +300,7 @@ a:visited {
   overflow: auto;
   height: 100%;
   margin-left: 4px;
+  margin-right: 4px;
   padding-bottom: 5px;
 }
 
