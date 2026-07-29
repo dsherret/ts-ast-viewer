@@ -1,7 +1,5 @@
-// Verifies the patched tsgo.wasm boots under JSPI and serves a stateful
-// `--api --async` JSON-RPC session, driven directly through bootTsgoWasm (no
-// native-preview client). Skips if the wasm hasn't been built yet
-// (`deno task buildTsgo`). Deno's V8 has WebAssembly JSPI enabled by default.
+// Verifies the patched tsgo.wasm boots under JSPI and serves a stateful `--api --async`
+// JSON-RPC session, driven directly through bootTsgoWasm. Skips if the wasm isn't built.
 import { expect } from "@std/expect";
 import * as path from "node:path";
 import { bootTsgoWasm, jspiAvailable } from "./bootTsgoWasm.ts";
@@ -59,42 +57,42 @@ async function exists(file: string) {
 /** Minimal JSON-RPC (LSP Content-Length framing) request/response driver. */
 class JsonRpcDriver {
   onSend: (bytes: Uint8Array) => void = () => {};
-  #nextId = 0;
-  #pending = new Map<number, (result: unknown) => void>();
-  #buffer = new Uint8Array(0);
+  private nextId = 0;
+  private pending = new Map<number, (result: unknown) => void>();
+  private buffer = new Uint8Array(0);
 
   request(method: string, params: unknown): Promise<unknown> {
-    const id = this.#nextId++;
+    const id = this.nextId++;
     const body = JSON.stringify({ jsonrpc: "2.0", id, method, params });
     const frame = new TextEncoder().encode(`Content-Length: ${body.length}\r\n\r\n${body}`);
     return new Promise((resolve) => {
-      this.#pending.set(id, resolve);
+      this.pending.set(id, resolve);
       this.onSend(frame);
     });
   }
 
   receive(bytes: Uint8Array) {
-    const merged = new Uint8Array(this.#buffer.length + bytes.length);
-    merged.set(this.#buffer);
-    merged.set(bytes, this.#buffer.length);
-    this.#buffer = merged;
-    this.#drain();
+    const merged = new Uint8Array(this.buffer.length + bytes.length);
+    merged.set(this.buffer);
+    merged.set(bytes, this.buffer.length);
+    this.buffer = merged;
+    this.drain();
   }
 
-  #drain() {
+  private drain() {
     for (;;) {
-      const text = new TextDecoder().decode(this.#buffer);
+      const text = new TextDecoder().decode(this.buffer);
       const match = /Content-Length: (\d+)\r\n\r\n/.exec(text);
       if (!match) return;
       const headerEnd = match.index + match[0].length;
       const length = Number(match[1]);
-      if (this.#buffer.length < headerEnd + length) return;
-      const body = new TextDecoder().decode(this.#buffer.subarray(headerEnd, headerEnd + length));
-      this.#buffer = this.#buffer.subarray(headerEnd + length);
+      if (this.buffer.length < headerEnd + length) return;
+      const body = new TextDecoder().decode(this.buffer.subarray(headerEnd, headerEnd + length));
+      this.buffer = this.buffer.subarray(headerEnd + length);
       const message = JSON.parse(body) as { id?: number; result?: unknown };
-      if (typeof message.id === "number" && this.#pending.has(message.id)) {
-        this.#pending.get(message.id)!(message.result);
-        this.#pending.delete(message.id);
+      if (typeof message.id === "number" && this.pending.has(message.id)) {
+        this.pending.get(message.id)!(message.result);
+        this.pending.delete(message.id);
       }
     }
   }

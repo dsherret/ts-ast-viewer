@@ -1,13 +1,8 @@
-// Renders the Type and Symbol for the selected node when using tsgo.
-// Unlike classic TS (whose checker is in-process), TSGO's Type/Symbol are remote
-// handle-based proxies: scalar fields read synchronously once the object is
-// fetched, but collections (properties, members, base types, signatures, …) are
-// async calls on the proxy or the checker.
-//
-// When a Type/Symbol node is expanded, ALL its collections are evaluated up front
-// (in parallel) and only the non-empty ones are shown — so you don't have to click
-// each collection to discover what's there. Recursion stays bounded because a
-// nested node's collections aren't evaluated until you expand that node.
+// Renders the Type and Symbol for the selected node when using tsgo. Unlike classic
+// TS (in-process checker), tsgo's Type/Symbol are remote proxies: scalar fields read
+// synchronously once fetched, but collections (properties, members, base types, …)
+// are async. On expand, a node's collections are all evaluated up front and only the
+// non-empty ones shown; recursion stays bounded (nested collections wait for expand).
 import { type JSX, useEffect, useState } from "react";
 import type { CompilerApi, Node } from "../compiler/index.js";
 import type { AsyncBinding } from "../types/index.js";

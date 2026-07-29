@@ -1,15 +1,8 @@
-// Adapts the tsgo API to the shape the rest of the app expects
-// from a compiler version: a `CompilerApi` (mainly `SyntaxKind` + enums for the
-// tree/properties UI) and a materialized, synchronously-walkable `SourceFile`.
-//
-// The important difference from classic TypeScript is that producing the source
-// file is ASYNC (it round-trips the wasm), so this must run in the AppContext
-// effect rather than the reducer. Once materialized, the node tree walks
-// synchronously — but only via `forEachChild` (TSGO nodes have no `getChildren`).
-//
-// A single tsgo session is kept resident and reused across edits: each edit only
-// rewrites the one file in the wasm's in-memory filesystem and re-parses it (the
-// already-parsed lib.d.ts is retained), instead of re-booting the whole wasm.
+// Adapts the tsgo API to a `CompilerApi` + a materialized `SourceFile` for the app.
+// Producing the source file is async (it round-trips the wasm), so this runs in the
+// AppContext effect, not the reducer, and the tree walks only via `forEachChild`
+// (tsgo nodes have no `getChildren`). A single session stays resident across edits —
+// each edit rewrites the changed files in the wasm's in-memory FS and re-parses.
 import {
   ModifierFlags,
   NodeFlags,
@@ -47,11 +40,8 @@ export interface TsgoUpdateOptions {
 
 let residentSession: Promise<TsgoSession> | undefined;
 
-/**
- * Materialize the source file for `code` in the resident tsgo session, booting one
- * (and compiling the wasm) on first use. The session persists across calls, so a
- * subsequent edit is just a file rewrite + re-parse.
- */
+/** Materialize the current file in the resident tsgo session, booting one (and compiling
+ * the wasm) on first use. Later calls persist the session, so an edit is just rewrite + re-parse. */
 export async function getTsgoSourceFile(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
   if (residentSession == null) {
     residentSession = createResidentSession();
@@ -79,13 +69,11 @@ async function createResidentSession(): Promise<TsgoSession> {
 
 /** A resident tsgo session backing the app's set of files. */
 export class TsgoSession {
-  #handle: TsgoApiHandle;
-  #openFile: string | undefined;
-  #files = new Map<string, string>();
-  #queue: Promise<unknown> = Promise.resolve();
+  private openFile: string | undefined;
+  private files = new Map<string, string>();
+  private queue: Promise<unknown> = Promise.resolve();
 
-  private constructor(handle: TsgoApiHandle) {
-    this.#handle = handle;
+  private constructor(private readonly handle: TsgoApiHandle) {
   }
 
   static async create(wasmModule: WebAssembly.Module): Promise<TsgoSession> {
@@ -94,43 +82,43 @@ export class TsgoSession {
 
   /** Serialized so overlapping edits can't interleave updateSnapshot calls. */
   update(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
-    const run = this.#queue.then(() => this.#doUpdate(options));
-    this.#queue = run.then(() => {}, () => {});
+    const run = this.queue.then(() => this.doUpdate(options));
+    this.queue = run.then(() => {}, () => {});
     return run;
   }
 
   dispose(): void {
-    void this.#handle.dispose();
+    void this.handle.dispose();
   }
 
-  async #doUpdate({ files, currentFile, version }: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
+  private async doUpdate({ files, currentFile, version }: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
     // sync the wasm filesystem with the full file set so cross-file imports resolve
     const changed: string[] = [];
     const deleted: string[] = [];
     for (const [path, content] of Object.entries(files)) {
-      if (this.#files.get(path) !== content) {
-        this.#handle.setFile(path, content);
+      if (this.files.get(path) !== content) {
+        this.handle.setFile(path, content);
         changed.push(path); // new-or-modified; the server re-reads these
       }
     }
-    for (const path of this.#files.keys()) {
+    for (const path of this.files.keys()) {
       if (!(path in files)) {
-        this.#handle.removeFile(path);
+        this.handle.removeFile(path);
         deleted.push(path);
       }
     }
-    this.#files = new Map(Object.entries(files));
+    this.files = new Map(Object.entries(files));
 
     // The open (viewed) file is held as an overlay snapshotted at open-time, so a
     // plain fileChanges signal is ignored for it. Closing it forces the reopen below
     // to re-read from the filesystem (close alone re-reads stale, reopen alone keeps
     // the old overlay — both steps are required, plus fileChanges.changed above).
-    if (this.#openFile != null) {
-      await this.#handle.api.updateSnapshot({ closeFiles: [this.#openFile] });
+    if (this.openFile != null) {
+      await this.handle.api.updateSnapshot({ closeFiles: [this.openFile] });
     }
-    this.#openFile = currentFile;
+    this.openFile = currentFile;
 
-    const snapshot = await this.#handle.api.updateSnapshot({
+    const snapshot = await this.handle.api.updateSnapshot({
       openFiles: [currentFile],
       fileChanges: { changed, deleted },
     });

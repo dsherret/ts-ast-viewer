@@ -1,26 +1,8 @@
-// Builds everything the app needs to run TypeScript's native `tsgo` port entirely
-// in the browser, from a single typescript-go commit:
-//
-//   1. the compiler itself as a WebAssembly module (public/tsgo.wasm), and
-//   2. the JS AST/decoder/async-API client, vendored from the SAME commit into
-//      src/compiler/tsgo/vendor/native-preview (so the client and the wasm server
-//      can never drift out of protocol sync).
-//
-// The nightly is the latest typescript-go `main` — TypeScript >= 7.0 is the Go port,
-// so the "@next" build tracks main. Set TSGO_REF to a tag/commit to pin a release.
-//
-// This deliberately does NOT use the published npm @typescript/native-preview
-// package (which pulls per-platform native binaries we don't use); we build both the
-// wasm and the JS client ourselves from the same commit.
-//
-// tsgo has no wasm target upstream, so we build one ourselves and apply a one-line
-// patch so the `--api` server handles requests inline (see PATCH below) — required
-// because the wasm runs single-instance under JSPI, where a suspended stdin read
-// freezes the whole module and would otherwise starve the async server's per-request
-// goroutine.
-//
-// Requires Go (>= the version in tsgo's go.mod; `GOTOOLCHAIN=auto` will fetch it)
-// and git on PATH. Pass `--skip-wasm` to only re-vendor the JS client (fast).
+// Builds the tsgo WebAssembly module (public/tsgo.wasm) and vendors its matching JS
+// client (src/compiler/tsgo/vendor/native-preview) from one typescript-go commit, so
+// the client and wasm server can't drift out of protocol sync. Defaults to the latest
+// `main` (the nightly); set TSGO_REF to pin a release. Needs Go + git on PATH;
+// `--skip-wasm` re-vendors only the JS client (fast, no Go).
 import $ from "@david/dax";
 import * as path from "node:path";
 

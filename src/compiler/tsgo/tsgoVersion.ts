@@ -1,10 +1,7 @@
-// Lightweight tsgo identity shared with the app's static module graph (version
-// selector, options, reducer). It must stay free of heavy imports (no wasm, no
-// vendored client) so selecting any other version never pulls in the ~49 MB tsgo
-// wasm — those modules load dynamically only when a tsgo version is chosen.
-//
-// TypeScript 7.0+ is the native Go port (tsgo); the app runs it from WebAssembly
-// instead of an npm package. The nightly ("@next") tracks typescript-go `main`.
+// Lightweight tsgo identity for the app's static module graph (version selector,
+// options, reducer). Must stay free of heavy imports (no wasm/vendored client) so
+// selecting another version never pulls in the tsgo wasm — those load dynamically
+// only when tsgo is chosen. TypeScript 7.0+ is the Go port; the "@next" nightly is main.
 import { type CompilerPackageNames, compilerVersionCollection } from "../compilerVersions.generated.js";
 
 // Internal key for the tsgo compiler (not an npm package name). This matches the

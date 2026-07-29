@@ -1,7 +1,5 @@
-// Bridges vscode-jsonrpc to a byte-oriented stdio transport (the tsgo wasm's
-// stdin/stdout under JSPI). The vendored async API client speaks vscode-jsonrpc
-// `MessageConnection`; the wasm speaks LSP-style Content-Length framed JSON over
-// stdin/stdout. These reader/writer adapters translate between the two.
+// Bridges vscode-jsonrpc (what the vendored async client speaks) to the tsgo wasm's
+// byte-oriented stdin/stdout, which carries LSP-style Content-Length framed JSON.
 import {
   AbstractMessageReader,
   AbstractMessageWriter,
@@ -39,57 +37,57 @@ const decoder = new TextDecoder();
 
 /** Parses Content-Length framed JSON-RPC messages out of an incoming byte stream. */
 class StdioMessageReader extends AbstractMessageReader {
-  #callback: DataCallback | undefined;
-  #buffer = new Uint8Array(0);
+  private callback: DataCallback | undefined;
+  private buffer = new Uint8Array(0);
   // byte offset where the current message's body starts, or -1 if the header of the
   // next message hasn't been fully parsed yet (so it isn't re-scanned per chunk)
-  #bodyStart = -1;
-  #bodyLength = 0;
+  private bodyStart = -1;
+  private bodyLength = 0;
 
   constructor(transport: ByteTransport) {
     super();
-    transport.onReceive((bytes) => this.#append(bytes));
+    transport.onReceive((bytes) => this.append(bytes));
   }
 
   override listen(callback: DataCallback): Disposable {
-    this.#callback = callback;
-    this.#drain();
-    return { dispose: () => this.#callback = undefined };
+    this.callback = callback;
+    this.drain();
+    return { dispose: () => this.callback = undefined };
   }
 
-  #append(bytes: Uint8Array) {
-    const merged = new Uint8Array(this.#buffer.length + bytes.length);
-    merged.set(this.#buffer);
-    merged.set(bytes, this.#buffer.length);
-    this.#buffer = merged;
-    this.#drain();
+  private append(bytes: Uint8Array) {
+    const merged = new Uint8Array(this.buffer.length + bytes.length);
+    merged.set(this.buffer);
+    merged.set(bytes, this.buffer.length);
+    this.buffer = merged;
+    this.drain();
   }
 
-  #drain() {
-    if (!this.#callback) return;
+  private drain() {
+    if (!this.callback) return;
     for (;;) {
       // parse the header once (bytes only), then keep bodyStart/bodyLength until the
       // body arrives — avoids re-decoding the whole (possibly MB) buffer per chunk
-      if (this.#bodyStart < 0) {
-        const headerEnd = indexOfDoubleCrlf(this.#buffer);
+      if (this.bodyStart < 0) {
+        const headerEnd = indexOfDoubleCrlf(this.buffer);
         if (headerEnd < 0) return; // header incomplete
-        const header = decoder.decode(this.#buffer.subarray(0, headerEnd));
+        const header = decoder.decode(this.buffer.subarray(0, headerEnd));
         const match = /Content-Length:\s*(\d+)/i.exec(header);
         if (match == null) {
           this.fireError(new Error("JSON-RPC message missing Content-Length header"));
-          this.#buffer = new Uint8Array(0);
+          this.buffer = new Uint8Array(0);
           return;
         }
-        this.#bodyLength = Number(match[1]);
-        this.#bodyStart = headerEnd + 4; // past the "\r\n\r\n"
+        this.bodyLength = Number(match[1]);
+        this.bodyStart = headerEnd + 4; // past the "\r\n\r\n"
       }
-      if (this.#buffer.length < this.#bodyStart + this.#bodyLength) return; // body incomplete
-      const body = decoder.decode(this.#buffer.subarray(this.#bodyStart, this.#bodyStart + this.#bodyLength));
-      this.#buffer = this.#buffer.subarray(this.#bodyStart + this.#bodyLength);
-      this.#bodyStart = -1;
-      this.#bodyLength = 0;
+      if (this.buffer.length < this.bodyStart + this.bodyLength) return; // body incomplete
+      const body = decoder.decode(this.buffer.subarray(this.bodyStart, this.bodyStart + this.bodyLength));
+      this.buffer = this.buffer.subarray(this.bodyStart + this.bodyLength);
+      this.bodyStart = -1;
+      this.bodyLength = 0;
       try {
-        this.#callback(JSON.parse(body) as Message);
+        this.callback(JSON.parse(body) as Message);
       } catch (err) {
         this.fireError(err);
       }
@@ -109,11 +107,11 @@ function indexOfDoubleCrlf(buffer: Uint8Array): number {
 
 /** Serializes JSON-RPC messages as Content-Length framed JSON to the byte stream. */
 class StdioMessageWriter extends AbstractMessageWriter implements MessageWriter {
-  #transport: ByteTransport;
+  private transport: ByteTransport;
 
   constructor(transport: ByteTransport) {
     super();
-    this.#transport = transport;
+    this.transport = transport;
   }
 
   write(msg: Message): Promise<void> {
@@ -122,7 +120,7 @@ class StdioMessageWriter extends AbstractMessageWriter implements MessageWriter 
     const out = new Uint8Array(frame.length + body.length);
     out.set(frame);
     out.set(body, frame.length);
-    this.#transport.send(out);
+    this.transport.send(out);
     return Promise.resolve();
   }
 

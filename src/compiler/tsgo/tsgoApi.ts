@@ -1,8 +1,6 @@
-// Starts an in-browser tsgo API session: boots tsgo.wasm as a
-// resident `--api --async` server (see bootTsgoWasm.ts) and drives it through the
-// vendored native-preview async client over a JSON-RPC connection (tsgoConnection.ts).
-// The returned `API` is the full native-preview surface — updateSnapshot, projects,
-// program.getSourceFile, and the async checker — backed entirely by the wasm.
+// Starts an in-browser tsgo API session: boots tsgo.wasm (bootTsgoWasm.ts) and drives
+// it through the vendored native-preview async client over a JSON-RPC connection
+// (tsgoConnection.ts). The returned `API` is the full client surface, backed by the wasm.
 import { API } from "./vendor/native-preview/api/async/api.ts";
 import { bootTsgoWasm } from "./bootTsgoWasm.ts";
 import { createStdioConnection } from "./tsgoConnection.ts";

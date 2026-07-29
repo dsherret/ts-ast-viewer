@@ -1,8 +1,5 @@
-// End-to-end proof that tsgo runs fully in-process with NO
-// @typescript/native-preview npm dependency: the vendored async API client
-// (built from typescript-go, see scripts/buildTsgo.ts) drives tsgo.wasm over a
-// JSON-RPC connection, materializes a real AST, and answers a checker query.
-// Skips if the wasm hasn't been built yet (`deno task buildTsgo`).
+// End-to-end: the vendored async client drives tsgo.wasm over a JSON-RPC connection,
+// materializes a real AST, and answers a checker query. Skips if the wasm isn't built.
 import { expect } from "@std/expect";
 import * as path from "node:path";
 import { createTsgoApi } from "./tsgoApi.ts";

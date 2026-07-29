@@ -1,13 +1,8 @@
 // Boots the patched `tsgo.wasm` (see scripts/buildTsgo.ts) as a resident
-// `--api --async` JSON-RPC server, using JSPI so a blocking stdin read suspends
-// the wasm without a SharedArrayBuffer (so no COOP/COEP cross-origin isolation
-// is required). The patched server handles requests inline, so suspending the
-// whole instance inside fd_read is safe: the previous response is already written
-// before we wait for the next request.
-//
-// Source files are delivered through the wasm's in-memory filesystem rather than
-// JSON-RPC FS callbacks — an inline handler cannot round-trip a server→client
-// request. Requires a runtime with WebAssembly JSPI (`WebAssembly.Suspending`).
+// `--api --async` JSON-RPC server. JSPI lets a blocking stdin read suspend the wasm
+// without a SharedArrayBuffer (no COOP/COEP needed); the inline-handler patch makes
+// suspending inside fd_read safe. Source files are delivered via the wasm's in-memory
+// filesystem, since an inline handler can't round-trip a server→client FS request.
 import { Fd, File, OpenFile, PreopenDirectory, WASI, wasi as wasiDefs } from "@bjorn3/browser_wasi_shim";
 
 const ERRNO_SUCCESS = 0;
@@ -15,17 +10,11 @@ const ERRNO_SUCCESS = 0;
 export interface BootedTsgo {
   /** Feed bytes to the server's stdin (JSON-RPC requests). */
   writeStdin(bytes: Uint8Array): void;
-  /**
-   * Update (or add) a file in the compiler's in-memory filesystem after boot.
-   * Returns true if the file was newly created, false if its contents were replaced.
-   * Pair a replacement with `updateSnapshot({ fileChanges: { changed: [path] } })`
-   * so the server re-reads it.
-   */
+  /** Update/add a file in the in-memory FS (returns true if newly created). Pair a
+   * replacement with `updateSnapshot({ fileChanges: { changed: [path] } })` to re-read it. */
   setFile(path: string, content: string): boolean;
-  /**
-   * Remove a file from the compiler's in-memory filesystem. Returns true if a file
-   * was removed. Pair with `updateSnapshot({ fileChanges: { deleted: [path] } })`.
-   */
+  /** Remove a file from the in-memory FS (returns true if removed). Pair with
+   * `updateSnapshot({ fileChanges: { deleted: [path] } })`. */
   removeFile(path: string): boolean;
   /** Resolves if the wasm exits (normally it runs forever). */
   running: Promise<void>;
@@ -136,13 +125,13 @@ type FdRead = (fd: number, iovsPtr: number, iovsLen: number, nreadPtr: number) =
 
 /** stdout/stderr fd that forwards written bytes to a callback. */
 class SinkFd extends Fd {
-  #onWrite: (bytes: Uint8Array) => void;
+  private onWrite: (bytes: Uint8Array) => void;
   constructor(onWrite: (bytes: Uint8Array) => void) {
     super();
-    this.#onWrite = onWrite;
+    this.onWrite = onWrite;
   }
   override fd_write(data: Uint8Array) {
-    this.#onWrite(data.slice());
+    this.onWrite(data.slice());
     return { ret: ERRNO_SUCCESS, nwritten: data.byteLength };
   }
   override fd_fdstat_get() {
@@ -155,33 +144,33 @@ class SinkFd extends Fd {
 
 /** A queue of stdin chunks with async blocking when empty. */
 class StdinQueue {
-  #chunks: Uint8Array[] = [];
-  #waiters: (() => void)[] = [];
+  private chunks: Uint8Array[] = [];
+  private waiters: (() => void)[] = [];
 
   push(bytes: Uint8Array) {
-    this.#chunks.push(bytes);
-    const waiters = this.#waiters;
-    this.#waiters = [];
+    this.chunks.push(bytes);
+    const waiters = this.waiters;
+    this.waiters = [];
     for (const resolve of waiters) resolve();
   }
 
   isEmpty() {
-    return this.#chunks.length === 0;
+    return this.chunks.length === 0;
   }
 
   async waitForData() {
-    while (this.#chunks.length === 0) {
-      await new Promise<void>((resolve) => this.#waiters.push(resolve));
+    while (this.chunks.length === 0) {
+      await new Promise<void>((resolve) => this.waiters.push(resolve));
     }
   }
 
   take(maxLen: number): Uint8Array {
-    const head = this.#chunks[0];
+    const head = this.chunks[0];
     if (head.length <= maxLen) {
-      this.#chunks.shift();
+      this.chunks.shift();
       return head;
     }
-    this.#chunks[0] = head.subarray(maxLen);
+    this.chunks[0] = head.subarray(maxLen);
     return head.subarray(0, maxLen);
   }
 }

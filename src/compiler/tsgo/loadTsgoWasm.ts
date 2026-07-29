@@ -1,12 +1,8 @@
-// Lazily fetches and compiles the tsgo WebAssembly module (~49 MB) and installs
-// the vscode-jsonrpc browser runtime abstraction layer. Only reached via dynamic
-// import when a tsgo version is selected, so neither the wasm nor the browser-only
-// RAL are part of the main bundle or the Deno type-check graph.
-//
-// The wasm is served as a static asset from `public/tsgo.wasm` (built by
-// `deno task buildTsgo`) and fetched at runtime — deliberately NOT referenced via
-// `new URL(..., import.meta.url)`, so `vite build` doesn't require the 49 MB file
-// to exist. Only the scheduled/deploy CI build produces it.
+// Lazily fetches and compiles the tsgo WebAssembly module and installs the
+// vscode-jsonrpc browser RAL. Only reached via dynamic import when a tsgo version is
+// selected, so neither the wasm nor the browser-only RAL land in the main bundle or
+// the Deno type-check graph. The wasm is fetched from `public/tsgo.wasm` at runtime
+// (not `new URL(..., import.meta.url)`), so `vite build` doesn't require the file.
 import { jspiAvailable } from "./bootTsgoWasm.ts";
 
 let modulePromise: Promise<WebAssembly.Module> | undefined;
