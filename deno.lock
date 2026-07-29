@@ -35,14 +35,12 @@
     "npm:lz-string@^1.5.0": "1.5.0",
     "npm:monaco-editor@~0.55.1": "0.55.1",
     "npm:react-dom@^19.2.3": "19.2.8_react@19.2.8",
-    "npm:react-monaco-editor@0.59.0": "0.59.0_monaco-editor@0.55.1_react@19.2.8_react-dom@19.2.8__react@19.2.8",
     "npm:react-spinners@0.17": "0.17.0_react@19.2.8_react-dom@19.2.8__react@19.2.8",
     "npm:react-treeview@~0.4.7": "0.4.7_react@19.2.8",
     "npm:react@^19.2.3": "19.2.8",
     "npm:ts-factory-code-generator-generator@0.7": "0.7.0",
     "npm:ts-morph@^27.0.2": "27.0.2",
     "npm:typescript@5.9.3": "5.9.3",
-    "npm:vite-plugin-monaco-editor@^1.1.0": "1.1.0_monaco-editor@0.55.1",
     "npm:vite@^7.3.0": "7.3.6_@types+node@25.9.5",
     "npm:vscode-jsonrpc@9.0.0": "9.0.0"
   },
@@ -995,14 +993,6 @@
     "react-is@16.13.1": {
       "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
     },
-    "react-monaco-editor@0.59.0_monaco-editor@0.55.1_react@19.2.8_react-dom@19.2.8__react@19.2.8": {
-      "integrity": "sha512-SggqfZCdUauNk7GI0388bk5n25zYsQ1ai1i+VhxAgwbCH+MTGl7L1fBNTJ6V+oXeUApf+bpzikprHJEZm9J/zA==",
-      "dependencies": [
-        "monaco-editor",
-        "react",
-        "react-dom"
-      ]
-    },
     "react-refresh@0.18.0": {
       "integrity": "sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw=="
     },
@@ -1138,12 +1128,6 @@
         "react"
       ]
     },
-    "vite-plugin-monaco-editor@1.1.0_monaco-editor@0.55.1": {
-      "integrity": "sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==",
-      "dependencies": [
-        "monaco-editor"
-      ]
-    },
     "vite@7.3.6_@types+node@25.9.5": {
       "integrity": "sha512-4XP60spRGjSZFf1qYH+dJIkK2znL3zQfl9KkOV9MkkRR/3Dls0dxaBsQPTloEc5BLXWPL9vsOxopxyKoMmDueg==",
       "dependencies": [
@@ -1198,14 +1182,12 @@
         "npm:lz-string@^1.5.0",
         "npm:monaco-editor@~0.55.1",
         "npm:react-dom@^19.2.3",
-        "npm:react-monaco-editor@0.59.0",
         "npm:react-spinners@0.17",
         "npm:react-treeview@~0.4.7",
         "npm:react@^19.2.3",
         "npm:ts-factory-code-generator-generator@0.7",
         "npm:ts-morph@^27.0.2",
         "npm:typescript@5.9.3",
-        "npm:vite-plugin-monaco-editor@^1.1.0",
         "npm:vite@^7.3.0",
         "npm:vscode-jsonrpc@9.0.0"
       ]

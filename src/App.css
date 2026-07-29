@@ -215,19 +215,109 @@ a:visited {
   margin-right: 8px;
 }
 
-/* Current file controller line */
+/* Current file tabs */
 
 #filesControl {
-  height: 24px;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 8px;
+  height: 32px;
+  display: flex;
+  align-items: stretch;
+  background: var(--header-background);
+  overflow: hidden;
+}
+
+#filesControl .fileTabs {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  /* many files scroll the strip rather than the page. the scrollbar is kept thin so it
+     doesn't eat half of the tab it sits under */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--resizer-border) transparent;
+}
+
+/* for webkit versions predating scrollbar-width */
+#filesControl .fileTabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+#filesControl .fileTabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#filesControl .fileTabs::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: var(--resizer-border);
+}
+
+#filesControl .fileTab {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px 0 8px;
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--text-color);
+  border-right: 1px solid var(--resizer-border);
+  opacity: 0.65;
+}
+
+#filesControl .fileTab.active {
+  background: var(--vscode-background);
+  opacity: 1;
+}
+
+#filesControl .fileTab.renaming {
+  padding: 0 4px;
+  cursor: text;
+}
+
+#filesControl .fileNameInput {
+  border: 1px solid var(--node-selected);
+  background: var(--vscode-background);
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0 2px;
+}
+
+#filesControl .deleteFile,
+#filesControl .newFile {
+  padding: 2px 5px;
+  border: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#filesControl .newFile {
+  font-size: 15px;
+  color: var(--text-color);
+}
+
+/* keep the strip from getting noisy — only reveal delete on the tab being pointed at */
+#filesControl .deleteFile {
+  visibility: hidden;
+}
+
+#filesControl .fileTab:hover .deleteFile,
+#filesControl .fileTab.active .deleteFile {
+  visibility: visible;
+}
+
+#filesControl .deleteFile:hover,
+#filesControl .newFile:hover {
+  background: var(--range-highlight);
 }
 
 /* Code Editor */
 
 #codeEditor {
-  height: calc(100% - 24px);
+  height: calc(100% - 32px);
 }
 
 .codeEditor {
@@ -237,6 +327,19 @@ a:visited {
 }
 
 .codeEditor .editorContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.codeEditor .monacoContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.codeEditor .editorOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }

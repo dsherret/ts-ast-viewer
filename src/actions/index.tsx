@@ -19,8 +19,15 @@ export interface SetCurrentFile {
   file: string;
 }
 
-export interface DeleteCurrentFile {
-  type: constants.DELETE_CURRENT_FILE;
+export interface RenameFile {
+  type: constants.RENAME_FILE;
+  file: string;
+  newFile: string;
+}
+
+export interface DeleteFile {
+  type: constants.DELETE_FILE;
+  file: string;
 }
 
 export interface SetApiLoadingState {
@@ -88,7 +95,8 @@ export function osThemeChange(): OsThemeChange {
 export type AllActions =
   | SetCode
   | SetCurrentFile
-  | DeleteCurrentFile
+  | RenameFile
+  | DeleteFile
   | SetApiLoadingState
   | RefreshSourceFile
   | SetSelectedNode

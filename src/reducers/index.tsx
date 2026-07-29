@@ -72,19 +72,43 @@ export function appReducer(
         },
       };
     }
-    case actionNames.DELETE_CURRENT_FILE: {
-      const filesWithoutCurrent = { ...state.files };
-      delete filesWithoutCurrent[state.currentFile];
-      let newCurrentFile = Object.keys(filesWithoutCurrent)[0];
+    case actionNames.RENAME_FILE: {
+      if (state.files[action.newFile] != null) {
+        return state; // name is taken — keep the old one
+      }
+
+      // rebuilt in order so the renamed file keeps its place in the tab strip
+      const renamedFiles: Record<string, string> = {};
+      for (const [file, text] of Object.entries(state.files)) {
+        renamedFiles[file === action.file ? action.newFile : file] = text;
+      }
+
+      return {
+        ...state,
+        currentFile: state.currentFile === action.file ? action.newFile : state.currentFile,
+        files: renamedFiles,
+      };
+    }
+    case actionNames.DELETE_FILE: {
+      const deletedIndex = Object.keys(state.files).indexOf(action.file);
+      const remainingFiles = { ...state.files };
+      delete remainingFiles[action.file];
+      const remainingNames = Object.keys(remainingFiles);
+
+      let newCurrentFile = state.currentFile;
+      if (state.currentFile === action.file) {
+        // select the neighbouring file, like closing a tab in an editor
+        newCurrentFile = remainingNames[Math.min(deletedIndex, remainingNames.length - 1)];
+      }
       if (!newCurrentFile) {
         newCurrentFile = "/main.ts";
-        filesWithoutCurrent[newCurrentFile] = "";
+        remainingFiles[newCurrentFile] = "";
       }
 
       return {
         ...state,
         currentFile: newCurrentFile,
-        files: filesWithoutCurrent,
+        files: remainingFiles,
       };
     }
     case actionNames.SET_OPTIONS: {
