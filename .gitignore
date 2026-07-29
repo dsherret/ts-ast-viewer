@@ -6,3 +6,7 @@ npm-debug.log*
 .DS_Store
 dist
 *.local
+
+# built by `deno task buildTsgoWasm` (large; not committed)
+.tsgo-build
+src/resources/tsgo/tsgo.wasm

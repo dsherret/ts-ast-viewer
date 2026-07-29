@@ -18,6 +18,7 @@
     "jsr:@std/path@1": "1.1.4",
     "jsr:@std/path@^1.1.4": "1.1.4",
     "jsr:@std/semver@^1.0.7": "1.0.7",
+    "npm:@bjorn3/browser_wasi_shim@~0.4.2": "0.4.2",
     "npm:@types/circular-json@0.4": "0.4.0",
     "npm:@types/inline-style-prefixer@^5.0.3": "5.0.3",
     "npm:@types/node@^25.0.3": "25.0.3",
@@ -41,7 +42,8 @@
     "npm:ts-morph@^27.0.2": "27.0.2",
     "npm:typescript@5.9.3": "5.9.3",
     "npm:vite-plugin-monaco-editor@^1.1.0": "1.1.0_monaco-editor@0.55.1",
-    "npm:vite@^7.3.0": "7.3.0_@types+node@25.0.3_picomatch@4.0.3"
+    "npm:vite@^7.3.0": "7.3.0_@types+node@25.0.3_picomatch@4.0.3",
+    "npm:vscode-jsonrpc@9.0.0": "9.0.0"
   },
   "jsr": {
     "@david/console-static-text@0.3.0": {
@@ -266,6 +268,9 @@
         "@babel/helper-string-parser",
         "@babel/helper-validator-identifier"
       ]
+    },
+    "@bjorn3/browser_wasi_shim@0.4.2": {
+      "integrity": "sha512-/iHkCVUG3VbcbmEHn5iIUpIrh7a7WPiwZ3sHy4HZKZzBdSadwdddYDZAII2zBvQYV0Lfi8naZngPCN7WPHI/hA=="
     },
     "@esbuild/aix-ppc64@0.27.2": {
       "integrity": "sha512-GZMB+a0mOMZs4MpDbj8RJp4cw+w1WV5NYD6xzgvzUJ5Ek2jerwfO2eADyI6ExDSUED+1X8aMbegahsJi+8mgpw==",
@@ -1150,6 +1155,9 @@
       ],
       "bin": true
     },
+    "vscode-jsonrpc@9.0.0": {
+      "integrity": "sha512-+VvMmQPJhtvJ+8O+zu2JKIRiLxXF8NW7krWgyMGeOHrp4Cn23T5hc0v2LknNeopDOB70wghHAds7mKtcZ0I4Sg=="
+    },
     "yallist@3.1.1": {
       "integrity": "sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g=="
     }
@@ -1159,10 +1167,13 @@
       "jsr:@david/dax@~0.44.1",
       "jsr:@david/dts-minify@~0.3.3",
       "jsr:@std/expect@^1.0.17",
-      "jsr:@std/semver@^1.0.7"
+      "jsr:@std/semver@^1.0.7",
+      "npm:@bjorn3/browser_wasi_shim@~0.4.2",
+      "npm:vscode-jsonrpc@9.0.0"
     ],
     "packageJson": {
       "dependencies": [
+        "npm:@bjorn3/browser_wasi_shim@~0.4.2",
         "npm:@types/circular-json@0.4",
         "npm:@types/inline-style-prefixer@^5.0.3",
         "npm:@types/node@^25.0.3",
@@ -1186,7 +1197,8 @@
         "npm:ts-morph@^27.0.2",
         "npm:typescript@5.9.3",
         "npm:vite-plugin-monaco-editor@^1.1.0",
-        "npm:vite@^7.3.0"
+        "npm:vite@^7.3.0",
+        "npm:vscode-jsonrpc@9.0.0"
       ]
     }
   }

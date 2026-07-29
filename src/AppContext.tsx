@@ -7,6 +7,8 @@ import {
   type ScriptKind,
   type ScriptTarget,
 } from "./compiler/index.js";
+import { isTs7 } from "./compiler/ts7/ts7Version.js";
+import type { PrebuiltSourceFile } from "./types/index.js";
 import type { CodeEditorTheme } from "./components/index.js";
 import { appReducer, deriveEditorTheme } from "./reducers/index.js";
 import { ApiLoadingState, type StoreState } from "./types/index.js";
@@ -77,7 +79,16 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
           return;
         }
 
-        dispatch(actions.refreshSourceFile(api));
+        if (isTs7(compilerPackageName)) {
+          // reuses one resident wasm session across edits (see ts7Compiler.ts)
+          const prebuilt = await buildTs7SourceFile(api, state.code, state.options.scriptKind);
+          if (abortSignal.aborted) {
+            return;
+          }
+          dispatch(actions.refreshSourceFile(api, prebuilt));
+        } else {
+          dispatch(actions.refreshSourceFile(api));
+        }
         dispatch(actions.setApiLoadingState(ApiLoadingState.Loaded));
       } catch (err) {
         console.error(err);
@@ -115,7 +126,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     windowAny.selectedNode = selectedNode;
     windowAny.sourceFile = state.compiler.sourceFile;
 
-    if (state.options.bindingEnabled) {
+    if (state.options.bindingEnabled && state.compiler.asyncBinding == null) {
       const bindingTools = state.compiler.bindingTools();
       windowAny.checker = bindingTools.typeChecker;
       windowAny.typeChecker = bindingTools.typeChecker;
@@ -148,6 +159,24 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       {children}
     </AppContext.Provider>
   );
+}
+
+// Builds a TypeScript 7.0 source file by booting the wasm (lazy-loaded here) and
+// materializing the AST + async checker off the main static bundle.
+async function buildTs7SourceFile(
+  api: { version: string },
+  code: string,
+  scriptKind: ScriptKind,
+): Promise<PrebuiltSourceFile> {
+  const { getTs7SourceFile } = await import("./compiler/ts7/ts7Compiler.js");
+  const result = await getTs7SourceFile({ code, scriptKind, version: api.version });
+  return {
+    sourceFile: result.sourceFile as any,
+    bindingTools: () => {
+      throw new Error("TypeScript 7.0's checker is async — use asyncBinding.");
+    },
+    asyncBinding: result.asyncBinding,
+  };
 }
 
 export function useAppContext() {

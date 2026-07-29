@@ -1,6 +1,6 @@
 import type { CompilerApi, Node } from "../compiler/index.js";
 import { actions as constants } from "../constants/index.js";
-import type { ApiLoadingState, OptionsState } from "../types/index.js";
+import type { ApiLoadingState, OptionsState, PrebuiltSourceFile } from "../types/index.js";
 
 export interface SetCode {
   type: constants.SET_CODE;
@@ -29,12 +29,16 @@ export function setApiLoadingState(loadingState: ApiLoadingState): SetApiLoading
 export interface RefreshSourceFile {
   type: constants.REFRESH_SOURCEFILE;
   api: CompilerApi;
+  // pre-built source file for async compilers (TypeScript 7.0); sync compilers
+  // build it in the reducer instead
+  prebuilt?: PrebuiltSourceFile;
 }
 
-export function refreshSourceFile(api: CompilerApi): RefreshSourceFile {
+export function refreshSourceFile(api: CompilerApi, prebuilt?: PrebuiltSourceFile): RefreshSourceFile {
   return {
     type: constants.REFRESH_SOURCEFILE,
     api,
+    prebuilt,
   };
 }
 

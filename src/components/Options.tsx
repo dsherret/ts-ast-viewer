@@ -1,12 +1,7 @@
 import type React from "react";
 import { useRef, useState } from "react";
-import {
-  type CompilerApi,
-  type CompilerPackageNames,
-  compilerVersionCollection,
-  type ScriptKind,
-  type ScriptTarget,
-} from "../compiler/index.js";
+import type { CompilerApi, ScriptKind, ScriptTarget } from "../compiler/index.js";
+import { type AnyCompilerPackageName, appCompilerVersions, isTs7 } from "../compiler/ts7/ts7Version.js";
 import { useOnClickOutside } from "../hooks/index.js";
 import type { OptionsState } from "../types/index.js";
 import { type Theme, TreeMode } from "../types/index.js";
@@ -54,9 +49,9 @@ export function Options(props: OptionsProps) {
       <select
         id="compilerVersionSelection"
         value={props.options.compilerPackageName}
-        onChange={(event) => onChange({ compilerPackageName: event.target.value as CompilerPackageNames })}
+        onChange={(event) => onChange({ compilerPackageName: event.target.value as AnyCompilerPackageName })}
       >
-        {compilerVersionCollection.map((v) => <option value={v.packageName} key={v.packageName}>{v.version}</option>)}
+        {appCompilerVersions.map((v) => <option value={v.packageName} key={v.packageName}>{v.version}</option>)}
       </select>
     );
     return <Option name="Version" value={selection} />;
@@ -119,6 +114,10 @@ export function Options(props: OptionsProps) {
   }
 
   function getShowFactoryCode() {
+    // factory code generation isn't available for TypeScript 7.0
+    if (isTs7(props.options.compilerPackageName)) {
+      return undefined;
+    }
     const selection = (
       <div>
         <input
