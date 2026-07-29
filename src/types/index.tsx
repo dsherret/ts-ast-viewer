@@ -3,14 +3,14 @@ import type {
   CompilerPackageNames,
   Node,
   Program,
-  ScriptKind,
   ScriptTarget,
   SourceFile,
   TypeChecker,
 } from "../compiler/index.js";
 
 export interface StoreState {
-  code: string;
+  currentFile: string;
+  files: Record<string, string>;
   options: OptionsState;
   apiLoadingState: ApiLoadingState;
   compiler: CompilerState | undefined;
@@ -34,7 +34,6 @@ export interface OptionsState {
   compilerPackageName: CompilerPackageNames;
   treeMode: TreeMode;
   scriptTarget: ScriptTarget;
-  scriptKind: ScriptKind;
   bindingEnabled: boolean;
   showFactoryCode: boolean;
   showInternals: boolean;

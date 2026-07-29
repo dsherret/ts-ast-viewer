@@ -4,7 +4,6 @@ import {
   compilerVersionCollection,
   getCompilerApi,
   hasLoadedCompilerApi,
-  type ScriptKind,
   type ScriptTarget,
 } from "./compiler/index.js";
 import type { CodeEditorTheme } from "./components/index.js";
@@ -13,7 +12,6 @@ import { ApiLoadingState, type StoreState } from "./types/index.js";
 import { sleep, StateSaver, UrlSaver } from "./utils/index.js";
 
 const initialScriptTarget: ScriptTarget = 99 /* Latest */;
-const initialScriptKind: ScriptKind = 4 /* TSX */;
 const stateSaver = new StateSaver();
 
 console.log(
@@ -28,14 +26,17 @@ export interface AppContextValue {
 export const AppContext = React.createContext<AppContextValue | undefined>(undefined);
 
 export function AppContextProvider({ children }: { children: React.ReactNode }) {
+  // Guaranteed to have at least one property
+  const urlFiles = new UrlSaver().getUrlFiles();
+
   const [state, dispatch] = useReducer(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
-    code: new UrlSaver().getUrlCode(),
+    currentFile: Object.keys(urlFiles)[0],
+    files: urlFiles,
     options: {
       compilerPackageName: compilerVersionCollection[0].packageName,
       treeMode: stateSaver.get().treeMode,
       scriptTarget: initialScriptTarget,
-      scriptKind: initialScriptKind,
       bindingEnabled: true,
       showFactoryCode: stateSaver.get().showFactoryCode,
       showInternals: stateSaver.get().showInternals,
@@ -87,8 +88,8 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       }
     }
   }, [
-    state.code,
-    state.options.scriptKind,
+    state.currentFile,
+    state.files[state.currentFile],
     state.options.scriptTarget,
     state.options.compilerPackageName,
     state.options.bindingEnabled,

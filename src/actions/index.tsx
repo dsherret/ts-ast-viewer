@@ -14,6 +14,15 @@ export function setCode(code: string): SetCode {
   };
 }
 
+export interface SetCurrentFile {
+  type: constants.SET_CURRENT_FILE;
+  file: string;
+}
+
+export interface DeleteCurrentFile {
+  type: constants.DELETE_CURRENT_FILE;
+}
+
 export interface SetApiLoadingState {
   type: constants.SET_API_LOADING_STATE;
   loadingState: ApiLoadingState;
@@ -74,6 +83,8 @@ export function osThemeChange(): OsThemeChange {
 
 export type AllActions =
   | SetCode
+  | SetCurrentFile
+  | DeleteCurrentFile
   | SetApiLoadingState
   | RefreshSourceFile
   | SetSelectedNode

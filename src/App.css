@@ -210,7 +210,20 @@ a:visited {
   margin-right: 8px;
 }
 
+/* Current file controller line */
+
+#filesControl {
+  height: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+}
+
 /* Code Editor */
+
+#codeEditor {
+  height: calc(100% - 24px);
+}
 
 .codeEditor {
   width: 100%;

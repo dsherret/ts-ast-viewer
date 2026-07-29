@@ -4,7 +4,6 @@ import {
   type CompilerApi,
   type CompilerPackageNames,
   compilerVersionCollection,
-  type ScriptKind,
   type ScriptTarget,
 } from "../compiler/index.js";
 import { useOnClickOutside } from "../hooks/index.js";
@@ -34,7 +33,6 @@ export function Options(props: OptionsProps) {
       <div className="menu" hidden={!showOptionsMenu}>
         {getCompilerVersions()}
         {getTreeMode()}
-        {getScriptKind()}
         {getScriptTarget()}
         {getBindingEnabled()}
         {getShowFactoryCode()}
@@ -74,20 +72,6 @@ export function Options(props: OptionsProps) {
       </select>
     );
     return <Option name="Tree mode" value={selection} />;
-  }
-
-  function getScriptKind() {
-    const { api } = props;
-    if (api == null) {
-      return undefined;
-    }
-    return getEnumOption(
-      "Script kind",
-      "ts.ScriptKind",
-      api.ScriptKind,
-      props.options.scriptKind,
-      (value) => onChange({ scriptKind: value as ScriptKind }),
-    );
   }
 
   function getScriptTarget() {

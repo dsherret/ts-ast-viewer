@@ -1,5 +1,5 @@
 import type { AllActions } from "../actions/index.js";
-import { type CompilerApi, type CompilerPackageNames, convertOptions, createSourceFile } from "../compiler/index.js";
+import { type CompilerApi, type CompilerPackageNames, convertOptions, createSourceFiles } from "../compiler/index.js";
 import type { CodeEditorTheme } from "../components/index.js";
 import { actions as actionNames } from "./../constants/index.js";
 import type { OptionsState, StoreState } from "../types/index.js";
@@ -37,12 +37,48 @@ export function appReducer(
         ...state,
         options: convertOptions(state.compiler == null ? undefined : state.compiler.api, action.api, state.options),
       };
-      fillNewSourceFileState(newState.options.compilerPackageName, action.api, newState, state.code, state.options);
-      urlSaver.updateUrl(state.code);
+      fillNewSourceFileState(
+        newState.options.compilerPackageName,
+        action.api,
+        newState,
+        state.options,
+      );
+      urlSaver.updateUrl(state.files);
       return newState;
     }
     case actionNames.SET_CODE: {
-      return { ...state, code: action.code };
+      return {
+        ...state,
+        files: {
+          ...state.files,
+          [state.currentFile]: action.code,
+        },
+      };
+    }
+    case actionNames.SET_CURRENT_FILE: {
+      return {
+        ...state,
+        currentFile: action.file,
+        files: {
+          ...state.files,
+          [action.file]: state.files[action.file] ?? "",
+        },
+      };
+    }
+    case actionNames.DELETE_CURRENT_FILE: {
+      const filesWithoutCurrent = { ...state.files };
+      delete filesWithoutCurrent[state.currentFile];
+      let newCurrentFile = Object.keys(filesWithoutCurrent)[0];
+      if (!newCurrentFile) {
+        newCurrentFile = "/code.ts";
+        filesWithoutCurrent[newCurrentFile] = "";
+      }
+
+      return {
+        ...state,
+        currentFile: newCurrentFile,
+        files: filesWithoutCurrent,
+      };
     }
     case actionNames.SET_OPTIONS: {
       return {
@@ -82,15 +118,14 @@ function fillNewSourceFileState(
   compilerPackageName: CompilerPackageNames,
   api: CompilerApi,
   state: StoreState,
-  code: string,
   options: OptionsState,
 ) {
-  const { sourceFile, bindingTools } = createSourceFile(api, code, options.scriptTarget, options.scriptKind);
+  const { sourceFiles, bindingTools } = createSourceFiles(api, state.files, options.scriptTarget);
   state.compiler = {
     packageName: compilerPackageName,
     api,
-    sourceFile,
+    sourceFile: sourceFiles[state.currentFile],
     bindingTools,
-    selectedNode: sourceFile,
+    selectedNode: sourceFiles[state.currentFile],
   };
 }

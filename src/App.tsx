@@ -52,13 +52,19 @@ export function App() {
       return (
         <Allotment vertical>
           <Allotment.Pane preferredSize="70%">
+            {getFilesControl()}
             {getCodeEditor()}
           </Allotment.Pane>
           {getFactoryCodeEditor()}
         </Allotment>
       );
     } else {
-      return getCodeEditor();
+      return (
+        <>
+          {getFilesControl()}
+          {getCodeEditor()}
+        </>
+      );
     }
 
     function getFactoryCodeEditor() {
@@ -67,9 +73,25 @@ export function App() {
       }
 
       return (
-        <components.ErrorBoundary getResetHash={() => state.code}>
+        <components.ErrorBoundary getResetHash={() => state.files[state.currentFile]}>
           <components.FactoryCodeEditor compiler={compiler} theme={state.editorTheme} />
         </components.ErrorBoundary>
+      );
+    }
+
+    function getFilesControl() {
+      return (
+        <components.FilesControl
+          files={state.files}
+          currentFile={state.currentFile}
+          onChange={(file) => {
+            if (!file) {
+              dispatch({ type: "DELETE_CURRENT_FILE" });
+            } else {
+              dispatch({ type: "SET_CURRENT_FILE", file });
+            }
+          }}
+        />
       );
     }
 
@@ -91,7 +113,7 @@ export function App() {
             dispatch({ type: "SET_SELECTED_NODE", node: descendant });
           }}
           theme={state.editorTheme}
-          text={state.code}
+          text={state.files[state.currentFile]}
           highlight={getCodeHighlightRange()}
           showInfo
           renderWhiteSpace

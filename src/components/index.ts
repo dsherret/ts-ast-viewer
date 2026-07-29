@@ -5,3 +5,4 @@ export * from "./Options.js";
 export * from "./PropertiesViewer.js";
 export * from "./Spinner.js";
 export * from "./TreeViewer.js";
+export * from "./FilesControl.js";
