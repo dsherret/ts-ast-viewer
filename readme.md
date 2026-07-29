@@ -12,6 +12,11 @@ Install [Deno](https://deno.com).
 # install packages
 deno install
 
+# build the TypeScript 7.0+ (tsgo) wasm + vendored client from typescript-go main.
+# required for `deno task check` and for the "@next" version in the app. Needs Go
+# and git; the outputs are gitignored.
+deno task buildTsgo
+
 # run locally
 deno task dev
 
