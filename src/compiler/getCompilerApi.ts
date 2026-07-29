@@ -1,14 +1,14 @@
 import { importCompilerApi, importLibFiles } from "./compiler.generated.js";
 import type { CompilerApi } from "./CompilerApi.js";
 import type { CompilerPackageNames } from "./compilerVersions.generated.js";
-import { type AnyCompilerPackageName, isTs7, TS7_VERSION } from "./ts7/ts7Version.js";
+import { type AnyCompilerPackageName, isTsgo, TSGO_VERSION } from "./tsgo/tsgoVersion.js";
 
 const compilerTypes: { [name: string]: Promise<CompilerApi> } = {};
 const compilerTypesLoaded: { [name: string]: true } = {};
 
 export function getCompilerApi(packageName: AnyCompilerPackageName): Promise<CompilerApi> {
   if (compilerTypes[packageName] == null) {
-    compilerTypes[packageName] = isTs7(packageName) ? loadTs7CompilerApi() : loadCompilerApi(packageName);
+    compilerTypes[packageName] = isTsgo(packageName) ? loadTsgoCompilerApi() : loadCompilerApi(packageName);
     compilerTypes[packageName].catch(() => delete compilerTypes[packageName]);
   }
   return compilerTypes[packageName];
@@ -18,14 +18,14 @@ export function hasLoadedCompilerApi(packageName: AnyCompilerPackageName) {
   return compilerTypesLoaded[packageName] === true;
 }
 
-// dynamically imported so TS7's vendored client + wasm loader stay out of the main
+// dynamically imported so TSGO's vendored client + wasm loader stay out of the main
 // bundle and the Deno type-check graph until "7.0" is actually selected.
-async function loadTs7CompilerApi(): Promise<CompilerApi> {
-  const { createTs7CompilerApi, TS7_PACKAGE_NAME } = await import("./ts7/ts7Compiler.js");
-  const { getTsgoWasmModule } = await import("./ts7/loadTsgoWasm.js");
+async function loadTsgoCompilerApi(): Promise<CompilerApi> {
+  const { createTsgoCompilerApi, TSGO_PACKAGE_NAME } = await import("./tsgo/tsgoCompiler.js");
+  const { getTsgoWasmModule } = await import("./tsgo/loadTsgoWasm.js");
   await getTsgoWasmModule(); // warm the wasm compile so the first source file is fast
-  compilerTypesLoaded[TS7_PACKAGE_NAME] = true;
-  return createTs7CompilerApi(TS7_VERSION);
+  compilerTypesLoaded[TSGO_PACKAGE_NAME] = true;
+  return createTsgoCompilerApi(TSGO_VERSION);
 }
 
 async function loadCompilerApi(packageName: CompilerPackageNames) {

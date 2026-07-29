@@ -9,26 +9,26 @@ import { type CompilerPackageNames, compilerVersionCollection } from "../compile
 
 // Internal key for the tsgo compiler (not an npm package name). This matches the
 // identity the typescript-go source uses; the app keys everything by it.
-export const TS7_PACKAGE_NAME = "@typescript/native-preview";
-export const TS7_VERSION = "@next";
+export const TSGO_PACKAGE_NAME = "@typescript/native-preview";
+export const TSGO_VERSION = "@next";
 
-export type Ts7PackageName = typeof TS7_PACKAGE_NAME;
+export type TsgoPackageName = typeof TSGO_PACKAGE_NAME;
 
 /** Any selectable compiler, including tsgo which isn't an npm package. */
-export type AnyCompilerPackageName = CompilerPackageNames | Ts7PackageName;
+export type AnyCompilerPackageName = CompilerPackageNames | TsgoPackageName;
 
 /** Whether this compiler runs via the tsgo/wasm infrastructure (vs the npm typescript). */
-export function isTs7(packageName: AnyCompilerPackageName): packageName is Ts7PackageName {
-  return packageName === TS7_PACKAGE_NAME;
+export function isTsgo(packageName: AnyCompilerPackageName): packageName is TsgoPackageName {
+  return packageName === TSGO_PACKAGE_NAME;
 }
 
-export const ts7VersionEntry: { version: string; packageName: Ts7PackageName } = {
-  version: TS7_VERSION,
-  packageName: TS7_PACKAGE_NAME,
+export const tsgoVersionEntry: { version: string; packageName: TsgoPackageName } = {
+  version: TSGO_VERSION,
+  packageName: TSGO_PACKAGE_NAME,
 };
 
 /** The version selector's full list: the npm-installed versions plus the tsgo nightly. */
 export const appCompilerVersions: { version: string; packageName: AnyCompilerPackageName }[] = [
   ...compilerVersionCollection,
-  ts7VersionEntry,
+  tsgoVersionEntry,
 ];

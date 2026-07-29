@@ -9,7 +9,7 @@ for (const version of versions) {
 }
 // Note: no `next` install and no >= 7.0.0 versions — TypeScript 7.0+ is the Go port
 // (tsgo), which the app runs from WebAssembly instead of the npm package. The nightly
-// tsgo build is added to the version list separately (see src/compiler/ts7/ts7Version.ts).
+// tsgo build is added to the version list separately (see src/compiler/tsgo/tsgoVersion.ts).
 
 async function npmInstallTypeScriptVersion(version: string) {
   console.log(`Installing Typescript ${version}...`);

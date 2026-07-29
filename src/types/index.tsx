@@ -1,5 +1,5 @@
 import type { CompilerApi, Node, Program, ScriptTarget, SourceFile, TypeChecker } from "../compiler/index.js";
-import type { AnyCompilerPackageName } from "../compiler/ts7/ts7Version.js";
+import type { AnyCompilerPackageName } from "../compiler/tsgo/tsgoVersion.js";
 
 export interface StoreState {
   currentFile: string;

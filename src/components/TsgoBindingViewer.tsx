@@ -1,5 +1,5 @@
 // Renders the Type and Symbol for the selected node when using TypeScript 7.0.
-// Unlike classic TS (whose checker is in-process), TS7's Type/Symbol are remote
+// Unlike classic TS (whose checker is in-process), TSGO's Type/Symbol are remote
 // handle-based proxies: scalar fields read synchronously once the object is
 // fetched, but collections (properties, members, base types, signatures, …) are
 // async calls on the proxy or the checker.
@@ -19,14 +19,14 @@ import { ToolTippedText } from "./ToolTippedText.js";
 /** Arrays/collections with more than this many items start collapsed. */
 const COLLAPSE_THRESHOLD = 10;
 
-export interface Ts7BindingViewerProps {
+export interface TsgoBindingViewerProps {
   api: CompilerApi;
   binding: AsyncBinding;
   node: Node;
   showInternals: boolean;
 }
 
-export function Ts7BindingViewer(props: Ts7BindingViewerProps) {
+export function TsgoBindingViewer(props: TsgoBindingViewerProps) {
   const { api, binding, node, showInternals } = props;
   return (
     <>

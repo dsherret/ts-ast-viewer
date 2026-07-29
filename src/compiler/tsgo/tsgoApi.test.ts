@@ -9,7 +9,7 @@ import { createTsgoApi } from "./tsgoApi.ts";
 
 const wasmPath = path.resolve(import.meta.dirname!, "../../../public/tsgo.wasm");
 
-Deno.test("vendored TS7 API materializes an AST and resolves a type", async () => {
+Deno.test("vendored TSGO API materializes an AST and resolves a type", async () => {
   if (!(await exists(wasmPath))) {
     console.warn(`skipping: ${wasmPath} not built (run \`deno task buildTsgo\`)`);
     return;
@@ -34,7 +34,7 @@ Deno.test("vendored TS7 API materializes an AST and resolves a type", async () =
     const sourceFile = await project!.program.getSourceFile(fileName);
     expect(sourceFile).toBeDefined();
 
-    // walk the materialized AST (forEachChild — TS7 has no getChildren())
+    // walk the materialized AST (forEachChild — TSGO has no getChildren())
     let nodeCount = 0;
     let identifier: { getText(): string } | undefined;
     const visit = (node: any) => {

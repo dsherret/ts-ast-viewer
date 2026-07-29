@@ -3,7 +3,7 @@ import "./App.css";
 import "allotment/dist/style.css";
 import { useAppContext } from "./AppContext.js";
 import { getDescendantAtRange, getStartSafe } from "./compiler/index.js";
-import { isTs7 } from "./compiler/ts7/ts7Version.js";
+import { isTsgo } from "./compiler/tsgo/tsgoVersion.js";
 import * as components from "./components/index.js";
 import { ApiLoadingState } from "./types/index.js";
 
@@ -50,7 +50,7 @@ export function App() {
 
   function getCodeEditorArea() {
     // factory code generation isn't available for TypeScript 7.0, so don't show the pane
-    if (state.options.showFactoryCode && !isTs7(state.options.compilerPackageName)) {
+    if (state.options.showFactoryCode && !isTsgo(state.options.compilerPackageName)) {
       return (
         <Allotment vertical>
           <Allotment.Pane preferredSize="70%">

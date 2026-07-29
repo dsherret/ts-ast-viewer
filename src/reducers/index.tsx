@@ -1,6 +1,6 @@
 import type { AllActions } from "../actions/index.js";
 import { type CompilerApi, convertOptions, createSourceFiles } from "../compiler/index.js";
-import type { AnyCompilerPackageName } from "../compiler/ts7/ts7Version.js";
+import type { AnyCompilerPackageName } from "../compiler/tsgo/tsgoVersion.js";
 import type { CodeEditorTheme } from "../components/index.js";
 import { actions as actionNames } from "./../constants/index.js";
 import type { OptionsState, StoreState } from "../types/index.js";

@@ -1,4 +1,4 @@
-// Verifies the TS7 adapter renders through the app's getSyntaxKindName, and that a
+// Verifies the TSGO adapter renders through the app's getSyntaxKindName, and that a
 // resident session re-parses an edited file WITHOUT re-booting the wasm (the second
 // update reflects new code). Skips if the wasm isn't built (`deno task buildTsgo`).
 import { expect } from "@std/expect";
@@ -8,11 +8,11 @@ import * as path from "node:path";
 // branch of getChildrenFunction, inlined to avoid dragging in the utils barrel
 // (which pulls lz-string — fine in the Vite/browser build, not under Deno test).
 import { getSyntaxKindName } from "../../utils/getSyntaxKindName.js";
-import { Ts7Session } from "./ts7Compiler.ts";
+import { TsgoSession } from "./tsgoCompiler.ts";
 
 const wasmPath = path.resolve(import.meta.dirname!, "../../../public/tsgo.wasm");
 
-Deno.test("TS7 resident session walks the tree and re-parses edits without rebooting", async () => {
+Deno.test("TSGO resident session walks the tree and re-parses edits without rebooting", async () => {
   if (!(await exists(wasmPath))) {
     console.warn(`skipping: ${wasmPath} not built (run \`deno task buildTsgo\`)`);
     return;
@@ -20,7 +20,7 @@ Deno.test("TS7 resident session walks the tree and re-parses edits without reboo
   await import("vscode-jsonrpc/node"); // install the RAL for this env (deferred past the skip)
 
   const wasmModule = await WebAssembly.compile(await Deno.readFile(wasmPath));
-  const session = await Ts7Session.create(wasmModule);
+  const session = await TsgoSession.create(wasmModule);
 
   try {
     // first edit

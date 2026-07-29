@@ -5,7 +5,7 @@
 // The important difference from classic TypeScript is that producing the source
 // file is ASYNC (it round-trips the wasm), so this must run in the AppContext
 // effect rather than the reducer. Once materialized, the node tree walks
-// synchronously — but only via `forEachChild` (TS7 nodes have no `getChildren`).
+// synchronously — but only via `forEachChild` (TSGO nodes have no `getChildren`).
 //
 // A single tsgo session is kept resident and reused across edits: each edit only
 // rewrites the one file in the wasm's in-memory filesystem and re-parses it (the
@@ -15,7 +15,7 @@ import {
   NodeFlags,
   ScriptKind,
   ScriptTarget,
-  type SourceFile as Ts7SourceFile,
+  type SourceFile as TsgoSourceFile,
   SyntaxKind,
 } from "./vendor/native-preview/ast/index.ts";
 import { ElementFlags } from "./vendor/native-preview/enums/elementFlags.enum.ts";
@@ -24,34 +24,34 @@ import { SignatureKind } from "./vendor/native-preview/enums/signatureKind.enum.
 import { SymbolFlags } from "./vendor/native-preview/enums/symbolFlags.enum.ts";
 import { TypeFlags } from "./vendor/native-preview/enums/typeFlags.enum.ts";
 import { createTsgoApi, type TsgoApiHandle } from "./tsgoApi.ts";
-import { TS7_PACKAGE_NAME } from "./ts7Version.ts";
+import { TSGO_PACKAGE_NAME } from "./tsgoVersion.ts";
 import type { AsyncBinding } from "../../types/index.js";
 import type { CompilerApi } from "../CompilerApi.ts";
 
-export { TS7_PACKAGE_NAME };
+export { TSGO_PACKAGE_NAME };
 
-export interface Ts7SourceFileResult {
+export interface TsgoSourceFileResult {
   api: CompilerApi;
-  sourceFile: Ts7SourceFile;
+  sourceFile: TsgoSourceFile;
   /** Async per-node checker access (the wasm checker is out-of-process). */
   asyncBinding: AsyncBinding;
 }
 
-export interface Ts7UpdateOptions {
+export interface TsgoUpdateOptions {
   /** Absolute file name (its extension determines the script kind), e.g. "/code.ts". */
   fileName: string;
   code: string;
   version: string;
 }
 
-let residentSession: Promise<Ts7Session> | undefined;
+let residentSession: Promise<TsgoSession> | undefined;
 
 /**
  * Materialize the source file for `code` in the resident tsgo session, booting one
  * (and compiling the wasm) on first use. The session persists across calls, so a
  * subsequent edit is just a file rewrite + re-parse.
  */
-export async function getTs7SourceFile(options: Ts7UpdateOptions): Promise<Ts7SourceFileResult> {
+export async function getTsgoSourceFile(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
   if (residentSession == null) {
     residentSession = createResidentSession();
     residentSession.catch(() => residentSession = undefined);
@@ -59,25 +59,25 @@ export async function getTs7SourceFile(options: Ts7UpdateOptions): Promise<Ts7So
   try {
     return await (await residentSession).update(options);
   } catch (err) {
-    disposeTs7Session(); // a wedged session shouldn't break every later edit
+    disposeTsgoSession(); // a wedged session shouldn't break every later edit
     throw err;
   }
 }
 
 /** Tear down the resident tsgo session (e.g. to free its wasm memory). */
-export function disposeTs7Session(): void {
+export function disposeTsgoSession(): void {
   const session = residentSession;
   residentSession = undefined;
   session?.then((s) => s.dispose()).catch(() => {});
 }
 
-async function createResidentSession(): Promise<Ts7Session> {
+async function createResidentSession(): Promise<TsgoSession> {
   const { getTsgoWasmModule } = await import("./loadTsgoWasm.ts");
-  return Ts7Session.create(await getTsgoWasmModule());
+  return TsgoSession.create(await getTsgoWasmModule());
 }
 
 /** A resident tsgo session backing a single edited file. */
-export class Ts7Session {
+export class TsgoSession {
   #handle: TsgoApiHandle;
   #openFile: string | undefined;
   #queue: Promise<unknown> = Promise.resolve();
@@ -86,12 +86,12 @@ export class Ts7Session {
     this.#handle = handle;
   }
 
-  static async create(wasmModule: WebAssembly.Module): Promise<Ts7Session> {
-    return new Ts7Session(await createTsgoApi({ wasmModule }));
+  static async create(wasmModule: WebAssembly.Module): Promise<TsgoSession> {
+    return new TsgoSession(await createTsgoApi({ wasmModule }));
   }
 
   /** Serialized so overlapping edits can't interleave updateSnapshot calls. */
-  update(options: Ts7UpdateOptions): Promise<Ts7SourceFileResult> {
+  update(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
     const run = this.#queue.then(() => this.#doUpdate(options));
     this.#queue = run.then(() => {}, () => {});
     return run;
@@ -101,7 +101,7 @@ export class Ts7Session {
     void this.#handle.dispose();
   }
 
-  async #doUpdate(options: Ts7UpdateOptions): Promise<Ts7SourceFileResult> {
+  async #doUpdate(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
     const fileName = options.fileName;
     this.#handle.setFile(fileName, options.code);
     // An open file is held as an overlay snapshotted at open-time, so a plain
@@ -124,7 +124,7 @@ export class Ts7Session {
 
     const checker = project.checker;
     return {
-      api: createTs7CompilerApi(options.version),
+      api: createTsgoCompilerApi(options.version),
       sourceFile,
       asyncBinding: {
         checker,
@@ -141,8 +141,8 @@ function safe<T>(fn: () => Promise<T>): Promise<T | undefined> {
   return Promise.resolve().then(fn).catch(() => undefined);
 }
 
-/** A `CompilerApi` backed by the vendored TS7 enums — enough to render the tree. */
-export function createTs7CompilerApi(version: string): CompilerApi {
+/** A `CompilerApi` backed by the vendored TSGO enums — enough to render the tree. */
+export function createTsgoCompilerApi(version: string): CompilerApi {
   return {
     SyntaxKind,
     ModifierFlags,
@@ -158,7 +158,7 @@ export function createTs7CompilerApi(version: string): CompilerApi {
     forEachChild: ((node: any, cbNode: any, cbNodes: any) => node.forEachChild(cbNode, cbNodes)) as any,
     version,
     tsAstViewer: {
-      packageName: TS7_PACKAGE_NAME as any,
+      packageName: TSGO_PACKAGE_NAME as any,
       cachedSourceFiles: {},
     },
   } as unknown as CompilerApi;

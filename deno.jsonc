@@ -31,7 +31,7 @@
     },
     "exclude": [
       "**/*.generated.ts",
-      "src/compiler/ts7/vendor"
+      "src/compiler/tsgo/vendor"
     ]
   },
   "fmt": {
@@ -39,7 +39,7 @@
     "exclude": [
       "src/resources",
       "**/*.generated.ts",
-      "src/compiler/ts7/vendor"
+      "src/compiler/tsgo/vendor"
     ]
   },
   "imports": {

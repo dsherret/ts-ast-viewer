@@ -1,7 +1,7 @@
 import type React from "react";
 import { useRef, useState } from "react";
 import type { CompilerApi, ScriptTarget } from "../compiler/index.js";
-import { type AnyCompilerPackageName, appCompilerVersions, isTs7 } from "../compiler/ts7/ts7Version.js";
+import { type AnyCompilerPackageName, appCompilerVersions, isTsgo } from "../compiler/tsgo/tsgoVersion.js";
 import { useOnClickOutside } from "../hooks/index.js";
 import type { OptionsState } from "../types/index.js";
 import { type Theme, TreeMode } from "../types/index.js";
@@ -100,7 +100,7 @@ export function Options(props: OptionsProps) {
 
   function getShowFactoryCode() {
     // factory code generation isn't available for TypeScript 7.0
-    if (isTs7(props.options.compilerPackageName)) {
+    if (isTsgo(props.options.compilerPackageName)) {
       return undefined;
     }
     const selection = (

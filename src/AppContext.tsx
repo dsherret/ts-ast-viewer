@@ -6,7 +6,7 @@ import {
   hasLoadedCompilerApi,
   type ScriptTarget,
 } from "./compiler/index.js";
-import { isTs7 } from "./compiler/ts7/ts7Version.js";
+import { isTsgo } from "./compiler/tsgo/tsgoVersion.js";
 import type { PrebuiltSourceFile } from "./types/index.js";
 import type { CodeEditorTheme } from "./components/index.js";
 import { appReducer, deriveEditorTheme } from "./reducers/index.js";
@@ -80,9 +80,9 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
           return;
         }
 
-        if (isTs7(compilerPackageName)) {
-          // reuses one resident wasm session across edits (see ts7Compiler.ts)
-          const prebuilt = await buildTs7SourceFile(api, state.currentFile, state.files[state.currentFile]);
+        if (isTsgo(compilerPackageName)) {
+          // reuses one resident wasm session across edits (see tsgoCompiler.ts)
+          const prebuilt = await buildTsgoSourceFile(api, state.currentFile, state.files[state.currentFile]);
           if (abortSignal.aborted) {
             return;
           }
@@ -164,13 +164,13 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
 
 // Builds a TypeScript 7.0 source file by booting the wasm (lazy-loaded here) and
 // materializing the AST + async checker off the main static bundle.
-async function buildTs7SourceFile(
+async function buildTsgoSourceFile(
   api: { version: string },
   fileName: string,
   code: string,
 ): Promise<PrebuiltSourceFile> {
-  const { getTs7SourceFile } = await import("./compiler/ts7/ts7Compiler.js");
-  const result = await getTs7SourceFile({ fileName, code, version: api.version });
+  const { getTsgoSourceFile } = await import("./compiler/tsgo/tsgoCompiler.js");
+  const result = await getTsgoSourceFile({ fileName, code, version: api.version });
   return {
     sourceFile: result.sourceFile as any,
     bindingTools: () => {

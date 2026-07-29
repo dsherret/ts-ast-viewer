@@ -3,7 +3,7 @@
 //
 //   1. the compiler itself as a WebAssembly module (public/tsgo.wasm), and
 //   2. the JS AST/decoder/async-API client, vendored from the SAME commit into
-//      src/compiler/ts7/vendor/native-preview (so the client and the wasm server
+//      src/compiler/tsgo/vendor/native-preview (so the client and the wasm server
 //      can never drift out of protocol sync).
 //
 // The nightly is the latest typescript-go `main` — TypeScript >= 7.0 is the Go port,
@@ -30,7 +30,7 @@ const REPO = "https://github.com/microsoft/typescript-go.git";
 
 const root = path.resolve(import.meta.dirname!, "..");
 const wasmOutDir = path.join(root, "public");
-const vendorOutDir = path.join(root, "src/compiler/ts7/vendor/native-preview");
+const vendorOutDir = path.join(root, "src/compiler/tsgo/vendor/native-preview");
 const workDir = path.join(root, ".tsgo-build");
 const skipWasm = Deno.args.includes("--skip-wasm");
 

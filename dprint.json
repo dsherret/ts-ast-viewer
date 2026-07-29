@@ -16,7 +16,7 @@
     "**/*-lock.json",
     "dist",
     "src/resources",
-    "src/compiler/ts7/vendor"
+    "src/compiler/tsgo/vendor"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.90.2.wasm",

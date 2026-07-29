@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { type FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler/index.js";
-import { isTs7 } from "../compiler/ts7/ts7Version.js";
+import { isTsgo } from "../compiler/tsgo/tsgoVersion.js";
 import type { CompilerState } from "../types/index.js";
 import { Box } from "../utils/index.js";
 import { CodeEditor } from "./CodeEditor.js";
@@ -20,7 +20,7 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
   useEffect(() => {
     setFactoryCodeGenerator(undefined);
 
-    if (isTs7(packageName)) {
+    if (isTsgo(packageName)) {
       return; // factory code generation isn't available for TypeScript 7.0 yet
     }
 
@@ -32,7 +32,7 @@ export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
     });
   }, [packageName]);
 
-  if (isTs7(packageName)) {
+  if (isTsgo(packageName)) {
     return undefined; // the factory code pane isn't shown for TypeScript 7.0 (see App.tsx)
   }
   if (factoryCodeGenerator == null) {

@@ -15,14 +15,14 @@ import {
   type TypeChecker,
 } from "../compiler/index.js";
 import type { BindingTools, CompilerState } from "../types/index.js";
-import { isTs7 } from "../compiler/ts7/ts7Version.js";
+import { isTsgo } from "../compiler/tsgo/tsgoVersion.js";
 import { enumUtils, getSyntaxKindName } from "../utils/index.js";
 import { ErrorBoundary } from "./ErrorBoundary.js";
 import { FlowNodeGraph } from "./FlowNodeGraph.js";
 import { LazyTreeView } from "./LazyTreeView.js";
 import { Spinner } from "./Spinner.js";
 import { ToolTippedText } from "./ToolTippedText.js";
-import { Ts7BindingViewer } from "./Ts7BindingViewer.js";
+import { TsgoBindingViewer } from "./TsgoBindingViewer.js";
 
 export interface PropertiesViewerProps {
   compiler: CompilerState;
@@ -40,7 +40,7 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
     setPublicApiInfo(undefined);
 
     // TypeScript 7.0 has no generated publicApiInfo yet; render properties without it
-    if (isTs7(props.compiler.packageName)) {
+    if (isTsgo(props.compiler.packageName)) {
       setPublicApiInfo(false);
       return;
     }
@@ -74,7 +74,7 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
         </div>
         {bindingEnabled && (props.compiler.asyncBinding != null
           ? (
-            <Ts7BindingViewer
+            <TsgoBindingViewer
               api={context.api}
               binding={props.compiler.asyncBinding}
               node={selectedNode}
