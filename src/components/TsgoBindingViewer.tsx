@@ -168,7 +168,6 @@ function Collections(props: { collections: Collection[] }) {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (resolved == null) return <Spinner />;
@@ -345,7 +344,7 @@ function useDerived(load: () => Promise<string | undefined>, fallback: string, d
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // re-run only when the caller-supplied deps change (not on every `load`/`fallback` identity)
   }, deps);
   return value;
 }

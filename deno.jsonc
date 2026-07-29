@@ -44,16 +44,16 @@
   },
   "imports": {
     "@bjorn3/browser_wasi_shim": "npm:@bjorn3/browser_wasi_shim@^0.4.2",
-    "vscode-jsonrpc": "npm:vscode-jsonrpc@9.0.0",
+    "@david/dax": "jsr:@david/dax@^0.44.1",
+    "@david/dts-minify": "jsr:@david/dts-minify@^0.3.3",
+    "@std/expect": "jsr:@std/expect@^1.0.17",
+    "@std/semver": "jsr:@std/semver@^1.0.7",
     // Pin the bare `typescript` specifier to the classic 5.x compiler API. TypeScript
     // 7.0+ is the Go port — its npm package is a CLI stub with no compiler-API types —
     // so without this, Deno resolves `import ... from "typescript"` to 7.x and breaks
     // type-checking. (The tsgo/7.x compiler runs from wasm, not this package.)
     "typescript": "npm:typescript@5.9.3",
-    "@david/dax": "jsr:@david/dax@^0.44.1",
-    "@david/dts-minify": "jsr:@david/dts-minify@^0.3.3",
-    "@std/expect": "jsr:@std/expect@^1.0.17",
-    "@std/semver": "jsr:@std/semver@^1.0.7"
+    "vscode-jsonrpc": "npm:vscode-jsonrpc@9.0.0"
   },
   "exclude": [
     "dist",
