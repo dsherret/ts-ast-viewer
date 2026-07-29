@@ -1,6 +1,6 @@
 import type React from "react";
 import { useRef, useState } from "react";
-import type { CompilerApi, ScriptKind, ScriptTarget } from "../compiler/index.js";
+import type { CompilerApi, ScriptTarget } from "../compiler/index.js";
 import { type AnyCompilerPackageName, appCompilerVersions, isTs7 } from "../compiler/ts7/ts7Version.js";
 import { useOnClickOutside } from "../hooks/index.js";
 import type { OptionsState } from "../types/index.js";
@@ -29,7 +29,6 @@ export function Options(props: OptionsProps) {
       <div className="menu" hidden={!showOptionsMenu}>
         {getCompilerVersions()}
         {getTreeMode()}
-        {getScriptKind()}
         {getScriptTarget()}
         {getBindingEnabled()}
         {getShowFactoryCode()}
@@ -69,20 +68,6 @@ export function Options(props: OptionsProps) {
       </select>
     );
     return <Option name="Tree mode" value={selection} />;
-  }
-
-  function getScriptKind() {
-    const { api } = props;
-    if (api == null) {
-      return undefined;
-    }
-    return getEnumOption(
-      "Script kind",
-      "ts.ScriptKind",
-      api.ScriptKind,
-      props.options.scriptKind,
-      (value) => onChange({ scriptKind: value as ScriptKind }),
-    );
   }
 
   function getScriptTarget() {

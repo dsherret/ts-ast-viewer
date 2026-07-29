@@ -24,7 +24,11 @@ Deno.test("TS7 resident session walks the tree and re-parses edits without reboo
 
   try {
     // first edit
-    const first = await session.update({ code: 'const message: string = "hello";\n', scriptKind: 3, version: "7" });
+    const first = await session.update({
+      fileName: "/code.ts",
+      code: 'const message: string = "hello";\n',
+      version: "7",
+    });
     const firstKinds = collectKinds(first.api, first.sourceFile);
     expect(getSyntaxKindName(first.api, first.sourceFile.kind as any)).toBe("SourceFile");
     expect(firstKinds).toContain("StringKeyword");
@@ -44,7 +48,7 @@ Deno.test("TS7 resident session walks the tree and re-parses edits without reboo
     expect(props.some((p: { name: string }) => p.name === "length")).toBe(true);
 
     // second edit on the SAME resident session — must reflect the new code
-    const second = await session.update({ code: "const total = 42;\n", scriptKind: 3, version: "7" });
+    const second = await session.update({ fileName: "/code.ts", code: "const total = 42;\n", version: "7" });
     const secondKinds = collectKinds(second.api, second.sourceFile);
     expect(secondKinds).toContain("NumericLiteral");
     expect(secondKinds).not.toContain("StringKeyword");

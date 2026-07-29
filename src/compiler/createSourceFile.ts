@@ -1,21 +1,22 @@
-import { assertNever } from "../utils/index.js";
 import type {
   CompilerApi,
   CompilerHost,
   CompilerOptions,
   Program,
-  ScriptKind,
   ScriptTarget,
   SourceFile,
   TypeChecker,
 } from "./CompilerApi.js";
 
-export function createSourceFile(api: CompilerApi, code: string, scriptTarget: ScriptTarget, scriptKind: ScriptKind) {
-  const filePath = `/ts-ast-viewer${getExtension(api, scriptKind)}`;
-  const sourceFile = api.createSourceFile(filePath, code, scriptTarget, false, scriptKind);
+export function createSourceFiles(api: CompilerApi, files: Record<string, string>, scriptTarget: ScriptTarget) {
+  const sourceFiles: Record<string, SourceFile> = Object.fromEntries(
+    Object.entries(files).map(([name, code]) => {
+      return [name, api.createSourceFile(name, code, scriptTarget, false)];
+    }),
+  );
   let bindingResult: { typeChecker: TypeChecker; program: Program } | undefined;
 
-  return { sourceFile, bindingTools: getBindingTools };
+  return { sourceFiles, bindingTools: getBindingTools };
 
   // binding may be disabled, so make this deferred
   function getBindingTools() {
@@ -30,10 +31,12 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
       strict: true,
       target: scriptTarget,
       allowJs: true,
-      module: api.ModuleKind.ES2015,
+      module: api.ModuleKind.NodeNext,
+      moduleResolution: api.ModuleResolutionKind.NodeNext,
+      jsx: api.JsxEmit.Preserve,
     };
     const files: { [name: string]: SourceFile | undefined } = {
-      [filePath]: sourceFile,
+      ...sourceFiles,
       ...api.tsAstViewer.cachedSourceFiles,
     };
 
@@ -50,7 +53,7 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
       getCurrentDirectory: () => "/",
       getDirectories: (_path: string) => [],
       fileExists: (fileName: string) => files[fileName] != null,
-      readFile: (fileName: string) => files[fileName] != null ? files[fileName]!.getFullText() : undefined,
+      readFile: (fileName: string) => files[fileName]?.getFullText(),
       getCanonicalFileName: (fileName: string) => fileName,
       useCaseSensitiveFileNames: () => true,
       getNewLine: () => "\n",
@@ -60,26 +63,5 @@ export function createSourceFile(api: CompilerApi, code: string, scriptTarget: S
     const typeChecker = program.getTypeChecker();
 
     return { typeChecker, program };
-  }
-}
-
-function getExtension(api: CompilerApi, scriptKind: ScriptKind) {
-  switch (scriptKind) {
-    case api.ScriptKind.TS:
-      return ".ts";
-    case api.ScriptKind.TSX:
-      return ".tsx";
-    case api.ScriptKind.JS:
-      return ".js";
-    case api.ScriptKind.JSX:
-      return ".jsx";
-    case api.ScriptKind.JSON:
-      return ".json";
-    case api.ScriptKind.External:
-    case api.ScriptKind.Deferred:
-    case api.ScriptKind.Unknown:
-      return "";
-    default:
-      return assertNever(scriptKind, `Not implemented ScriptKind: ${api.ScriptKind[scriptKind]}`);
   }
 }

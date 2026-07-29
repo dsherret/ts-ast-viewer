@@ -38,8 +38,9 @@ export interface Ts7SourceFileResult {
 }
 
 export interface Ts7UpdateOptions {
+  /** Absolute file name (its extension determines the script kind), e.g. "/code.ts". */
+  fileName: string;
   code: string;
-  scriptKind: number;
   version: string;
 }
 
@@ -101,7 +102,7 @@ export class Ts7Session {
   }
 
   async #doUpdate(options: Ts7UpdateOptions): Promise<Ts7SourceFileResult> {
-    const fileName = `/ts-ast-viewer${extensionForScriptKind(options.scriptKind)}`;
+    const fileName = options.fileName;
     this.#handle.setFile(fileName, options.code);
     // An open file is held as an overlay snapshotted at open-time, so a plain
     // fileChanges signal is ignored. To re-read the rewritten file we must close
@@ -161,21 +162,4 @@ export function createTs7CompilerApi(version: string): CompilerApi {
       cachedSourceFiles: {},
     },
   } as unknown as CompilerApi;
-}
-
-function extensionForScriptKind(scriptKind: number): string {
-  switch (scriptKind) {
-    case ScriptKind.TS:
-      return ".ts";
-    case ScriptKind.TSX:
-      return ".tsx";
-    case ScriptKind.JS:
-      return ".js";
-    case ScriptKind.JSX:
-      return ".jsx";
-    case ScriptKind.JSON:
-      return ".json";
-    default:
-      return ".ts";
-  }
 }

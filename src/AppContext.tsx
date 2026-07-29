@@ -4,7 +4,6 @@ import {
   compilerVersionCollection,
   getCompilerApi,
   hasLoadedCompilerApi,
-  type ScriptKind,
   type ScriptTarget,
 } from "./compiler/index.js";
 import { isTs7 } from "./compiler/ts7/ts7Version.js";
@@ -15,7 +14,6 @@ import { ApiLoadingState, type StoreState } from "./types/index.js";
 import { sleep, StateSaver, UrlSaver } from "./utils/index.js";
 
 const initialScriptTarget: ScriptTarget = 99 /* Latest */;
-const initialScriptKind: ScriptKind = 4 /* TSX */;
 const stateSaver = new StateSaver();
 
 console.log(
@@ -30,14 +28,17 @@ export interface AppContextValue {
 export const AppContext = React.createContext<AppContextValue | undefined>(undefined);
 
 export function AppContextProvider({ children }: { children: React.ReactNode }) {
+  // Guaranteed to have at least one property
+  const urlFiles = new UrlSaver().getUrlFiles();
+
   const [state, dispatch] = useReducer(appReducer, {
     apiLoadingState: ApiLoadingState.Loading,
-    code: new UrlSaver().getUrlCode(),
+    currentFile: Object.keys(urlFiles)[0],
+    files: urlFiles,
     options: {
       compilerPackageName: compilerVersionCollection[0].packageName,
       treeMode: stateSaver.get().treeMode,
       scriptTarget: initialScriptTarget,
-      scriptKind: initialScriptKind,
       bindingEnabled: true,
       showFactoryCode: stateSaver.get().showFactoryCode,
       showInternals: stateSaver.get().showInternals,
@@ -81,7 +82,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
 
         if (isTs7(compilerPackageName)) {
           // reuses one resident wasm session across edits (see ts7Compiler.ts)
-          const prebuilt = await buildTs7SourceFile(api, state.code, state.options.scriptKind);
+          const prebuilt = await buildTs7SourceFile(api, state.currentFile, state.files[state.currentFile]);
           if (abortSignal.aborted) {
             return;
           }
@@ -98,8 +99,8 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       }
     }
   }, [
-    state.code,
-    state.options.scriptKind,
+    state.currentFile,
+    state.files[state.currentFile],
     state.options.scriptTarget,
     state.options.compilerPackageName,
     state.options.bindingEnabled,
@@ -165,11 +166,11 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
 // materializing the AST + async checker off the main static bundle.
 async function buildTs7SourceFile(
   api: { version: string },
+  fileName: string,
   code: string,
-  scriptKind: ScriptKind,
 ): Promise<PrebuiltSourceFile> {
   const { getTs7SourceFile } = await import("./compiler/ts7/ts7Compiler.js");
-  const result = await getTs7SourceFile({ code, scriptKind, version: api.version });
+  const result = await getTs7SourceFile({ fileName, code, version: api.version });
   return {
     sourceFile: result.sourceFile as any,
     bindingTools: () => {

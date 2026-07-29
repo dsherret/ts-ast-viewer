@@ -1,6 +1,29 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
 export class UrlSaver {
+  getUrlFiles(): Record<string, string> {
+    if (document.location.hash && document.location.hash.startsWith("#files")) {
+      try {
+        const code = document.location.hash.replace("#files/", "").trim();
+        const files = JSON.parse(decompressFromEncodedURIComponent(code) || "{}"); // will be null on error
+
+        for (const key in Object.keys(files)) {
+          if (typeof files[key] !== "string") {
+            delete files[key];
+          }
+        }
+
+        if (Object.keys(files).length !== 0) {
+          return files;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    return { "/code.ts": this.getUrlCode() };
+  }
+
   getUrlCode() {
     if (document.location.hash && document.location.hash.startsWith("#code")) {
       try {
@@ -14,11 +37,12 @@ export class UrlSaver {
     return "";
   }
 
-  updateUrl(code: string) {
-    if (code.length === 0) {
+  updateUrl(files: Record<string, string>) {
+    const serializedFiles = JSON.stringify(files);
+    if (serializedFiles.length === 2) {
       updateLocationHash("");
     } else {
-      updateLocationHash(`code/${compressToEncodedURIComponent(code)}`);
+      updateLocationHash(`files/${compressToEncodedURIComponent(serializedFiles)}`);
     }
 
     function updateLocationHash(locationHash: string) {

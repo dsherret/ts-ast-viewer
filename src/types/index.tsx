@@ -1,16 +1,9 @@
-import type {
-  CompilerApi,
-  Node,
-  Program,
-  ScriptKind,
-  ScriptTarget,
-  SourceFile,
-  TypeChecker,
-} from "../compiler/index.js";
+import type { CompilerApi, Node, Program, ScriptTarget, SourceFile, TypeChecker } from "../compiler/index.js";
 import type { AnyCompilerPackageName } from "../compiler/ts7/ts7Version.js";
 
 export interface StoreState {
-  code: string;
+  currentFile: string;
+  files: Record<string, string>;
   options: OptionsState;
   apiLoadingState: ApiLoadingState;
   compiler: CompilerState | undefined;
@@ -60,7 +53,6 @@ export interface OptionsState {
   compilerPackageName: AnyCompilerPackageName;
   treeMode: TreeMode;
   scriptTarget: ScriptTarget;
-  scriptKind: ScriptKind;
   bindingEnabled: boolean;
   showFactoryCode: boolean;
   showInternals: boolean;
