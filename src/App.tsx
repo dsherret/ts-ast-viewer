@@ -86,13 +86,10 @@ export function App() {
         <components.FilesControl
           files={state.files}
           currentFile={state.currentFile}
-          onChange={(file) => {
-            if (!file) {
-              dispatch({ type: "DELETE_CURRENT_FILE" });
-            } else {
-              dispatch({ type: "SET_CURRENT_FILE", file });
-            }
-          }}
+          onSelect={(file) => dispatch({ type: "SET_CURRENT_FILE", file })}
+          onAdd={(file) => dispatch({ type: "SET_CURRENT_FILE", file })}
+          onRename={(file, newFile) => dispatch({ type: "RENAME_FILE", file, newFile })}
+          onDelete={(file) => dispatch({ type: "DELETE_FILE", file })}
         />
       );
     }
@@ -116,6 +113,8 @@ export function App() {
           }}
           theme={state.editorTheme}
           text={state.files[state.currentFile]}
+          filePath={state.currentFile}
+          files={state.files}
           highlight={getCodeHighlightRange()}
           showInfo
           renderWhiteSpace
@@ -161,7 +160,7 @@ export function App() {
     );
   }
 
-  function codeEditorDidMount(editor: Parameters<import("react-monaco-editor").EditorDidMount>[0]) {
+  function codeEditorDidMount(editor: components.MonacoCodeEditor) {
     // For some reason a slight delay is necessary here. Otherwise it won't let the user type.
     setTimeout(() => editor.focus(), 100);
   }

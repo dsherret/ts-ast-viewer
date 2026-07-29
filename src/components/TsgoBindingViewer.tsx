@@ -239,6 +239,22 @@ const HIDDEN_KEYS = new Set([
   "exportSymbol",
   "path",
   "index",
+  // lazily filled caches on the type proxy — `false` until fetched, and afterwards a
+  // duplicate of what the collections already show
+  "apparentType",
+  "apparentProperties",
+  "properties",
+  "callSignatures",
+  "constructSignatures",
+  "indexInfos",
+  "baseTypes",
+  "stringIndexType",
+  "numberIndexType",
+  "constraint",
+  "default",
+  "nonNullableType",
+  "trueType",
+  "falseType",
 ]);
 
 function ObjectFields(props: { api: CompilerApi; obj: any; kind: "type" | "symbol"; showInternals: boolean }) {
@@ -277,7 +293,9 @@ function fieldValueDiv(api: CompilerApi, key: string, value: any, kind: "type" |
     return textDiv(key, value.length === 0 ? "[]" : value.map((d) => declarationName(api, d)).join(", "));
   }
   if (key === "valueDeclaration" && value != null) return textDiv(key, declarationName(api, value));
-  if (Array.isArray(value)) return textDiv(key, JSON.stringify(value));
+  // arrays of objects hold proxies (symbols, types, ...) that reference the project, which
+  // is cyclic — leave them to the collections rather than serializing them
+  if (Array.isArray(value)) return isScalarArray(value) ? textDiv(key, JSON.stringify(value)) : null;
   if (value != null && typeof value === "object") return null; // nested objects handled by the collections
   return textDiv(key, formatScalar(value));
 }
@@ -297,10 +315,17 @@ function flagsElement(enumObj: any, value: number): JSX.Element {
   );
 }
 
+function isScalarArray(value: any[]): boolean {
+  return value.every((item) => item == null || typeof item !== "object");
+}
+
 function formatScalar(value: any): string {
   if (value === null) return "null";
   if (value === undefined) return "undefined";
-  return typeof value === "string" ? value : JSON.stringify(value);
+  if (typeof value === "string") return value;
+  // bigint literal types carry a real bigint, which JSON.stringify refuses to serialize
+  if (typeof value === "bigint") return `${value}n`;
+  return JSON.stringify(value);
 }
 
 function textDiv(key: string, value: string | JSX.Element): JSX.Element {

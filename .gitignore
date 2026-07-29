@@ -11,3 +11,4 @@ dist
 .tsgo-build
 public/tsgo.wasm
 src/compiler/tsgo/vendor
+src/compiler/tsgo/tsgoBuildInfo.generated.ts
