@@ -6,6 +6,8 @@ import {
   hasLoadedCompilerApi,
   type ScriptTarget,
 } from "./compiler/index.js";
+import { isTsgo } from "./compiler/tsgo/tsgoVersion.js";
+import type { PrebuiltSourceFile } from "./types/index.js";
 import type { CodeEditorTheme } from "./components/index.js";
 import { appReducer, deriveEditorTheme } from "./reducers/index.js";
 import { ApiLoadingState, type StoreState } from "./types/index.js";
@@ -50,6 +52,9 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     dispatch(actions.osThemeChange());
   });
 
+  // tracks whether the resident tsgo wasm session is live, so it can be freed on switch-away
+  const tsgoActiveRef = React.useRef(false);
+
   const value = { state, dispatch };
 
   useEffect(() => {
@@ -78,7 +83,22 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
           return;
         }
 
-        dispatch(actions.refreshSourceFile(api));
+        if (isTsgo(compilerPackageName)) {
+          // reuses one resident wasm session across edits (see tsgoCompiler.ts)
+          const prebuilt = await buildTsgoSourceFile(api, state.files, state.currentFile);
+          if (abortSignal.aborted) {
+            return;
+          }
+          tsgoActiveRef.current = true;
+          dispatch(actions.refreshSourceFile(api, prebuilt));
+        } else {
+          // switched away from tsgo — free the resident wasm session
+          if (tsgoActiveRef.current) {
+            tsgoActiveRef.current = false;
+            import("./compiler/tsgo/tsgoCompiler.js").then((m) => m.disposeTsgoSession()).catch(() => {});
+          }
+          dispatch(actions.refreshSourceFile(api));
+        }
         dispatch(actions.setApiLoadingState(ApiLoadingState.Loaded));
       } catch (err) {
         console.error(err);
@@ -116,7 +136,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     windowAny.selectedNode = selectedNode;
     windowAny.sourceFile = state.compiler.sourceFile;
 
-    if (state.options.bindingEnabled) {
+    if (state.options.bindingEnabled && state.compiler.asyncBinding == null) {
       const bindingTools = state.compiler.bindingTools();
       windowAny.checker = bindingTools.typeChecker;
       windowAny.typeChecker = bindingTools.typeChecker;
@@ -149,6 +169,24 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       {children}
     </AppContext.Provider>
   );
+}
+
+// Builds a tsgo source file by booting the wasm (lazy-loaded here) and
+// materializing the AST + async checker off the main static bundle.
+async function buildTsgoSourceFile(
+  api: { version: string },
+  files: Record<string, string>,
+  currentFile: string,
+): Promise<PrebuiltSourceFile> {
+  const { getTsgoSourceFile } = await import("./compiler/tsgo/tsgoCompiler.js");
+  const result = await getTsgoSourceFile({ files, currentFile, version: api.version });
+  return {
+    sourceFile: result.sourceFile as any,
+    bindingTools: () => {
+      throw new Error("tsgo's checker is async — use asyncBinding.");
+    },
+    asyncBinding: result.asyncBinding,
+  };
 }
 
 export function useAppContext() {

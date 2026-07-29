@@ -20,8 +20,20 @@ jobs:
       - name: Lint
         run: deno lint
       - uses: dprint/check@v2.2
+      # tsgo (TypeScript 7.0+) is the Go port. Its vendored JS client and wasm are
+      # generated from typescript-go `main` (the nightly), not committed. Vendor the
+      # client first (fast, no Go) so `deno check` can type-check against it; the
+      # slower wasm build follows. Done on every run so PRs verify the nightly too.
+      - name: Vendor tsgo client
+        run: deno task buildTsgo --skip-wasm
       - name: Check
         run: deno task check
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Build tsgo wasm (nightly, from typescript-go main)
+        run: deno task buildTsgo
       - name: Build
         run: |
           deno task addTypeScriptVersions

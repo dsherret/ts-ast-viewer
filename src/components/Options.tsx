@@ -1,11 +1,7 @@
 import type React from "react";
 import { useRef, useState } from "react";
-import {
-  type CompilerApi,
-  type CompilerPackageNames,
-  compilerVersionCollection,
-  type ScriptTarget,
-} from "../compiler/index.js";
+import type { CompilerApi, ScriptTarget } from "../compiler/index.js";
+import { type AnyCompilerPackageName, appCompilerVersions, isTsgo } from "../compiler/tsgo/tsgoVersion.js";
 import { useOnClickOutside } from "../hooks/index.js";
 import type { OptionsState } from "../types/index.js";
 import { type Theme, TreeMode } from "../types/index.js";
@@ -52,23 +48,25 @@ export function Options(props: OptionsProps) {
       <select
         id="compilerVersionSelection"
         value={props.options.compilerPackageName}
-        onChange={(event) => onChange({ compilerPackageName: event.target.value as CompilerPackageNames })}
+        onChange={(event) => onChange({ compilerPackageName: event.target.value as AnyCompilerPackageName })}
       >
-        {compilerVersionCollection.map((v) => <option value={v.packageName} key={v.packageName}>{v.version}</option>)}
+        {appCompilerVersions.map((v) => <option value={v.packageName} key={v.packageName}>{v.version}</option>)}
       </select>
     );
     return <Option name="Version" value={selection} />;
   }
 
   function getTreeMode() {
+    // tsgo nodes only support forEachChild (no getChildren), so don't offer it there
+    const tsgo = isTsgo(props.options.compilerPackageName);
     const selection = (
       <select
         id="treeMode"
-        value={props.options.treeMode}
+        value={tsgo ? TreeMode.forEachChild : props.options.treeMode}
         onChange={(event) => onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}
       >
         <option value={TreeMode.forEachChild}>node.forEachChild(child =&gt; ...)</option>
-        <option value={TreeMode.getChildren}>node.getChildren()</option>
+        {!tsgo && <option value={TreeMode.getChildren}>node.getChildren()</option>}
       </select>
     );
     return <Option name="Tree mode" value={selection} />;
@@ -103,6 +101,10 @@ export function Options(props: OptionsProps) {
   }
 
   function getShowFactoryCode() {
+    // factory code generation isn't available for tsgo
+    if (isTsgo(props.options.compilerPackageName)) {
+      return undefined;
+    }
     const selection = (
       <div>
         <input

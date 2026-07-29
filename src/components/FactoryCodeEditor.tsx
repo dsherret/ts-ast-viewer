@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { type FactoryCodeGenerator, getFactoryCodeGenerator } from "../compiler/index.js";
+import { isTsgo } from "../compiler/tsgo/tsgoVersion.js";
 import type { CompilerState } from "../types/index.js";
 import { Box } from "../utils/index.js";
 import { CodeEditor } from "./CodeEditor.js";
@@ -14,18 +15,26 @@ export interface FactoryCodeEditorProps {
 
 export function FactoryCodeEditor(props: FactoryCodeEditorProps) {
   const [factoryCodeGenerator, setFactoryCodeGenerator] = useState<Box<FactoryCodeGenerator> | false | undefined>();
+  const packageName = props.compiler.packageName;
 
   useEffect(() => {
     setFactoryCodeGenerator(undefined);
 
-    getFactoryCodeGenerator(props.compiler.packageName).then((factoryCodeGenerator) => {
+    if (isTsgo(packageName)) {
+      return; // factory code generation isn't available for tsgo yet
+    }
+
+    getFactoryCodeGenerator(packageName).then((factoryCodeGenerator) => {
       setFactoryCodeGenerator(new Box(factoryCodeGenerator));
     }).catch((err) => {
       console.error(err);
       setFactoryCodeGenerator(false);
     });
-  }, [props.compiler.packageName]);
+  }, [packageName]);
 
+  if (isTsgo(packageName)) {
+    return undefined; // the factory code pane isn't shown for tsgo (see App.tsx)
+  }
   if (factoryCodeGenerator == null) {
     return <Spinner />;
   }

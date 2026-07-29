@@ -7,7 +7,9 @@ const versions = await getTypeScriptVersionsToInstall();
 for (const version of versions) {
   await npmInstallTypeScriptVersion(version);
 }
-await npmInstallTypeScriptVersion("next");
+// Note: no `next` install and no >= 7.0.0 versions — TypeScript 7.0+ is the Go port
+// (tsgo), which the app runs from WebAssembly instead of the npm package. The nightly
+// tsgo build is added to the version list separately (see src/compiler/tsgo/tsgoVersion.ts).
 
 async function npmInstallTypeScriptVersion(version: string) {
   console.log(`Installing Typescript ${version}...`);
@@ -23,7 +25,8 @@ async function getTypeScriptVersionsToInstall() {
     if (
       version == null ||
       (version.prerelease?.length ?? 0) > 0 ||
-      (version.build?.length ?? 0) > 0
+      (version.build?.length ?? 0) > 0 ||
+      version.major >= 7 // TypeScript 7.0+ is the Go port; run from wasm, not npm
     ) {
       continue;
     }

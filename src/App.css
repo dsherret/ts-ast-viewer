@@ -177,21 +177,26 @@ a:visited {
   font-size: 16px;
 }
 
+#options .menu .option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 #options .menu .option:not(:first-child) {
   margin-top: 10px;
 }
 
 #options .menu .optionName {
-  display: inline-block;
-  margin-right: 6px;
-  width: 114px;
+  flex: 0 0 135px;
   text-align: right;
+  white-space: nowrap;
 }
 #options .menu .optionValue {
-  display: inline-block;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 #options .menu .optionValue select {
-  width: 220px;
+  width: 100%;
 }
 
 #options .menuLine {
@@ -270,6 +275,8 @@ a:visited {
   height: 100%;
   padding-top: 2px;
   padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 #treeViewer .nodeText {
@@ -293,6 +300,7 @@ a:visited {
   overflow: auto;
   height: 100%;
   margin-left: 4px;
+  margin-right: 4px;
   padding-bottom: 5px;
 }
 

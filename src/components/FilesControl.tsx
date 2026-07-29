@@ -3,13 +3,15 @@ import type React from "react";
 export function FilesControl(
   props: { files: Record<string, string>; currentFile: string; onChange: (file: string | undefined) => void },
 ): React.ReactElement {
+  const fileNames = Object.keys(props.files);
   return (
     <div id="filesControl">
       <select value={props.currentFile} onChange={onChangeFile}>
-        {Object.keys(props.files).map((f) => <option key={f} value={f}>{f}</option>)}
+        {/* keep the leading slash in the value (so imports resolve) but not in the display */}
+        {fileNames.map((f) => <option key={f} value={f}>{f.replace(/^\//, "")}</option>)}
       </select>
       <button onClick={onNewFile} type="button">New File</button>
-      <button onClick={onDeleteFile} type="button">Delete Current File</button>
+      <button onClick={onDeleteFile} type="button" disabled={fileNames.length <= 1}>Delete Current File</button>
     </div>
   );
 

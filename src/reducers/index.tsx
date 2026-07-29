@@ -1,5 +1,6 @@
 import type { AllActions } from "../actions/index.js";
-import { type CompilerApi, type CompilerPackageNames, convertOptions, createSourceFiles } from "../compiler/index.js";
+import { type CompilerApi, convertOptions, createSourceFiles } from "../compiler/index.js";
+import type { AnyCompilerPackageName } from "../compiler/tsgo/tsgoVersion.js";
 import type { CodeEditorTheme } from "../components/index.js";
 import { actions as actionNames } from "./../constants/index.js";
 import type { OptionsState, StoreState } from "../types/index.js";
@@ -37,12 +38,18 @@ export function appReducer(
         ...state,
         options: convertOptions(state.compiler == null ? undefined : state.compiler.api, action.api, state.options),
       };
-      fillNewSourceFileState(
-        newState.options.compilerPackageName,
-        action.api,
-        newState,
-        state.options,
-      );
+      if (action.prebuilt != null) {
+        newState.compiler = {
+          packageName: newState.options.compilerPackageName,
+          api: action.api,
+          sourceFile: action.prebuilt.sourceFile,
+          bindingTools: action.prebuilt.bindingTools,
+          asyncBinding: action.prebuilt.asyncBinding,
+          selectedNode: action.prebuilt.sourceFile,
+        };
+      } else {
+        fillNewSourceFileState(newState.options.compilerPackageName, action.api, newState, state.options);
+      }
       urlSaver.updateUrl(state.files);
       return newState;
     }
@@ -70,7 +77,7 @@ export function appReducer(
       delete filesWithoutCurrent[state.currentFile];
       let newCurrentFile = Object.keys(filesWithoutCurrent)[0];
       if (!newCurrentFile) {
-        newCurrentFile = "/code.ts";
+        newCurrentFile = "/main.ts";
         filesWithoutCurrent[newCurrentFile] = "";
       }
 
@@ -115,7 +122,7 @@ export function deriveEditorTheme(theme: Theme): CodeEditorTheme {
 }
 
 function fillNewSourceFileState(
-  compilerPackageName: CompilerPackageNames,
+  compilerPackageName: AnyCompilerPackageName,
   api: CompilerApi,
   state: StoreState,
   options: OptionsState,

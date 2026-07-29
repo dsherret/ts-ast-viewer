@@ -15,12 +15,14 @@ import {
   type TypeChecker,
 } from "../compiler/index.js";
 import type { BindingTools, CompilerState } from "../types/index.js";
+import { isTsgo } from "../compiler/tsgo/tsgoVersion.js";
 import { enumUtils, getSyntaxKindName } from "../utils/index.js";
 import { ErrorBoundary } from "./ErrorBoundary.js";
 import { FlowNodeGraph } from "./FlowNodeGraph.js";
 import { LazyTreeView } from "./LazyTreeView.js";
 import { Spinner } from "./Spinner.js";
 import { ToolTippedText } from "./ToolTippedText.js";
+import { TsgoBindingViewer } from "./TsgoBindingViewer.js";
 
 export interface PropertiesViewerProps {
   compiler: CompilerState;
@@ -36,6 +38,12 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
 
   useEffect(() => {
     setPublicApiInfo(undefined);
+
+    // tsgo has no generated publicApiInfo yet; render properties without it
+    if (isTsgo(props.compiler.packageName)) {
+      setPublicApiInfo(false);
+      return;
+    }
 
     getPublicApiInfo(props.compiler.packageName).then((publicApiInfo) => {
       setPublicApiInfo(publicApiInfo);
@@ -64,7 +72,16 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
         <div id="node">
           {getForSelectedNode(context, selectedNode)}
         </div>
-        {bindingEnabled && getBindingSection(context, selectedNode, bindingTools().typeChecker)}
+        {bindingEnabled && (props.compiler.asyncBinding != null
+          ? (
+            <TsgoBindingViewer
+              api={context.api}
+              binding={props.compiler.asyncBinding}
+              node={selectedNode}
+              showInternals={props.showInternals}
+            />
+          )
+          : getBindingSection(context, selectedNode, bindingTools().typeChecker))}
       </div>
     </div>
   );
@@ -114,14 +131,16 @@ function getForSelectedNode(context: Context, selectedNode: Node) {
     return (
       <>
         {getProperties(context, selectedNode)}
-        {getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
+        {hasMethod(selectedNode, "getChildCount") &&
+          getMethodElement("getChildCount()", selectedNode.getChildCount(sourceFile))}
         {getMethodElement("getFullStart()", getPositionElement(sourceFile, selectedNode.getFullStart()))}
         {getMethodElement("getStart()", getPositionElement(sourceFile, selectedNode.getStart(sourceFile)))}
         {getMethodElement(
           "getStart(sourceFile, true)",
           getPositionElement(sourceFile, getStartSafe(selectedNode, sourceFile)),
         )}
-        {getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
+        {hasMethod(selectedNode, "getFullWidth") &&
+          getMethodElement("getFullWidth()", selectedNode.getFullWidth())}
         {getMethodElement("getWidth()", selectedNode.getWidth(sourceFile))}
         {getMethodElement("getLeadingTriviaWidth()", selectedNode.getLeadingTriviaWidth(sourceFile))}
         {getMethodElement("getFullText()", selectedNode.getFullText(sourceFile))}
@@ -130,12 +149,12 @@ function getForSelectedNode(context: Context, selectedNode: Node) {
           "getText()",
           sourceFile.text.substring(selectedNode.getStart(context.sourceFile), selectedNode.getEnd()),
         )}
-        {/* comments */}
-        {getForCommentRanges(
+        {/* comments (classic TypeScript only — the native port doesn't expose these helpers) */}
+        {typeof context.api.getLeadingCommentRanges === "function" && getForCommentRanges(
           `ts.getLeadingCommentRanges(fileFullText, ${selectedNode.getFullStart()})`,
           context.api.getLeadingCommentRanges(context.sourceFile.text, selectedNode.getFullStart()),
         )}
-        {getForCommentRanges(
+        {typeof context.api.getTrailingCommentRanges === "function" && getForCommentRanges(
           `ts.getTrailingCommentRanges(fileFullText, ${selectedNode.end})`,
           context.api.getTrailingCommentRanges(context.sourceFile.text, selectedNode.end),
         )}
@@ -229,6 +248,10 @@ function getForFlowNode(context: Context, node: Node) {
   );
 }
 
+function hasMethod(obj: unknown, name: string): boolean {
+  return typeof (obj as Record<string, unknown>)[name] === "function";
+}
+
 function getOrReturnError<T>(getFunc: () => T): T | string {
   try {
     return getFunc();
@@ -283,16 +306,29 @@ function getProperties(context: Context, obj: any) {
 function getArrayDiv(context: Context, key: string, value: unknown[]) {
   if (value.length === 0) {
     return getTextDiv(key, "[]");
-  } else {
+  }
+  const arrayDiv = (
+    <div className="array" key={key} data-name={key}>
+      <div className="key">{key}: [</div>
+      <div className="value">{value.map((v, i) => getTreeNode(context, v, undefined, i))}</div>
+      <div className="suffix">]</div>
+    </div>
+  );
+  // collapse long arrays by default so they don't flood the tree
+  if (value.length > arrayCollapseThreshold) {
     return (
-      <div className="array" key={key} data-name={key}>
-        <div className="key">{key}: [</div>
-        <div className="value">{value.map((v, i) => getTreeNode(context, v, undefined, i))}</div>
-        <div className="suffix">]</div>
-      </div>
+      <LazyTreeView
+        key={key}
+        nodeLabel={`${key}: [ ${value.length} ]`}
+        defaultCollapsed
+        getChildren={() => arrayDiv}
+      />
     );
   }
+  return arrayDiv;
 }
+
+const arrayCollapseThreshold = 10;
 
 function getMapDiv(context: Context, key: string, value: ReadonlyMap<string, unknown>) {
   const entries = Array.from(value.entries());
@@ -485,6 +521,10 @@ const nodeDisallowedKeys = new Set(["parent", "_children", "symbol"]);
 const typeDisallowedKeys = new Set(["checker", "symbol"]);
 function getKeyPermission(context: Context, obj: any, key: string): true | false | "internal" {
   const { publicApiInfo } = context;
+  // tsgo has no publicApiInfo; treat underscore-prefixed keys as internal
+  if (!publicApiInfo && key.startsWith("_")) {
+    return "internal";
+  }
   if (isTsNode(obj)) {
     if (nodeDisallowedKeys.has(key)) {
       return false;
