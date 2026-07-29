@@ -21,7 +21,7 @@ export class UrlSaver {
       }
     }
 
-    return { "/code.ts": this.getUrlCode() };
+    return { "/main.ts": this.getUrlCode() };
   }
 
   getUrlCode() {

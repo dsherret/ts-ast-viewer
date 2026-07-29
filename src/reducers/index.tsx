@@ -78,7 +78,7 @@ export function appReducer(
       delete filesWithoutCurrent[state.currentFile];
       let newCurrentFile = Object.keys(filesWithoutCurrent)[0];
       if (!newCurrentFile) {
-        newCurrentFile = "/code.ts";
+        newCurrentFile = "/main.ts";
         filesWithoutCurrent[newCurrentFile] = "";
       }
 
