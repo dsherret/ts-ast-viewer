@@ -41,6 +41,10 @@ const decoder = new TextDecoder();
 class StdioMessageReader extends AbstractMessageReader {
   #callback: DataCallback | undefined;
   #buffer = new Uint8Array(0);
+  // byte offset where the current message's body starts, or -1 if the header of the
+  // next message hasn't been fully parsed yet (so it isn't re-scanned per chunk)
+  #bodyStart = -1;
+  #bodyLength = 0;
 
   constructor(transport: ByteTransport) {
     super();
@@ -64,13 +68,26 @@ class StdioMessageReader extends AbstractMessageReader {
   #drain() {
     if (!this.#callback) return;
     for (;;) {
-      const header = /Content-Length: (\d+)\r\n\r\n/.exec(decoder.decode(this.#buffer));
-      if (!header) return;
-      const bodyStart = header.index + header[0].length;
-      const bodyLength = Number(header[1]);
-      if (this.#buffer.length < bodyStart + bodyLength) return;
-      const body = decoder.decode(this.#buffer.subarray(bodyStart, bodyStart + bodyLength));
-      this.#buffer = this.#buffer.subarray(bodyStart + bodyLength);
+      // parse the header once (bytes only), then keep bodyStart/bodyLength until the
+      // body arrives — avoids re-decoding the whole (possibly MB) buffer per chunk
+      if (this.#bodyStart < 0) {
+        const headerEnd = indexOfDoubleCrlf(this.#buffer);
+        if (headerEnd < 0) return; // header incomplete
+        const header = decoder.decode(this.#buffer.subarray(0, headerEnd));
+        const match = /Content-Length:\s*(\d+)/i.exec(header);
+        if (match == null) {
+          this.fireError(new Error("JSON-RPC message missing Content-Length header"));
+          this.#buffer = new Uint8Array(0);
+          return;
+        }
+        this.#bodyLength = Number(match[1]);
+        this.#bodyStart = headerEnd + 4; // past the "\r\n\r\n"
+      }
+      if (this.#buffer.length < this.#bodyStart + this.#bodyLength) return; // body incomplete
+      const body = decoder.decode(this.#buffer.subarray(this.#bodyStart, this.#bodyStart + this.#bodyLength));
+      this.#buffer = this.#buffer.subarray(this.#bodyStart + this.#bodyLength);
+      this.#bodyStart = -1;
+      this.#bodyLength = 0;
       try {
         this.#callback(JSON.parse(body) as Message);
       } catch (err) {
@@ -78,6 +95,16 @@ class StdioMessageReader extends AbstractMessageReader {
       }
     }
   }
+}
+
+/** Index of the first "\r\n\r\n" (header/body separator) in the buffer, or -1. */
+function indexOfDoubleCrlf(buffer: Uint8Array): number {
+  for (let i = 0; i + 3 < buffer.length; i++) {
+    if (buffer[i] === 13 && buffer[i + 1] === 10 && buffer[i + 2] === 13 && buffer[i + 3] === 10) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /** Serializes JSON-RPC messages as Content-Length framed JSON to the byte stream. */

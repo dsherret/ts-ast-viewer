@@ -45,7 +45,6 @@ export function appReducer(
           sourceFile: action.prebuilt.sourceFile,
           bindingTools: action.prebuilt.bindingTools,
           asyncBinding: action.prebuilt.asyncBinding,
-          dispose: action.prebuilt.dispose,
           selectedNode: action.prebuilt.sourceFile,
         };
       } else {

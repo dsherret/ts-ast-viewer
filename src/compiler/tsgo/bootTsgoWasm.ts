@@ -22,6 +22,11 @@ export interface BootedTsgo {
    * so the server re-reads it.
    */
   setFile(path: string, content: string): boolean;
+  /**
+   * Remove a file from the compiler's in-memory filesystem. Returns true if a file
+   * was removed. Pair with `updateSnapshot({ fileChanges: { deleted: [path] } })`.
+   */
+  removeFile(path: string): boolean;
   /** Resolves if the wasm exits (normally it runs forever). */
   running: Promise<void>;
 }
@@ -107,7 +112,7 @@ export async function bootTsgoWasm(options: BootTsgoOptions): Promise<BootedTsgo
     if (!/WASIProcExit|exit code 0/.test(String((err as Error)?.message))) throw err;
   });
 
-  return { writeStdin: (bytes) => stdin.push(bytes), setFile, running };
+  return { writeStdin: (bytes) => stdin.push(bytes), setFile, removeFile, running };
 
   function setFile(path: string, content: string): boolean {
     const key = path.replace(/^\/+/, "");
@@ -120,6 +125,10 @@ export async function bootTsgoWasm(options: BootTsgoOptions): Promise<BootedTsgo
     }
     contents.set(key, new File(bytes));
     return true;
+  }
+
+  function removeFile(path: string): boolean {
+    return preopen.dir.contents.delete(path.replace(/^\/+/, ""));
   }
 }
 

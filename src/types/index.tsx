@@ -18,8 +18,6 @@ export interface CompilerState {
   bindingTools: () => BindingTools;
   // present for tsgo, whose checker is async and out-of-process (wasm)
   asyncBinding?: AsyncBinding;
-  // tears down the backing wasm session (tsgo only)
-  dispose?: () => void;
 }
 
 export interface BindingTools {
@@ -46,7 +44,6 @@ export interface PrebuiltSourceFile {
   sourceFile: SourceFile;
   bindingTools: () => BindingTools;
   asyncBinding?: AsyncBinding;
-  dispose?: () => void;
 }
 
 export interface OptionsState {

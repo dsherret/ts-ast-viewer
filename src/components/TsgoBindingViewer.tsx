@@ -155,6 +155,9 @@ function symbolCollections(props: NodeProps, symbol: any): Collection[] {
 /** Evaluate every collection in parallel (on expand), then show the non-empty ones. */
 function Collections(props: { collections: Collection[] }) {
   const [resolved, setResolved] = useState<{ label: string; items: any[]; render: (i: any) => JSX.Element }[]>();
+  // Evaluate once on mount. This component only mounts when its parent node is
+  // expanded, and each expansion builds a fresh instance, so `[]` deps are correct
+  // even though `props.collections` closes over the (per-render) collection thunks.
   useEffect(() => {
     let cancelled = false;
     Promise.all(
@@ -165,6 +168,7 @@ function Collections(props: { collections: Collection[] }) {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (resolved == null) return <Spinner />;

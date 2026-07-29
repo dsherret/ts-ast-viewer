@@ -38,9 +38,10 @@ export interface TsgoSourceFileResult {
 }
 
 export interface TsgoUpdateOptions {
-  /** Absolute file name (its extension determines the script kind), e.g. "/code.ts". */
-  fileName: string;
-  code: string;
+  /** All files, keyed by absolute path (each file's extension sets its script kind). */
+  files: Record<string, string>;
+  /** The file to materialize and view (a key of `files`); imports resolve to the rest. */
+  currentFile: string;
   version: string;
 }
 
@@ -76,10 +77,11 @@ async function createResidentSession(): Promise<TsgoSession> {
   return TsgoSession.create(await getTsgoWasmModule());
 }
 
-/** A resident tsgo session backing a single edited file. */
+/** A resident tsgo session backing the app's set of files. */
 export class TsgoSession {
   #handle: TsgoApiHandle;
   #openFile: string | undefined;
+  #files = new Map<string, string>();
   #queue: Promise<unknown> = Promise.resolve();
 
   private constructor(handle: TsgoApiHandle) {
@@ -101,30 +103,45 @@ export class TsgoSession {
     void this.#handle.dispose();
   }
 
-  async #doUpdate(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
-    const fileName = options.fileName;
-    this.#handle.setFile(fileName, options.code);
-    // An open file is held as an overlay snapshotted at open-time, so a plain
-    // fileChanges signal is ignored. To re-read the rewritten file we must close
-    // it, then reopen WITH fileChanges.changed (close alone re-reads stale, and
-    // reopen alone keeps the old overlay — both steps are required).
+  async #doUpdate({ files, currentFile, version }: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
+    // sync the wasm filesystem with the full file set so cross-file imports resolve
+    const changed: string[] = [];
+    const deleted: string[] = [];
+    for (const [path, content] of Object.entries(files)) {
+      if (this.#files.get(path) !== content) {
+        this.#handle.setFile(path, content);
+        changed.push(path); // new-or-modified; the server re-reads these
+      }
+    }
+    for (const path of this.#files.keys()) {
+      if (!(path in files)) {
+        this.#handle.removeFile(path);
+        deleted.push(path);
+      }
+    }
+    this.#files = new Map(Object.entries(files));
+
+    // The open (viewed) file is held as an overlay snapshotted at open-time, so a
+    // plain fileChanges signal is ignored for it. Closing it forces the reopen below
+    // to re-read from the filesystem (close alone re-reads stale, reopen alone keeps
+    // the old overlay — both steps are required, plus fileChanges.changed above).
     if (this.#openFile != null) {
       await this.#handle.api.updateSnapshot({ closeFiles: [this.#openFile] });
     }
-    this.#openFile = fileName;
+    this.#openFile = currentFile;
 
     const snapshot = await this.#handle.api.updateSnapshot({
-      openFiles: [fileName],
-      fileChanges: { changed: [fileName] },
+      openFiles: [currentFile],
+      fileChanges: { changed, deleted },
     });
-    const project = await snapshot.getDefaultProjectForFile(fileName);
-    if (project == null) throw new Error(`tsgo returned no project for ${fileName}`);
-    const sourceFile = await project.program.getSourceFile(fileName);
-    if (sourceFile == null) throw new Error(`tsgo returned no source file for ${fileName}`);
+    const project = await snapshot.getDefaultProjectForFile(currentFile);
+    if (project == null) throw new Error(`tsgo returned no project for ${currentFile}`);
+    const sourceFile = await project.program.getSourceFile(currentFile);
+    if (sourceFile == null) throw new Error(`tsgo returned no source file for ${currentFile}`);
 
     const checker = project.checker;
     return {
-      api: createTsgoCompilerApi(options.version),
+      api: createTsgoCompilerApi(version),
       sourceFile,
       asyncBinding: {
         checker,

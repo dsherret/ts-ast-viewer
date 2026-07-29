@@ -21,6 +21,8 @@ export interface TsgoApiHandle {
   api: API;
   /** Update/add a file in the compiler's in-memory filesystem (see BootedTsgo.setFile). */
   setFile(path: string, content: string): boolean;
+  /** Remove a file from the compiler's in-memory filesystem (see BootedTsgo.removeFile). */
+  removeFile(path: string): boolean;
   dispose(): Promise<void>;
 }
 
@@ -38,9 +40,22 @@ export async function createTsgoApi(options: TsgoApiOptions): Promise<TsgoApiHan
   });
 
   const api = new API({ connection, cwd: options.cwd ?? "/" });
+
+  // The wasm server normally runs forever. If it exits (clean or crash), dispose the
+  // connection so in-flight JSON-RPC requests reject instead of hanging — and so a
+  // crash doesn't surface as an unhandled promise rejection.
+  booted.running.then(
+    () => connection.dispose(),
+    (err) => {
+      console.error("tsgo wasm exited unexpectedly:", err);
+      connection.dispose();
+    },
+  );
+
   return {
     api,
     setFile: booted.setFile,
+    removeFile: booted.removeFile,
     dispose: () => api.close(),
   };
 }

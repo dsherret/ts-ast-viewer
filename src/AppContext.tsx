@@ -52,6 +52,9 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     dispatch(actions.osThemeChange());
   });
 
+  // tracks whether the resident tsgo wasm session is live, so it can be freed on switch-away
+  const tsgoActiveRef = React.useRef(false);
+
   const value = { state, dispatch };
 
   useEffect(() => {
@@ -82,12 +85,18 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
 
         if (isTsgo(compilerPackageName)) {
           // reuses one resident wasm session across edits (see tsgoCompiler.ts)
-          const prebuilt = await buildTsgoSourceFile(api, state.currentFile, state.files[state.currentFile]);
+          const prebuilt = await buildTsgoSourceFile(api, state.files, state.currentFile);
           if (abortSignal.aborted) {
             return;
           }
+          tsgoActiveRef.current = true;
           dispatch(actions.refreshSourceFile(api, prebuilt));
         } else {
+          // switched away from tsgo — free the resident wasm session
+          if (tsgoActiveRef.current) {
+            tsgoActiveRef.current = false;
+            import("./compiler/tsgo/tsgoCompiler.js").then((m) => m.disposeTsgoSession()).catch(() => {});
+          }
           dispatch(actions.refreshSourceFile(api));
         }
         dispatch(actions.setApiLoadingState(ApiLoadingState.Loaded));
@@ -166,11 +175,11 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
 // materializing the AST + async checker off the main static bundle.
 async function buildTsgoSourceFile(
   api: { version: string },
-  fileName: string,
-  code: string,
+  files: Record<string, string>,
+  currentFile: string,
 ): Promise<PrebuiltSourceFile> {
   const { getTsgoSourceFile } = await import("./compiler/tsgo/tsgoCompiler.js");
-  const result = await getTsgoSourceFile({ fileName, code, version: api.version });
+  const result = await getTsgoSourceFile({ files, currentFile, version: api.version });
   return {
     sourceFile: result.sourceFile as any,
     bindingTools: () => {
