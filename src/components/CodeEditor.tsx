@@ -1,6 +1,5 @@
 import type * as monacoEditorForTypes from "monaco-editor";
 import React from "react";
-import type * as ReactMonacoEditorForTypes from "react-monaco-editor";
 import type { EditorDidMount } from "react-monaco-editor";
 import { LineAndColumnComputer } from "../utils/index.js";
 import { Spinner } from "./Spinner.js";
@@ -25,7 +24,10 @@ export interface CodeEditorState {
   position: number;
   lineNumber: number;
   column: number;
-  editorComponent: (typeof ReactMonacoEditorForTypes.default.default) | undefined | false;
+  // react-monaco-editor's default export interop differs across resolvers, so type
+  // this as a plain component (the value is cast to `any` when set) instead of via
+  // `typeof ReactMonacoEditor.default.default`.
+  editorComponent: React.ComponentType<any> | undefined | false;
 }
 
 export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState> {
@@ -162,7 +164,7 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
         value={this.props.text}
         theme={this.props.theme == "dark" ? "vs-dark" : "vs"}
         language="typescript"
-        onChange={(text) => this.props.onChange && this.props.onChange(text)}
+        onChange={(text: string) => this.props.onChange && this.props.onChange(text)}
         editorDidMount={this.editorDidMount}
         options={{
           automaticLayout: false,
@@ -185,19 +187,21 @@ export class CodeEditor extends React.Component<CodeEditorProps, CodeEditorState
     // use lf newlines
     editor.getModel()?.setEOL(monaco.editor.EndOfLineSequence.LF);
 
-    this.disposables.push(editor.onDidChangeCursorPosition((e) => {
-      const editorModel = editor.getModel();
-      if (editorModel == null) {
-        return;
-      }
+    this.disposables.push(
+      editor.onDidChangeCursorPosition((e: monacoEditorForTypes.editor.ICursorPositionChangedEvent) => {
+        const editorModel = editor.getModel();
+        if (editorModel == null) {
+          return;
+        }
 
-      this.setState({
-        position: editorModel.getOffsetAt(e.position),
-        lineNumber: e.position.lineNumber,
-        column: e.position.column,
-      });
-    }));
-    this.disposables.push(editor.onMouseDown((e) => {
+        this.setState({
+          position: editorModel.getOffsetAt(e.position),
+          lineNumber: e.position.lineNumber,
+          column: e.position.column,
+        });
+      }),
+    );
+    this.disposables.push(editor.onMouseDown((e: monacoEditorForTypes.editor.IEditorMouseEvent) => {
       if (e.target == null || e.target.range == null || this.props.onClick == null) {
         return;
       }
