@@ -1169,6 +1169,7 @@
       "jsr:@std/expect@^1.0.17",
       "jsr:@std/semver@^1.0.7",
       "npm:@bjorn3/browser_wasi_shim@~0.4.2",
+      "npm:typescript@5.9.3",
       "npm:vscode-jsonrpc@9.0.0"
     ],
     "packageJson": {
