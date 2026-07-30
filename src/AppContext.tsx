@@ -144,29 +144,6 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       return;
     }
 
-    if (compiler.asyncBinding != null) {
-      const asyncBinding = compiler.asyncBinding;
-      // tsgo's checker is out-of-process, so the node's type/symbol/signature only
-      // arrive after a round trip — the checker and program proxies are usable now
-      setBindingGlobals({ checker: asyncBinding.checker, program: asyncBinding.program });
-      let cancelled = false;
-      Promise.all([
-        asyncBinding.getType(selectedNode),
-        asyncBinding.getSymbol(selectedNode),
-        asyncBinding.getSignature(selectedNode),
-      ]).then(([type, symbol, signature]) => {
-        if (cancelled) {
-          return; // a newer selection owns the globals now
-        }
-        windowAny.type = type;
-        windowAny.symbol = symbol;
-        windowAny.signature = signature;
-      }).catch((err) => console.error(err));
-      return () => {
-        cancelled = true;
-      };
-    }
-
     const bindingTools = compiler.bindingTools();
     setBindingGlobals({
       checker: bindingTools.typeChecker,
@@ -206,7 +183,8 @@ function setBindingGlobals(
 }
 
 // Builds a tsgo source file by booting the selected build's wasm (lazy-loaded here) and
-// materializing the AST + async checker off the main static bundle.
+// materializing the AST off the main static bundle. Only the boot is async — the
+// resulting program and checker are synchronous, like classic TypeScript's.
 async function buildTsgoSourceFile(
   packageName: TsgoPackageName,
   files: Record<string, string>,
@@ -216,10 +194,7 @@ async function buildTsgoSourceFile(
   const result = await getTsgoSourceFile(packageName, { files, currentFile });
   return {
     sourceFile: result.sourceFile as any,
-    bindingTools: () => {
-      throw new Error("tsgo's checker is async — use asyncBinding.");
-    },
-    asyncBinding: result.asyncBinding,
+    bindingTools: () => result.bindingTools,
   };
 }
 

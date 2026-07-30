@@ -53,7 +53,6 @@
     // so without this, Deno resolves `import ... from "typescript"` to 7.x and breaks
     // type-checking. (The tsgo/7.x compiler runs from wasm, not this package.)
     "typescript": "npm:typescript@5.9.3",
-    "vscode-jsonrpc": "npm:vscode-jsonrpc@9.0.0",
     // `?worker` is a vite suffix that turns a module into a web worker constructor. Vite
     // resolves it from node_modules; deno's type check can't, so point it at a stub.
     "monaco-editor/esm/vs/editor/editor.worker?worker": "./src/types/viteWorker.ts",

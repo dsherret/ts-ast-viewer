@@ -20,8 +20,7 @@
     "react-dom": "^19.2.3",
     "react-spinners": "^0.17.0",
     "react-treeview": "^0.4.7",
-    "ts-morph": "^27.0.2",
-    "vscode-jsonrpc": "9.0.0"
+    "ts-morph": "^27.0.2"
   },
   "devDependencies": {
     "@types/circular-json": "^0.4.0",

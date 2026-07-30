@@ -1,20 +1,22 @@
 // Adapts the tsgo API to a `CompilerApi` + a materialized `SourceFile` for the app.
-// Producing the source file is async (it round-trips the wasm), so this runs in the
-// AppContext effect, not the reducer, and the tree walks only via `forEachChild`
-// (tsgo nodes have no `getChildren`). A single session stays resident across edits —
-// each edit rewrites the changed files in the wasm's in-memory FS and re-parses. The
-// enums and the client come from the selected build's vendored copy (see tsgoVendor.ts).
-import { createTsgoApi, type TsgoApiHandle } from "./tsgoApi.ts";
+// Booting the wasm is async (it instantiates the module), so this runs in the AppContext
+// effect rather than the reducer — but everything after that is synchronous, including
+// the checker, because the wasm is a reactor driven by plain function calls (see
+// tsgoWasmSession.ts). The tree walks only via `forEachChild` (tsgo nodes have no
+// `getChildren`). A single session stays resident across edits — each edit rewrites the
+// changed files in the reactor's in-memory FS and re-parses. The enums and the client
+// come from the selected build's vendored copy (see tsgoVendor.ts).
 import type { TsgoSourceFile, TsgoVendor } from "./tsgoVendor.ts";
 import { getTsgoBuild, type TsgoBuild, type TsgoPackageName } from "./tsgoVersion.ts";
-import type { AsyncBinding } from "../../types/index.js";
+import type { TsgoWasmSession } from "./tsgoWasmSession.ts";
+import type { BindingTools } from "../../types/index.js";
 import type { CompilerApi } from "../CompilerApi.ts";
 
 export interface TsgoSourceFileResult {
   api: CompilerApi;
   sourceFile: TsgoSourceFile;
-  /** Async per-node checker access (the wasm checker is out-of-process). */
-  asyncBinding: AsyncBinding;
+  /** The program and checker for the current snapshot — synchronous, like classic TS. */
+  bindingTools: BindingTools;
 }
 
 export interface TsgoUpdateOptions {
@@ -27,8 +29,9 @@ export interface TsgoUpdateOptions {
 let residentSession: { build: TsgoBuild; session: Promise<TsgoSession> } | undefined;
 
 /** Materialize the current file in the build's resident tsgo session, booting one (and
- * compiling the wasm) on first use. Later calls persist the session, so an edit is just
- * rewrite + re-parse. Only one build stays resident — switching frees the other's wasm. */
+ * instantiating the wasm) on first use. Later calls persist the session, so an edit is
+ * just rewrite + re-parse. Only one build stays resident — switching frees the other's
+ * wasm. */
 export async function getTsgoSourceFile(
   packageName: TsgoPackageName,
   options: TsgoUpdateOptions,
@@ -42,7 +45,7 @@ export async function getTsgoSourceFile(
   }
   const resident = residentSession;
   try {
-    return await (await resident.session).update(options);
+    return (await resident.session).update(options);
   } catch (err) {
     disposeSession(resident.session); // a wedged session shouldn't break every later edit
     throw err;
@@ -65,59 +68,46 @@ function disposeSession(session: Promise<TsgoSession>): void {
 
 async function createResidentSession(build: TsgoBuild): Promise<TsgoSession> {
   const { getTsgoWasmModule } = await import("./loadTsgoWasm.ts");
+  const { createTsgoWasmSession } = await import("./tsgoWasmSession.ts");
   const [vendor, wasmModule] = await Promise.all([build.importVendor(), getTsgoWasmModule(build)]);
-  return TsgoSession.create({ build, vendor, wasmModule });
-}
-
-export interface TsgoSessionOptions {
-  build: TsgoBuild;
-  /** The client vendored from the same commit as the build's wasm (see tsgoVendor.ts). */
-  vendor: TsgoVendor;
-  wasmModule: WebAssembly.Module;
+  // the one await that has to exist: V8 refuses synchronous instantiation of a module
+  // this size on the main thread (see tsgoWasmSession.ts)
+  const wasm = await createTsgoWasmSession({ wasmModule, cwd: "/" });
+  return new TsgoSession(wasm, build, vendor);
 }
 
 /** A resident tsgo session backing the app's set of files. */
 export class TsgoSession {
   private openFile: string | undefined;
   private files = new Map<string, string>();
-  private queue: Promise<unknown> = Promise.resolve();
+  private readonly api: InstanceType<TsgoVendor["API"]>;
 
-  private constructor(
-    private readonly handle: TsgoApiHandle,
+  constructor(
+    private readonly wasm: TsgoWasmSession,
     private readonly build: TsgoBuild,
     private readonly vendor: TsgoVendor,
   ) {
-  }
-
-  static async create(options: TsgoSessionOptions): Promise<TsgoSession> {
-    const { build, vendor, wasmModule } = options;
-    return new TsgoSession(await createTsgoApi({ vendor, wasmModule }), build, vendor);
-  }
-
-  /** Serialized so overlapping edits can't interleave updateSnapshot calls. */
-  update(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
-    const run = this.queue.then(() => this.doUpdate(options));
-    this.queue = run.then(() => {}, () => {});
-    return run;
+    this.api = new vendor.API({ session: wasm } as never);
   }
 
   dispose(): void {
-    void this.handle.dispose();
+    this.wasm.close();
   }
 
-  private async doUpdate({ files, currentFile }: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
-    // sync the wasm filesystem with the full file set so cross-file imports resolve
+  /** Sync the reactor's filesystem with the app's files and materialize the current one.
+   * Synchronous throughout — no queue is needed, because a call can't interleave. */
+  update({ files, currentFile }: TsgoUpdateOptions): TsgoSourceFileResult {
     const changed: string[] = [];
     const deleted: string[] = [];
     for (const [path, content] of Object.entries(files)) {
       if (this.files.get(path) !== content) {
-        this.handle.setFile(path, content);
+        this.wasm.setFile(path, content);
         changed.push(path); // new-or-modified; the server re-reads these
       }
     }
     for (const path of this.files.keys()) {
       if (!(path in files)) {
-        this.handle.removeFile(path);
+        this.wasm.removeFile(path);
         deleted.push(path);
       }
     }
@@ -128,38 +118,25 @@ export class TsgoSession {
     // to re-read from the filesystem (close alone re-reads stale, reopen alone keeps
     // the old overlay — both steps are required, plus fileChanges.changed above).
     if (this.openFile != null) {
-      await this.handle.api.updateSnapshot({ closeFiles: [this.openFile] });
+      this.api.updateSnapshot({ closeFiles: [this.openFile] });
     }
     this.openFile = currentFile;
 
-    const snapshot = await this.handle.api.updateSnapshot({
+    const snapshot = this.api.updateSnapshot({
       openFiles: [currentFile],
       fileChanges: { changed, deleted },
     });
-    const project = await snapshot.getDefaultProjectForFile(currentFile);
+    const project = snapshot.getDefaultProjectForFile(currentFile);
     if (project == null) throw new Error(`tsgo returned no project for ${currentFile}`);
-    const sourceFile = await project.program.getSourceFile(currentFile);
+    const sourceFile = project.program.getSourceFile(currentFile);
     if (sourceFile == null) throw new Error(`tsgo returned no source file for ${currentFile}`);
 
-    const checker = project.checker;
     return {
       api: createTsgoCompilerApi(this.vendor, this.build),
       sourceFile,
-      asyncBinding: {
-        checker,
-        program: project.program,
-        getType: (node: any) => safe(() => checker.getTypeAtLocation(node)),
-        getSymbol: (node: any) => safe(() => checker.getSymbolAtLocation(node)),
-        getSignature: (node: any) => safe(() => checker.getSignatureFromDeclaration(node)),
-        typeToString: (type: any) => safe(() => checker.typeToString(type)),
-      },
+      bindingTools: { program: project.program as never, typeChecker: project.checker as never },
     };
   }
-}
-
-/** Run an async checker call, swallowing errors (out-of-process, may reject). */
-function safe<T>(fn: () => Promise<T>): Promise<T | undefined> {
-  return Promise.resolve().then(fn).catch(() => undefined);
 }
 
 /** A `CompilerApi` backed by a build's vendored TSGO enums — enough to render the tree. */

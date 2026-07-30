@@ -10,6 +10,7 @@ import { expect } from "@std/expect";
 import { getSyntaxKindName } from "../../utils/getSyntaxKindName.js";
 import { compileTsgoWasm, tsgoBuilds } from "./testUtils.ts";
 import { TsgoSession } from "./tsgoCompiler.ts";
+import { createTsgoWasmSession } from "./tsgoWasmSession.ts";
 
 for (const build of tsgoBuilds) {
   Deno.test(`TSGO resident session walks the tree and re-parses edits without rebooting (${build.id})`, async () => {
@@ -17,14 +18,13 @@ for (const build of tsgoBuilds) {
     if (wasmModule == null) {
       return;
     }
-    await import("vscode-jsonrpc/node"); // install the RAL for this env (deferred past the skip)
-
     const vendor = await build.importVendor();
-    const session = await TsgoSession.create({ build, vendor, wasmModule });
+    const wasm = await createTsgoWasmSession({ wasmModule, cwd: "/" });
+    const session = new TsgoSession(wasm, build, vendor);
 
     try {
       // first edit
-      const first = await session.update({
+      const first = session.update({
         files: { "/main.ts": 'const message: string = "hello";\n' },
         currentFile: "/main.ts",
       });
@@ -36,18 +36,19 @@ for (const build of tsgoBuilds) {
       const identifier = findKind(first.api, first.sourceFile, "Identifier");
       expect(identifier?.getText()).toBe("message");
 
-      const type = await first.asyncBinding.getType(identifier);
-      expect(await first.asyncBinding.typeToString(type)).toBe("string");
-      expect(typeof type.flags).toBe("number"); // sync scalar field on the proxy
-      const symbol = await first.asyncBinding.getSymbol(identifier);
+      const checker = first.bindingTools.typeChecker as any;
+      const type = checker.getTypeAtLocation(identifier);
+      expect(checker.typeToString(type)).toBe("string");
+      expect(typeof type.flags).toBe("number");
+      const symbol = checker.getSymbolAtLocation(identifier);
       expect(symbol?.name).toBe("message");
-      // an async collection resolves through the checker (string has properties)
-      const props = await first.asyncBinding.checker.getPropertiesOfType(type);
+      // a collection reads straight off the checker (string has properties)
+      const props = checker.getPropertiesOfType(type);
       expect(Array.isArray(props)).toBe(true);
       expect(props.some((p: { name: string }) => p.name === "length")).toBe(true);
 
       // second edit on the SAME resident session — must reflect the new code
-      const second = await session.update({
+      const second = session.update({
         files: { "/main.ts": "const total = 42;\n" },
         currentFile: "/main.ts",
       });
@@ -58,11 +59,11 @@ for (const build of tsgoBuilds) {
       const total = findKind(second.api, second.sourceFile, "Identifier");
       expect(total?.getText()).toBe("total");
       // `const total = 42` narrows to the literal type 42 (proves the checker re-ran)
-      const totalType = await second.asyncBinding.getType(total);
-      expect(await second.asyncBinding.typeToString(totalType)).toBe("42");
+      const secondChecker = second.bindingTools.typeChecker as any;
+      expect(secondChecker.typeToString(secondChecker.getTypeAtLocation(total))).toBe("42");
 
       // multi-file: the current file imports another; its type must resolve cross-file
-      const multi = await session.update({
+      const multi = session.update({
         files: {
           "/helper.ts": 'export const greeting: string = "hi";\n',
           "/main.ts": 'import { greeting } from "./helper";\nconst reused = greeting;\n',
@@ -72,7 +73,8 @@ for (const build of tsgoBuilds) {
       const reused = findIdentifier(multi.api, multi.sourceFile, "reused");
       expect(reused).toBeDefined();
       // `reused = greeting` gets its type from the imported helper — proves cross-file resolution
-      expect(await multi.asyncBinding.typeToString(await multi.asyncBinding.getType(reused))).toBe("string");
+      const multiChecker = multi.bindingTools.typeChecker as any;
+      expect(multiChecker.typeToString(multiChecker.getTypeAtLocation(reused))).toBe("string");
     } finally {
       session.dispose();
     }
