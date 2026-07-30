@@ -1,4 +1,4 @@
-// Boots the patched `tsgo.wasm` (see scripts/buildTsgo.ts) as a resident
+// Boots one of the patched tsgo wasms (see scripts/buildTsgo.ts) as a resident
 // `--api --async` JSON-RPC server. JSPI lets a blocking stdin read suspend the wasm
 // without a SharedArrayBuffer (no COOP/COEP needed); the inline-handler patch makes
 // suspending inside fd_read safe. Source files are delivered via the wasm's in-memory

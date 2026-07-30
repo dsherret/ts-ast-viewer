@@ -34,8 +34,11 @@ export interface BindingTools {
 export interface AsyncBinding {
   // deno-lint-ignore no-explicit-any
   checker: any;
+  // deno-lint-ignore no-explicit-any
+  program: any;
   getType(node: Node): Promise<any | undefined>;
   getSymbol(node: Node): Promise<any | undefined>;
+  getSignature(node: Node): Promise<any | undefined>;
   typeToString(type: any): Promise<string | undefined>;
 }
 

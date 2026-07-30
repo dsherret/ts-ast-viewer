@@ -1,57 +1,46 @@
-// Verifies the patched tsgo.wasm boots under JSPI and serves a stateful `--api --async`
-// JSON-RPC session, driven directly through bootTsgoWasm. Skips if the wasm isn't built.
+// Verifies each patched tsgo wasm boots under JSPI and serves a stateful `--api --async`
+// JSON-RPC session, driven directly through bootTsgoWasm. Skips builds that aren't built.
 import { expect } from "@std/expect";
-import * as path from "node:path";
 import { bootTsgoWasm, jspiAvailable } from "./bootTsgoWasm.ts";
+import { compileTsgoWasm, tsgoBuilds } from "./testUtils.ts";
 
-const wasmPath = path.resolve(import.meta.dirname!, "../../../public/tsgo.wasm");
+for (const build of tsgoBuilds) {
+  Deno.test(`tsgo wasm serves a stateful JSON-RPC session (${build.id})`, async () => {
+    const wasmModule = await compileTsgoWasm(build);
+    if (wasmModule == null) {
+      return;
+    }
+    expect(jspiAvailable()).toBe(true);
 
-Deno.test("tsgo.wasm serves a stateful JSON-RPC session", async () => {
-  if (!(await exists(wasmPath))) {
-    console.warn(`skipping: ${wasmPath} not built (run \`deno task buildTsgo\`)`);
-    return;
-  }
-  expect(jspiAvailable()).toBe(true);
+    const fileName = "/ast-viewer.ts";
+    const rpc = new JsonRpcDriver();
+    const booted = await bootTsgoWasm({
+      wasmModule,
+      files: { [fileName]: "const x: number = 1;\n" },
+      onStdout: (bytes) => rpc.receive(bytes),
+    });
+    rpc.onSend = (bytes) => booted.writeStdin(bytes);
 
-  const fileName = "/ast-viewer.ts";
-  const wasmModule = await WebAssembly.compile(await Deno.readFile(wasmPath));
+    try {
+      const init = await rpc.request("initialize", null) as { currentDirectory: string };
+      expect(init.currentDirectory).toBe("/");
 
-  const rpc = new JsonRpcDriver();
-  const booted = await bootTsgoWasm({
-    wasmModule,
-    files: { [fileName]: "const x: number = 1;\n" },
-    onStdout: (bytes) => rpc.receive(bytes),
+      const snapshot = await rpc.request("updateSnapshot", { openFiles: [fileName] }) as {
+        projects: { rootFiles: string[] }[];
+      };
+      expect(snapshot.projects.length).toBeGreaterThan(0);
+      expect(snapshot.projects.some((p) => p.rootFiles.some((f) => f.includes("ast-viewer.ts")))).toBe(true);
+
+      // a further request on the same resident server proves the session persists
+      // (the wasm parked on stdin between requests and resumed via JSPI)
+      const snapshot2 = await rpc.request("updateSnapshot", { openFiles: [fileName] }) as {
+        projects: unknown[];
+      };
+      expect(snapshot2.projects.length).toBeGreaterThan(0);
+    } finally {
+      // let the wasm's stdin reader stay parked; the test process just exits
+    }
   });
-  rpc.onSend = (bytes) => booted.writeStdin(bytes);
-
-  try {
-    const init = await rpc.request("initialize", null) as { currentDirectory: string };
-    expect(init.currentDirectory).toBe("/");
-
-    const snapshot = await rpc.request("updateSnapshot", { openFiles: [fileName] }) as {
-      projects: { rootFiles: string[] }[];
-    };
-    expect(snapshot.projects.length).toBeGreaterThan(0);
-    expect(snapshot.projects.some((p) => p.rootFiles.some((f) => f.includes("ast-viewer.ts")))).toBe(true);
-
-    // a further request on the same resident server proves the session persists
-    // (the wasm parked on stdin between requests and resumed via JSPI)
-    const snapshot2 = await rpc.request("updateSnapshot", { openFiles: [fileName] }) as {
-      projects: unknown[];
-    };
-    expect(snapshot2.projects.length).toBeGreaterThan(0);
-  } finally {
-    // let the wasm's stdin reader stay parked; the test process just exits
-  }
-});
-
-async function exists(file: string) {
-  try {
-    await Deno.stat(file);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 /** Minimal JSON-RPC (LSP Content-Length framing) request/response driver. */

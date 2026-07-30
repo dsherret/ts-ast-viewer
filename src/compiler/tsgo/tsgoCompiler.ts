@@ -2,26 +2,13 @@
 // Producing the source file is async (it round-trips the wasm), so this runs in the
 // AppContext effect, not the reducer, and the tree walks only via `forEachChild`
 // (tsgo nodes have no `getChildren`). A single session stays resident across edits —
-// each edit rewrites the changed files in the wasm's in-memory FS and re-parses.
-import {
-  ModifierFlags,
-  NodeFlags,
-  ScriptKind,
-  ScriptTarget,
-  type SourceFile as TsgoSourceFile,
-  SyntaxKind,
-} from "./vendor/native-preview/ast/index.ts";
-import { ElementFlags } from "./vendor/native-preview/enums/elementFlags.enum.ts";
-import { ObjectFlags } from "./vendor/native-preview/enums/objectFlags.enum.ts";
-import { SignatureKind } from "./vendor/native-preview/enums/signatureKind.enum.ts";
-import { SymbolFlags } from "./vendor/native-preview/enums/symbolFlags.enum.ts";
-import { TypeFlags } from "./vendor/native-preview/enums/typeFlags.enum.ts";
+// each edit rewrites the changed files in the wasm's in-memory FS and re-parses. The
+// enums and the client come from the selected build's vendored copy (see tsgoVendor.ts).
 import { createTsgoApi, type TsgoApiHandle } from "./tsgoApi.ts";
-import { TSGO_PACKAGE_NAME } from "./tsgoVersion.ts";
+import type { TsgoSourceFile, TsgoVendor } from "./tsgoVendor.ts";
+import { getTsgoBuild, type TsgoBuild, type TsgoPackageName } from "./tsgoVersion.ts";
 import type { AsyncBinding } from "../../types/index.js";
 import type { CompilerApi } from "../CompilerApi.ts";
-
-export { TSGO_PACKAGE_NAME };
 
 export interface TsgoSourceFileResult {
   api: CompilerApi;
@@ -35,36 +22,58 @@ export interface TsgoUpdateOptions {
   files: Record<string, string>;
   /** The file to materialize and view (a key of `files`); imports resolve to the rest. */
   currentFile: string;
-  version: string;
 }
 
-let residentSession: Promise<TsgoSession> | undefined;
+let residentSession: { build: TsgoBuild; session: Promise<TsgoSession> } | undefined;
 
-/** Materialize the current file in the resident tsgo session, booting one (and compiling
- * the wasm) on first use. Later calls persist the session, so an edit is just rewrite + re-parse. */
-export async function getTsgoSourceFile(options: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
-  if (residentSession == null) {
-    residentSession = createResidentSession();
-    residentSession.catch(() => residentSession = undefined);
+/** Materialize the current file in the build's resident tsgo session, booting one (and
+ * compiling the wasm) on first use. Later calls persist the session, so an edit is just
+ * rewrite + re-parse. Only one build stays resident — switching frees the other's wasm. */
+export async function getTsgoSourceFile(
+  packageName: TsgoPackageName,
+  options: TsgoUpdateOptions,
+): Promise<TsgoSourceFileResult> {
+  const build = getTsgoBuild(packageName);
+  if (residentSession?.build !== build) {
+    disposeTsgoSession();
+    const session = createResidentSession(build);
+    residentSession = { build, session };
+    session.catch(() => disposeSession(session));
   }
+  const resident = residentSession;
   try {
-    return await (await residentSession).update(options);
+    return await (await resident.session).update(options);
   } catch (err) {
-    disposeTsgoSession(); // a wedged session shouldn't break every later edit
+    disposeSession(resident.session); // a wedged session shouldn't break every later edit
     throw err;
   }
 }
 
 /** Tear down the resident tsgo session (e.g. to free its wasm memory). */
 export function disposeTsgoSession(): void {
-  const session = residentSession;
+  const resident = residentSession;
   residentSession = undefined;
-  session?.then((s) => s.dispose()).catch(() => {});
+  resident?.session.then((s) => s.dispose()).catch(() => {});
 }
 
-async function createResidentSession(): Promise<TsgoSession> {
+/** Tear down `session`, unless a newer one has since taken its place. */
+function disposeSession(session: Promise<TsgoSession>): void {
+  if (residentSession?.session === session) {
+    disposeTsgoSession();
+  }
+}
+
+async function createResidentSession(build: TsgoBuild): Promise<TsgoSession> {
   const { getTsgoWasmModule } = await import("./loadTsgoWasm.ts");
-  return TsgoSession.create(await getTsgoWasmModule());
+  const [vendor, wasmModule] = await Promise.all([build.importVendor(), getTsgoWasmModule(build)]);
+  return TsgoSession.create({ build, vendor, wasmModule });
+}
+
+export interface TsgoSessionOptions {
+  build: TsgoBuild;
+  /** The client vendored from the same commit as the build's wasm (see tsgoVendor.ts). */
+  vendor: TsgoVendor;
+  wasmModule: WebAssembly.Module;
 }
 
 /** A resident tsgo session backing the app's set of files. */
@@ -73,11 +82,16 @@ export class TsgoSession {
   private files = new Map<string, string>();
   private queue: Promise<unknown> = Promise.resolve();
 
-  private constructor(private readonly handle: TsgoApiHandle) {
+  private constructor(
+    private readonly handle: TsgoApiHandle,
+    private readonly build: TsgoBuild,
+    private readonly vendor: TsgoVendor,
+  ) {
   }
 
-  static async create(wasmModule: WebAssembly.Module): Promise<TsgoSession> {
-    return new TsgoSession(await createTsgoApi({ wasmModule }));
+  static async create(options: TsgoSessionOptions): Promise<TsgoSession> {
+    const { build, vendor, wasmModule } = options;
+    return new TsgoSession(await createTsgoApi({ vendor, wasmModule }), build, vendor);
   }
 
   /** Serialized so overlapping edits can't interleave updateSnapshot calls. */
@@ -91,7 +105,7 @@ export class TsgoSession {
     void this.handle.dispose();
   }
 
-  private async doUpdate({ files, currentFile, version }: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
+  private async doUpdate({ files, currentFile }: TsgoUpdateOptions): Promise<TsgoSourceFileResult> {
     // sync the wasm filesystem with the full file set so cross-file imports resolve
     const changed: string[] = [];
     const deleted: string[] = [];
@@ -129,12 +143,14 @@ export class TsgoSession {
 
     const checker = project.checker;
     return {
-      api: createTsgoCompilerApi(version),
+      api: createTsgoCompilerApi(this.vendor, this.build),
       sourceFile,
       asyncBinding: {
         checker,
+        program: project.program,
         getType: (node: any) => safe(() => checker.getTypeAtLocation(node)),
         getSymbol: (node: any) => safe(() => checker.getSymbolAtLocation(node)),
+        getSignature: (node: any) => safe(() => checker.getSignatureFromDeclaration(node)),
         typeToString: (type: any) => safe(() => checker.typeToString(type)),
       },
     };
@@ -146,24 +162,26 @@ function safe<T>(fn: () => Promise<T>): Promise<T | undefined> {
   return Promise.resolve().then(fn).catch(() => undefined);
 }
 
-/** A `CompilerApi` backed by the vendored TSGO enums — enough to render the tree. */
-export function createTsgoCompilerApi(version: string): CompilerApi {
+/** A `CompilerApi` backed by a build's vendored TSGO enums — enough to render the tree. */
+export function createTsgoCompilerApi(vendor: TsgoVendor, build: TsgoBuild): CompilerApi {
   return {
-    SyntaxKind,
-    ModifierFlags,
-    NodeFlags,
-    ScriptKind,
-    ScriptTarget,
+    SyntaxKind: vendor.SyntaxKind,
+    ModifierFlags: vendor.ModifierFlags,
+    NodeFlags: vendor.NodeFlags,
+    ScriptKind: vendor.ScriptKind,
+    ScriptTarget: vendor.ScriptTarget,
     // enums used to decode Type/Symbol flags in the properties panel
-    TypeFlags,
-    ObjectFlags,
-    SymbolFlags,
-    ElementFlags,
-    SignatureKind,
+    TypeFlags: vendor.TypeFlags,
+    ObjectFlags: vendor.ObjectFlags,
+    SymbolFlags: vendor.SymbolFlags,
+    ElementFlags: vendor.ElementFlags,
+    SignatureKind: vendor.SignatureKind,
     forEachChild: ((node: any, cbNode: any, cbNodes: any) => node.forEachChild(cbNode, cbNodes)) as any,
-    version,
+    version: build.version,
+    // each build gets its own key, so caches derived from the api (ex. syntax kind
+    // names, which differ between the release and the nightly) never mix
     tsAstViewer: {
-      packageName: TSGO_PACKAGE_NAME as any,
+      packageName: build.packageName as any,
       cachedSourceFiles: {},
     },
   } as unknown as CompilerApi;

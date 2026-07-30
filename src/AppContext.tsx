@@ -6,7 +6,7 @@ import {
   hasLoadedCompilerApi,
   type ScriptTarget,
 } from "./compiler/index.js";
-import { isTsgo } from "./compiler/tsgo/tsgoVersion.js";
+import { isTsgo, type TsgoPackageName } from "./compiler/tsgo/tsgoVersion.js";
 import type { PrebuiltSourceFile } from "./types/index.js";
 import type { CodeEditorTheme } from "./components/index.js";
 import { appReducer, deriveEditorTheme } from "./reducers/index.js";
@@ -85,7 +85,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
 
         if (isTsgo(compilerPackageName)) {
           // reuses one resident wasm session across edits (see tsgoCompiler.ts)
-          const prebuilt = await buildTsgoSourceFile(api, state.files, state.currentFile);
+          const prebuilt = await buildTsgoSourceFile(compilerPackageName, state.files, state.currentFile);
           if (abortSignal.aborted) {
             return;
           }
@@ -124,36 +124,57 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     stateSaver.set(savedState);
   }, [state.options.treeMode, state.options.showFactoryCode, state.options.showInternals, state.options.theme]);
 
+  // keeps the console globals pointing at the selected node. Runs on selection/compiler
+  // changes rather than every render, because tsgo's binding globals round-trip the wasm.
   useEffect(() => {
-    if (state.compiler == null || state.compiler.selectedNode == null) {
+    const compiler = state.compiler;
+    if (compiler == null || compiler.selectedNode == null) {
       return;
     }
 
     const windowAny = window as any;
-    const selectedNode = state.compiler.selectedNode;
-    windowAny.ts = state.compiler.api;
+    const selectedNode = compiler.selectedNode;
+    windowAny.ts = compiler.api;
     windowAny.node = selectedNode;
     windowAny.selectedNode = selectedNode;
-    windowAny.sourceFile = state.compiler.sourceFile;
+    windowAny.sourceFile = compiler.sourceFile;
 
-    if (state.options.bindingEnabled && state.compiler.asyncBinding == null) {
-      const bindingTools = state.compiler.bindingTools();
-      windowAny.checker = bindingTools.typeChecker;
-      windowAny.typeChecker = bindingTools.typeChecker;
-      windowAny.program = bindingTools.program;
-      windowAny.type = tryGet(() => bindingTools.typeChecker.getTypeAtLocation(selectedNode));
-      windowAny.symbol = tryGet(() =>
-        (selectedNode as any).symbol || bindingTools.typeChecker.getSymbolAtLocation(selectedNode)
-      );
-      windowAny.signature = tryGet(() => bindingTools.typeChecker.getSignatureFromDeclaration(selectedNode as any));
-    } else {
-      windowAny.checker = undefined;
-      windowAny.typeChecker = undefined;
-      windowAny.program = undefined;
-      windowAny.type = undefined;
-      windowAny.symbol = undefined;
-      windowAny.signature = undefined;
+    if (!state.options.bindingEnabled) {
+      setBindingGlobals({});
+      return;
     }
+
+    if (compiler.asyncBinding != null) {
+      const asyncBinding = compiler.asyncBinding;
+      // tsgo's checker is out-of-process, so the node's type/symbol/signature only
+      // arrive after a round trip — the checker and program proxies are usable now
+      setBindingGlobals({ checker: asyncBinding.checker, program: asyncBinding.program });
+      let cancelled = false;
+      Promise.all([
+        asyncBinding.getType(selectedNode),
+        asyncBinding.getSymbol(selectedNode),
+        asyncBinding.getSignature(selectedNode),
+      ]).then(([type, symbol, signature]) => {
+        if (cancelled) {
+          return; // a newer selection owns the globals now
+        }
+        windowAny.type = type;
+        windowAny.symbol = symbol;
+        windowAny.signature = signature;
+      }).catch((err) => console.error(err));
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const bindingTools = compiler.bindingTools();
+    setBindingGlobals({
+      checker: bindingTools.typeChecker,
+      program: bindingTools.program,
+      type: tryGet(() => bindingTools.typeChecker.getTypeAtLocation(selectedNode)),
+      symbol: tryGet(() => (selectedNode as any).symbol || bindingTools.typeChecker.getSymbolAtLocation(selectedNode)),
+      signature: tryGet(() => bindingTools.typeChecker.getSignatureFromDeclaration(selectedNode as any)),
+    });
 
     function tryGet<T>(getValue: () => T) {
       try {
@@ -162,7 +183,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
         return undefined;
       }
     }
-  });
+  }, [state.compiler, state.options.bindingEnabled]);
 
   return (
     <AppContext.Provider value={value}>
@@ -171,15 +192,28 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   );
 }
 
-// Builds a tsgo source file by booting the wasm (lazy-loaded here) and
+/** Set the binding-related console globals, clearing the ones not provided. */
+function setBindingGlobals(
+  globals: { checker?: unknown; program?: unknown; type?: unknown; symbol?: unknown; signature?: unknown },
+) {
+  const windowAny = window as any;
+  windowAny.checker = globals.checker;
+  windowAny.typeChecker = globals.checker;
+  windowAny.program = globals.program;
+  windowAny.type = globals.type;
+  windowAny.symbol = globals.symbol;
+  windowAny.signature = globals.signature;
+}
+
+// Builds a tsgo source file by booting the selected build's wasm (lazy-loaded here) and
 // materializing the AST + async checker off the main static bundle.
 async function buildTsgoSourceFile(
-  api: { version: string },
+  packageName: TsgoPackageName,
   files: Record<string, string>,
   currentFile: string,
 ): Promise<PrebuiltSourceFile> {
   const { getTsgoSourceFile } = await import("./compiler/tsgo/tsgoCompiler.js");
-  const result = await getTsgoSourceFile({ files, currentFile, version: api.version });
+  const result = await getTsgoSourceFile(packageName, { files, currentFile });
   return {
     sourceFile: result.sourceFile as any,
     bindingTools: () => {

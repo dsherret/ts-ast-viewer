@@ -416,6 +416,8 @@ function getEditorOptions(props: CodeEditorProps): monacoEditorForTypes.editor.I
     automaticLayout: false,
     renderWhitespace: props.renderWhiteSpace ? "all" : "none",
     minimap: { enabled: false },
+    // a hair of space so the first line doesn't touch the tab bar above the editor
+    padding: { top: 2 },
     readOnly: props.readOnly,
     occurrencesHighlight: "off",
     selectionHighlight: false,
