@@ -27,7 +27,8 @@ export interface TsgoBuild {
   version: string;
   /** How the version selector names this build. */
   label: string;
-  /** This build's wasm in `public/` (see scripts/buildTsgo.ts). */
+  /** This build's wasm in `public/` — content-hashed, so a cached wasm can never be
+   * paired with a client built against different exports (see scripts/buildTsgo.ts). */
   wasmFileName: string;
   /** Loads the client vendored from the same commit as `wasmFileName`. */
   importVendor: () => Promise<TsgoVendor>;
@@ -39,7 +40,7 @@ export const tsgoBuilds: TsgoBuild[] = [
     packageName: `${TSGO_PACKAGE_PREFIX}${TSGO_BUILDS.stable.version}`,
     version: TSGO_BUILDS.stable.version,
     label: TSGO_BUILDS.stable.version,
-    wasmFileName: "tsgo-stable.wasm",
+    wasmFileName: TSGO_BUILDS.stable.wasmFileName,
     importVendor: toVendorLoader(() => import("./vendor/stable/mod.ts")),
   },
   {
@@ -49,7 +50,7 @@ export const tsgoBuilds: TsgoBuild[] = [
     // typescript-go commit on main it was built from
     version: TSGO_BUILDS.nightly.commitDate,
     label: `nightly (${TSGO_BUILDS.nightly.commitDate})`,
-    wasmFileName: "tsgo-nightly.wasm",
+    wasmFileName: TSGO_BUILDS.nightly.wasmFileName,
     importVendor: toVendorLoader(() => import("./vendor/nightly/mod.ts")),
   },
 ];

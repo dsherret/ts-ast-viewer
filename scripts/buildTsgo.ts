@@ -27,6 +27,8 @@ interface BuildResult {
   commitDate: string;
   /** The version the app displays: the npm release for a tag, else the commit date. */
   version: string;
+  /** This build's wasm in `public/`, content-hashed (see buildWasm). */
+  wasmFileName: string;
 }
 
 await $`git --version`.quiet();
@@ -57,10 +59,24 @@ await writeBuildInfo(builds);
 async function buildVersion(id: string, ref: string): Promise<BuildResult> {
   const { repoDir, commit, commitDate } = await checkoutTsgo(ref);
   await vendorClient(id, repoDir, commit);
-  if (!skipWasm && (wasmOnly == null || wasmOnly === id)) {
-    await buildWasm(id, repoDir);
+  const built = !skipWasm && (wasmOnly == null || wasmOnly === id);
+  const wasmFileName = built ? await buildWasm(id, repoDir) : await findExistingWasm(id);
+  return { id, ref, commit, commitDate, version: getVersionFromRef(ref) ?? commitDate, wasmFileName };
+}
+
+/**
+ * The wasm already in `public/` for a build, for the runs that don't rebuild it
+ * (`--skip-wasm`, or `--wasm-only` for the other build). Falls back to the unhashed name
+ * so the generated module still type-checks on a tree that has never been built — CI
+ * vendors the clients and runs `deno task check` before the wasms exist.
+ */
+async function findExistingWasm(id: string): Promise<string> {
+  for await (const entry of readDirOrEmpty(wasmOutDir)) {
+    if (entry.isFile && new RegExp(`^tsgo-${id}-[0-9a-f]+\\.wasm$`).test(entry.name)) {
+      return entry.name;
+    }
   }
-  return { id, ref, commit, commitDate, version: getVersionFromRef(ref) ?? commitDate };
+  return `tsgo-${id}.wasm`;
 }
 
 /**
@@ -113,11 +129,17 @@ async function checkoutTsgo(ref: string): Promise<{ repoDir: string; commit: str
   return { repoDir, commit, commitDate };
 }
 
-/** Record which typescript-go commit each build came from, for the app to display. */
+/** Record which typescript-go commit each build came from and which wasm it produced. */
 async function writeBuildInfo(builds: BuildResult[]) {
   const outPath = path.join(root, "src/compiler/tsgo/tsgoBuildInfo.generated.ts");
   const entries = builds.map((result) => {
-    const info = { ref: result.ref, commit: result.commit, commitDate: result.commitDate, version: result.version };
+    const info = {
+      ref: result.ref,
+      commit: result.commit,
+      commitDate: result.commitDate,
+      version: result.version,
+      wasmFileName: result.wasmFileName,
+    };
     return `  ${result.id}: ${JSON.stringify(info)},\n`;
   });
   await $.path(outPath).writeText(
@@ -244,18 +266,52 @@ async function* walkTs(dir: string): AsyncGenerator<string> {
   }
 }
 
-async function buildWasm(id: string, repoDir: string) {
+/**
+ * Build one wasm into `public/`, named with a hash of its own bytes, and return the file
+ * name for the app to fetch.
+ *
+ * The hash is the cache-busting: vite content-hashes the JS it emits but copies `public/`
+ * verbatim, so a fixed name lets a browser (or a CDN) pair a freshly deployed client with
+ * the wasm it cached days ago. That is survivable while the two only differ in compiler
+ * version, and fatal the moment the module's exports change — which is exactly what
+ * happened when this became a reactor. A name that changes with the bytes makes the two
+ * impossible to mix: a client only ever asks for the wasm it was built against.
+ */
+async function buildWasm(id: string, repoDir: string): Promise<string> {
   await installReactor(repoDir);
-  $.logStep("Building", `tsgo-${id}.wasm (GOOS=wasip1 GOARCH=wasm) — this takes a few minutes`);
+  $.logStep("Building", `tsgo-${id} wasm (GOOS=wasip1 GOARCH=wasm) — this takes a few minutes`);
   await $.path(wasmOutDir).ensureDir();
-  const outFile = path.join(wasmOutDir, `tsgo-${id}.wasm`);
+  const tempFile = path.join(wasmOutDir, `tsgo-${id}.building`);
   // -buildmode=c-shared makes a reactor: `_initialize` plus the //go:wasmexport
   // entry points, instead of a `_start` that runs a server loop and never returns.
-  await $`go build -buildmode=c-shared -o ${outFile} ./cmd/tsgo-wasm`
+  await $`go build -buildmode=c-shared -o ${tempFile} ./cmd/tsgo-wasm`
     .cwd(repoDir)
     .env({ GOOS: "wasip1", GOARCH: "wasm", GOTOOLCHAIN: "auto" });
-  const size = (await $.path(outFile).stat())!.size;
-  $.log(`Wrote ${outFile} (${(size / 1024 / 1024).toFixed(0)} MB)`);
+
+  const bytes = await Deno.readFile(tempFile);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const hash = Array.from(new Uint8Array(digest).slice(0, 5), (b) => b.toString(16).padStart(2, "0")).join("");
+  const fileName = `tsgo-${id}-${hash}.wasm`;
+
+  // drop this build's older wasms, so `public/` doesn't accumulate 40MB per rebuild.
+  // Anchored on `.wasm` so it can't match the `.building` file being renamed in below.
+  const stale = new RegExp(`^tsgo-${id}(-[0-9a-f]+)?\\.wasm$`);
+  for await (const entry of readDirOrEmpty(wasmOutDir)) {
+    if (entry.isFile && entry.name !== fileName && stale.test(entry.name)) {
+      await Deno.remove(path.join(wasmOutDir, entry.name));
+    }
+  }
+  await Deno.rename(tempFile, path.join(wasmOutDir, fileName));
+  $.log(`Wrote ${fileName} (${(bytes.length / 1024 / 1024).toFixed(0)} MB)`);
+  return fileName;
+}
+
+async function* readDirOrEmpty(dir: string): AsyncGenerator<Deno.DirEntry> {
+  try {
+    yield* Deno.readDir(dir);
+  } catch {
+    // no public/ yet — nothing built
+  }
 }
 
 /**
