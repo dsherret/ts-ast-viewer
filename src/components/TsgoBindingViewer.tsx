@@ -1,14 +1,13 @@
-// Renders the Type and Symbol for the selected node when using tsgo. Unlike classic
-// TS (in-process checker), tsgo's Type/Symbol are remote proxies: scalar fields read
-// synchronously once fetched, but collections (properties, members, base types, …)
-// are async. On expand, a node's collections are all evaluated up front and only the
-// non-empty ones shown; recursion stays bounded (nested collections wait for expand).
-import { type JSX, useEffect, useState } from "react";
+// Renders the Type and Symbol for the selected node when using tsgo. The checker is
+// synchronous (the wasm is a reactor driven by plain calls — see tsgoWasmSession.ts), so
+// this reads much like the classic binding section; tsgo's Type/Symbol are handle-based
+// objects with their own field shapes, which is why they get their own viewer. On expand,
+// a node's collections are evaluated and only the non-empty ones shown; recursion stays
+// bounded (nested collections wait for expand).
+import type { JSX } from "react";
 import type { CompilerApi, Node } from "../compiler/index.js";
-import type { AsyncBinding } from "../types/index.js";
 import { enumUtils, getSyntaxKindName } from "../utils/index.js";
 import { LazyTreeView } from "./LazyTreeView.js";
-import { Spinner } from "./Spinner.js";
 import { ToolTippedText } from "./ToolTippedText.js";
 
 /** Arrays/collections with more than this many items start collapsed. */
@@ -16,36 +15,25 @@ const COLLAPSE_THRESHOLD = 10;
 
 export interface TsgoBindingViewerProps {
   api: CompilerApi;
-  binding: AsyncBinding;
+  // deno-lint-ignore no-explicit-any
+  checker: any;
   node: Node;
   showInternals: boolean;
 }
 
 export function TsgoBindingViewer(props: TsgoBindingViewerProps) {
-  const { api, binding, node, showInternals } = props;
+  const { api, checker, node } = props;
+  const type = isSourceFile(api, node) ? undefined : call(checker.getTypeAtLocation, checker, node);
+  const symbol = call(checker.getSymbolAtLocation, checker, node);
   return (
     <>
       <h2>Type</h2>
       <div id="type">
-        <AsyncValue
-          key={"type-" + nodeKey(node)}
-          load={() => isSourceFile(api, node) ? Promise.resolve(undefined) : binding.getType(node)}
-          render={(type) =>
-            type == null
-              ? <>[None]</>
-              : <TypeNode api={api} binding={binding} type={type} showInternals={showInternals} open />}
-        />
+        {type == null ? <>[None]</> : <TypeNode key={"type-" + nodeKey(node)} {...props} type={type} open />}
       </div>
       <h2>Symbol</h2>
       <div id="symbol">
-        <AsyncValue
-          key={"symbol-" + nodeKey(node)}
-          load={() => binding.getSymbol(node)}
-          render={(symbol) =>
-            symbol == null
-              ? <>[None]</>
-              : <SymbolNode api={api} binding={binding} symbol={symbol} showInternals={showInternals} open />}
-        />
+        {symbol == null ? <>[None]</> : <SymbolNode key={"symbol-" + nodeKey(node)} {...props} symbol={symbol} open />}
       </div>
     </>
   );
@@ -53,14 +41,15 @@ export function TsgoBindingViewer(props: TsgoBindingViewerProps) {
 
 interface NodeProps {
   api: CompilerApi;
-  binding: AsyncBinding;
+  // deno-lint-ignore no-explicit-any
+  checker: any;
   showInternals: boolean;
   open?: boolean;
 }
 
 function TypeNode(props: NodeProps & { type: any }) {
-  const { api, binding, type, showInternals } = props;
-  const label = useDerived(() => binding.typeToString(type), "Type", [type]);
+  const { api, checker, type, showInternals } = props;
+  const label = call(checker.typeToString, checker, type) ?? "Type";
   return (
     <LazyTreeView
       nodeLabel={label}
@@ -95,14 +84,13 @@ function SymbolNode(props: NodeProps & { symbol: any }) {
 
 interface Collection {
   label: string;
-  /** Fetch the collection; may resolve to an object, array, Map, or undefined. */
-  load: () => Promise<any>;
+  /** Read the collection; may be an object, array, Map, or undefined. */
+  load: () => any;
   render: (item: any) => JSX.Element;
 }
 
 function typeCollections(props: NodeProps, type: any): Collection[] {
-  const { binding } = props;
-  const c = binding.checker;
+  const c = props.checker;
   const asType = (t: any) => <TypeNode {...props} type={t} open={false} />;
   const asSymbol = (s: any) => <SymbolNode {...props} symbol={s} open={false} />;
   const signatureKind = (props.api as any).SignatureKind;
@@ -135,8 +123,7 @@ function typeCollections(props: NodeProps, type: any): Collection[] {
 }
 
 function symbolCollections(props: NodeProps, symbol: any): Collection[] {
-  const { binding } = props;
-  const c = binding.checker;
+  const c = props.checker;
   const asType = (t: any) => <TypeNode {...props} type={t} open={false} />;
   const asSymbol = (s: any) => <SymbolNode {...props} symbol={s} open={false} />;
   return [
@@ -147,25 +134,13 @@ function symbolCollections(props: NodeProps, symbol: any): Collection[] {
   ];
 }
 
-/** Evaluate every collection in parallel (on expand), then show the non-empty ones. */
+/** Evaluate every collection (on expand), then show the non-empty ones. */
 function Collections(props: { collections: Collection[] }) {
-  const [resolved, setResolved] = useState<{ label: string; items: any[]; render: (i: any) => JSX.Element }[]>();
-  // Evaluate once on mount. This component only mounts when its parent node is
-  // expanded, and each expansion builds a fresh instance, so `[]` deps are correct
-  // even though `props.collections` closes over the (per-render) collection thunks.
-  useEffect(() => {
-    let cancelled = false;
-    Promise.all(
-      props.collections.map(async (c) => ({ label: c.label, render: c.render, items: toItems(await c.load()) })),
-    )
-      .then((all) => !cancelled && setResolved(all.filter((r) => r.items.length > 0)))
-      .catch(() => !cancelled && setResolved([]));
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (resolved == null) return <Spinner />;
+  // This component only mounts when its parent node is expanded, so the work is
+  // bounded to what the user actually opened.
+  const resolved = props.collections
+    .map((c) => ({ label: c.label, render: c.render, items: toItems(c.load()) }))
+    .filter((r) => r.items.length > 0);
   return (
     <>
       {resolved.map((r) => (
@@ -192,26 +167,7 @@ function renderSignature(): JSX.Element {
   return <span>Signature</span>;
 }
 
-// --- async plumbing -------------------------------------------------------
-
-/** Fetch on mount (only mounted when its parent expands) → Spinner → render. */
-function AsyncValue<T>(props: { load: () => Promise<T>; render: (value: T) => JSX.Element }) {
-  const [state, setState] = useState<{ s: "loading" } | { s: "done"; v: T } | { s: "error" }>({ s: "loading" });
-  useEffect(() => {
-    let cancelled = false;
-    Promise.resolve().then(props.load)
-      .then((v) => !cancelled && setState({ s: "done", v }))
-      .catch(() => !cancelled && setState({ s: "error" }));
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-  if (state.s === "loading") return <Spinner />;
-  if (state.s === "error") return <>[error]</>;
-  return props.render(state.v);
-}
-
-// --- synchronous field rendering ------------------------------------------
+// --- field rendering ------------------------------------------------------
 
 // handle-number pointers (resolved instead via the collections above) and internals
 const HIDDEN_KEYS = new Set([
@@ -339,11 +295,15 @@ function textDiv(key: string, value: string | JSX.Element): JSX.Element {
 
 // --- misc helpers ----------------------------------------------------------
 
-/** Call an optional proxy/checker method defensively, tolerating rejection. */
+/** Call an optional handle/checker method defensively, tolerating a throw. */
 // deno-lint-ignore no-explicit-any
-function call(fn: any, thisArg?: any, ...args: any[]): Promise<any> {
-  if (typeof fn !== "function") return Promise.resolve(undefined);
-  return Promise.resolve().then(() => fn.apply(thisArg, args)).catch(() => undefined);
+function call(fn: any, thisArg?: any, ...args: any[]): any {
+  if (typeof fn !== "function") return undefined;
+  try {
+    return fn.apply(thisArg, args);
+  } catch {
+    return undefined;
+  }
 }
 
 function isSourceFile(api: CompilerApi, node: Node): boolean {
@@ -352,19 +312,4 @@ function isSourceFile(api: CompilerApi, node: Node): boolean {
 
 function nodeKey(node: Node): string {
   return `${node.kind}:${(node as any).pos}:${(node as any).end}`;
-}
-
-/** Resolve an async label, showing a fallback until it arrives. */
-function useDerived(load: () => Promise<string | undefined>, fallback: string, deps: unknown[]): string {
-  const [value, setValue] = useState(fallback);
-  useEffect(() => {
-    let cancelled = false;
-    setValue(fallback);
-    Promise.resolve().then(load).then((v) => !cancelled && v != null && setValue(v)).catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-    // re-run only when the caller-supplied deps change (not on every `load`/`fallback` identity)
-  }, deps);
-  return value;
 }

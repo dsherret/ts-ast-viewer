@@ -16,8 +16,6 @@ export interface CompilerState {
   selectedNode: Node;
   // this is deferred because binding may be disabled
   bindingTools: () => BindingTools;
-  // present for tsgo, whose checker is async and out-of-process (wasm)
-  asyncBinding?: AsyncBinding;
 }
 
 export interface BindingTools {
@@ -25,28 +23,10 @@ export interface BindingTools {
   typeChecker: TypeChecker;
 }
 
-/**
- * Async, out-of-process compiler binding for tsgo. The Type/Symbol are
- * remote handle-based proxies: their scalar fields are readable synchronously once
- * fetched, while collections (properties, members, base types, …) are lazy async
- * calls on the proxy or the `checker`.
- */
-export interface AsyncBinding {
-  // deno-lint-ignore no-explicit-any
-  checker: any;
-  // deno-lint-ignore no-explicit-any
-  program: any;
-  getType(node: Node): Promise<any | undefined>;
-  getSymbol(node: Node): Promise<any | undefined>;
-  getSignature(node: Node): Promise<any | undefined>;
-  typeToString(type: any): Promise<string | undefined>;
-}
-
 /** A source file built outside the reducer (async compilers), ready to store as-is. */
 export interface PrebuiltSourceFile {
   sourceFile: SourceFile;
   bindingTools: () => BindingTools;
-  asyncBinding?: AsyncBinding;
 }
 
 export interface OptionsState {

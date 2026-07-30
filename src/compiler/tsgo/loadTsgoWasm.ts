@@ -1,18 +1,13 @@
-// Lazily fetches and compiles a tsgo WebAssembly module and installs the vscode-jsonrpc
-// browser RAL. Only reached via dynamic import when a tsgo version is selected, so
-// neither the wasm nor the browser-only RAL land in the main bundle or the Deno
+// Lazily fetches and compiles a tsgo WebAssembly module. Only reached via dynamic import
+// when a tsgo version is selected, so the wasm never lands in the main bundle or the Deno
 // type-check graph. Each build's wasm is fetched from `public/` at runtime (not
 // `new URL(..., import.meta.url)`), so `vite build` doesn't require the files.
-import { jspiAvailable } from "./bootTsgoWasm.ts";
 import type { TsgoBuild } from "./tsgoVersion.ts";
 
 // Only the most recently selected build's module is kept: a compiled tsgo module is
 // large, and switching versions tears down the other build's session anyway. Switching
 // back recompiles, but its wasm comes from the browser's cache.
 let compiled: { wasmFileName: string; modulePromise: Promise<WebAssembly.Module> } | undefined;
-let ralInstalled: Promise<unknown> | undefined;
-
-export { jspiAvailable };
 
 /** Compile a build's wasm module once, reusing the result across its sessions. */
 export function getTsgoWasmModule(build: TsgoBuild): Promise<WebAssembly.Module> {
@@ -29,19 +24,7 @@ export function getTsgoWasmModule(build: TsgoBuild): Promise<WebAssembly.Module>
   return compiled.modulePromise;
 }
 
-/** Install the vscode-jsonrpc runtime abstraction layer for the browser once. */
-export function installBrowserRal(): Promise<unknown> {
-  return ralInstalled ??= import("vscode-jsonrpc/browser");
-}
-
 async function compile(wasmFileName: string): Promise<WebAssembly.Module> {
-  if (!jspiAvailable()) {
-    throw new Error(
-      "tsgo needs WebAssembly JSPI, which this browser doesn't support. " +
-        "Try a recent Chromium-based browser.",
-    );
-  }
-  await installBrowserRal();
   const base = (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? "/";
   const response = await fetch(base + wasmFileName);
   if (!response.ok) {

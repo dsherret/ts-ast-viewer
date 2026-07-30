@@ -72,11 +72,13 @@ export function PropertiesViewer(props: PropertiesViewerProps) {
         <div id="node">
           {getForSelectedNode(context, selectedNode)}
         </div>
-        {bindingEnabled && (props.compiler.asyncBinding != null
+        {bindingEnabled && (isTsgo(props.compiler.packageName)
           ? (
+            // tsgo's Type/Symbol are handle-based objects with their own shape, so they
+            // get their own viewer — synchronous, like the classic one beside it
             <TsgoBindingViewer
               api={context.api}
-              binding={props.compiler.asyncBinding}
+              checker={bindingTools().typeChecker}
               node={selectedNode}
               showInternals={props.showInternals}
             />

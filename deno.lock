@@ -41,8 +41,7 @@
     "npm:ts-factory-code-generator-generator@0.7": "0.7.0",
     "npm:ts-morph@^27.0.2": "27.0.2",
     "npm:typescript@5.9.3": "5.9.3",
-    "npm:vite@^7.3.0": "7.3.6_@types+node@25.9.5",
-    "npm:vscode-jsonrpc@9.0.0": "9.0.0"
+    "npm:vite@^7.3.0": "7.3.6_@types+node@25.9.5"
   },
   "jsr": {
     "@david/console-static-text@0.3.4": {
@@ -1161,8 +1160,7 @@
       "jsr:@std/expect@^1.0.17",
       "jsr:@std/semver@^1.0.7",
       "npm:@bjorn3/browser_wasi_shim@~0.4.2",
-      "npm:typescript@5.9.3",
-      "npm:vscode-jsonrpc@9.0.0"
+      "npm:typescript@5.9.3"
     ],
     "packageJson": {
       "dependencies": [
@@ -1188,8 +1186,7 @@
         "npm:ts-factory-code-generator-generator@0.7",
         "npm:ts-morph@^27.0.2",
         "npm:typescript@5.9.3",
-        "npm:vite@^7.3.0",
-        "npm:vscode-jsonrpc@9.0.0"
+        "npm:vite@^7.3.0"
       ]
     }
   }
