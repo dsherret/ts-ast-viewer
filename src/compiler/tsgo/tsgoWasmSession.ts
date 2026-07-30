@@ -64,9 +64,27 @@ export async function createTsgoWasmSession(options: TsgoWasmSessionOptions): Pr
   wasi.initialize(instance as unknown as Parameters<WASI["initialize"]>[0]);
 
   const exports = instance.exports as unknown as ReactorExports;
+  assertReactor(exports);
   const session = new ReactorSession(exports);
   session.createSession(options.cwd ?? "/");
   return session;
+}
+
+/**
+ * Fail with the missing export named, rather than `undefined is not a function` several
+ * calls later. Reaching this means the wasm and the client disagree about the module's
+ * shape — which the content-hashed file name is meant to make impossible, so it's a
+ * broken deployment rather than a stale cache.
+ */
+function assertReactor(exports: ReactorExports): void {
+  const required = ["_initialize", "create_session", "get_request_buffer", "handle_request", "response_ptr"] as const;
+  const missing = required.filter((name) => typeof exports[name] !== "function");
+  if (missing.length > 0) {
+    throw new Error(
+      `This tsgo wasm isn't a reactor build — it's missing ${missing.join(", ")}. ` +
+        `The wasm and the app were built from different sources.`,
+    );
+  }
 }
 
 class ReactorSession implements TsgoWasmSession {
