@@ -22,7 +22,7 @@ export interface TsgoBindingViewerProps {
 }
 
 export function TsgoBindingViewer(props: TsgoBindingViewerProps) {
-  const { api, checker, node, showInternals } = props;
+  const { api, checker, node } = props;
   const type = isSourceFile(api, node) ? undefined : call(checker.getTypeAtLocation, checker, node);
   const symbol = call(checker.getSymbolAtLocation, checker, node);
   return (
