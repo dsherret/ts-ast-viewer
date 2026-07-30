@@ -57,16 +57,18 @@ export function Options(props: OptionsProps) {
   }
 
   function getTreeMode() {
-    // tsgo nodes only support forEachChild (no getChildren), so don't offer it there
-    const tsgo = isTsgo(props.options.compilerPackageName);
+    // tsgo nodes only support forEachChild (no getChildren), so there's nothing to choose
+    if (isTsgo(props.options.compilerPackageName)) {
+      return undefined;
+    }
     const selection = (
       <select
         id="treeMode"
-        value={tsgo ? TreeMode.forEachChild : props.options.treeMode}
+        value={props.options.treeMode}
         onChange={(event) => onChange({ treeMode: parseInt(event.target.value, 10) as TreeMode })}
       >
         <option value={TreeMode.forEachChild}>node.forEachChild(child =&gt; ...)</option>
-        {!tsgo && <option value={TreeMode.getChildren}>node.getChildren()</option>}
+        <option value={TreeMode.getChildren}>node.getChildren()</option>
       </select>
     );
     return <Option name="Tree mode" value={selection} />;

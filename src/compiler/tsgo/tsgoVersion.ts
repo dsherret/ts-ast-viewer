@@ -54,10 +54,17 @@ export const tsgoBuilds: TsgoBuild[] = [
   },
 ];
 
-/** The version selector's full list: the npm-installed versions plus the tsgo builds. */
+/**
+ * The version selector's full list: the tsgo release, the npm-installed versions,
+ * then the tsgo nightly.
+ *
+ * The list reads newest to oldest, so the tsgo release goes at the top (though it's
+ * not the default selection, see AppContext) and the nightly stays at the very bottom.
+ */
 export const appCompilerVersions: { packageName: AnyCompilerPackageName; label: string }[] = [
+  ...toSelectorItems(tsgoBuilds.filter((build) => build.id !== "nightly")),
   ...compilerVersionCollection.map((v) => ({ packageName: v.packageName, label: v.version })),
-  ...tsgoBuilds.map((build) => ({ packageName: build.packageName, label: build.label })),
+  ...toSelectorItems(tsgoBuilds.filter((build) => build.id === "nightly")),
 ];
 
 /** Whether this compiler runs via the tsgo/wasm infrastructure (vs the npm typescript). */
@@ -71,4 +78,8 @@ export function getTsgoBuild(packageName: TsgoPackageName): TsgoBuild {
     throw new Error(`Unknown tsgo build: ${packageName}`);
   }
   return build;
+}
+
+function toSelectorItems(builds: TsgoBuild[]) {
+  return builds.map((build) => ({ packageName: build.packageName, label: build.label }));
 }
