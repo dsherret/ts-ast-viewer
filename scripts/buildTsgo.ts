@@ -184,6 +184,33 @@ async function vendorClient(id: string, repoDir: string, commit: string) {
   await $.path(path.join(vendorOutDir, "GENERATED.md")).writeText(attribution(commit));
   await $.path(path.join(vendorOutDir, "..", "tsgo.commit")).writeText(commit + "\n");
   await $.path(path.join(vendorOutDir, "..", "mod.ts")).writeText(vendorModSource());
+  await assertImportsResolve(path.join(vendorRootDir, id));
+}
+
+/**
+ * Fail here, naming the file, when a vendored module imports something the vendoring left
+ * behind. Upstream adds imports to this generated code from time to time — that is how
+ * `ast/is.generated.ts` came to reference the unvendored async client — and a dangling
+ * specifier is otherwise invisible until a later task type-checks the app and reports a
+ * bare TS2307 against a generated file.
+ */
+async function assertImportsResolve(buildDir: string) {
+  const dangling: string[] = [];
+  for await (const file of walkTs(buildDir)) {
+    const text = await $.path(file).readText();
+    for (const [, specifier] of text.matchAll(/(?:\bfrom|\bimport)\s*\(?\s*["'](\.[^"']+)["']/g)) {
+      const target = path.resolve(path.dirname(file), specifier);
+      if (!(await $.path(target).exists())) {
+        dangling.push(`${path.relative(buildDir, file).replaceAll("\\", "/")} → ${specifier}`);
+      }
+    }
+  }
+  if (dangling.length > 0) {
+    throw new Error(
+      `Vendored client imports modules the vendoring dropped:\n  ${dangling.join("\n  ")}\n` +
+        `Adjust the skip list or the rewrites in vendorClient/rewrite (scripts/buildTsgo.ts).`,
+    );
+  }
 }
 
 /**
@@ -220,6 +247,13 @@ function rewrite(rel: string, text: string, fileDir: string, enumsDir: string): 
     const target = path.relative(fileDir, path.join(enumsDir, `${name}.enum.ts`)).replaceAll("\\", "/");
     return `${q}${target.startsWith(".") ? target : "./" + target}${q}`;
   });
+
+  // api/async/x.ts → api/sync/x.ts. Some of the generated code reaches for both clients —
+  // ast/is.generated.ts type-imports each one's `NodeHandle` to tell the two apart — and
+  // the async client isn't vendored. Upstream generates api/sync from api/async
+  // file-for-file, so the sync copy declares the same shapes under the same names, which
+  // is the right answer for a build that only ever holds a sync handle.
+  text = text.replaceAll(/(["'](?:\.\.\/)+api\/)async\//g, "$1sync/");
 
   if (rel === "api/options.ts") {
     // getExePath resolves the native binary — never reached in the browser (no spawn).
