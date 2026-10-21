@@ -1,0 +1,1 @@
+function n(r){return new Worker("/assets/editor.worker-CdQrwHl8.js",{name:r?.name})}function t(r){return new Worker("/assets/ts.worker-BH9nVgjN.js",{name:r?.name})}function o(){globalThis.MonacoEnvironment={getWorker(r,e){switch(e){case"typescript":case"javascript":return new t;default:return new n}}}}export{o as setUpMonacoEnvironment};
